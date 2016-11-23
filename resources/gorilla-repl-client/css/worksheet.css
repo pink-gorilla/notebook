@@ -13,6 +13,11 @@ div#contents {
     margin-right: 10%;
 }
 
+div#react-app {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
 h1 {
     margin-bottom: 0.3em;
 }

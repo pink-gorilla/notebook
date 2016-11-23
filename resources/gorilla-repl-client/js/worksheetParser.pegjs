@@ -5,26 +5,30 @@
  */
 
 // The parser takes a worksheet persisted as a marked up clojure file and returns a list of segments.
+{
+  var worksheetVersion = "1";
+}
 
 worksheet = worksheetHeader seg:segmentWithBlankLine* {return seg;}
 
 lineEnd = "\n" / "\r\n"
 
-worksheetHeader = ";; gorilla-repl.fileformat = 1" lineEnd lineEnd
+worksheetHeader = ";; gorilla-repl.fileformat = " content:wsVersion lineEnd lineEnd
+                { worksheetVersion = content; }
 
 segmentWithBlankLine = seg:segment lineEnd? {return seg;}
 
 segment = freeSegment / codeSegment
 
 freeSegment = freeSegmentOpenTag content:stringNoDelim? freeSegmentCloseTag
-                {return freeSegment(unmakeClojureComment(content));}
+                {return gorilla_repl.db.create_free_segment(gorilla_repl.db.unmake_clojure_comment(content));}
 
 freeSegmentOpenTag = ";; **" lineEnd
 
 freeSegmentCloseTag = lineEnd ";; **" lineEnd
 
 codeSegment = codeSegmentOpenTag content:stringNoDelim? codeSegmentCloseTag cs:consoleSection? out:outputSection?
-                {return codeSegment(content, unmakeClojureComment(cs), unmakeClojureComment(out));}
+                {return gorilla_repl.db.create_code_segment(content, gorilla_repl.db.unmake_clojure_comment(cs), gorilla_repl.db.unmake_clojure_comment(out), worksheetVersion);}
 
 codeSegmentOpenTag = ";; @@" lineEnd
 
@@ -48,3 +52,5 @@ delimiter = freeSegmentOpenTag / freeSegmentCloseTag /codeSegmentOpenTag / codeS
                 outputCloseTag / consoleOpenTag / consoleCloseTag
 
 noDelimChar = !delimiter c:. {return c;}
+
+wsVersion = [12]

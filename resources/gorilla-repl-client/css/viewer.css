@@ -66,6 +66,10 @@ div#contents {
     padding-top: 12px;
 }
 
+div#react-app {
+    padding-top: 12px;
+}
+
 div.veiled {
     opacity: 0.3;
 }
