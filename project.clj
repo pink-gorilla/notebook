@@ -3,12 +3,15 @@
   :url "https://github.com/deas/gorilla-repl"
   :license {:name "MIT"}
   :dependencies [[org.clojure/clojure "1.9.0-alpha13"]
-                 [ring/ring-json "0.4.0"]
+                 ;;  ring-json introduces jackson along with its tail
+                 ;; [ring/ring-json "0.4.0"]
+                 [org.clojure/data.json "0.2.6"]
                  [http-kit "2.2.0"]
                  [cider/cider-nrepl "0.14.0"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
-                 [org.clojars.deas/gorilla-plot "0.2.0-SNAPSHOT"]
+                 [org.clojars.deas/gorilla-middleware "0.1.0"]
+                 [org.clojars.deas/gorilla-plot "0.2.0"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.16"]
                  [ch.qos.logback/logback-core "1.1.5"]
@@ -56,7 +59,7 @@
                   :scope "provided"]
                  [secretary "1.2.3"]
                  [cljsjs/parinfer "1.8.1-0"]
-                 [cljsjs/codemirror "5.19.0-0"]
+                 [cljsjs/codemirror "5.21.0-0"]
                  [cljsjs/vega "2.6.0-0"]
                  [cljsjs/d3geo "0.2.15-2"]
                  [cljsjs/d3 "3.5.16-0"]
@@ -92,7 +95,7 @@
 
   :min-lein-version "2.5.0"
 
-  :main ^:skip-aot gorilla-repl.system
+  :main ^:skip-aot gorilla-repl.core
 
   ;; :aot [gorilla-repl.servlet]
 
@@ -120,24 +123,26 @@
   :cljsbuild {:jar true
               :builds
                    {:app {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
-                          :compiler {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
-                                     :output-dir      "target/js/out"
-                                     :asset-path      "/js/out"
-                                     :foreign-libs    [{:file     "resources/gorilla-repl-client/js/codemirror/mode/clojure/clojure-parinfer.js"
-                                                        :requires ["cljsjs.codemirror"]
-                                                        :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
-                                                       {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
-                                                        :requires ["cljsjs.mousetrap"]
-                                                        :provides ["cljsjs.mousetrap-global-bind"]}
-                                                       {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
-                                                        :provides ["gorilla-repl.worksheet-parser"]}]
-                                     :main            gorilla-repl.prod
-                                     ;; :verbose         true
-                                     :closure-defines {goog.DEBUG false}
-                                     :optimizations   :advanced
-                                     :externs        ["src/cljs/externs.js"]
-                                     :pretty-print    false
-                                     :parallel-build  true}}}}
+                          :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
+                                         :output-dir      "target/js/out"
+                                         :asset-path      "/js/out"
+                                         :foreign-libs    [{:file     "resources/gorilla-repl-client/js/codemirror/mode/clojure/clojure-parinfer.js"
+                                                            :requires ["cljsjs.codemirror"]
+                                                            :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
+                                                           {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
+                                                            :requires ["cljsjs.mousetrap"]
+                                                            :provides ["cljsjs.mousetrap-global-bind"]}
+                                                           {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
+                                                            :provides ["gorilla-repl.worksheet-parser"]}]
+                                         :main            gorilla-repl.prod
+                                         ;; :verbose         true
+                                         ;; :compiler-stats true
+                                         :closure-defines {goog.DEBUG false}
+                                         :elide-asserts   true
+                                         :optimizations   :advanced
+                                         :externs         ["src/cljs/externs.js"]
+                                         :pretty-print    false
+                                         :parallel-build  true}}}}
 
 
   :profiles {:dev     {:repl-options   {:init-ns gorilla-repl.repl}
