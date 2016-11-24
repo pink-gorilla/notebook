@@ -19,10 +19,3 @@
 
 (defn start [config]
   (system/start (gorilla-system config)))
-
-(defn -main
-  [& args]
-  (let [s (start {:property-file-preferred false})
-        webapp-port (-> s (get-in [:server :httpkit]) .getPort)]
-    (log/info (str "Running at port " webapp-port))
-    (log/info "Ctrl+C to exit.")))

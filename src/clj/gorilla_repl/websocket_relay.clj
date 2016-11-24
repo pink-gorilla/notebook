@@ -10,11 +10,15 @@
             [clojure.tools.nrepl.server :as nrepl-server]
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
-            [gorilla-repl.render-values-mw]   ;; it's essential this import comes after the previous one!
+            [gorilla-middleware.render-values]   ;; it's essential this import comes after the previous one!
             [cider.nrepl]
             [ring.middleware.session :as session]
             [ring.middleware.session.memory :as mem]
-            [cheshire.core :as json]))
+            [clojure.data.json :as json]
+            [clojure.walk :as w]
+            #_[cheshire.core :as json])
+  #_(:refer clojure.data.json :rename {write-str generate-string,
+                                      read-str parse-string}))
 
 ;; We will open a single connection to the nREPL server for the life of the application. It will be stored here.
 ;; (def conn (atom nil))
@@ -43,24 +47,24 @@
 
 (defn- process-message-net
   [channel data]
-  (let [parsed-message (assoc (json/parse-string data true) :as-html 1)
+  (let [parsed-message (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
         client (nrepl/client @gnrepl/conn Long/MAX_VALUE)
         replies (nrepl/message client parsed-message)]
     ;; send the messages out over the WS connection one-by-one.
     (let [reply-fn (partial process-replies
                             #(server/send!
                               channel
-                              {:body (json/generate-string %)}))]
+                              {:body (json/write-str %)}))]
       (reply-fn replies))))
 
 (defn- process-message-mem
   [transport channel timeout data]
-  (let [msg (assoc (json/parse-string data true) :as-html 1)
+  (let [msg (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
         [read write] transport
         client (nrepl/client read timeout)]
     ((partial process-replies #(server/send!
                                 channel
-                                {:body    (json/generate-string %)
+                                {:body    (json/write-str %)
                                  :session {::tranport transport}}))
       (do
         (when (:op msg)

@@ -3,7 +3,7 @@
             [com.stuartsierra.component :as component]
             [clojure.tools.logging :as log]
             [gorilla-repl.sandboxed_interruptible-eval]
-            [gorilla-repl.render-values-mw :as render-mw]   ;; it's essential this import comes after the previous one! It
+            [gorilla-middleware.render-values :as render-mw]   ;; it's essential this import comes after the previous one! It
     ;; refers directly to a var in nrepl (as a hack to workaround
     ;; a weakness in nREPL's middleware resolution).
             [clojure.tools.nrepl :as nrepl]

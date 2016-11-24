@@ -49,7 +49,7 @@ public class NReplEndpoint {
                 log.info("Sending response", response);
                 session.getBasicRemote().sendText(response);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             try {
                 session.close();

@@ -1,13 +1,17 @@
 (ns gorilla-repl.jee-interop
   (:use compojure.core)
-  (:require [cheshire.core :as cc]
+  (:require ;; [cheshire.core :as json]
+            [clojure.data.json :as json]
+            [clojure.walk :as w]
             [clojure.tools.nrepl.server :as nrepl-server]
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
             [gorilla-repl.nrepl :as grepl]
             [clojure.tools.logging :as log]
             [cider.nrepl :as cider]
-            [clojure.pprint :as pp]))
+            [clojure.pprint :as pp])
+  #_(:refer [clojure.data.json :rename {write-str generate-string
+                                      read-str parse-string}]))
 
 ;; the combined routes - we serve up everything in the "public" directory of resources under "/".
 ;; The REPL traffic is handled in the websocket-transport ns.
@@ -85,7 +89,7 @@
 
 (defn- response
   [response-seq]
-  (doall (map cc/generate-string response-seq)))
+  (doall (map json/write-str response-seq)))
 
 #_(def ^:private nrepl-handler (apply nrepl-server/default-handler
                                     (-> (map resolve cider/cider-middleware)
@@ -110,6 +114,6 @@
 
 (defn process-json-message
   [data store]
-  (let [m (assoc (cc/parse-string data true) :as-html 1)]
+  (let [m (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)]
     (-> m
         (process-message store :nrepl-handler @handler))))

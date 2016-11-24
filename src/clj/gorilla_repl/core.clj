@@ -9,6 +9,7 @@
             [gorilla-repl.version :as version]
             [gorilla-repl.route :as routes]
             [gorilla-repl.system :as sys]
+            [gorilla-repl.cli :as cli]
             [clojure.set :as set]
             [clojure.java.io :as io])
   (:gen-class))
@@ -18,6 +19,7 @@
 (def remote-repl-dev-routes routes/remote-repl-dev-routes)
 
 ;; TODO WIP, we can to better
+;; lein plugin entry point
 (defn run-gorilla-server
   [conf]
   (print "Got conf " conf)
@@ -57,4 +59,8 @@
 
 (defn -main
   [& args]
-  (run-gorilla-server {:port 8990}))
+  (let [{:keys [options arguments errors summary]} (cli/parse-opts args)]
+    (println options)
+    (run-gorilla-server {:port (:port options)
+                         :ip (:host options)
+                         :project (:project options)})))

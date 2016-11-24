@@ -73,7 +73,10 @@ lein do clean, uberjar
 should give you the all-in uberjar. It is used by the docker image and can be run
 executing `java -jar target/gorilla-repl-ng-standalone.jar`. It may also work dropped
  into a webapp (in `WEB-INF/lib`). Whether you are lucky or depends on the dependencies
-(if you run into conflicts).
+(if you run into conflicts). If all goes well, Gorilla REPL will appear at
+`.../your-app-context/gorilla-repl/worksheet.html`.
+
+TODO : Explain delegation mode
 
 In case you are unlucky, you might want to try
 
@@ -82,7 +85,8 @@ lein do clean, install
 ```
 
 add a dependency in your project and tweak dependencies until things work. This is
- what I do with [lambdalf](https://github.com/deas/lambdalf)
+ what I do with [lambdalf](https://github.com/deas/lambdalf). Again, if things go well,
+ gorilla REPL will appear at `.../your-app-context/gorilla-repl/worksheet.html`.
 ## Contributing
 
 Contributions, in the form of comments, criticism, bug reports, or code are all very welcome :-) If you've got an idea
