@@ -6,10 +6,11 @@
 
 (ns gorilla-repl.websocket-relay
   (:require [org.httpkit.server :as server]
-            [gorilla-repl.nrepl :as gnrepl]
             [clojure.tools.nrepl.server :as nrepl-server]
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
+            [gorilla-repl.nrepl :as gnrepl]
+            [gorilla-middleware.middleware :as gmw]
             [gorilla-middleware.render-values]   ;; it's essential this import comes after the previous one!
             [cider.nrepl]
             [ring.middleware.session :as session]
@@ -19,26 +20,6 @@
             #_[cheshire.core :as json])
   #_(:refer clojure.data.json :rename {write-str generate-string,
                                       read-str parse-string}))
-
-;; We will open a single connection to the nREPL server for the life of the application. It will be stored here.
-;; (def conn (atom nil))
-
-;; Doing it this way with an atom feels wrong, but I can't figure out how to thread an argument into Compojure's
-;; routing macro, so I can't pass the connection around, to give a more functional API.
-#_ (defn connect-to-nrepl
-  "Connect to the nREPL server and store the connection."
-  [host port]
-  (let [new-conn (nrepl/connect :host host :port port)]
-    (reset! conn new-conn)))
-
-(def ^:private cider-middleware
-  "A vector containing the CIDER middleware gorilla repl supports."
-  '[cider.nrepl.middleware.complete/wrap-complete
-    cider.nrepl.middleware.info/wrap-info
-    cider.nrepl.middleware.stacktrace/wrap-stacktrace])
-
-
-(def ^:private nrepl-handler (atom (gnrepl/nrepl-handler false cider-middleware)))
 
 (defn- process-replies
   [reply-fn replies]
@@ -68,7 +49,7 @@
                                  :session {::tranport transport}}))
       (do
         (when (:op msg)
-          (future (nrepl-server/handle* msg @nrepl-handler write)))
+          (future (nrepl-server/handle* msg @gmw/gorilla-handler write)))
         (client)))))
 
 (defn- memory-session

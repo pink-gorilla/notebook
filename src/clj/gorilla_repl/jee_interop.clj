@@ -6,7 +6,7 @@
             [clojure.tools.nrepl.server :as nrepl-server]
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
-            [gorilla-repl.nrepl :as grepl]
+            [gorilla-middleware.middleware :as gmw]
             [clojure.tools.logging :as log]
             [cider.nrepl :as cider]
             [clojure.pprint :as pp])
@@ -85,7 +85,7 @@
                                  (client)))))))
              (memory-session :cookie-name cookie-name)))
 
-(def handler (atom (grepl/nrepl-handler false cider/cider-middleware)))
+(def handler (atom (gmw/nrepl-handler false cider/cider-middleware)))
 
 (defn- response
   [response-seq]
@@ -112,6 +112,7 @@
                   (future (nrepl-server/handle* msg nrepl-handler write)))
                 (client)))))
 
+;; Called from java
 (defn process-json-message
   [data store]
   (let [m (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)]

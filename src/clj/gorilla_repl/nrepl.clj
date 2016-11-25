@@ -2,10 +2,7 @@
   (:require [clojure.tools.nrepl.server :as srv]
             [com.stuartsierra.component :as component]
             [clojure.tools.logging :as log]
-            [gorilla-repl.sandboxed_interruptible-eval]
-            [gorilla-middleware.render-values :as render-mw]   ;; it's essential this import comes after the previous one! It
-    ;; refers directly to a var in nrepl (as a hack to workaround
-    ;; a weakness in nREPL's middleware resolution).
+            [gorilla-middleware.middleware :as gmw]
             [clojure.tools.nrepl :as nrepl]
             [cider.nrepl :as cider]))
 
@@ -20,24 +17,6 @@
   "Connect to the nREPL server and store the connection."
   [host port]
   (reset! conn (nrepl/connect :host host :port port)))
-
-(defn- middlewares
-  [middlewares sandbox]
-  (if sandbox
-    (->> middlewares
-         (map #(if (= (-> % meta :name name) "interruptible-eval")
-                 #'gorilla-repl.sandboxed_interruptible-eval/interruptible-eval
-                 %))
-         (into []))
-    middlewares))
-
-(defn nrepl-handler
-  [sandbox cid-mw-vars]
-  (let [cider-mw (map resolve cid-mw-vars)
-        middleware (conj cider-mw #'render-mw/render-values)]
-    (with-redefs [srv/default-middlewares (middlewares srv/default-middlewares sandbox)]
-      (apply srv/default-handler middleware))))
-
 
 (defrecord NReplServer
   [handler server]
@@ -54,7 +33,7 @@
           (do
             (log/info "Starting nREPL server on port " nrepl-port)
             (spit (doto nrepl-port-file .deleteOnExit) nrepl-port)
-            (assoc self :server (srv/start-server :port nrepl-port :handler (nrepl-handler false cider/cider-middleware)))))
+            (assoc self :server (srv/start-server :port nrepl-port :handler (gmw/nrepl-handler false cider/cider-middleware)))))
         self)))
   (stop [self]
     (when server

@@ -10,7 +10,7 @@
                  [cider/cider-nrepl "0.14.0"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
-                 [org.clojars.deas/gorilla-middleware "0.1.0"]
+                 [org.clojars.deas/gorilla-middleware "0.1.1"]
                  [org.clojars.deas/gorilla-plot "0.2.0"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.16"]
@@ -135,12 +135,12 @@
                                                            {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
                                                             :provides ["gorilla-repl.worksheet-parser"]}]
                                          :main            gorilla-repl.prod
-                                         ;; :verbose         true
-                                         ;; :compiler-stats true
+                                         :verbose         true
+                                         :compiler-stats true
                                          :closure-defines {goog.DEBUG false}
                                          :elide-asserts   true
                                          :optimizations   :advanced
-                                         :externs         ["src/cljs/externs.js"]
+                                         :externs         ["src/cljs/gorilla-repl-externs.js"]
                                          :pretty-print    false
                                          :parallel-build  true}}}}
 
