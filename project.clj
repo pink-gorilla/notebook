@@ -69,9 +69,11 @@
                  [org.danielsz/system "0.3.1"]
                  [jarohen/chord "0.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
-                 [org.clojars.deas/tesla-microservice "0.4.1-SNAPSHOT"]
+                 [de.otto/tesla-microservice "0.6.0"]
                  [de.otto/tesla-httpkit "1.0.1"]
-                 [clojail "1.0.6"]]
+                 [clojail "1.0.6"]
+                 [com.cemerick/piggieback "0.2.1"]
+                 [com.cemerick/pomegranate "0.3.1"]]
 
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.4"]

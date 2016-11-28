@@ -22,7 +22,7 @@
 ;; lein plugin entry point
 (defn run-gorilla-server
   [conf]
-  (print "Got conf " conf)
+  (println "Got conf " conf)
   ; get configuration information from parameters
   (let [version (or (:version conf) "develop")
         webapp-requested-port (or (:port conf) 0)

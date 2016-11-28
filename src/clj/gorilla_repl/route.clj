@@ -14,7 +14,7 @@
    (POST (str prefix "save") [] (handle/wrap-api-handler handle/save))
    (GET (str prefix "gorilla-files") [] (handle/wrap-api-handler handle/gorilla-files))
    (GET (str prefix "config") [] (handle/wrap-api-handler handle/config))
-   (GET (str prefix "repl") [] (ws-relay/repl-ring-handler ws-relay/on-receive-mem))
+   ;; (GET (str prefix "repl") [] (ws-relay/repl-ring-handler ws-relay/on-receive-mem))
    ; (GET "/repl" [] (ws-relay/repl-ring-handler ws-relay/on-receive-net))
    (GET (str prefix ":document.html") [document] (partial handle/document-utf8 (str document ".html")))])
 
@@ -31,8 +31,7 @@
    ;; ^{:name ":res2"} (route/resources "/" {:root "META-INF/resources/"}) ;; webjars servlet 3 style
    (route/resources prefix {:root "gorilla-repl-client"})
    (route/files (str prefix "project-files") {:root "."})
-   (route/not-found "Bummer, not found")]
-  )
+   (route/not-found "Bummer, not found")])
 
 (def default-api-routes (create-api-routes "/"))
 (def default-repl-routes (create-repl-routes "/" ws-relay/on-receive-mem))
@@ -45,6 +44,7 @@
                                                             remote-repl-routes
                                                             default-resource-routes)))
 
+;; Used by uberwar
 (def redirect-route (GET "/" [] handle/redirect-app))
 
 (defn war-routes [prefix]

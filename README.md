@@ -37,6 +37,8 @@ WIP/in experimental stage:
 Ideas/On the radar:
 
 - Interruption
+- node.js backend
+- Improve composabitly of (ring) handlers
 - Code sharing UI/services
 - Extraction of nREPL middleware jar
 - Segement dependencies

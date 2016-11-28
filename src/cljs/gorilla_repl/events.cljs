@@ -104,13 +104,8 @@
     :id :install-commands
     :after (fn
              [context]
-             ;; _ [_ db response]
              (db/install-commands (get-in context [:coeffects :db :all-commands]))
-             context
-             #_(let [event (get-in context [:coeffects :event])
-                     keymap (second event)]
-                 (gorilla-repl.db/install-commands keymap)
-                 context))))
+             context)))
 
 ;; TODO : Remove all the side effects from the handlers
 ;; -- Event Handlers ----------------------------------------------------------
@@ -149,10 +144,8 @@
           worksheet {:ns                   nil
                      :segments             {}
                      :segment-order        []
-                     ;; TODO: executing,active to segment?
-                     :executing-segment    nil
-                     :active-segment       nil
-                     :queued-code-segments #queue []}]
+                     :queued-code-segments #{}
+                     :active-segment       nil}]
       (assoc db :worksheet (-> worksheet
                                (db/insert-segment-at 0 init-free-segment)
                                (db/insert-segment-at 1 init-code-segment))))))
@@ -222,8 +215,6 @@
   [_ _ content]
   (get content "worksheet-data"))
 
-
-
 (reg-event-db
   :process-load-file-response
   [standard-interceptors]
@@ -238,12 +229,11 @@
                              (map #(:id %))
                              (into []))]
       (assoc db :worksheet
-                {:segments          segments
-                 :segment-order     segment-order
-                 :url               filename
-                 ;; TODO: executing,active to segment?
-                 :executing-segment nil
-                 :active-segment    nil}))))
+                {:segments             segments
+                 :segment-order        segment-order
+                 :url                  filename
+                 :queued-code-segments #{}
+                 :active-segment       nil}))))
 
 
 (reg-event-db
@@ -445,11 +435,12 @@
                                                     :value-response nil
                                                     :error-text     nil
                                                     :exception      nil})
-          kernel (:kernel active-segment)]
+          kernel (:kernel active-segment)
+          queued-segs (get-in db [:worksheet :queued-code-segments])]
       (if (= kernel :default-clj)
         (nrepl/send-eval-message! active-id (get-in active-segment [:content :value])))
       (-> (assoc-in db [:worksheet :segments active-id] new-active-segment)
-          (assoc-in [:worksheet :executing-segment] (:id new-active-segment))))))
+          (assoc-in [:worksheet :queued-code-segments] (conj queued-segs (:id new-active-segment)))))))
 
 (reg-event-db
   :worksheet:evaluate-all
@@ -459,11 +450,11 @@
           segment-order (get-in db [:worksheet :segment-order])
           sorted-code-segments (->> (map #(% segments) segment-order)
                                     (filter (fn [segment] (= :code (:type segment)))))]
-      ;; TODO: We should probably support multiple executing cells
       (doall (map #(nrepl/send-eval-message!
                      (:id %)
-                     (get-in % [:content :value])) sorted-code-segments)))
-    db))
+                     (get-in % [:content :value])) sorted-code-segments))
+      (assoc-in db [:worksheet :queued-code-segments] (-> (map #(:id %) sorted-code-segments)
+                                                       set)))))
 
 (defn leave-active
   [db next-fn]
@@ -514,29 +505,24 @@
     (move-active db dec)))
 
 (defn insert-segment
-  [index db]
-  (let [new-segment (db/create-code-segment "")]
+  [index-fn db _]
+  (let [segment-order (get-in db [:worksheet :segment-order])
+        active-id (get-in db [:worksheet :active-segment])
+        active-idx (.indexOf segment-order active-id)
+        new-segment (db/create-code-segment "")]
     (merge db {:worksheet
                (-> (:worksheet db)
-                   (db/insert-segment-at index new-segment))})))
+                   (db/insert-segment-at (index-fn active-idx) new-segment))})))
 
 (reg-event-db
   :worksheet:newAbove
   [(conj standard-interceptors (undoable "Insert segment"))]
-  (fn [db _]
-    (let [segment-order (get-in db [:worksheet :segment-order])
-          active-id (get-in db [:worksheet :active-segment])
-          active-idx (.indexOf segment-order active-id)]
-      (insert-segment active-idx db))))
+  (partial insert-segment identity))
 
 (reg-event-db
   :worksheet:newBelow
   [(conj standard-interceptors (undoable "Insert segment"))]
-  (fn [db _]
-    (let [segment-order (get-in db [:worksheet :segment-order])
-          active-id (get-in db [:worksheet :active-segment])
-          active-idx (.indexOf segment-order active-id)]
-      (insert-segment (+ active-idx 1) db))))
+  (partial insert-segment inc))
 
 ;; Using re-frame undo instead
 #_(reg-event-db
@@ -704,12 +690,14 @@
   (fn [db [_ seg-id]]
     (let [segment-order (get-in db [:worksheet :segment-order])
           seg-count (count segment-order)
-          active-id (get-in db [:worksheet :active-segment])]
+          active-id (get-in db [:worksheet :active-segment])
+          queued-segs (get-in db [:worksheet :queued-code-segments])]
       (if (= active-id seg-id)
         (if (= (- seg-count 1) (.indexOf segment-order active-id))
           (dispatch [:worksheet:newBelow])
-          (dispatch [:worksheet:leaveForward]))))
-    (assoc-in db [:worksheet :executing-segment] nil)))
+          (dispatch [:worksheet:leaveForward])))
+      (assoc-in db [:worksheet :queued-code-segments] (-> (remove #(= seg-id %) queued-segs)
+                                                          set)))))
 
 ;; TODO Should move evaluation state out of worksheet
 (undo/undo-config! {:max-undos    3

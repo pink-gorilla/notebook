@@ -471,7 +471,7 @@
   (let [seg-id (:id seg-data)
         segment (subscribe [:segment-query seg-id])
         is-active (subscribe [:is-active-query seg-id])
-        is-executing (subscribe [:is-executing-query seg-id])
+        is-queued (subscribe [:is-queued-query seg-id])
         footer-comp ^{:key :segment-footer} [:div.segment-footer]]
     (reagent/create-class
       {:component-did-mount  (fn [this]
@@ -505,7 +505,7 @@
                                                 (if @is-active
                                                   " selected"
                                                   "")
-                                                (if @is-executing
+                                                (if @is-queued
                                                   " running"
                                                   ""))
                                      other-children [main-component

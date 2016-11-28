@@ -45,11 +45,6 @@
     (= seg-id (get-in db [:worksheet :active-segment]))))
 
 (reg-sub
-  :is-executing-query
-  (fn [db [_ seg-id]]
-    (= seg-id (get-in db [:worksheet :executing-segment]))))
-
-(reg-sub
   :is-queued-query
   (fn [db [_ seg-id]]
-    (< -1 (.indexOf (get-in db [:worksheet :queued-code-segments]) seg-id ))))
+    (contains? (get-in db [:worksheet :queued-code-segments]) seg-id)))
