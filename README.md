@@ -6,23 +6,23 @@ Gorilla is a rich REPL for Clojure in the notebook style. If you're interested
 This fork started out as a React migration experiment. Meanwhile it introduces
 various significant changes. The overall goal is to expand use cases while keeping
 development fun. I tried really hard to remain backwards compatible and preserve
-existing funtionality. Given the nature of reagent, this did not seem reasonably
- possible with regards to persisted html in worksheets, so I ended up introducing
+existing functionality. Given the nature of reagent, this did not seem reasonably
+ possible with regards to persisted html in worksheets. I ended up introducing
  version 2 persistence (transit based) while still supporting version 1 persistence
 (shamelessly discarding output).
  
 Even though I did not test all the things throughoutly, I consider "mostly working":
  
 - Client code pretty much 100% ClojureScript (reagent/re-frame based)
-- Recent versions of pretty all (Clojure/ClojureScript) dependencies
+- Recent versions of most (Clojure/ClojureScript/JavaScript) dependencies
 - Parinfer  (optional)
-- Optional dedicated nREPL middleware stack
+- Optional separate, dedicated nREPL middleware stack
 - Figwheel/Devcards/Testing (latter bare bones)
 - Componentized (incl. tesla-microservice)
 - Standalone uberjar / docker image
 - Standalone uberwar
 - Drop in uberjar capabilities (dropping the uberjar into some WEB-INF/lib should work ... sometimes)
-- Roll in jar
+- Roll in jar (use as a library)
 - Proxy based loading of remote worksheets (in case CORS is not in place)
 
 WIP/in experimental stage:
@@ -36,13 +36,14 @@ WIP/in experimental stage:
 
 Ideas/On the radar:
 
+- Tests 😁
 - Interruption
 - node.js backend
 - Improve composabitly of (ring) handlers
 - Code sharing UI/services
-- Extraction of nREPL middleware jar
-- Segement dependencies
+- Segment dependencies
 - Revisit (Clo)Jupyter
+- Periodically save to localStorage
 
 The URLs have slightly changed. The viewer is at `.../worksheet.html#/view` now. You may want to try
  [here](http://localhost:3449/worksheet.html#/view?source=github&user=JonyEpsilon&repo=gorilla-test&path=ws/graph-examples.clj)

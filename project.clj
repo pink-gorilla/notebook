@@ -10,7 +10,7 @@
                  [cider/cider-nrepl "0.14.0"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
-                 [org.clojars.deas/gorilla-middleware "0.1.1"]
+                 [org.clojars.deas/gorilla-middleware "0.1.2"]
                  [org.clojars.deas/gorilla-plot "0.2.0"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.16"]

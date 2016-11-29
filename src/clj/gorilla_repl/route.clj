@@ -34,7 +34,7 @@
    (route/not-found "Bummer, not found")])
 
 (def default-api-routes (create-api-routes "/"))
-(def default-repl-routes (create-repl-routes "/" ws-relay/on-receive-mem))
+(def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem cider/cider-handler #_(server/default-handler #'pback/wrap-cljs-repl))))
 (def remote-repl-routes (create-repl-routes "/" ws-relay/on-receive-net))
 (def default-resource-routes (create-resource-routes "/"))
 (def dev-routes (apply compojure/routes (concat default-api-routes

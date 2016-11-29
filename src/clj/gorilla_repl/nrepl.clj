@@ -2,7 +2,7 @@
   (:require [clojure.tools.nrepl.server :as srv]
             [com.stuartsierra.component :as component]
             [clojure.tools.logging :as log]
-            [gorilla-middleware.middleware :as gmw]
+            [gorilla-middleware.cider :as ci]
             [clojure.tools.nrepl :as nrepl]
             [cider.nrepl :as cider]))
 
@@ -33,7 +33,8 @@
           (do
             (log/info "Starting nREPL server on port " nrepl-port)
             (spit (doto nrepl-port-file .deleteOnExit) nrepl-port)
-            (assoc self :server (srv/start-server :port nrepl-port :handler (gmw/nrepl-handler false cider/cider-middleware)))))
+            (assoc self :server (srv/start-server :port nrepl-port :handler ci/cider-handler #_(gmw/nrepl-handler false cider/cider-middleware)
+                                                  ))))
         self)))
   (stop [self]
     (when server

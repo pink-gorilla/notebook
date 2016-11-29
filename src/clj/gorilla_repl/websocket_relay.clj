@@ -10,9 +10,7 @@
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
             [gorilla-repl.nrepl :as gnrepl]
-            [gorilla-middleware.middleware :as gmw]
             [gorilla-middleware.render-values]   ;; it's essential this import comes after the previous one!
-            [cider.nrepl]
             [ring.middleware.session :as session]
             [ring.middleware.session.memory :as mem]
             [clojure.data.json :as json]
@@ -39,7 +37,7 @@
       (reply-fn replies))))
 
 (defn- process-message-mem
-  [transport channel timeout data]
+  [nrepl-handler transport channel timeout data]
   (let [msg (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
         [read write] transport
         client (nrepl/client read timeout)]
@@ -49,7 +47,7 @@
                                  :session {::tranport transport}}))
       (do
         (when (:op msg)
-          (future (nrepl-server/handle* msg @gmw/gorilla-handler write)))
+          (future (nrepl-server/handle* msg @nrepl-handler write)))
         (client)))))
 
 (defn- memory-session
@@ -68,11 +66,11 @@
 
 (defn on-receive-mem
   "Passes messages into nREPL (in memory)"
-  [request channel]
+  [nrepl-handler request channel]
   (let [session (:session request)
         transport (or (::transport session)
                       (transport/piped-transports))]
-    (partial process-message-mem transport channel 1000)))
+    (partial process-message-mem nrepl-handler transport channel 1000)))
 
 (defn repl-ring-handler
   "Creates a websocket ring handler for nrepl messages. Messages are mapped back and forth to JSON."

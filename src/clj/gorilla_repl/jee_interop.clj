@@ -6,7 +6,7 @@
             [clojure.tools.nrepl.server :as nrepl-server]
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
-            [gorilla-middleware.middleware :as gmw]
+            [gorilla-middleware.cider :as gch]
             [clojure.tools.logging :as log]
             [cider.nrepl :as cider]
             [clojure.pprint :as pp])
@@ -85,7 +85,7 @@
                                  (client)))))))
              (memory-session :cookie-name cookie-name)))
 
-(def handler (atom (gmw/nrepl-handler false cider/cider-middleware)))
+(def handler (atom gch/cider-handler))
 
 (defn- response
   [response-seq]
