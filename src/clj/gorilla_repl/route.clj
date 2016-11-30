@@ -35,8 +35,9 @@
    (route/files (str prefix "project-files") {:root "."})
    (route/not-found "Bummer, not found")])
 
+(def handler (atom cider/cider-handler #_cljs/cljs-handler))
 (def default-api-routes (create-api-routes "/"))
-(def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem #_cljs/cljs-handler cider/cider-handler)))
+(def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem handler)))
 (def remote-repl-routes (create-repl-routes "/" ws-relay/on-receive-net))
 (def default-resource-routes (create-resource-routes "/"))
 (def dev-routes (apply compojure/routes (concat default-api-routes
