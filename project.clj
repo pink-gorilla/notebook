@@ -1,4 +1,4 @@
-(defproject org.clojars.deas/gorilla-repl-ng "0.3.6-SNAPSHOT"
+(defproject org.clojars.deas/gorilla-repl-ng "0.3.6"
   :description "A rich REPL for Clojure in the notebook style."
   :url "https://github.com/deas/gorilla-repl"
   :license {:name "MIT"}
@@ -138,7 +138,7 @@
                                                             :provides ["gorilla-repl.worksheet-parser"]}]
                                          :main            gorilla-repl.prod
                                          :verbose         true
-                                         :compiler-stats true
+                                         :compiler-stats  true
                                          :closure-defines {goog.DEBUG false}
                                          :elide-asserts   true
                                          :optimizations   :advanced
@@ -147,7 +147,8 @@
                                          :parallel-build  true}}}}
 
 
-  :profiles {:dev     {:repl-options   {:init-ns gorilla-repl.repl}
+  :profiles {:dev     {:repl-options   {:init-ns          gorilla-repl.repl
+                                        :port       4001}
                        :prep-tasks     ^:replace ["javac" "compile"]
                        :dependencies   [[figwheel-sidecar "0.5.8"]
                                         ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild

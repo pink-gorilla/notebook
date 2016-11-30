@@ -2,6 +2,8 @@
   (:use compojure.core)
   (:require [compojure.route :as route]
             [compojure.core :as compojure]
+            [gorilla-middleware.cider :as cider]
+    ;; [gorilla-middleware.cljs :as cljs]
             [gorilla-repl.websocket-relay :as ws-relay]
     ; [gorilla-repl.renderer :as renderer]            ; this is needed to bring the render implementations into scope
             [gorilla-repl.hiccup_renderer :as renderer]     ; this is needed to bring the render implementations into scope
@@ -34,7 +36,7 @@
    (route/not-found "Bummer, not found")])
 
 (def default-api-routes (create-api-routes "/"))
-(def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem cider/cider-handler #_(server/default-handler #'pback/wrap-cljs-repl))))
+(def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem #_cljs/cljs-handler cider/cider-handler)))
 (def remote-repl-routes (create-repl-routes "/" ws-relay/on-receive-net))
 (def default-resource-routes (create-resource-routes "/"))
 (def dev-routes (apply compojure/routes (concat default-api-routes
