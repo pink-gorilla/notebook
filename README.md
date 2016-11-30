@@ -71,7 +71,7 @@ should give you the standalone war file. Drop it into your servlet container
  and visit the root url of the webapp.
 
 ```
-lein do clean, uberjar
+LEIN_SNAPSHOTS_IN_RELEASE=1 lein do clean, uberjar
 ```
 should give you the all-in uberjar. It is used by the docker image and can be run
 executing `java -jar target/gorilla-repl-ng-standalone.jar`. It may also work dropped
