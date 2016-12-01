@@ -10,41 +10,55 @@
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
             [gorilla-repl.nrepl :as gnrepl]
-            [gorilla-middleware.render-values]   ;; it's essential this import comes after the previous one!
+            [gorilla-middleware.render-values]              ;; it's essential this import comes after the previous one!
             [ring.middleware.session :as session]
             [ring.middleware.session.memory :as mem]
             [clojure.data.json :as json]
             [clojure.walk :as w]
-            #_[cheshire.core :as json])
+            [clojure.tools.logging :refer (info)]
+    #_[cheshire.core :as json])
   #_(:refer clojure.data.json :rename {write-str generate-string,
-                                      read-str parse-string}))
+                                       read-str  parse-string}))
 
-(defn- process-replies
-  [reply-fn replies]
-  (doall (->> replies
+#_(defn- process-replies
+  [reply-fn replies-seq]
+  (doall (->> replies-seq
               (map reply-fn))))
+
+;; Not as nice as doall, but doall does not work with piped transports / read-timeout (in mem)
+(defn- process-replies
+  [reply-fn replies-seq]
+  (loop [s replies-seq]
+    (let [msg (first s)]
+      (reply-fn msg)
+      (if-not (contains? (:status msg) :done)
+        (recur (rest s))))))
 
 (defn- process-message-net
   [channel data]
-  (let [parsed-message (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
+  (let [msg (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
         client (nrepl/client @gnrepl/conn Long/MAX_VALUE)
-        replies (nrepl/message client parsed-message)]
+        replies-seq (nrepl/message client msg)
+        reply-fn (partial process-replies
+                          #(server/send!
+                             channel
+                             {:body (json/write-str %)}))]
     ;; send the messages out over the WS connection one-by-one.
-    (let [reply-fn (partial process-replies
-                            #(server/send!
-                              channel
-                              {:body (json/write-str %)}))]
-      (reply-fn replies))))
+    (reply-fn replies-seq)))
 
 (defn- process-message-mem
   [nrepl-handler transport channel timeout data]
   (let [msg (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
         [read write] transport
-        client (nrepl/client read timeout)]
-    ((partial process-replies #(server/send!
-                                channel
-                                {:body    (json/write-str %)
-                                 :session {::tranport transport}}))
+        client (nrepl/client read timeout)
+        reply-fn (partial process-replies
+                          (fn [msg]
+                            ;; (info "Sending message " msg)
+                            (server/send!
+                              channel
+                              {:body    (json/write-str msg)
+                               :session {::tranport transport}})))]
+    (reply-fn
       (do
         (when (:op msg)
           (future (nrepl-server/handle* msg @nrepl-handler write)))
@@ -70,7 +84,7 @@
   (let [session (:session request)
         transport (or (::transport session)
                       (transport/piped-transports))]
-    (partial process-message-mem nrepl-handler transport channel 1000)))
+    (partial process-message-mem nrepl-handler transport channel Long/MAX_VALUE)))
 
 (defn repl-ring-handler
   "Creates a websocket ring handler for nrepl messages. Messages are mapped back and forth to JSON."

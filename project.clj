@@ -59,7 +59,7 @@
                   :scope "provided"]
                  [secretary "1.2.3"]
                  [cljsjs/parinfer "1.8.1-0"]
-                 [cljsjs/codemirror "5.21.0-0"]
+                 [cljsjs/codemirror "5.21.0-1"]
                  [cljsjs/vega "2.6.0-0"]
                  [cljsjs/d3geo "0.2.15-2"]
                  [cljsjs/d3 "3.5.16-0"]
