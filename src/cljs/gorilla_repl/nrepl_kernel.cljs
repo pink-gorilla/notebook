@@ -96,7 +96,7 @@
                                                    js->clj
                                                    w/keywordize-keys)} ns]) ;; :ns ns
         out
-        (dispatch [:evaluator:console-response segment-id {:output out}])
+        (dispatch [:evaluator:console-response segment-id {:console-response out}])
 
         err
         ;; The logic here is a little complicated as cider-nrepl will send the stacktrace information back to

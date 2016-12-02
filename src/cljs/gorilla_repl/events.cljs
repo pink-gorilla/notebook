@@ -387,7 +387,7 @@
               [:worksheet :segments]
               (into {}
                     (for [[k v] (get-in db [:worksheet :segments])]
-                      [k (apply dissoc v [:output :value-response :error-text :stacktrace])])))))
+                      [k (apply dissoc v [:console-response :value-response :error-text :exception])])))))
 
 (reg-event-db
   :worksheet:clear-output
@@ -395,7 +395,7 @@
   (fn [db _]
     (let [active-id (get-in db [:worksheet :active-segment])]
       (update-in db [:worksheet :segments active-id]
-                 #(apply dissoc % [:output :value-response :error-text :stacktrace])))))
+                 #(apply dissoc % [:console-response :value-response :error-text :exception])))))
 
 (reg-event-db
   :worksheet:completions
@@ -431,7 +431,7 @@
   (fn [db _]
     (let [active-id (get-in db [:worksheet :active-segment])
           active-segment (get-in db [:worksheet :segments active-id])
-          new-active-segment (merge active-segment {:output         nil
+          new-active-segment (merge active-segment {:console-response nil
                                                     :value-response nil
                                                     :error-text     nil
                                                     :exception      nil})

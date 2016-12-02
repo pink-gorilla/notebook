@@ -7,7 +7,7 @@ This fork started out as a React migration experiment. Meanwhile it introduces
 a lot of significant changes. The overall goal is to expand use cases while keeping
 development fun.
 
-There is an introductionary [blogpost](https://www.contentreich.de/pimping-gorilla-repl-with-react-clojurescript-and-beyond)
+There is an introductionary [blogpost](https://www.contentreich.de/pimping-gorilla-repl-with-react-clojurescript-and-beyond).
  
 I tried really hard to remain backwards compatible and preserve
 existing functionality. Given the nature of reagent, this did not seem reasonably
