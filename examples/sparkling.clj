@@ -32,6 +32,14 @@
 ;; @@
 
 ;; @@
+(require '[sparkling.destructuring :as s-de])
+;; @@
+
+;; @@
+(require '[sparkling.serialization :as requirered-to-have-serializer-class-read])
+;; @@
+
+;; @@
 (def c (-> (conf/spark-conf)
            (conf/master "local")
            (conf/app-name "sparkling-example")))
@@ -39,4 +47,12 @@
 
 ;; @@
 (def sc (spark/spark-context c))
+;; @@
+
+;; @@
+(def data (spark/parallelize sc ["a" "b" "c" "d" "e"]))
+;; @@
+
+;; @@
+(spark/first data)
 ;; @@
