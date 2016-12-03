@@ -6,9 +6,11 @@
 # 3. run docker container
 #       docker run --name gorilla-repl -d -p 9000:9000 deas/gorilla-repl:latest
 #       docker run -v /conf:/conf -e CONFIG_FILE=/conf/docker.properties --rm -p 9090:9090 deas/gorilla-repl:latest
-
-FROM java:8-jre-alpine
-# FROM java:8
+#
+# Spark does not work with alpine version
+# UnsatisfiedLinkError /tmp/snappy-unknown-4324a351-29e8-4c89-8305-5bf8d05168cf-libsnappyjava.so: Error loading shared library ld-linux-x86-64.so.2: No such file or directory (needed by /tmp/snappy-unknown-4324a351-29e8-4c89-8305-5bf8d05168cf-libsnappyjava.so) java.lang.ClassLoader$NativeLibrary.load (ClassLoader.java:-2)
+FROM openjdk:8-jre-alpine
+# FROM openjdk:8-jre
 MAINTAINER Andreas Steffan <a.steffan@contentreich.de>
 # EXPOSE 8080
 

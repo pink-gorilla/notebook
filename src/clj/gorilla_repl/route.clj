@@ -16,8 +16,6 @@
    (POST (str prefix "save") [] (handle/wrap-api-handler handle/save))
    (GET (str prefix "gorilla-files") [] (handle/wrap-api-handler handle/gorilla-files))
    (GET (str prefix "config") [] (handle/wrap-api-handler handle/config))
-   ;; (GET (str prefix "repl") [] (ws-relay/repl-ring-handler ws-relay/on-receive-mem))
-   ; (GET "/repl" [] (ws-relay/repl-ring-handler ws-relay/on-receive-net))
    (GET (str prefix ":document.html") [document] (partial handle/document-utf8 (str document ".html")))])
 
 (defn create-repl-routes

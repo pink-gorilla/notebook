@@ -1,4 +1,4 @@
-(defproject org.clojars.deas/gorilla-repl-ng "0.3.6"
+(defproject org.clojars.deas/gorilla-repl-ng "0.3.7-SNAPSHOT"
   :description "A rich REPL for Clojure in the notebook style."
   :url "https://github.com/deas/gorilla-repl"
   :license {:name "MIT"}
