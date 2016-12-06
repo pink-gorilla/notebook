@@ -38,17 +38,17 @@
 (def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem handler)))
 (def remote-repl-routes (create-repl-routes "/" ws-relay/on-receive-net))
 (def default-resource-routes (create-resource-routes "/"))
-(def dev-routes (apply compojure/routes (concat default-api-routes
-                                                default-repl-routes
-                                                default-resource-routes)))
-(def remote-repl-dev-routes (apply compojure/routes (concat default-api-routes
-                                                            remote-repl-routes
-                                                            default-resource-routes)))
+(def default-handler (apply compojure/routes (concat default-api-routes
+                                                     default-repl-routes
+                                                     default-resource-routes)))
+(def remote-repl-handler (apply compojure/routes (concat default-api-routes
+                                                         remote-repl-routes
+                                                         default-resource-routes)))
 
 ;; Used by uberwar
-(def redirect-route (GET "/" [] handle/redirect-app))
+(def redirect-handler (GET "/" [] handle/redirect-app))
 
-(defn war-routes [prefix]
+(defn war-handler [prefix]
   (apply compojure/routes
          (concat (create-api-routes (str prefix gorilla_repl.GorillaReplListener/PREFIX))
                  (create-resource-routes (str prefix gorilla_repl.GorillaReplListener/PREFIX)))))

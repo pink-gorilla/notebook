@@ -8,7 +8,6 @@
   `update-excludes` and `set-config` that modify the state returned by handlers."
   (:require [ring.middleware.keyword-params :as keyword-params]
             [ring.middleware.cors :refer [wrap-cors]]
-            [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :as params]
     ;; [ring.middleware.json :as json]
             [ring.middleware.format :refer [wrap-restful-format]]

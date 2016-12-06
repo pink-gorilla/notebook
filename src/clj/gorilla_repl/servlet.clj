@@ -3,8 +3,7 @@
   (:require [ring.util.servlet :as servlet]
             [gorilla-repl.route :as route]
             [clojure.tools.logging :as log])
-  (:import (java.io PrintWriter)
-           (javax.servlet ServletConfig)
+  (:import (javax.servlet ServletConfig)
            (javax.servlet.http HttpServletRequest HttpServletResponse))
   (:gen-class :name gorilla_repl.RingServlet
               :extends javax.servlet.http.HttpServlet
@@ -28,13 +27,13 @@
    (log/debug "Servlet initialized with no params")
    (.superInit this)
    (set-handler
-     (route/war-routes (-> (.getServletContext this) .getContextPath))))
+     (route/war-handler (-> (.getServletContext this) .getContextPath))))
 
   ([this ^ServletConfig config]
    (log/debug "Servlet initialized with servlet config" config)
    (.superInit this config)
    (set-handler
-     (route/war-routes (-> (.getServletContext this) .getContextPath)))))
+     (route/war-handler (-> (.getServletContext this) .getContextPath)))))
 
 
 (defn -service

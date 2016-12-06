@@ -32,7 +32,7 @@
 ;; or sys/fetch-config
 (defn config
   []
-  {:figwheel-options {:ring-handler      'gorilla-repl.core/dev-routes
+  {:figwheel-options {:ring-handler      'gorilla-repl.dev-middleware/dev-handler
                       :http-server-root  "public"
                       ;; :server-port      3449
                       :nrepl-port        7002

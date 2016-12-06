@@ -27,10 +27,11 @@
                  [reagent "0.6.0"
                   :exclusions [org.clojure/tools.reader
                                cljsjs/react]]
-                 [re-com "0.9.0"]
+                 [re-com "1.2.0"]
                  [day8.re-frame/http-fx "0.1.2"]
                  [day8.re-frame/undo "0.3.2"]
-                 [cljsjs/react "15.3.1-0"]
+                 [cljsjs/react "15.4.0-0"]
+                 [cljsjs/react-dom "15.4.0-0"]
                  ;; [flupot "0.4.0"]
                  ;; [reagent-forms "0.5.27"]
                  ;; [reagent-utils "0.2.0"]
@@ -90,7 +91,7 @@
   ;; :jar-exclusions   [#"(?:^|\/)foo\/" #"(?:^|\/)demo\/" #"(?:^|\/)compiled.*\/" #"html$"]
 
   :ring {:war-exclusions [#"WEB-INF/lib/javax.websocket-api-1.0.jar"]
-         :handler        gorilla-repl.route/redirect-route
+         :handler        gorilla-repl.route/redirect-handler
          :servlet-class  gorilla_repl.RedirectServlet
          :servlet-name   redirect-servlet
          :uberwar-name   "gorilla-repl-ng.war"}
@@ -105,6 +106,7 @@
 
   :java-source-paths ["src/java"]
   :source-paths ["src/clj" "src/cljc" "env/prod/clj"]
+  :test-paths ["test/clj"]
   :resource-paths ["resources" "target/cljsbuild"]
 
   ;; ["resources/public/js/compiled" "target"]
@@ -154,21 +156,21 @@
                                         ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
                                         [ring/ring-mock "0.3.0"]
                                         [ring/ring-devel "1.5.0"]
-                                        [prone "1.1.2"]
+                                        [prone "1.1.4"]
                                         [org.clojure/tools.nrepl "0.2.12"]
                                         ;; Dirac or piggieback - there can only be one of them
                                         [binaryage/dirac "RELEASE"] ;; 0.6.7
                                         [com.cemerick/piggieback "0.2.1"]
                                         [lein-doo "0.1.7"]
-                                        [re-frisk "0.2.2"]
-                                        [day8.re-frame/test "0.1.0"]
+                                        [re-frisk "0.3.1"]
+                                        [day8.re-frame/test "0.1.3"]
                                         [devcards "0.2.2"
                                          :exclusions [org.clojure/tools.reader]]
                                         [pjstadig/humane-test-output "0.8.1"]
                                         ;; https://github.com/day8/re-frame-tracer
                                         [org.clojars.stumitchell/clairvoyant "0.2.0"]
                                         [day8/re-frame-tracer "0.1.1-SNAPSHOT"]
-                                        [binaryage/devtools "0.8.2"]
+                                        [binaryage/devtools "0.8.3"]
                                         ;; Gorilla server side stuff
                                         [hiccup "1.0.5"]
                                         ;; https://github.com/clojure-numerics/expresso/issues/19

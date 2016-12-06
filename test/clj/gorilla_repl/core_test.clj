@@ -15,7 +15,7 @@
   (is (= 5 (add 1 4)))
   (is (= 5 (add 3 2))))
 
-(run-all-tests)
+;; (run-all-tests)
 (run-tests)
 
 #_(.addShutdownHook

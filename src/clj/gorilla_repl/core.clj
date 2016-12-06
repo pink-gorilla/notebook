@@ -6,17 +6,13 @@
   (:require [gorilla-repl.handle :as handle]
     ; [gorilla-repl.renderer :as renderer]            ; this is needed to bring the render implementations into scope
             [gorilla-repl.hiccup_renderer]     ; this is needed to bring the render implementations into scope
-            [gorilla-repl.version :as version]
-            [gorilla-repl.route :as routes]
+    ;; [gorilla-repl.version :as version]
             [gorilla-repl.system :as sys]
             [gorilla-repl.cli :as cli]
             [clojure.set :as set]
             [clojure.java.io :as io])
   (:gen-class))
 
-
-(def dev-routes routes/dev-routes)
-(def remote-repl-dev-routes routes/remote-repl-dev-routes)
 
 ;; TODO WIP, we can to better
 ;; lein plugin entry point
@@ -30,8 +26,8 @@
         nrepl-requested-port (or (:nrepl-port conf) 0)      ;; auto-select port if none requested
         nrepl-host (:nrepl-host conf)
         routes (if nrepl-host
-                 "gorilla-repl.core/remote-repl-dev-routes"
-                 "gorilla-repl.core/dev-routes")
+                 "gorilla-repl.route/remote-repl-handler"
+                 "gorilla-repl.route/default-handler")
         ;; nrepl-port-file (io/file (or (:nrepl-port-file conf) ".nrepl-port"))
 
         gorilla-port-file (io/file (or (:gorilla-port-file conf) ".gorilla-port"))
@@ -45,7 +41,7 @@
     (handle/set-config :project project)
     (handle/set-config :keymap keymap)
     ;; asynchronously check for updates
-    (version/check-for-update version)
+    ;; (version/check-for-update version)
     (let [s (sys/start {:routes          routes
                         :nrepl-port      nrepl-requested-port
                         :nrepl-host      (:nrepl-host conf)

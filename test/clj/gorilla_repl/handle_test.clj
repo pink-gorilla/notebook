@@ -1,6 +1,6 @@
 (ns gorilla-repl.handle-test
   (:require [ring.mock.request :as mock]
-            [gorilla-repl.core :refer :all])
+            [gorilla-repl.route :refer :all])
   (:use clojure.test))
 
 #_(defn my-test-fixture [f]
@@ -9,9 +9,9 @@
 ;; (use-fixtures :once my-test-fixture)
 
 (deftest handler-test
-  (is (= (#'gorilla-repl.core/dev-routes (mock/request :get "/404"))
+  (is (= (#'gorilla-repl.route/default-handler (mock/request :get "/404"))
          {:status  404
-          :headers {"content-type" "text/html"}
+          :headers {"Content-Type" "text/html; charset=utf-8"}
           :body    "Bummer, not found"})))
 
 #_(run-all-tests)
