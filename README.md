@@ -23,7 +23,15 @@ in case you have it running with figwheel.
 ```
 ./run-figwheel-with-jpda.sh
 ```
-spins up the figwheel based development environment. Once things runnig, you can jump in at
+spins up the figwheel based development environment. The script uses `rlwrap` for convenience.
+
+Alternatively, you can simply run
+
+```
+lein run -m clojure.main script/figwheel.clj
+```
+
+Once things runnig, you can jump in at
  either `http://localhost:3449/worksheet.html` for the app or `http://localhost:3449/devcards.html`
 if you want to play with devcards.
 
