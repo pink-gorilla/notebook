@@ -56,7 +56,4 @@
 (defn -main
   [& args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args)]
-    (println options)
-    (run-gorilla-server {:port (:port options)
-                         :ip (:host options)
-                         :project (:project options)})))
+    (run-gorilla-server options)))

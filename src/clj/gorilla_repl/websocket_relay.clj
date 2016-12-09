@@ -21,17 +21,17 @@
                                        read-str  parse-string}))
 
 #_(defn- process-replies
-  [reply-fn replies-seq]
-  (doall (->> replies-seq
-              (map reply-fn))))
+    [reply-fn replies-seq]
+    (doall (->> replies-seq
+                (map reply-fn))))
 
 ;; Not as nice as doall, but doall does not work with piped transports / read-timeout (in mem)
 (defn- process-replies
-  [reply-fn replies-seq]
+  [reply-fn contains-pred replies-seq]
   (loop [s replies-seq]
     (let [msg (first s)]
       (reply-fn msg)
-      (if-not (contains? (:status msg) :done)
+      (if-not (contains-pred (:status msg))
         (recur (rest s))))))
 
 (defn- process-message-net
@@ -40,9 +40,12 @@
         client (nrepl/client @gnrepl/conn Long/MAX_VALUE)
         replies-seq (nrepl/message client msg)
         reply-fn (partial process-replies
-                          #(server/send!
-                             channel
-                             {:body (json/write-str %)}))]
+                          (fn [msg]
+                            #_(println "Sending message " msg)
+                            (server/send!
+                              channel
+                              {:body (json/write-str msg)}))
+                          (fn [v] (some #(= "done" %) v)))]
     ;; send the messages out over the WS connection one-by-one.
     (reply-fn replies-seq)))
 
@@ -53,11 +56,12 @@
         client (nrepl/client read timeout)
         reply-fn (partial process-replies
                           (fn [msg]
-                            ;; (info "Sending message " msg)
+                            #_(print "Sending message " msg)
                             (server/send!
                               channel
                               {:body    (json/write-str msg)
-                               :session {::tranport transport}})))]
+                               :session {::tranport transport}}))
+                          (fn [s] (contains? s :done)))]
     (reply-fn
       (do
         (when (:op msg)

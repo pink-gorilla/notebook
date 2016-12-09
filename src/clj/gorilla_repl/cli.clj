@@ -12,21 +12,21 @@
       ]
 
      ["-p" "--nrepl-port PORT" "Port number of the nrepl server."
-      :default 9001
+      :default nil
       :parse-fn #(Integer/parseInt %)
       :validate [#(< 0 % 0x10000) "Must be a number between 0 and 65536"]]
      ["-h" "--nrepl-host HOST" "host of the nrepl server."
-      :default "localhost"
+      :default nil
       ;; Specify a string to output in the default column in the options summary
       ;; if the default value's string representation is very ugly
-      :default-desc "localhost"]
+      :default-desc "none"]
 
 
      ["-P" "--port PORT" "Port number of the GorillaREPL server."
       :default 9000
       :parse-fn #(Integer/parseInt %)
       :validate [#(< 0 % 0x10000) "Must be a number between 0 and 65536"]]
-     ["-H" "--host HOST" "host of the GorillaREPL server."
+     ["-H" "--ip IP" "IP of the GorillaREPL server."
       :default "localhost"
       ;; Specify a string to output in the default column in the options summary
       ;; if the default value's string representation is very ugly
