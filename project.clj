@@ -28,7 +28,7 @@
                   :exclusions [org.clojure/tools.reader
                                cljsjs/react]]
                  [re-com "1.2.0"]
-                 [day8.re-frame/http-fx "0.1.2"]
+                 [day8.re-frame/http-fx "0.1.3"]
                  [day8.re-frame/undo "0.3.2"]
                  [cljsjs/react "15.4.0-0"]
                  [cljsjs/react-dom "15.4.0-0"]
@@ -38,7 +38,7 @@
                  ;; [hickory "0.6.0"] html -> hiccup as very last ressort only
                  [replumb "0.2.4"]
                  [org.webjars/MathJax "2.6.1"]              ;; TODO Not quite sure about value
-                 [re-frame "0.8.0"]
+                 [re-frame "0.9.0"]
                  [com.cemerick/url "0.1.1"]
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.2"]
                  [org.clojure/tools.cli "0.3.5"]
@@ -55,7 +55,7 @@
                  [compojure "1.5.1"]
                  [hiccup "1.0.5"]
                  [environ "1.1.0"]
-                 [com.stuartsierra/component "0.3.1"]
+                 [com.stuartsierra/component "0.3.2"]
                  [org.clojure/clojurescript "1.9.293"
                   :scope "provided"]
                  [secretary "1.2.3"]
@@ -144,6 +144,8 @@
                                          :closure-defines {goog.DEBUG false}
                                          :elide-asserts   true
                                          :optimizations   :advanced
+                                         ;; https://gist.github.com/swannodette/4fc9ccc13f62c66456daf19c47692799
+                                         :infer-externs   true
                                          :externs         ["src/cljs/gorilla-repl-externs.js"]
                                          :pretty-print    false
                                          :parallel-build  true}}}}
@@ -162,7 +164,7 @@
                                         [binaryage/dirac "RELEASE"] ;; 0.6.7
                                         [com.cemerick/piggieback "0.2.1"]
                                         [lein-doo "0.1.7"]
-                                        [re-frisk "0.3.1"]
+                                        [re-frisk "0.3.2"]
                                         [day8.re-frame/test "0.1.3"]
                                         [devcards "0.2.2"
                                          :exclusions [org.clojure/tools.reader]]

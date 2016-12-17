@@ -114,8 +114,10 @@
     "alt"
     "ctrl"))
 
+;; Experimental externs inference
+;; https://gist.github.com/swannodette/4fc9ccc13f62c66456daf19c47692799
 (defn kb-bind
-  [mousetrap command]
+  [^js/Mousetrap.bindGlobal mousetrap command]
   (if-let [kb (:kb command)]
     (let [kb-val (if (vector? kb) (clj->js kb) kb)
           handler (keyword (:handler command))]
