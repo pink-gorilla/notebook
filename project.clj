@@ -16,7 +16,7 @@
                  [org.slf4j/slf4j-api "1.7.16"]
                  [ch.qos.logback/logback-core "1.1.5"]
                  [ch.qos.logback/logback-classic "1.1.5"]
-                 [com.taoensso/timbre "4.7.4"]
+                 [com.taoensso/timbre "4.8.0"]
                  ;; Things get very noise with slf4j-timbre - needs configuration
                  ;; [com.fzakaria/slf4j-timbre "0.3.2"]
                  [cljs-ajax "0.5.8"]
@@ -27,7 +27,7 @@
                  [reagent "0.6.0"
                   :exclusions [org.clojure/tools.reader
                                cljsjs/react]]
-                 [re-com "1.2.0"]
+                 [re-com "1.3.0"]
                  [day8.re-frame/http-fx "0.1.3"]
                  [day8.re-frame/undo "0.3.2"]
                  [cljsjs/react "15.4.0-0"]
@@ -37,8 +37,8 @@
                  ;; [reagent-utils "0.2.0"]
                  ;; [hickory "0.6.0"] html -> hiccup as very last ressort only
                  [replumb "0.2.4"]
-                 [org.webjars/MathJax "2.6.1"]              ;; TODO Not quite sure about value
-                 [re-frame "0.9.0"]
+                 [org.webjars/MathJax "2.7.0"]              ;; TODO Not quite sure about value
+                 [re-frame "0.9.1"]
                  [com.cemerick/url "0.1.1"]
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.2"]
                  [org.clojure/tools.cli "0.3.5"]
@@ -177,7 +177,7 @@
                                         [hiccup "1.0.5"]
                                         ;; https://github.com/clojure-numerics/expresso/issues/19
                                         [expresso "0.2.2-SNAPSHOT"]
-                                        [instaparse "1.4.3"]
+                                        [instaparse "1.4.5"]
                                         [aysylu/loom "0.6.0"]
                                         [loom-gorilla "0.1.0"]
                                         [org.clojure/data.xml "0.0.8"]
