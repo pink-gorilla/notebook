@@ -156,6 +156,14 @@
                                          :pretty-print    false
                                          :parallel-build  true}}}}
 
+  :doo {:build "doo-test"
+        :alias {:default  [:chrome #_:phantom]
+                :browsers [:chrome :firefox]
+                ;; :all [:browsers :firefox]
+                }
+        #_:paths
+        #_{:phantom "phantomjs --web-security=false"
+           :karma   "karma --port=9881 --no-colors"}}
 
   :profiles {:dev     {:repl-options   {:init-ns gorilla-repl.repl
                                         :port    4001}
@@ -211,31 +219,20 @@
 
                        ;; app and devcards builds moved to figwheel.clj
                        :cljsbuild      {:builds
-                                        #_{:doo-test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
-                                                      :compiler     {:main           gorilla-repl.doo-runner
-                                                                     :output-dir     "target/cljsbuild/gorilla-repl-client/js/doo"
-                                                                     :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js"
-                                                                     :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js.map"
-                                                                     :optimizations  :whitespace
-                                                                     :pretty-print   true
-                                                                     :parallel-build true
-                                                                     :foreign-libs   [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
-                                                                                       :requires ["cljsjs.codemirror"]
-                                                                                       :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
-                                                                                      {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
-                                                                                       :requires ["cljsjs.mousetrap"]
-                                                                                       :provides ["cljsjs.mousetrap-global-bind"]}
-                                                                                      {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
-                                                                                       :provides ["gorilla-repl.worksheet-parser"]}]}}}
+                                        ;; TODO : depends on :whitespace optimization rolling in webpack-build.js
+                                        ;; lein cljsbuild once karma-test; karma start
                                         {:karma-test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
                                                       :compiler     {:main           'gorilla-repl.karma-runner
+                                                                     :optimizations  :whitespace
+                                                                     :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js.map"
+                                                                     ;; :main           'gorilla-repl.doo-runner
+                                                                     ;; :optimizations  :none
+                                                                     ;; :source-map     true
                                                                      :output-dir     "target/cljsbuild/gorilla-repl-client/js/karma"
                                                                      :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js"
-                                                                     :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js.map"
-                                                                     :optimizations  :whitespace
                                                                      :pretty-print   true
                                                                      :parallel-build true
-                                                                     :foreign-libs   [{:file "resources/gorilla-repl-client/jslib/webpack-bundle.js"
+                                                                     :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle.js"
                                                                                        :provides ["cljsjs.react.dom.server"
                                                                                                   "gorilla-repo.webpack-bundle"]}
                                                                                       {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
@@ -245,7 +242,30 @@
                                                                                        :requires ["cljsjs.mousetrap"]
                                                                                        :provides ["cljsjs.mousetrap-global-bind"]}
                                                                                       {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
-                                                                                       :provides ["gorilla-repl.worksheet-parser"]}]}}}
+                                                                                       :provides ["gorilla-repl.worksheet-parser"]}]}}
+                                         ;; TODO: seems it does not (yet) play with webpack_build.js (can be seen with phantom or chrome)
+                                         ;; Better than "plain" karma, due to auto-build and so on
+                                         ;; lein doo
+                                         ;; Uncaught Error: js/React is missing
+                                         :doo-test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
+                                                    :compiler     {:main           'gorilla-repl.doo-runner
+                                                                   :optimizations  :none
+                                                                   :source-map     true
+                                                                   :output-dir     "target/cljsbuild/gorilla-repl-client/js/doo"
+                                                                   :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js"
+                                                                   :pretty-print   true
+                                                                   :parallel-build true
+                                                                   :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle.js"
+                                                                                     :provides ["cljsjs.react.dom.server"
+                                                                                                "gorilla-repo.webpack-bundle"]}
+                                                                                    {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
+                                                                                     :requires ["cljsjs.codemirror"]
+                                                                                     :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
+                                                                                    {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
+                                                                                     :requires ["cljsjs.mousetrap"]
+                                                                                     :provides ["cljsjs.mousetrap-global-bind"]}
+                                                                                    {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
+                                                                                     :provides ["gorilla-repl.worksheet-parser"]}]}}}
                                         }}
 
              :uberjar {:hooks       [minify-assets.plugin/hooks]
