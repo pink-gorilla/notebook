@@ -40,7 +40,16 @@
   (wrap-cors handler
              :access-control-allow-origin [#".*"]
              :access-control-allow-methods [:get]))
-;; the worksheet load handler
+
+;; rebindable for testing
+(defn read-sheet-locally
+  [ws-file]
+  (slurp (str ws-file) :encoding "UTF-8"))
+
+(defn persist
+  [ws-file ws-data]
+  (spit ws-file ws-data))
+
 (defn load-worksheet
   [req]
   ;; TODO: S'pose some error handling here wouldn't be such a bad thing
@@ -48,7 +57,7 @@
     (let [_ (info (str "Loading: " ws-file " ... "))
           ws-data (if (re-find #"^http[s]*" ws-file)
                     (:body @(http/get ws-file))
-                    (slurp (str ws-file) :encoding "UTF-8"))
+                    (read-sheet-locally ws-file))
           _ (info "done.")]
       (res/response {:worksheet-data ws-data}))))
 
@@ -60,8 +69,8 @@
   (when-let [ws-data (:worksheet-data (:params req))]
     (when-let [ws-file (:worksheet-filename (:params req))]
       (info (str "Saving: " ws-file " ... "))
-      (spit ws-file ws-data)
-      (info (str "done. [" (java.util.Date.) "]"))
+      (persist ws-file ws-data)
+      (info (str "done"))
       (res/response {:status "ok"}))))
 
 ;; More ugly atom usage to support defroutes
