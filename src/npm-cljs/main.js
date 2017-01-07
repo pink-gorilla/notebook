@@ -14,6 +14,7 @@
 window.deps = {
     'react' : require('react'),
     'react-dom' : require('react-dom'),
+    'react-dom/server': require('react-dom/server')
     /*
     'codemirror' : require('codemirror'),
     'codemirror/addon/edit/closebrackets': require('codemirror/addon/edit/closebrackets'),
@@ -22,12 +23,13 @@ window.deps = {
     'codemirror/addon/runmode/colorize': require('codemirror/addon/runmode/colorize'),
     'codemirror/addon/hint/show-hint': require('codemirror/addon/hint/show-hint'),
     'codemirror/mode/clojure/clojure': require('codemirror/mode/clojure/clojure'),
+     // 'codemirror/mode/xml/xml': require('codemirror/mode/xml/xml')
     './codemirror/mode/clojure/clojure-parinfer': require('./codemirror/mode/clojure/clojure-parinfer'),
     */
 // ERROR in ./src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js
 // Module not found: Error: Cannot resolve 'file' or 'directory' ../../lib/codemirror in .../src/npm-cljs/codemirror/mode/clojure
-    'codemirror/mode/xml/xml': require('codemirror/mode/xml/xml')
 };
 window.React = window.deps['react'];
 window.ReactDOM = window.deps['react-dom'];
+window.ReactDOMServer =  window.deps['react-dom/server'];
 // window.CodeMirror = window.deps['codemirror'];

@@ -27,7 +27,8 @@
                  [reagent "0.6.0"
                   :exclusions [org.clojure/tools.reader
                                cljsjs/react
-                               cljsjs/react-dom]]
+                               cljsjs/react-dom
+                               cljsjs/react-dom-server]]
                  [re-com "1.3.0"]
                  [day8.re-frame/http-fx "0.1.3"]
                  [day8.re-frame/undo "0.3.2"]
@@ -156,10 +157,11 @@
                                          :parallel-build  true}}}}
 
 
-  :profiles {:dev     {:repl-options   {:init-ns          gorilla-repl.repl
-                                        :port       4001}
+  :profiles {:dev     {:repl-options   {:init-ns gorilla-repl.repl
+                                        :port    4001}
                        :prep-tasks     ^:replace ["javac" "compile"]
                        :dependencies   [[figwheel-sidecar "0.5.8"]
+                                        [karma-reporter "1.0.1"]
                                         ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
                                         [ring/ring-mock "0.3.0"]
                                         [ring/ring-devel "1.5.0"]
@@ -209,20 +211,42 @@
 
                        ;; app and devcards builds moved to figwheel.clj
                        :cljsbuild      {:builds
-                                        {:test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
-                                                :compiler     {:output-to      "target/test.js"
-                                                               :main           gorilla-repl.doo-runner
-                                                               :optimizations  :whitespace
-                                                               :pretty-print   true
-                                                               :parallel-build true
-                                                               :foreign-libs   [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
-                                                                                 :requires ["cljsjs.codemirror"]
-                                                                                 :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
-                                                                                {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
-                                                                                 :requires ["cljsjs.mousetrap"]
-                                                                                 :provides ["cljsjs.mousetrap-global-bind"]}
-                                                                                {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
-                                                                                 :provides ["gorilla-repl.worksheet-parser"]}]}}}}}
+                                        #_{:doo-test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
+                                                      :compiler     {:main           gorilla-repl.doo-runner
+                                                                     :output-dir     "target/cljsbuild/gorilla-repl-client/js/doo"
+                                                                     :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js"
+                                                                     :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js.map"
+                                                                     :optimizations  :whitespace
+                                                                     :pretty-print   true
+                                                                     :parallel-build true
+                                                                     :foreign-libs   [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
+                                                                                       :requires ["cljsjs.codemirror"]
+                                                                                       :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
+                                                                                      {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
+                                                                                       :requires ["cljsjs.mousetrap"]
+                                                                                       :provides ["cljsjs.mousetrap-global-bind"]}
+                                                                                      {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
+                                                                                       :provides ["gorilla-repl.worksheet-parser"]}]}}}
+                                        {:karma-test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
+                                                      :compiler     {:main           'gorilla-repl.karma-runner
+                                                                     :output-dir     "target/cljsbuild/gorilla-repl-client/js/karma"
+                                                                     :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js"
+                                                                     :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js.map"
+                                                                     :optimizations  :whitespace
+                                                                     :pretty-print   true
+                                                                     :parallel-build true
+                                                                     :foreign-libs   [{:file "resources/gorilla-repl-client/jslib/webpack-bundle.js"
+                                                                                       :provides ["cljsjs.react.dom.server"
+                                                                                                  "gorilla-repo.webpack-bundle"]}
+                                                                                      {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
+                                                                                       :requires ["cljsjs.codemirror"]
+                                                                                       :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
+                                                                                      {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
+                                                                                       :requires ["cljsjs.mousetrap"]
+                                                                                       :provides ["cljsjs.mousetrap-global-bind"]}
+                                                                                      {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
+                                                                                       :provides ["gorilla-repl.worksheet-parser"]}]}}}
+                                        }}
 
              :uberjar {:hooks       [minify-assets.plugin/hooks]
                        ;; :source-paths ["env/prod/clj"]

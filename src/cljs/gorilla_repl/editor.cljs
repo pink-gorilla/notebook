@@ -237,7 +237,7 @@
   "Create a CodeMirror editor."
   ([element]
    (create-editor! element :opts {}))
-  ([element & {:keys [opts content-type segment-id]}]                                                               m
+  ([element & {:keys [opts content-type segment-id]}]
    (let [ctkw (keyword content-type)
          override-opts (ctkw opts)
          merged-cm-opts (merge (:cm-opts (ctkw cm-default-opts)) (:cm-opts override-opts))
