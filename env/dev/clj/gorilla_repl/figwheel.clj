@@ -60,7 +60,7 @@
                                       ;; :external-config      {:devtools/config {:features-to-install :all}}
                                       :pretty-print   true
                                       :parallel-build true
-                                      :foreign-libs   [{:file     "resources/gorilla-repl-client/js/codemirror/mode/clojure/clojure-parinfer.js"
+                                      :foreign-libs   [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                         :requires ["cljsjs.codemirror"]
                                                         :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
                                                        {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
@@ -84,7 +84,7 @@
                                       ;; :external-config      {:devtools/config {:features-to-install :all}}
                                       :pretty-print         true
                                       :parallel-build       true
-                                      :foreign-libs         [{:file     "resources/gorilla-repl-client/js/codemirror/mode/clojure/clojure-parinfer.js"
+                                      :foreign-libs         [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                               :requires ["cljsjs.codemirror"]
                                                               :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
                                                              {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"

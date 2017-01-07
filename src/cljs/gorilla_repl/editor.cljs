@@ -2,9 +2,9 @@
   "Glues Parinfer's formatter to a CodeMirror editor"
   (:require
     [clojure.string :as str :refer [join]]
-    [cljsjs.codemirror :as cm]
     [goog.dom :as gdom]
     ;; [dommy.core :as dom :refer-macros [sel sel1 by-id]]
+    [cljsjs.codemirror]
     [cljsjs.codemirror.addon.edit.closebrackets]
     [cljsjs.codemirror.addon.edit.matchbrackets]
     [cljsjs.codemirror.addon.runmode.runmode]
@@ -237,7 +237,7 @@
   "Create a CodeMirror editor."
   ([element]
    (create-editor! element :opts {}))
-  ([element & {:keys [opts content-type segment-id]}]
+  ([element & {:keys [opts content-type segment-id]}]                                                               m
    (let [ctkw (keyword content-type)
          override-opts (ctkw opts)
          merged-cm-opts (merge (:cm-opts (ctkw cm-default-opts)) (:cm-opts override-opts))
