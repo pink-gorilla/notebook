@@ -1,0 +1,17 @@
+{
+  "//": "http://blob.tomerweller.com/reagent-import-react-components-from-npm",
+  "//": "hint: npm-check-updates is the new lein ancient",
+  "name": "gorilla-repl",
+  "version": "0.37.0",
+  "author": "a.steffan@contentreich.de",
+  "scripts": {
+    "watch": "webpack -d --watch",
+    "build": "webpack -p"
+  },
+  "dependencies": {
+    "codemirror": "5.22.0",
+    "react": "15.4.0",
+    "react-dom": "15.4.0",
+    "webpack": "1.13.1"
+  }
+}

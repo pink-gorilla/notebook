@@ -26,12 +26,17 @@
                  ;; [selmer "1.0.3"] ;; django like templates - deps worth the hassle?
                  [reagent "0.6.0"
                   :exclusions [org.clojure/tools.reader
-                               cljsjs/react]]
+                               cljsjs/react
+                               cljsjs/react-dom]]
                  [re-com "1.3.0"]
                  [day8.re-frame/http-fx "0.1.3"]
                  [day8.re-frame/undo "0.3.2"]
-                 [cljsjs/react "15.4.0-0"]
-                 [cljsjs/react-dom "15.4.0-0"]
+                 ;; React experimentally migrated to webpack/node
+                 ;; To bundle cljsjs version, remove comments here and remove webpack_bundle.js from worksheet.html
+                 ;; npm run build creates a fresh webpack_bundle.js
+                 ;; [cljsjs/react "15.4.0-0"]
+                 ;; [cljsjs/react-dom "15.4.0-0"]
+                 ;;
                  ;; [flupot "0.4.0"]
                  ;; [reagent-forms "0.5.27"]
                  ;; [reagent-utils "0.2.0"]
@@ -126,7 +131,7 @@
 
   :cljsbuild {:jar true
               :builds
-                   {:app {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
+                   {:app {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "env/prod/cljs"]
                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
                                          :output-dir      "target/js/out"
                                          :asset-path      "/js/out"
@@ -167,7 +172,9 @@
                                         [re-frisk "0.3.2"]
                                         [day8.re-frame/test "0.1.3"]
                                         [devcards "0.2.2"
-                                         :exclusions [org.clojure/tools.reader]]
+                                         :exclusions [org.clojure/tools.reader
+                                                      cljsjs/react
+                                                      cljsjs/react-dom]]
                                         [pjstadig/humane-test-output "0.8.1"]
                                         ;; https://github.com/day8/re-frame-tracer
                                         [org.clojars.stumitchell/clairvoyant "0.2.0"]
@@ -202,7 +209,7 @@
 
                        ;; app and devcards builds moved to figwheel.clj
                        :cljsbuild      {:builds
-                                        {:test {:source-paths ["src/cljs" "src/cljc" "test/cljs"]
+                                        {:test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
                                                 :compiler     {:output-to      "target/test.js"
                                                                :main           gorilla-repl.doo-runner
                                                                :optimizations  :whitespace

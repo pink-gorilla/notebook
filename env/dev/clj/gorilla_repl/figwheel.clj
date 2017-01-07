@@ -47,7 +47,7 @@
                       }
    ;;:figwheel-options nil,
    :all-builds
-                     [{:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"],
+                     [{:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "env/dev/cljs"],
                        :id           "app",
                        :compiler
                                      {:main           'gorilla-repl.dev
@@ -69,7 +69,7 @@
                                                        {:file     "./resources/gorilla-repl-client/js/worksheetParser.js"
                                                         :provides ["gorilla-repl.worksheet-parser"]}]
                                       }}
-                      {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
+                      {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "env/dev/cljs"]
                        :id           "devcards"
                        :figwheel     {:devcards true}
                        :compiler
