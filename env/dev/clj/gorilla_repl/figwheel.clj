@@ -28,6 +28,21 @@
                    )
 
 (handle/set-config :keymap {})
+
+(def foreign-libs
+  [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle-empty.js"
+    :provides ["cljsjs.react"
+               "cljsjs.react.dom"
+               "cljsjs.react.dom.server"]}
+   {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
+    :requires ["cljsjs.codemirror"]
+    :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
+   {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
+    :requires ["cljsjs.mousetrap"]
+    :provides ["cljsjs.mousetrap-global-bind"]}
+   {:file     "./resources/gorilla-repl-client/js/worksheetParser.js"
+    :provides ["gorilla-repl.worksheet-parser"]}])
+
 ;; We could still pull some paths from project.clj when using read-raw
 ;; or sys/fetch-config
 (defn config
@@ -47,7 +62,7 @@
                       }
    ;;:figwheel-options nil,
    :all-builds
-                     [{:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "env/dev/cljs"],
+                     [{:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "env/dev/cljs"],
                        :id           "app",
                        :compiler
                                      {:main           'gorilla-repl.dev
@@ -60,16 +75,9 @@
                                       ;; :external-config      {:devtools/config {:features-to-install :all}}
                                       :pretty-print   true
                                       :parallel-build true
-                                      :foreign-libs   [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
-                                                        :requires ["cljsjs.codemirror"]
-                                                        :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
-                                                       {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
-                                                        :requires ["cljsjs.mousetrap"]
-                                                        :provides ["cljsjs.mousetrap-global-bind"]}
-                                                       {:file     "./resources/gorilla-repl-client/js/worksheetParser.js"
-                                                        :provides ["gorilla-repl.worksheet-parser"]}]
+                                      :foreign-libs   foreign-libs
                                       }}
-                      {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "env/dev/cljs"]
+                      {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "env/dev/cljs"]
                        :id           "devcards"
                        :figwheel     {:devcards true}
                        :compiler
@@ -84,14 +92,7 @@
                                       ;; :external-config      {:devtools/config {:features-to-install :all}}
                                       :pretty-print         true
                                       :parallel-build       true
-                                      :foreign-libs         [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
-                                                              :requires ["cljsjs.codemirror"]
-                                                              :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
-                                                             {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
-                                                              :requires ["cljsjs.mousetrap"]
-                                                              :provides ["cljsjs.mousetrap-global-bind"]}
-                                                             {:file     "./resources/gorilla-repl-client/js/worksheetParser.js"
-                                                              :provides ["gorilla-repl.worksheet-parser"]}]
+                                      :foreign-libs         foreign-libs
                                       }}
                       ]
    :build-ids        ["app" "devcards"]}

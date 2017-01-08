@@ -132,11 +132,15 @@
 
   :cljsbuild {:jar true
               :builds
-                   {:app {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "env/prod/cljs"]
+                   {:app {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "env/prod/cljs"]
                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
                                          :output-dir      "target/js/out"
                                          :asset-path      "/js/out"
-                                         :foreign-libs    [{:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
+                                         :foreign-libs    [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle-empty.js"
+                                                            :provides ["cljsjs.react"
+                                                                       "cljsjs.react.dom"
+                                                                       "cljsjs.react.dom.server"]}
+                                                           {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                             :requires ["cljsjs.codemirror"]
                                                             :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
                                                            {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
@@ -157,7 +161,7 @@
                                          :parallel-build  true}}}}
 
   :doo {:build "doo-test"
-        :alias {:default  [:chrome #_:phantom]
+        :alias {:default  [#_:chrome :phantom]
                 :browsers [:chrome :firefox]
                 ;; :all [:browsers :firefox]
                 }
@@ -221,7 +225,7 @@
                        :cljsbuild      {:builds
                                         ;; TODO : depends on :whitespace optimization rolling in webpack-build.js
                                         ;; lein cljsbuild once karma-test; karma start
-                                        {:karma-test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
+                                        {:karma-test {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "test/cljs"]
                                                       :compiler     {:main           'gorilla-repl.karma-runner
                                                                      :optimizations  :whitespace
                                                                      :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js.map"
@@ -233,8 +237,9 @@
                                                                      :pretty-print   true
                                                                      :parallel-build true
                                                                      :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle.js"
-                                                                                       :provides ["cljsjs.react.dom.server"
-                                                                                                  "gorilla-repo.webpack-bundle"]}
+                                                                                       :provides ["cljsjs.react"
+                                                                                                  "cljsjs.react.dom"
+                                                                                                  "cljsjs.react.dom.server"]}
                                                                                       {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                                                        :requires ["cljsjs.codemirror"]
                                                                                        :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
@@ -247,17 +252,20 @@
                                          ;; Better than "plain" karma, due to auto-build and so on
                                          ;; lein doo
                                          ;; Uncaught Error: js/React is missing
-                                         :doo-test {:source-paths ["src/cljs" "src/npm-cljs" "src/cljc" "test/cljs"]
+                                         :doo-test {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "test/cljs"]
                                                     :compiler     {:main           'gorilla-repl.doo-runner
                                                                    :optimizations  :none
                                                                    :source-map     true
                                                                    :output-dir     "target/cljsbuild/gorilla-repl-client/js/doo"
                                                                    :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js"
+                                                                   ;; :asset-path breaks phantom
+                                                                   ;; :asset-path     "base/target/cljsbuild/gorilla-repl-client/js/doo"
                                                                    :pretty-print   true
                                                                    :parallel-build true
                                                                    :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle.js"
-                                                                                     :provides ["cljsjs.react.dom.server"
-                                                                                                "gorilla-repo.webpack-bundle"]}
+                                                                                     :provides ["cljsjs.react"
+                                                                                                "cljsjs.react.dom"
+                                                                                                "cljsjs.react.dom.server"]}
                                                                                     {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                                                      :requires ["cljsjs.codemirror"]
                                                                                      :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
