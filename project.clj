@@ -78,6 +78,7 @@
                  [org.clojure/core.match "0.3.0-alpha4"]
                  [de.otto/tesla-microservice "0.6.0"]
                  [de.otto/tesla-httpkit "1.0.1"]
+                 ;; [com.rpl/specter "0.13.2"]
                  [clojail "1.0.6"]
                  [com.cemerick/piggieback "0.2.1"]
                  [com.cemerick/pomegranate "0.3.1"]]
@@ -132,7 +133,7 @@
 
   :cljsbuild {:jar true
               :builds
-                   {:app {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "env/prod/cljs"]
+                   {:app {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
                                          :output-dir      "target/js/out"
                                          :asset-path      "/js/out"
@@ -161,13 +162,13 @@
                                          :parallel-build  true}}}}
 
   :doo {:build "doo-test"
-        :alias {:default  [#_:chrome :phantom]
+        :alias {:default  [:chrome #_:phantom #_:karma-phantom]
                 :browsers [:chrome :firefox]
                 ;; :all [:browsers :firefox]
                 }
-        #_:paths
-        #_{:phantom "phantomjs --web-security=false"
-           :karma   "karma --port=9881 --no-colors"}}
+        :paths
+               {;; :phantom "phantomjs --web-security=false"
+                :karma "karma --port=9881 --no-colors"}}
 
   :profiles {:dev     {:repl-options   {:init-ns gorilla-repl.repl
                                         :port    4001}
@@ -223,43 +224,25 @@
 
                        ;; app and devcards builds moved to figwheel.clj
                        :cljsbuild      {:builds
-                                        ;; TODO : depends on :whitespace optimization rolling in webpack-build.js
-                                        ;; lein cljsbuild once karma-test; karma start
-                                        {:karma-test {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "test/cljs"]
-                                                      :compiler     {:main           'gorilla-repl.karma-runner
-                                                                     :optimizations  :whitespace
-                                                                     :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js.map"
-                                                                     ;; :main           'gorilla-repl.doo-runner
-                                                                     ;; :optimizations  :none
-                                                                     ;; :source-map     true
-                                                                     :output-dir     "target/cljsbuild/gorilla-repl-client/js/karma"
-                                                                     :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_karma.js"
-                                                                     :pretty-print   true
-                                                                     :parallel-build true
-                                                                     :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle.js"
-                                                                                       :provides ["cljsjs.react"
-                                                                                                  "cljsjs.react.dom"
-                                                                                                  "cljsjs.react.dom.server"]}
-                                                                                      {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
-                                                                                       :requires ["cljsjs.codemirror"]
-                                                                                       :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
-                                                                                      {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
-                                                                                       :requires ["cljsjs.mousetrap"]
-                                                                                       :provides ["cljsjs.mousetrap-global-bind"]}
-                                                                                      {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
-                                                                                       :provides ["gorilla-repl.worksheet-parser"]}]}}
-                                         ;; TODO: seems it does not (yet) play with webpack_build.js (can be seen with phantom or chrome)
-                                         ;; Better than "plain" karma, due to auto-build and so on
-                                         ;; lein doo
-                                         ;; Uncaught Error: js/React is missing
-                                         :doo-test {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "test/cljs"]
+                                        ;; lein cljsbuild once doo-test; karma start
+                                        ;; lein doo better than "plain" "lein cljsbuild once doo-test; karma start",
+                                        ;; due to auto-build and so on
+                                        ;; lein doo
+                                        ;; Uncaught Error: js/React is missing
+                                        {:doo-test {:source-paths ["src/cljs" "src/cljc" "test/cljs"]
                                                     :compiler     {:main           'gorilla-repl.doo-runner
+                                                                   ;; :main 'gorilla-repl.karma-runner
                                                                    :optimizations  :none
                                                                    :source-map     true
                                                                    :output-dir     "target/cljsbuild/gorilla-repl-client/js/doo"
                                                                    :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js"
-                                                                   ;; :asset-path breaks phantom
+                                                                   ;; :asset-path breaks phantom (karma-phantom ok)
                                                                    ;; :asset-path     "base/target/cljsbuild/gorilla-repl-client/js/doo"
+                                                                   ;; actually it is only a 404 /target/cljsbuild/gorilla-repl-client/js/doo/cljs_deps.js
+                                                                   ;; caused by document.write in gorilla_doo.js which does not break functionality
+                                                                   ;; can be prevented using
+                                                                   ;; :optimizations  :whitespace
+                                                                   ;; :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js.map"
                                                                    :pretty-print   true
                                                                    :parallel-build true
                                                                    :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle.js"

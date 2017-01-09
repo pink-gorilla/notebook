@@ -62,7 +62,7 @@
                       }
    ;;:figwheel-options nil,
    :all-builds
-                     [{:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "env/dev/cljs"],
+                     [{:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"],
                        :id           "app",
                        :compiler
                                      {:main           'gorilla-repl.dev
@@ -77,7 +77,7 @@
                                       :parallel-build true
                                       :foreign-libs   foreign-libs
                                       }}
-                      {:source-paths ["src/cljs" #_"src/npm-cljs" "src/cljc" "env/dev/cljs"]
+                      {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
                        :id           "devcards"
                        :figwheel     {:devcards true}
                        :compiler
