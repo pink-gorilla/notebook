@@ -39,3 +39,32 @@
       (is div)
       ;; (is (found-in #"Welcome to" div))
       )))
+
+
+(deftest codemirror
+  (let [cm (.-CodeMirror js/window)]
+    (is cm)
+    (is (.. cm -prototype -findMatchingBracket))
+    ;; (is (.. cm -modes -clojure-parinfer)) ;; nil?
+    (is (.. cm -modes -clojure))
+    (is (.. cm -modes -markdown))
+    (is (.-colorize cm))
+    (is (.-runMode cm))
+    (is (.-showHint cm))))
+
+;; [cljsjs.codemirror.addon.edit.closebrackets]
+;;  [cljsjs.codemirror.addon.edit.matchbrackets]
+;; [cljsjs.codemirror.addon.runmode.runmode]
+;; [cljsjs.codemirror.addon.runmode.colorize]
+;; [cljsjs.codemirror.addon.hint.show-hint]
+;; [cljsjs.codemirror.mode.clojure]
+;; [cljsjs.codemirror.mode.clojure-parinfer]
+;; [cljsjs.codemirror.mode.markdown]
+;; [cljsjs.codemirror.mode.xml]
+;; CodeMirror.prototype.findMatchingBracket
+;; CodeMirror.modes['clojure-parinfer']
+;; CodeMirror.modes['clojure']
+;; CodeMirror.modes['markdown']
+;; CodeMirror.colorize
+;; CodeMirror.runMode
+;; CodeMirror.showHint

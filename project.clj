@@ -2,7 +2,7 @@
   :description "A rich REPL for Clojure in the notebook style."
   :url "https://github.com/deas/gorilla-repl"
   :license {:name "MIT"}
-  :dependencies [[org.clojure/clojure "1.9.0-alpha13"]
+  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
                  ;;  ring-json introduces jackson along with its tail
                  ;; [ring/ring-json "0.4.0"]
                  [org.clojure/data.json "0.2.6"]
@@ -162,7 +162,7 @@
                                          :parallel-build  true}}}}
 
   :doo {:build "doo-test"
-        :alias {:default  [:chrome #_:phantom #_:karma-phantom]
+        :alias {:default  [#_:chrome #_:phantom :karma-phantom]
                 :browsers [:chrome :firefox]
                 ;; :all [:browsers :firefox]
                 }

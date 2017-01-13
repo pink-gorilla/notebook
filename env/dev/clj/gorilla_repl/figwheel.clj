@@ -1,6 +1,5 @@
 (ns gorilla-repl.figwheel
-  (:require [gorilla-repl.core :as gorilla]
-            [gorilla-repl.handle :as handle])
+  (:require [gorilla-repl.handle :as handle])
   #_(:use
       ;; ring.server.standalone
       ;; [leiningen.core.project :as project]

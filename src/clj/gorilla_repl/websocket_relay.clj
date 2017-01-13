@@ -15,7 +15,7 @@
             [ring.middleware.session.memory :as mem]
             [clojure.data.json :as json]
             [clojure.walk :as w]
-            [clojure.tools.logging :refer (info)]
+            [clojure.tools.logging :refer (info warn)]
     #_[cheshire.core :as json])
   #_(:refer clojure.data.json :rename {write-str generate-string,
                                        read-str  parse-string}))
@@ -95,7 +95,8 @@
   [on-receive-fn]
   (-> (fn [request]
         (server/with-channel
-          request
-          channel
+          request channel
+          (server/on-close channel (fn [status]
+                              (warn "FIXME : Channel closed, we should probably close remote connections")))
           (server/on-receive channel (on-receive-fn request channel))))
       (memory-session)))
