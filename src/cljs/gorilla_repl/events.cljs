@@ -699,6 +699,14 @@
       (assoc-in db [:worksheet :queued-code-segments] (-> (remove #(= seg-id %) queued-segs)
                                                           set)))))
 
+(reg-event-db
+  :output-error
+  (fn [db [_ seg-id e]]
+    ;; TODO Should probably write to output cell
+    ;; (js-debugger)
+    (js/alert (.-message e) "for cell " seg-id)
+    db))
+
 ;; TODO Should move evaluation state out of worksheet
 (undo/undo-config! {:max-undos    3
                     :harvest-fn   (fn [ratom] (some-> @ratom :worksheet))

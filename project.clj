@@ -151,6 +151,9 @@
                                                                        ]
                                                             :requires ["cljsjs.react"] ;;  ... and use it externally in webpack
                                                             }
+                                                           {:file     "resources/gorilla-repl-client/jslib/cljs-extern-empty.js"
+                                                            :provides ["gorilla-repl.webpack-extern"]
+                                                            }
                                                            {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                             :requires ["cljsjs.codemirror"]
                                                             :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
@@ -262,6 +265,8 @@
                                                                                                 ;; "cljsjs.react.dom.server"
                                                                                                 ]
                                                                                      :requires ["cljsjs.react"]}
+                                                                                    {:file     "resources/gorilla-repl-client/jslib/cljs-extern.js"
+                                                                                     :provides ["gorilla-repl.webpack-extern"]}
                                                                                     {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                                                      :requires ["cljsjs.codemirror"]
                                                                                      :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}

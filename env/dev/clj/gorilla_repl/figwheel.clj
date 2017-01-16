@@ -30,13 +30,14 @@
 
 (def foreign-libs
   [{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
-    ;; "resources/gorilla-repl-client/jslib/webpack-bundle-empty.js"
     :provides ["gorilla-repl.webpack-include"
                ;; "cljsjs.react"
                ;; "cljsjs.react.dom"
                ;; "cljsjs.react.dom.server"
                ]
     :requires ["cljsjs.react"]}
+   {:file     "resources/gorilla-repl-client/jslib/cljs-extern-empty.js"
+    :provides ["gorilla-repl.webpack-extern"]}
    {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
     :requires ["cljsjs.codemirror"]
     :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}

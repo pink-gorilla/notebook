@@ -9,8 +9,8 @@ const config = {
     entry: {
         // The include build requires cljsjs.react
         "cljs-include": `${APP_DIR}/main-include.js`,
-        // This is all the other stuff from npm cljs libraries(!) do not depend upon
-        // We take care of externs ourself
+        // This is all the other stuff from npm cljs libraries(!) do not(!) depend upon
+        // We need to take care of externs ourself
         "cljs-extern": `${APP_DIR}/main-extern.js`
     },
     output: {
@@ -26,7 +26,19 @@ const config = {
         // require("jquery") is external and available
         //  on the global var jQuery
         // "jquery": "jQuery"
+    },/*
+    resolve: {
+        extensions: ['', '.js', '.css']
+    },*//*
+    module: {
+        rules: [
+            {
+                test: /\.json$/,
+                use: 'json-loader'
+            }
+        ]
     },
+    */
     plugins: [
         // Uses production build of react
         /*
@@ -36,7 +48,10 @@ const config = {
          }
          })*/
 
-    ]
+    ]/*,
+    node: {
+        fs: "empty"
+    }*/
 };
 
 module.exports = config;

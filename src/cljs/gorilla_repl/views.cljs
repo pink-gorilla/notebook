@@ -2,6 +2,7 @@
   (:require [clojure.string :as str]
     ;; [hickory.core :as hick]
             [gorilla-repl.webpack-include]
+            [gorilla-repl.webpack-extern]
             [gorilla-repl.editor :as editor]
             [cljs-uuid-utils.core :as uuid]
     ;; [clojure.walk :as w]
@@ -37,6 +38,7 @@
 ;; </script-->
 
 
+;; TODO: MathJax does not kick in with advanced optimization
 (defn init-mathjax-globally!
   "Initialize MathJax globally"
   []
@@ -400,7 +402,7 @@
                                                .update)
                                            )))              ;
                                 (catch js/Object e
-                                  (dispatch [:output-error seg-id (.-message e)]))))
+                                  (dispatch [:output-error seg-id e]))))
        :reagent-render      (fn []
                               [value-wrap (get output :value)
                                [span-kw {:class "vega-span"}]])})))

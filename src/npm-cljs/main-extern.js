@@ -12,6 +12,13 @@
  [cljsjs.codemirror.mode.xml]
  */
 window.deps = {
+    /*
+    'd3' : require('d3'),
+    'd3-geo': require('d3-geo'),
+    'vega': require('vega')
+    */
+    // For now, we still rely on cljsj codemirror externs
+    /*
     'codemirror': require('codemirror'),
     'codemirror/addon/edit/closebrackets': require('codemirror/addon/edit/closebrackets'),
     'codemirror/addon/edit/matchbrackets': require('codemirror/addon/edit/matchbrackets'),
@@ -20,13 +27,14 @@ window.deps = {
     'codemirror/addon/hint/show-hint': require('codemirror/addon/hint/show-hint'),
     'codemirror/mode/clojure/clojure': require('codemirror/mode/clojure/clojure'),
     'codemirror/mode/clojure/markdown': require('codemirror/mode/markdown/markdown'),
-    // 'codemirror/mode/xml/xml': require('codemirror/mode/xml/xml')
     'codemirror/mode/clojure/clojure-parinfer': require('./codemirror/mode/clojure/clojure-parinfer')
+    */
+    // 'codemirror/mode/xml/xml': require('codemirror/mode/xml/xml')
 // ERROR in ./src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js
 // Module not found: Error: Cannot resolve 'file' or 'directory' ../../lib/codemirror in .../src/npm-cljs/codemirror/mode/clojure
 };
-
-window.CodeMirror = window.deps['codemirror'];
+// window.vg = window.deps['vega'];
+// window.CodeMirror = window.deps['codemirror'];
 
 /*
  var opts = {
