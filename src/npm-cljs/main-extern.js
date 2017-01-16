@@ -12,24 +12,36 @@
  [cljsjs.codemirror.mode.xml]
  */
 window.deps = {
-    'react' : require('react'),
-    'react-dom' : require('react-dom'),
-    'react-dom/server': require('react-dom/server')
-    /*
-    'codemirror' : require('codemirror'),
+    'codemirror': require('codemirror'),
     'codemirror/addon/edit/closebrackets': require('codemirror/addon/edit/closebrackets'),
     'codemirror/addon/edit/matchbrackets': require('codemirror/addon/edit/matchbrackets'),
     'codemirror/addon/runmode/runmode': require('codemirror/addon/runmode/runmode'),
     'codemirror/addon/runmode/colorize': require('codemirror/addon/runmode/colorize'),
     'codemirror/addon/hint/show-hint': require('codemirror/addon/hint/show-hint'),
     'codemirror/mode/clojure/clojure': require('codemirror/mode/clojure/clojure'),
-     // 'codemirror/mode/xml/xml': require('codemirror/mode/xml/xml')
-    './codemirror/mode/clojure/clojure-parinfer': require('./codemirror/mode/clojure/clojure-parinfer'),
-    */
+    'codemirror/mode/clojure/markdown': require('codemirror/mode/markdown/markdown'),
+    // 'codemirror/mode/xml/xml': require('codemirror/mode/xml/xml')
+    'codemirror/mode/clojure/clojure-parinfer': require('./codemirror/mode/clojure/clojure-parinfer')
 // ERROR in ./src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js
 // Module not found: Error: Cannot resolve 'file' or 'directory' ../../lib/codemirror in .../src/npm-cljs/codemirror/mode/clojure
 };
-window.React = window.deps['react'];
-window.ReactDOM = window.deps['react-dom'];
-window.ReactDOMServer =  window.deps['react-dom/server'];
-// window.CodeMirror = window.deps['codemirror'];
+
+window.CodeMirror = window.deps['codemirror'];
+
+/*
+ var opts = {
+ lineNumbers: false,
+ matchBrackets: true,
+ autoCloseBrackets: "()[]{}\"\"",
+ lineWrapping: true,
+ keyMap: "gorilla",
+ mode: "clojure"
+ };*/
+/*
+ #_(aset js/CodeMirror "keyMap" "default" "Shift-Tab" "indentLess")
+
+ (def cm-default-opts {:text/x-clojure  {:cm-opts (merge cm-default-opts-common
+ {:mode "clojure"})}
+ :text/x-markdown {:cm-opts (merge cm-default-opts-common
+ {:mode "text/x-markdown"})}})
+ */

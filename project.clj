@@ -28,15 +28,19 @@
                   :exclusions [org.clojure/tools.reader
                                cljsjs/react
                                cljsjs/react-dom
-                               cljsjs/react-dom-server]]
+                               ;; cljsjs/react-dom-server
+                               ]]
                  [re-com "1.3.0"]
                  [day8.re-frame/http-fx "0.1.3"]
                  [day8.re-frame/undo "0.3.2"]
+                 ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of
+                 ;; React.
+                 ;;
                  ;; React experimentally migrated to webpack/node
                  ;; To bundle cljsjs version, remove comments here and remove webpack_bundle.js from worksheet.html
                  ;; npm run build creates a fresh webpack_bundle.js
-                 ;; [cljsjs/react "15.4.0-0"]
-                 ;; [cljsjs/react-dom "15.4.0-0"]
+                 [cljsjs/react "15.4.0-0"]
+                 [cljsjs/react-dom "15.4.0-0"]
                  ;;
                  ;; [flupot "0.4.0"]
                  ;; [reagent-forms "0.5.27"]
@@ -66,6 +70,7 @@
                   :scope "provided"]
                  [secretary "1.2.3"]
                  [cljsjs/parinfer "1.8.1-0"]
+                 ;; Still helpful for externs!
                  [cljsjs/codemirror "5.21.0-1"]
                  [cljsjs/vega "2.6.0-0"]
                  [cljsjs/d3geo "0.2.15-2"]
@@ -137,10 +142,15 @@
                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
                                          :output-dir      "target/js/out"
                                          :asset-path      "/js/out"
-                                         :foreign-libs    [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle-empty.js"
-                                                            :provides ["cljsjs.react"
-                                                                       "cljsjs.react.dom"
-                                                                       "cljsjs.react.dom.server"]}
+                                         :foreign-libs    [{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
+                                                            ;; "resources/gorilla-repl-client/jslib/webpack-bundle-empty.js"
+                                                            :provides ["gorilla-repl.webpack-include"
+                                                                       ;; "cljsjs.react"
+                                                                       ;; "cljsjs.react.dom"
+                                                                       ;;"cljsjs.react.dom.server"
+                                                                       ]
+                                                            :requires ["cljsjs.react"] ;;  ... and use it externally in webpack
+                                                            }
                                                            {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                             :requires ["cljsjs.codemirror"]
                                                             :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
@@ -245,10 +255,13 @@
                                                                    ;; :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js.map"
                                                                    :pretty-print   true
                                                                    :parallel-build true
-                                                                   :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/webpack-bundle.js"
-                                                                                     :provides ["cljsjs.react"
-                                                                                                "cljsjs.react.dom"
-                                                                                                "cljsjs.react.dom.server"]}
+                                                                   :foreign-libs   [{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
+                                                                                     :provides ["gorilla-repl.webpack-include"
+                                                                                                ;; "cljsjs.react"
+                                                                                                ;; "cljsjs.react.dom"
+                                                                                                ;; "cljsjs.react.dom.server"
+                                                                                                ]
+                                                                                     :requires ["cljsjs.react"]}
                                                                                     {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                                                                                      :requires ["cljsjs.codemirror"]
                                                                                      :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
