@@ -71,7 +71,8 @@
   [id]
   (if-let [mathjax (.-MathJax js/window)]
     (doto (.-Hub mathjax)
-      (.Queue #js ["Typeset" (.-Hub mathjax) id]))))
+      (.Queue #js ["Typeset" (.-Hub mathjax) id]))
+    (warn "Missing global MathJax")))
 
 
 ;; TODO: Should only fire when we are active!
@@ -289,10 +290,7 @@
                                              (get-in content [:type])
                                              editor-options) this)
                                    (focus-active-segment this true))
-                                 #_(let [el (gdom/getElement prev-uuid)])
-                                 (if-let [mathjax (.-MathJax js/window)]
-                                   (doto (.-Hub mathjax)
-                                     (.Queue #js ["Typeset" (.-Hub mathjax) prev-uuid])))
+                                 (queue-mathjax-rendering prev-uuid)
                                  #_(let [el (gdom/getElement prev-uuid)])))
 
        ;; if ("MathJax" in window) MathJax.Hub.Queue(["Typeset", MathJax.Hub, $(element).attr('id')]);
