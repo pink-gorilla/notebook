@@ -13,9 +13,9 @@
                  [org.clojars.deas/gorilla-middleware "0.1.2"]
                  [org.clojars.deas/gorilla-plot "0.2.0"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
-                 [org.slf4j/slf4j-api "1.7.16"]
-                 [ch.qos.logback/logback-core "1.1.5"]
-                 [ch.qos.logback/logback-classic "1.1.5"]
+                 [org.slf4j/slf4j-api "1.7.22"]
+                 [ch.qos.logback/logback-core "1.1.8"]
+                 [ch.qos.logback/logback-classic "1.1.8"]
                  [com.taoensso/timbre "4.8.0"]
                  ;; Things get very noise with slf4j-timbre - needs configuration
                  ;; [com.fzakaria/slf4j-timbre "0.3.2"]
@@ -39,8 +39,8 @@
                  ;; React experimentally migrated to webpack/node
                  ;; To bundle cljsjs version, remove comments here and remove webpack_bundle.js from worksheet.html
                  ;; npm run build creates a fresh webpack_bundle.js
-                 [cljsjs/react "15.4.0-0"]
-                 [cljsjs/react-dom "15.4.0-0"]
+                 [cljsjs/react "15.4.2-0"]
+                 [cljsjs/react-dom "15.4.2-0"]
                  ;;
                  ;; [flupot "0.4.0"]
                  ;; [reagent-forms "0.5.27"]
@@ -52,17 +52,17 @@
                  [com.cemerick/url "0.1.1"]
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.2"]
                  [org.clojure/tools.cli "0.3.5"]
-                 [ring "1.5.0"
+                 [ring "1.5.1"
                   :exclusions [ring/ring-jetty-adapter]]
-                 [ring-cors "0.1.8"]
-                 [ring/ring-defaults "0.2.1"
+                 [ring-cors "0.1.9"]
+                 [ring/ring-defaults "0.2.2"
                   :exclusions [javax.servlet/servlet-api]]
                  ;;  [ring.middleware.logger "0.5.0"]
                  ;; [ring-webjars "0.1.1"]                     ;; Although not matching servlet3 paths
                  [ring-middleware-format "0.7.0"]
                  [javax.websocket/javax.websocket-api "1.0"]
                  [javax.servlet/javax.servlet-api "3.1.0"]
-                 [compojure "1.5.1"]
+                 [compojure "1.5.2"]
                  [hiccup "1.0.5"]
                  [environ "1.1.0"]
                  [com.stuartsierra/component "0.3.2"]
@@ -71,7 +71,7 @@
                  [secretary "1.2.3"]
                  [cljsjs/parinfer "1.8.1-0"]
                  ;; Still helpful for externs!
-                 [cljsjs/codemirror "5.21.0-1"]
+                 [cljsjs/codemirror "5.21.0-2"]
                  [cljsjs/vega "2.6.0-0"]
                  [cljsjs/d3geo "0.2.15-2"]
                  [cljsjs/d3 "3.5.16-0"]
@@ -81,7 +81,7 @@
                  [org.danielsz/system "0.3.1"]
                  [jarohen/chord "0.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
-                 [de.otto/tesla-microservice "0.6.0"]
+                 [de.otto/tesla-microservice "0.7.0"]
                  [de.otto/tesla-httpkit "1.0.1"]
                  ;; [com.rpl/specter "0.13.2"]
                  [clojail "1.0.6"]
@@ -140,8 +140,8 @@
               :builds
                    {:app {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
-                                         :output-dir      "target/js/out"
-                                         :asset-path      "/js/out"
+                                         ;; :output-dir      "target/js/out"
+                                         ;; :asset-path      "/js/out"
                                          :foreign-libs    [{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
                                                             ;; "resources/gorilla-repl-client/jslib/webpack-bundle-empty.js"
                                                             :provides ["gorilla-repl.webpack-include"
@@ -187,10 +187,10 @@
                                         :port    4001}
                        :prep-tasks     ^:replace ["javac" "compile"]
                        :dependencies   [[figwheel-sidecar "0.5.8"]
-                                        [karma-reporter "1.0.1"]
+                                        [karma-reporter "2.0.1"]
                                         ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
                                         [ring/ring-mock "0.3.0"]
-                                        [ring/ring-devel "1.5.0"]
+                                        [ring/ring-devel "1.5.1"]
                                         [prone "1.1.4"]
                                         [org.clojure/tools.nrepl "0.2.12"]
                                         ;; Dirac or piggieback - there can only be one of them
