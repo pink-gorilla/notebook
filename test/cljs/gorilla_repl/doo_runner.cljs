@@ -1,6 +1,5 @@
 (ns gorilla-repl.doo-runner
   (:require [doo.runner :refer-macros [doo-tests]]
-    ;; [gorilla-repl.webpack-bundle]
             [gorilla-repl.core-test]
             [gorilla-repl.events-test]))
 

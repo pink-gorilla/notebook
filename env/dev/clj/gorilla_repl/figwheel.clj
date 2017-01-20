@@ -35,7 +35,8 @@
                ;; "cljsjs.react.dom"
                ;; "cljsjs.react.dom.server"
                ]
-    :requires ["cljsjs.react"]}
+    :requires ["cljsjs.react"
+               "cljsjs.react.dom"]}
    {:file     "resources/gorilla-repl-client/jslib/cljs-extern-empty.js"
     :provides ["gorilla-repl.webpack-extern"]}
    {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
@@ -52,7 +53,7 @@
 (defn config
   []
   {:figwheel-options {:ring-handler      'gorilla-repl.dev-middleware/dev-handler
-                      :http-server-root  "public"
+                      ;; :http-server-root  "public" ;; does not matter
                       ;; :server-port      3449
                       :nrepl-port        7002
                       :nrepl-middleware  ["cemerick.piggieback/wrap-cljs-repl"

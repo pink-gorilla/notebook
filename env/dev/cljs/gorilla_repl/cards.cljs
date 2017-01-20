@@ -1,4 +1,4 @@
-(ns gorilla-repl.cards
+  (ns gorilla-repl.cards
   (:require [cljs.test :refer-macros [is testing]]
             [reagent.core :as reagent :refer [atom]]
     ;; [reagent.session :as session]

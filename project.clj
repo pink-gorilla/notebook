@@ -149,7 +149,8 @@
                                                                        ;; "cljsjs.react.dom"
                                                                        ;;"cljsjs.react.dom.server"
                                                                        ]
-                                                            :requires ["cljsjs.react"] ;;  ... and use it externally in webpack
+                                                            :requires ["cljsjs.react"
+                                                                       "cljsjs.react.dom"] ;;  ... and use it externally in webpack
                                                             }
                                                            {:file     "resources/gorilla-repl-client/jslib/cljs-extern-empty.js"
                                                             :provides ["gorilla-repl.webpack-extern"]
