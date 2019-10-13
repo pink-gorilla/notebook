@@ -225,7 +225,7 @@
                        :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
 
                        :plugins        [[lein-doo "0.1.7"]
-                                        [cider/cider-nrepl "0.14.0"]
+                                        ;; [cider/cider-nrepl "0.14.0"]
                                         [org.clojure/tools.namespace "0.3.0-alpha2"
                                          :exclusions [org.clojure/tools.reader]]
                                         [refactor-nrepl "2.2.0"
