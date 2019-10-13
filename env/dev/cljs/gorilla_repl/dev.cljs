@@ -1,9 +1,10 @@
 (ns ^:figwheel-no-load gorilla-repl.dev
-  (:require [gorilla-repl.core :as core]
-            [figwheel.client :as figwheel :include-macros true]
-            [devtools.core :as devtools]
-            ;; [dirac.runtime]
-            [re-frisk.core :refer [enable-re-frisk!]]))
+  (:require 
+   [gorilla-repl.core :as core]
+   [figwheel.client :as figwheel :include-macros true]
+   [devtools.core :as devtools]
+   ;; [dirac.runtime]
+   [re-frisk.core :refer [enable-re-frisk!]]))
 
 (devtools/install!)
 ;; (dirac.runtime/install!)

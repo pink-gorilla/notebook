@@ -1,8 +1,9 @@
-  (ns gorilla-repl.cards
-  (:require [cljs.test :refer-macros [is testing]]
-            [reagent.core :as reagent :refer [atom]]
-    ;; [reagent.session :as session]
-            [gorilla-repl.core :as core])
+(ns gorilla-repl.cards
+  (:require 
+     [cljs.test :refer-macros [is testing]]
+     [reagent.core :as reagent :refer [atom]]
+     ;; [reagent.session :as session]
+     [gorilla-repl.core :as core])
   (:require-macros
     [devcards.core
      :as dc
@@ -13,11 +14,11 @@
 ;; http://localhost:3449/devcards.html
 
 (defcard-rg first-card
-            [:div>h1 "This is your first devcard!"])
+  [:div>h1 "This is your first devcard!"])
 
 (deftest a-test
-         (testing "FIXME, I fail."
-           (is (= 0 1))))
+  (testing "FIXME, I fail."
+    (is (= 0 1))))
 
 #_(defcard-rg home-page-card
               [core/home-page])

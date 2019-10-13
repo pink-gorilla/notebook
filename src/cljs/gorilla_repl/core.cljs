@@ -1,15 +1,17 @@
 (ns gorilla-repl.core
-  (:require [gorilla-repl.events]
-            [gorilla-repl.views :as v]
-            [reagent.core :as ra]
-            [secretary.core :as secretary]
-            [cemerick.url :as url]
-            [re-frame.core :refer [dispatch dispatch-sync]]
-            [gorilla-repl.editor :as editor]
-            [gorilla-repl.routes :as routes]
-            [gorilla-repl.nrepl-kernel :as nrepl]
-            [gorilla-repl.browser-kernel :as brwrepl]
-            [clojure.string :as str]))
+  (:require 
+   [gorilla-repl.events]
+   
+   [gorilla-repl.views :as v]
+   [reagent.core :as ra]
+   [secretary.core :as secretary]
+   [cemerick.url :as url]
+   [re-frame.core :refer [dispatch dispatch-sync]]
+   [gorilla-repl.editor :as editor]
+   [gorilla-repl.routes :as routes]
+   [gorilla-repl.nrepl-kernel :as nrepl]
+   [gorilla-repl.browser-kernel :as brwrepl]
+   [clojure.string :as str]))
 
 (defn mount-root
   []
