@@ -59,7 +59,8 @@
                       :nrepl-middleware  ["cemerick.piggieback/wrap-cljs-repl"
                                           "cider.nrepl/cider-middleware"
                                           ;; "dirac.nrepl/middleware"
-                                          "refactor-nrepl.middleware/wrap-refactor"]
+                                          ;; "refactor-nrepl.middleware/wrap-refactor"
+                                          ]
                       :css-dirs          ["resources/gorilla-repl-clientcss"]
                       ;; https://github.com/bhauman/lein-figwheel/wiki/Running-figwheel-in-a-Cursive-Clojure-REPL
                       :open-file-command "open-in-intellij"

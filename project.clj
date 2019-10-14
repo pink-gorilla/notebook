@@ -66,8 +66,9 @@
                  [hiccup "1.0.5"]
                  [environ "1.1.0"]
                  [com.stuartsierra/component "0.3.2"]
-                 [org.clojure/clojurescript "1.9.293"
-                  :scope "provided"]
+                 [org.clojure/clojurescript "1.9.293"  :scope "provided"]
+                 ;; https://github.com/bhauman/lein-figwheel/issues/612
+                 ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
                  [secretary "1.2.3"]
                  [cljsjs/parinfer "1.8.1-0"]
                  ;; Still helpful for externs!
@@ -115,7 +116,6 @@
   ;; :aot [gorilla-repl.servlet]
 
   ;; :jvm-opts ["-Xmx1g"]
-
   :java-source-paths ["src/java"]
   :source-paths ["src/clj" "src/cljc" "env/prod/clj"]
   :test-paths ["test/clj"]
@@ -228,8 +228,8 @@
                                         ;; [cider/cider-nrepl "0.14.0"]
                                         [org.clojure/tools.namespace "0.3.0-alpha2"
                                          :exclusions [org.clojure/tools.reader]]
-                                        [refactor-nrepl "2.2.0"
-                                         :exclusions [org.clojure/clojure]]]
+                                        ;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
+                                        ]
 
                        :injections     [(require 'pjstadig.humane-test-output)
                                         (pjstadig.humane-test-output/activate!)]
