@@ -9,6 +9,7 @@
   (:require [ring.middleware.keyword-params :as keyword-params]
             [ring.middleware.cors :refer [wrap-cors]]
             [ring.middleware.params :as params]
+            [ring.middleware.defaults :refer [api-defaults site-defaults wrap-defaults]]
     ;; [ring.middleware.json :as json]
             [ring.middleware.format :refer [wrap-restful-format]]
             [ring.util.response :as res]
@@ -30,6 +31,7 @@
 (defn wrap-api-handler
   [handler]
   (-> handler
+      (wrap-defaults api-defaults)
       (keyword-params/wrap-keyword-params)
       (params/wrap-params)
       (wrap-restful-format :formats [:json :transit-json :edn])
