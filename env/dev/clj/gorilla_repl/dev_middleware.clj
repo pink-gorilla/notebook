@@ -2,13 +2,13 @@
   (:require
     [gorilla-repl.route :as r]
     [compojure.core :as compojure]
-    [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+    [ring.middleware.defaults :refer [api-defaults wrap-defaults]]
     [prone.middleware :refer [wrap-exceptions]]
     [ring.middleware.reload :refer [wrap-reload]]))
 
 (defn wrap-middleware [handler]
   (-> handler
-      (wrap-defaults site-defaults)
+      (wrap-defaults api-defaults)
       wrap-exceptions
       wrap-reload))
 
