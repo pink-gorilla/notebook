@@ -227,13 +227,16 @@
                         (into {}))
           segment-order (->> segs
                              (map #(:id %))
-                             (into []))]
+                             (into []))
+          save (assoc (:save db) :filename filename)]
       (assoc db :worksheet
                 {:segments             segments
                  :segment-order        segment-order
                  :url                  filename
                  :queued-code-segments #{}
-                 :active-segment       nil}))))
+                 :active-segment       nil}
+                :save
+                save))))
 
 
 (reg-event-db
