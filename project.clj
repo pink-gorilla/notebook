@@ -92,7 +92,12 @@
                  ;; [com.rpl/specter "0.13.2"]
                  [clojail "1.0.6"]
                  [com.cemerick/piggieback "0.2.1"]
-                 [com.cemerick/pomegranate "0.3.1"]]
+                 [com.cemerick/pomegranate "0.3.1"]
+                 
+                 [org.clojars.deas/gorilla-renderable "2.1.0"]
+                 [org.clojars.deas/gorilla-plot "0.2.0"]
+                 
+                 ]
 
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.4"]
