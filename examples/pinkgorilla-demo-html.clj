@@ -6,48 +6,32 @@
 
 ;; @@
 (ns demo-html
-  (:require [pinkgorilla.plugins.hickup :refer [html!]]))
+  (:require [pinkgorilla.ui.hickup :refer [html!]]))
 ;; @@
-;; ->
-;;; 
-;; <-
 ;; =>
 ;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
 ;; <=
 
 ;; @@
-(html! [:h4 "hello, world"])
+(html! [:div
+         [:h4 "hello"] 
+         [:div {:style "color:green;font-weight:bold"} "World!"]])
+         
 ;; @@
-;; ->
-;;; 
-;; <-
 ;; =>
-;;; ["^ ","~:type","html","~:content","<h4>hello, world</h4>"]
+;;; ["^ ","~:type","html","~:content","<div><h4>hello</h4><div style=\"color:green;font-weight:bold\">World!</div></div>"]
 ;; <=
 
 ;; @@
-(html! [:ol 
-        [:li "The Pinkie"]
-        [:li "The Pinkie and the Brain"] 
-        [:li "brain brain brain"]
-        [:li "What are we doing today?"]])        
+(html! 
+  [:ol 
+    [:li "The Pinkie"]
+    [:li "The Pinkie and the Brain"]
+    [:li "brain brain brain"]
+    [:li "What are we doing today?"]])
 ;; @@
-;; ->
-;;; 
-;; <-
 ;; =>
 ;;; ["^ ","~:type","html","~:content","<ol><li>The Pinkie</li><li>The Pinkie and the Brain</li><li>brain brain brain</li><li>What are we doing today?</li></ol>"]
-;; <=
-
-;; @@
-(html! [:ol])      
-             
-;; @@
-;; ->
-;;; 
-;; <-
-;; =>
-;;; ["^ ","~:type","html","~:content","<ol></ol>"]
 ;; <=
 
 ;; @@
@@ -55,6 +39,9 @@
 (comment 
   (map #(assoc {} :a %)  (range 10)))
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
 ;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
 ;; <=
@@ -62,3 +49,6 @@
 ;; @@
 
 ;; @@
+;; ->
+;;; 
+;; <-

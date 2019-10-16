@@ -1,4 +1,4 @@
-(ns pinkgorilla.plugins.vega
+(ns pinkgorilla.ui.vega
   "plugin to render vega-charts in pink-gorilla
    (TODO: move to own library)
 "
@@ -15,25 +15,26 @@
 (def require-string
   "
 <div>
-  <script data-main='scripts/main' src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'>     </script>
-
-  <div id='uuid-%s'></div>
+  <script data-main='scripts/main' src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'></script>
+  <div id='uuid-%s'> </div>
   <script>
-  requirejs.config({
-    baseUrl: 'https://cdn.jsdelivr.net/npm/',
-    paths: {
-      'vega-embed':  'vega-embed@3?noext',
-      'vega-lib': 'vega-lib?noext',
-      'vega-lite': 'vega-lite@2?noext',
-      'vega': 'vega@3?noext'
-    }
-  });
-  require(['vega-embed'], function(vegaEmbed) {
-    let spec = %s;
-    vegaEmbed('#uuid-%s', spec, {defaultStyle:true}).catch(console.warn);
+     console.log('bongo.')
+     requirejs.config({
+       baseUrl: 'https://cdn.jsdelivr.net/npm/',
+       paths: {
+         'vega-embed':  'vega-embed@3?noext',
+         'vega-lib': 'vega-lib?noext',
+         'vega-lite': 'vega-lite@2?noext',
+         'vega': 'vega@3?noext'
+       }
+     });
+     require(['vega-embed'], function(vegaEmbed) {
+        let spec = %s;
+        (console.log 'rendering vega spec: ' spec);
+        vegaEmbed('#uuid-%s', spec, {defaultStyle:true}).catch(console.warn);
     }, function(err) {
-    console.log('Failed to load');
-  });
+        console.log('Failed to load');
+    });
   </script>
 </div>
   ")
@@ -64,8 +65,8 @@
    (embed spec {})))
 
 
-(defrecord Vega [specs])
-(extend-type Vega
+(defrecord Vega2 [specs])
+(extend-type Vega2
   Renderable
   (render [self]
    {:type :html
@@ -74,11 +75,11 @@
     }
    ))
 
-(defn vega! [spec]
+(defn vega2! [spec]
   "renders vega/vega-lite specification to a gorilla cell
    syntactical sugar only
    easier to use than to use (Vega. spec)"
-  (Vega. spec))
+  (Vega2. spec))
 
 
 
