@@ -11,11 +11,15 @@
 ;; This implementation uses reify. This means we do not need a dedicated defrecord to get the rendering done.
 ;; So this kind of structure is cleaner.
 (defn html! [hickup-data]
-  "renders hickup as html in a gorilla cell"
+  "renders html to aa gorilla cell
+   if (type string) assumes it is valid html and renders as is
+   otherwise will assume it is valid hickup syntax and render hickup syntax"
   (reify Renderable
     (render [_]
       {:type :html
-       :content (hiccup.core/html hickup-data)
+       :content  (if (string? hickup-data)
+                   hickup-data
+                   (hiccup.core/html hickup-data))
        ;:value (pr-str self) ; DO NOT SET VALUE; this will fuckup loading. (at least in original gorilla)
        })))
 
