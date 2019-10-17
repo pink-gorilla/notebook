@@ -24,17 +24,18 @@
                                 logf tracef debugf infof warnf errorf fatalf reportf
                                 spy get-env log-env)]
 
-            
+
             [gorilla-repl.output.hack :refer [temp-comp-hack]]
             [gorilla-repl.output.mathjax :refer [queue-mathjax-rendering]]
             [gorilla-repl.output.core :refer [output-fn]]
 
             [gorilla-repl.dialog.save :refer [save-dialog]]
             [gorilla-repl.dialog.palette :refer [palette-dialog]]
-            
+
             [gorilla-repl.worksheet.core :refer [worksheet]]
-            
-            ))
+
+            ;widgets are only included here so they get compiled to the bundle.js
+            [widget.hello]))
 
 
 
