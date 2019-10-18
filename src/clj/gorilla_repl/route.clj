@@ -4,14 +4,9 @@
             [compojure.core :as compojure]
             [pinkgorilla.middleware.cider :as cider]
     ;; [gorilla-middleware.cljs :as cljs]
-            [gorilla-repl.websocket-relay :as ws-relay]
-
-          ; this is needed to bring the render implementations into scope
-          ; [gorilla-repl.renderer :as renderer]       
-            [pinkgorilla.ui.hiccup_renderer :as renderer] 
-            [pinkgorilla.middleware.render-values]
-          ;  [pinkgorilla.ui.gorilla-renderable]
-            
+            [gorilla-repl.jetty9-ws-relay :as ws-relay]
+    ; [gorilla-repl.renderer :as renderer]            ; this is needed to bring the render implementations into scope
+            [pinkgorilla.ui.hiccup_renderer :as renderer]     ; this is needed to bring the render implementations into scope
             [gorilla-repl.handle :as handle]))
 
 ;; TODO Somebody clean up the routes!
@@ -23,9 +18,9 @@
    (GET (str prefix "config") [] (handle/wrap-api-handler handle/config))
    (GET (str prefix ":document.html") [document] (partial handle/document-utf8 (str document ".html")))])
 
-(defn create-repl-routes
-  [prefix receive-fn]
-  [(GET (str prefix "repl") [] (ws-relay/repl-ring-handler receive-fn))])
+#_(defn create-repl-routes
+    [prefix receive-fn]
+    [(GET (str prefix "repl") [] (ws-relay/jetty-repl-ring-handler receive-fn))])
 
 
 (defn create-resource-routes
@@ -38,16 +33,16 @@
    (route/files (str prefix "project-files") {:root "."})
    (route/not-found "Bummer, not found")])
 
-(def handler (atom cider/cider-handler #_cljs/cljs-handler))
+(def nrepl-handler (atom cider/cider-handler #_cljs/cljs-handler))
 (def default-api-routes (create-api-routes "/"))
-(def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem handler)))
-(def remote-repl-routes (create-repl-routes "/" ws-relay/on-receive-net))
+#_(def default-repl-routes (create-repl-routes "/" (partial ws-relay/on-receive-mem nrepl-handler)))
+#_(def remote-repl-routes (create-repl-routes "/" ws-relay/on-receive-net))
 (def default-resource-routes (create-resource-routes "/"))
 (def default-handler (apply compojure/routes (concat default-api-routes
-                                                     default-repl-routes
+                                                     ;; default-repl-routes
                                                      default-resource-routes)))
 (def remote-repl-handler (apply compojure/routes (concat default-api-routes
-                                                         remote-repl-routes
+                                                         ;; remote-repl-routes
                                                          default-resource-routes)))
 
 ;; Used by uberwar

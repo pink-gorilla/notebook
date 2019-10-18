@@ -1,9 +1,9 @@
 (ns gorilla-repl.nrepl
-  (:require [clojure.tools.nrepl.server :as srv]
+  (:require [nrepl.server :as srv]
             [com.stuartsierra.component :as component]
             [clojure.tools.logging :as log]
             [pinkgorilla.middleware.cider :as ci]
-            [clojure.tools.nrepl :as nrepl]
+            [nrepl.core :as nrepl]
             [cider.nrepl :as cider]))
 
 

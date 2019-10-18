@@ -3,9 +3,9 @@
   (:require                                                 ;; [cheshire.core :as json]
     [clojure.data.json :as json]
     [clojure.walk :as w]
-    [clojure.tools.nrepl.server :as nrepl-server]
-    [clojure.tools.nrepl :as nrepl]
-    [clojure.tools.nrepl [transport :as transport]]
+    [nrepl.server :as nrepl-server]
+    [nrepl.core :as nrepl]
+    [nrepl [transport :as transport]]
     [pinkgorilla.middleware.cider :as gch]
     [clojure.tools.logging :as log :refer (info)]
     [clojure.pprint :as pp])

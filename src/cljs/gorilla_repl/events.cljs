@@ -1,14 +1,14 @@
 (ns gorilla-repl.events
   (:require
-   [gorilla-repl.db :as db :refer [initial-db]]
-   [gorilla-repl.worksheet-parser]
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-   [gorilla-repl.editor :as editor]
-   [gorilla-repl.nrepl-kernel :as nrepl]
-   [gorilla-repl.routes :as routes]
-   [cljsjs.mousetrap]
-   [cljsjs.mousetrap-global-bind]
-   [cljs.spec :as s]
+    [gorilla-repl.db :as db :refer [initial-db]]
+    [gorilla-repl.worksheet-parser]
+    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
+    [gorilla-repl.editor :as editor]
+    [gorilla-repl.nrepl-kernel :as nrepl]
+    [gorilla-repl.routes :as routes]
+    [cljsjs.mousetrap]
+    [cljsjs.mousetrap-global-bind]
+    [clojure.spec.alpha :as s]
     ;; [cemerick.url :as url]
    [clojure.string :as str]
    [goog.crypt.base64 :as b64]
@@ -22,7 +22,7 @@
    [ajax.core :as ajax :refer [GET POST]]
    [pinkgorilla.newnotebook :refer [create-new-worksheet]]
    )
-  
+
   )
 
 (defn text-matches-re
@@ -109,7 +109,6 @@
   :initialize-new-worksheet
   (fn [db _]
       (assoc db :worksheet (create-new-worksheet))))
-
 
 
 (defn display-message

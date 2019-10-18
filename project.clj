@@ -1,8 +1,8 @@
-(defproject org.clojars.deas/gorilla-repl-ng "0.3.7-SNAPSHOT"
+(defproject org.pinkgorilla/gorilla-notebook "0.4.0-SNAPSHOT"
   :description "A rich REPL for Clojure in the notebook style."
-  :url "https://github.com/deas/gorilla-repl"
+  :url "https://github.com/pink-gorilla/gorilla-notebook"
   :license {:name "MIT"}
-  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
+  :dependencies [[org.clojure/clojure "1.10.1"]
                  ;; [org.clojure/clojure "1.10.1"]
                  ;; async/reader overrides - clojure(script) 1.10 WIP
                  [org.clojure/core.async "0.4.500"]
@@ -11,13 +11,13 @@
                  ;; [ring/ring-json "0.4.0"]
                  [org.clojure/data.json "0.2.6"]
                  [http-kit "2.2.0"]
-                 [cider/cider-nrepl "0.14.0"]
-                 [org.clojure/tools.nrepl "0.2.12"]
+                 [cider/cider-nrepl "0.22.4"]
+                 [nrepl "0.6.0"]
+                 ;; [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
-                 ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable, 
-                 [pinkgorilla.ui.gorilla-renderable "2.0.10"] ; 2019-10-18 awb99 added instead of gorilla-plot
-                 [pinkgorilla.ui.gorilla-middleware "0.1.7"] ; moddleware depends on gorilla-renderable!
-                 
+                 ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable,
+                 [pinkgorilla.ui.gorilla-renderable "2.0.12"] ; 2019-10-18 awb99 added instead of gorilla-plot
+                 [org.pinkgorilla/gorilla-middleware "0.2.0"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.22"]
                  [ch.qos.logback/logback-core "1.1.8"]
@@ -25,7 +25,8 @@
                  [com.taoensso/timbre "4.8.0"]
                  ;; Things get very noise with slf4j-timbre - needs configuration
                  ;; [com.fzakaria/slf4j-timbre "0.3.2"]
-                 [cljs-ajax "0.5.8"]
+                 ;; [cljs-ajax "0.5.8"]
+                 [cljs-ajax "0.8.0"]
                  ;; goog.dom should be enough
                  ;; [enfocus "2.1.1"]
                  [prismatic/dommy "1.1.0"]
@@ -58,22 +59,22 @@
                  [com.cemerick/url "0.1.1"]
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.2"]
                  [org.clojure/tools.cli "0.3.5"]
-                 [ring "1.5.1"
-                  :exclusions [ring/ring-jetty-adapter]]
-                 [ring-cors "0.1.9"]
-                 [ring/ring-defaults "0.2.2"
+                 [ring "1.7.1"
+                  ;; :exclusions [ring/ring-jetty-adapter]
+                  ]
+                 [ring-cors "0.1.13"]
+                 [ring/ring-defaults "0.3.2"
                   :exclusions [javax.servlet/servlet-api]]
                  ;;  [ring.middleware.logger "0.5.0"]
                  ;; [ring-webjars "0.1.1"]                     ;; Although not matching servlet3 paths
-                 [ring-middleware-format "0.7.0"]
+                 [ring-middleware-format "0.7.4"]
                  [javax.websocket/javax.websocket-api "1.0"]
                  [javax.servlet/javax.servlet-api "3.1.0"]
                  [compojure "1.5.2"]
                  [hiccup "1.0.5"]
                  [environ "1.1.0"]
                  [com.stuartsierra/component "0.3.2"]
-                 [org.clojure/clojurescript "1.9.293"  :scope "provided"]
-                 ;; [org.clojure/clojurescript "1.10.520"  :scope "provided"]
+                 [org.clojure/clojurescript "1.10.520" :scope "provided"]
                  ;; https://github.com/bhauman/lein-figwheel/issues/612
                  ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
                  [secretary "1.2.3"]
@@ -89,20 +90,29 @@
                  [org.danielsz/system "0.3.1"]
                  [jarohen/chord "0.7.0"]
                  [org.clojure/core.match "0.3.0-alpha4"]
-                 [de.otto/tesla-microservice "0.7.0"]
-                 [de.otto/tesla-httpkit "1.0.1"]
+                 [de.otto/tesla-microservice "0.13.1"]
+                 ;; [de.otto/tesla-httpkit "1.0.1"]
+                 ;; Bringing it in here bc that is where the websocket "processors" come in
+                 [com.bhauman/figwheel-repl "0.2.3"
+                  ;; TODO: Trim to bare minimum
+                  ;; :exclusions [*/*]
+                  ]
+                 [de.otto/tesla-jetty "0.2.6"
+                  :exclusions [org.eclipse.jetty/jetty-server]]
                  ;; [com.rpl/specter "0.13.2"]
                  [clojail "1.0.6"]
-                 [com.cemerick/piggieback "0.2.1"]
+                 [cider/piggieback "0.4.2"
+                  :exclusions [org.clojure/clojurescript]]
+                 ;; [com.cemerick/piggieback "0.2.1"]
                  [com.cemerick/pomegranate "0.3.1"]]
 
   :plugins [[lein-environ "1.1.0"]
-            [lein-cljsbuild "1.1.4"]
-            [lein-ring "0.9.7"]
-            [lein-asset-minifier "0.3.0"
+            [lein-cljsbuild "1.1.7"]
+            [lein-ring "0.12.5"]
+            [lein-asset-minifier "0.4.6"
              :exclusions [org.clojure/clojure]]]
 
-  :uberjar-name "gorilla-repl-ng-standalone.jar"
+  :uberjar-name "gorilla-workbook-standalone.jar"
 
   ;; Those websocket exclusions are ugly but needed since "ring uberwar" does
   ;; not honor :provided
@@ -133,12 +143,8 @@
                                     [:cljsbuild :builds :app :compiler :output-dir]
                                     [:cljsbuild :builds :app :compiler :output-to]]
 
-  :minify-assets
-  {:assets
-   {"resources/gorilla-repl-client/gorilla.min.css" "resources/gorilla-repl-client/css"}
-   #_:options #_{:linebreak    80
-                 :optimization :advanced
-                 :externs      ["jquery.min.js"]}}
+  :minify-assets [[:css {:source "resources/gorilla-repl-client/css"
+                         :target "resources/gorilla-repl-client/gorilla.min.css"}]]
 
   :prep-tasks ["javac" "compile" ["cljsbuild" "once"]]
   :env {:production true}
@@ -194,17 +200,22 @@
   :profiles {:dev     {:repl-options   {:init-ns gorilla-repl.repl
                                         :port    4001}
                        :prep-tasks     ^:replace ["javac" "compile"]
-                       :dependencies   [[figwheel-sidecar "0.5.8"]
+                       :dependencies   [[com.bhauman/figwheel-main "0.2.3"]
+                                        [com.bhauman/rebel-readline-cljs "0.1.4"]
+                                        ;; [figwheel-sidecar "0.5.8" :exclusions [org.clojure/tools.nrepl]]
                                         [karma-reporter "2.0.1"]
                                         ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
-                                        [ring/ring-mock "0.3.0"]
-                                        [ring/ring-devel "1.5.1"]
+                                        [ring/ring-mock "0.4.0"]
+                                        [ring/ring-devel "1.7.1"]
                                         [prone "1.1.4"]
-                                        [org.clojure/tools.nrepl "0.2.12"]
+                                        ;; [org.clojure/tools.nrepl "0.2.12"]
+                                        [nrepl "0.6.0"]
                                         ;; Dirac or piggieback - there can only be one of them
                                         [binaryage/dirac "RELEASE"] ;; 0.6.7
-                                        [com.cemerick/piggieback "0.2.1"]
-                                        [lein-doo "0.1.7"]
+                                        [cider/piggieback "0.4.2"
+                                         :exclusions [org.clojure/clojurescript]]
+                                        ;; [com.cemerick/piggieback "0.2.1"]
+                                        [lein-doo "0.1.11"]
                                         [re-frisk "0.3.2"]
                                         [day8.re-frame/test "0.1.3"]
                                         [devcards "0.2.2"
@@ -227,13 +238,13 @@
                                         ;[incanter-gorilla "0.1.0"]  ; 2019-10-18 awb99 removed - is in plugin
                                         [me.lomin/component-restart "0.1.1"]]
 
-                       :source-paths   ^:replace ["src/clj" "src/cljc" "env/dev/clj"]
+                       :source-paths   ^:replace ["src/clj" "src/cljc" "env/dev/clj" "src/cljs" "env/dev/cljs"]
 
                        :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
 
                        :plugins        [[lein-doo "0.1.7"]
                                         ;; [cider/cider-nrepl "0.14.0"]
-                                        [org.clojure/tools.namespace "0.3.0-alpha2"
+                                        [org.clojure/tools.namespace "0.3.1"
                                          :exclusions [org.clojure/tools.reader]]
                                         ;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
                                         ]
@@ -251,8 +262,8 @@
                                         ;; lein doo
                                         ;; Uncaught Error: js/React is missing
                                         {:doo-test {:source-paths ["src/cljs" "src/cljc" "test/cljs"]
-                                                    :compiler     {:main           'gorilla-repl.doo-runner
-                                                                   ;; :main 'gorilla-repl.karma-runner
+                                                    :compiler     {:main           gorilla-repl.doo-runner
+                                                                   ;; :main gorilla-repl.karma-runner
                                                                    :optimizations  :none
                                                                    :source-map     true
                                                                    :output-dir     "target/cljsbuild/gorilla-repl-client/js/doo"

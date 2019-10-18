@@ -2,7 +2,8 @@
   (:require [reagent.core :as r])
   (:require-macros
     ;[cljs.test :refer [is testing]]
-   [devcards.core :as dc :refer [defcard defcard-rg deftest dom-node]]))
+    ;; [devcards.core :as dc :refer [defcard defcard-rg deftest dom-node]]
+   ))
 
 (defn cell [n bit]
   [:div.clock-cell {:class (if (bit-test n bit)

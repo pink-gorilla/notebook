@@ -6,7 +6,7 @@
             [clojure.core.async :refer [go]]
             [gorilla-repl.core :as core]
             [gorilla-repl.figwheel :refer [config]]
-            [figwheel-sidecar.repl-api :as ra :refer [start-figwheel! cljs-repl]]
+            [figwheel.main :as ra :refer [start-figwheel! cljs-repl]]
             [gorilla-repl.system :as gsys])
   (:use                                                     ;; reagent-sample.handler
     ;; ring.server.standalone

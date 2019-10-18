@@ -15,18 +15,11 @@
 (def ^:private dynamic-routes
   (apply compojure/routes
          (concat r/default-api-routes
-                 r/default-repl-routes))
-  #_(wrap-middleware (apply compojure/routes
-                            (concat r/default-api-routes
-                                    r/default-repl-routes))))
-
-#_(def dev-hand (apply compojure/routes
-                     (conj dynamic-routes
-                           r/default-resource-routes)))
+                 #_r/default-repl-routes)))
 
 (def dev-handler (wrap-middleware
                  (apply compojure/routes (concat r/default-api-routes
-                                                 r/default-repl-routes
+                                                 #_r/default-repl-routes
                                                  r/default-resource-routes))))
 
 #_(def dev-handler (apply compojure/routes (concat r/default-api-routes
