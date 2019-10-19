@@ -6,8 +6,11 @@
 
 ;; @@
 (ns demo-html
-  (:require [pinkgorilla.ui.hickup :refer [html! bongo]]))
+  (:require [pinkgorilla.ui.hickup :refer [html!]]))
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
 ;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
 ;; <=
@@ -50,12 +53,21 @@
 ;; <=
 
 ;; @@
-(bongo)
+;; NOT WORKING: scripts can not work inside hickup (this is prevented by react)
+(html! 
+  [:div
+    [:p "go to your webdeveloper tools and check for network trafic; highcharts should load but it does not"]
+    (hiccup.page/include-js "https://code.highcharts.com/highcharts.js")])
+          
+
 ;; @@
 ;; =>
-;;; ["^ ","~:type","html","~:content","<div><p>bongo</p><script src=\"https://code.highcharts.com/highcharts.js\" type=\"text/javascript\"></script></div>"]
+;;; ["^ ","~:type","html","~:content","<div><p>go to your webdeveloper tools and check for network trafic; highcharts should load but it does not</p><script src=\"https://code.highcharts.com/highcharts.js\" type=\"text/javascript\"></script></div>"]
 ;; <=
 
 ;; @@
 
 ;; @@
+;; ->
+;;; 
+;; <-

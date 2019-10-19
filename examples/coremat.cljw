@@ -14,14 +14,34 @@
 (ns condemned-mat
   (:require [clojure.core.matrix :as cm]
             [clojure.core.matrix.dataset :as cd]
+            [pinkgorilla.ui.hickup :refer [html!]]
             [pinkgorilla.ui.core-matrix :refer [mview]]))
-            
+
+
 ;; @@
 ;; ->
 ;;; 
 ;; <-
 ;; =>
 ;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@
+;; This video is great. Core.Matrix is an interface only; it can use multiple implementations. In contrast Python numpy only can use ONE implementation. In the video he brilliantly shows how to do google-style pagerank algorithm just with Matrix operations.
+
+(html! 
+  [:iframe {:width "560" 
+            :height "315" 
+            :src "https://www.youtube.com/embed/_h9TLJtjSJo" 
+            :frameborder "0" 
+            :allow "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+            :allowfullscreen true}])           
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:content","<iframe allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen=\"allowfullscreen\" frameborder=\"0\" height=\"315\" src=\"https://www.youtube.com/embed/_h9TLJtjSJo\" width=\"560\"></iframe>"]
 ;; <=
 
 ;; **

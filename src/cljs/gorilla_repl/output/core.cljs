@@ -5,6 +5,7 @@
    [gorilla-repl.output.latex :refer [output-latex]]
    [gorilla-repl.output.list-like :refer [output-list-like]]
    [gorilla-repl.output.widget :refer [output-widget]]
+   [gorilla-repl.output.jsscript :refer [output-jsscript]]
    ))
 
 ;; 2019 10 16 awb:
@@ -19,4 +20,6 @@
     "list-like" (partial output-list-like output-fn)
     "vega" output-vega
     "latex" output-latex
-    "widget" output-widget))
+    "widget" output-widget
+    "jsscript" output-jsscript
+    ))
