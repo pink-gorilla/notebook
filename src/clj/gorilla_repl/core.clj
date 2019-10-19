@@ -4,9 +4,14 @@
 
 (ns gorilla-repl.core
   (:require [gorilla-repl.handle :as handle]
-    ; [gorilla-repl.renderer :as renderer]            ; this is needed to bring the render implementations into scope
-            [gorilla-repl.hiccup_renderer]     ; this is needed to bring the render implementations into scope
     ;; [gorilla-repl.version :as version]
+            
+            ; [gorilla-repl.renderer :as renderer] ; this is needed to bring the render implementations into scope
+            [pinkgorilla.ui.hiccup_renderer] ; this is needed to bring the render implementations into scope
+            [pinkgorilla.middleware.render-values]
+            ;[pinkgorilla.ui.gorilla-renderable]
+            
+            
             [gorilla-repl.system :as sys]
             [gorilla-repl.cli :as cli]
             [clojure.set :as set]

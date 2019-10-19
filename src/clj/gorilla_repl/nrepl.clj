@@ -2,7 +2,7 @@
   (:require [clojure.tools.nrepl.server :as srv]
             [com.stuartsierra.component :as component]
             [clojure.tools.logging :as log]
-            [gorilla-middleware.cider :as ci]
+            [pinkgorilla.middleware.cider :as ci]
             [clojure.tools.nrepl :as nrepl]
             [cider.nrepl :as cider]))
 

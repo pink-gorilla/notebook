@@ -2,11 +2,16 @@
   (:use compojure.core)
   (:require [compojure.route :as route]
             [compojure.core :as compojure]
-            [gorilla-middleware.cider :as cider]
+            [pinkgorilla.middleware.cider :as cider]
     ;; [gorilla-middleware.cljs :as cljs]
             [gorilla-repl.websocket-relay :as ws-relay]
-    ; [gorilla-repl.renderer :as renderer]            ; this is needed to bring the render implementations into scope
-            [gorilla-repl.hiccup_renderer :as renderer]     ; this is needed to bring the render implementations into scope
+
+          ; this is needed to bring the render implementations into scope
+          ; [gorilla-repl.renderer :as renderer]       
+            [pinkgorilla.ui.hiccup_renderer :as renderer] 
+            [pinkgorilla.middleware.render-values]
+          ;  [pinkgorilla.ui.gorilla-renderable]
+            
             [gorilla-repl.handle :as handle]))
 
 ;; TODO Somebody clean up the routes!

@@ -9,6 +9,12 @@
          '[clojure.pprint :refer [pprint]]
          '[gorilla-repl.figwheel :as gfw :refer [config]]
          ;; '[gorilla-repl.core :as gorilla]
+         
+         ;; awb99:
+         ;'[pinkgorilla.ui.gorilla-renderable] ; Renderable Protocol
+         ;'[gorilla-middleware.render-values] ; Load this library.
+         ;'[pinkgorilla.helper] ; add-dependency
+         
          )
 
 ;; rlwrap lein run -m clojure.main script/figwheel.clj

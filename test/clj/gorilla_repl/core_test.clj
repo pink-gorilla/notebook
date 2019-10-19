@@ -1,6 +1,11 @@
 (ns gorilla-repl.core-test
-  (:require [;; this is needed to bring the render implementations into scope
-             gorilla-repl.hiccup_renderer :as renderer])
+  (:require 
+    ;; this is needed to bring the render implementations into scope
+    [pinkgorilla.ui.hiccup_renderer :as renderer]
+    [pinkgorilla.middleware.render-values]
+   
+   
+   )
   (:use clojure.test))
 
 (defn my-test-fixture [f]

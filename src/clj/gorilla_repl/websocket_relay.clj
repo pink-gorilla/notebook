@@ -10,7 +10,7 @@
             [clojure.tools.nrepl :as nrepl]
             [clojure.tools.nrepl [transport :as transport]]
             [gorilla-repl.nrepl :as gnrepl]
-            [gorilla-middleware.render-values]              ;; it's essential this import comes after the previous one!
+            [pinkgorilla.middleware.render-values]              ;; it's essential this import comes after the previous one!
             [ring.middleware.session :as session]
             [ring.middleware.session.memory :as mem]
             [clojure.data.json :as json]

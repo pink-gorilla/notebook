@@ -6,7 +6,7 @@
     [clojure.tools.nrepl.server :as nrepl-server]
     [clojure.tools.nrepl :as nrepl]
     [clojure.tools.nrepl [transport :as transport]]
-    [gorilla-middleware.cider :as gch]
+    [pinkgorilla.middleware.cider :as gch]
     [clojure.tools.logging :as log :refer (info)]
     [clojure.pprint :as pp])
   #_(:refer [clojure.data.json :rename {write-str generate-string

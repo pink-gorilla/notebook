@@ -1,5 +1,14 @@
 # Gorilla REPL
 
+(defn bongo []
+  (html! [:div
+          [:p "bongo"]
+          (hiccup.page/include-js "https://code.highcharts.com/highcharts.js")          
+          ]))
+ 
+
+
+
 Gorilla is a rich REPL for Clojure in the notebook style. If you're interested
  you should take a look at its [website](http://gorilla-repl.org).
 

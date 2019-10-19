@@ -10,7 +10,7 @@
 
 ;; @@
 (use '[pinkgorilla.helper])
-(pinkgorilla.helper/add-dependencies '[pinkgorilla-ui-core-matrix "0.1.0"]) 
+(pinkgorilla.helper/add-dependencies '[pinkgorilla-ui-core-matrix "0.1.2"]) 
 (ns condemned-mat
   (:require [clojure.core.matrix :as cm]
             [clojure.core.matrix.dataset :as cd]

@@ -14,8 +14,11 @@
                  [cider/cider-nrepl "0.14.0"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
-                 [org.clojars.deas/gorilla-middleware "0.1.2"]
-                 [org.clojars.deas/gorilla-plot "0.2.0"]
+                 ;[org.clojars.deas/gorilla-middleware "0.1.2"]
+                 ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable, 
+                 [pinkgorilla.ui.gorilla-renderable "2.0.7"] ; 2019-10-18 awb99 added instead of gorilla-plot
+                 [pinkgorilla.ui.gorilla-middleware "0.1.7"] ; awb99: this depends on gorilla-renderable!
+                 
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.22"]
                  [ch.qos.logback/logback-core "1.1.8"]
@@ -219,10 +222,10 @@
                                         ;; https://github.com/clojure-numerics/expresso/issues/19
                                         [expresso "0.2.2-SNAPSHOT"]
                                         [instaparse "1.4.5"]
-                                        [aysylu/loom "0.6.0"]
-                                        [loom-gorilla "0.1.0"]
+                                        ;[aysylu/loom "0.6.0"]  ; 2019-10-18 awb99 removed - is in plugin
+                                        ;[loom-gorilla "0.1.0"]  ; 2019-10-18 awb99 removed - is in plugin
                                         [org.clojure/data.xml "0.0.8"]
-                                        [incanter-gorilla "0.1.0"]
+                                        ;[incanter-gorilla "0.1.0"]  ; 2019-10-18 awb99 removed - is in plugin
                                         [me.lomin/component-restart "0.1.1"]]
 
                        :source-paths   ^:replace ["src/clj" "src/cljc" "env/dev/clj"]
