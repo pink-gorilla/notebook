@@ -6,7 +6,7 @@
 
 ;; @@
 (ns demo-html
-  (:require [pinkgorilla.ui.hickup :refer [html!]]))
+  (:require [pinkgorilla.ui.hiccup :refer [html!]]))
 ;; @@
 ;; ->
 ;;; 
@@ -53,7 +53,7 @@
 ;; <=
 
 ;; @@
-;; NOT WORKING: scripts can not work inside hickup (this is prevented by react)
+;; NOT WORKING: scripts can not work inside hiccup (this is prevented by react)
 (html! 
   [:div
     [:p "go to your webdeveloper tools and check for network trafic; highcharts should load but it does not"]
