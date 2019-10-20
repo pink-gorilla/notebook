@@ -10,9 +10,9 @@
     ;; TODO : vega 2.6 does  not quite work yet - throw spec at http://vega.github.io/vega-editor/?mode=vega
     ;; https://github.com/vega/vega/wiki/Upgrading-to-2.0
     ;; data. prefix removed
-            [cljsjs.d3]
-            [cljsjs.d3geo]
-            [cljsjs.vega]
+            ;[cljsjs.d3]    2019-10-20 awb99 removed as it fucks up the new vega
+            ;[cljsjs.d3geo]  2019-10-20 awb99 removed as it fucks up the new vega
+            ;[cljsjs.vega] 2019-10-20 awb99 removed as it fucks up the new vega
             [gorilla-repl.subs]
             [reagent.core :as reagent :refer [atom]]
             [re-frame.core :refer [subscribe dispatch dispatch-sync]]

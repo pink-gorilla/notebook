@@ -10,6 +10,8 @@ MathJax.Hub.Queue = function(item) {};
 // Node/Webpack externs for advanced optimization - bare minimum
 // externs inferences should be there soon
 // cljsjs/vega has more
-var vg = {};
-vg.parse.spec = function (spec, callback) {};
+
+// 2019 10 20 awb99: remove this, as we use requirejs for vega
+//var vg = {};
+//vg.parse.spec = function (spec, callback) {};
 

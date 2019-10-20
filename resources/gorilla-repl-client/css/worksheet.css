@@ -148,10 +148,10 @@ div.console-text pre {
     white-space: pre-wrap;
 }
 
-div.vega {
+/* div.vega {
     vertical-align: middle;
     display: inline-block;
-}
+}*/
 
 canvas.marks {
     display: inline-block;

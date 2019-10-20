@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html id="document">
+<head>
+     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+     <script src="https://cdn.jsdelivr.net/npm/vega-lite@3"></script>
+     <script src="https://cdn.jsdelivr.net/npm/vega-embed@5"></script>
+</head>
+
+<body>
+
+   <p> VEGA PLOT with direct script references </p>
+   <div id="myplotdirect"></div>
+    <script>
+        vegaEmbed(
+          '#myplotdirect',
+          'https://vega.github.io/vega/examples/bar-chart.vg.json'
+        );
+    </script>
+</body>
