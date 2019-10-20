@@ -105,11 +105,11 @@
         src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'>
 </script>
 
-<!-- awb99: loaded javascript snippets from the workbook need to be added to the dom somewhere. 
+<!-- loaded javascript snippets from the workbook need to be added to the dom somewhere. 
      We add them to #jsscript-root -->
 <div id="jsscript-root"> </div>
 
-<!-- awb99: test for require-js-render -->
+<!-- test for require-js-render -->
 <div id="ABC-DEMO-123"></div>
 
 <script>
@@ -117,15 +117,19 @@
     // RequireJS configuration
     // load
     require.config({
+       urlArgs: "bust=" + (new Date()).getTime(), // awb99: For development cache busting, see: https://stackoverflow.com/questions/8315088/prevent-requirejs-from-caching-required-scripts
        paths: {
           demo: 'js/requiredemo',
           loadstring: 'js/loadstring', // plugin to load modules from strings
+
           // vega: 'https://cdn.jsdelivr.net/npm/vega-embed@3?noext'
           //mega: "https://cdn.jsdelivr.net/npm/vega-embed@5"
           'vega-embed':  'https://cdn.jsdelivr.net/npm/vega-embed@3?noext',
           'vega-lib': 'https://cdn.jsdelivr.net/npm/vega-lib?noext',
           'vega-lite': 'https://cdn.jsdelivr.net/npm/vega-lite@2?noext',
-          'vega': 'https://cdn.jsdelivr.net/npm/vega@3?noext'
+          'vega': 'https://cdn.jsdelivr.net/npm/vega@3?noext',
+
+          'highcharts': 'https://code.highcharts.com/7.0.3/highcharts' // .js extension is added automatically 
        }
     });
 
