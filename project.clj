@@ -15,7 +15,7 @@
                  [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
                  ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable, 
-                 [pinkgorilla.ui.gorilla-renderable "2.0.9"] ; 2019-10-18 awb99 added instead of gorilla-plot
+                 [pinkgorilla.ui.gorilla-renderable "2.0.10"] ; 2019-10-18 awb99 added instead of gorilla-plot
                  [pinkgorilla.ui.gorilla-middleware "0.1.7"] ; moddleware depends on gorilla-renderable!
                  
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
