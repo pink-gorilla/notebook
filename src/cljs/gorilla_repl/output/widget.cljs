@@ -44,17 +44,14 @@
         ]
         (reagent/create-class 
          {:display-name "output-widget"
-          :reagent-render (fn []
-                            [:div.widget
-                             
-                             (if (nil? widget)
-                               [widget-not-found widget-name]
-                               (if (nil? initial-state)
-                               [widget]
-                                 ;[widget.hello/world]
-                               
-                                 ;[widget.hello/world]
-                                [widget state]
-                                 )
-                               )
-                             [:p (str "widget: " widget-name " initial-state: " @state)]])})))
+          :reagent-render 
+          (fn []
+            [:div.widget
+             (if (nil? widget)
+               [widget-not-found widget-name]
+               (if (nil? initial-state)
+                 [widget] ;[widget.hello/world]
+                 [widget state] ;[widget.hello/world]
+                 )
+               )
+             [:p (str "widget: " widget-name " initial-state: " @state)]])})))

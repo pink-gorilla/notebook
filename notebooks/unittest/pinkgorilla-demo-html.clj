@@ -16,9 +16,10 @@
 ;; <=
 
 ;; @@
-(html! [:div
-         [:h4 "hello"]
-         [:div {:style "color:green;font-weight:bold"} "World!"]])
+(html!
+  [:div
+    [:h4 "hello"]
+    [:div {:style "color:green;font-weight:bold"} "World!"]])
 ;; @@
 ;; ->
 ;;;
@@ -61,6 +62,9 @@
 
 
 ;; @@
+;; ->
+;;;
+;; <-
 ;; =>
 ;;; ["^ ","~:type","html","~:content","<div><p>go to your webdeveloper tools and check for network trafic; highcharts should load but it does not</p><script src=\"https://code.highcharts.com/highcharts.js\" type=\"text/javascript\"></script></div>"]
 ;; <=
