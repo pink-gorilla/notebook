@@ -1,25 +1,29 @@
 (ns gorilla-repl.events
   (:require
-    [gorilla-repl.db :as db :refer [initial-db]]
-    [gorilla-repl.worksheet-parser]
-    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-    [gorilla-repl.editor :as editor]
-    [gorilla-repl.nrepl-kernel :as nrepl]
-    [gorilla-repl.routes :as routes]
-    [cljsjs.mousetrap]
-    [cljsjs.mousetrap-global-bind]
-    [cljs.spec :as s]
+   [gorilla-repl.db :as db :refer [initial-db]]
+   [gorilla-repl.worksheet-parser]
+   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
+   [gorilla-repl.editor :as editor]
+   [gorilla-repl.nrepl-kernel :as nrepl]
+   [gorilla-repl.routes :as routes]
+   [cljsjs.mousetrap]
+   [cljsjs.mousetrap-global-bind]
+   [cljs.spec :as s]
     ;; [cemerick.url :as url]
-    [clojure.string :as str]
-    [goog.crypt.base64 :as b64]
-    [clojure.walk :as w]
-    [day8.re-frame.http-fx]
-    [day8.re-frame.undo :as undo :refer [undoable]]
-    [taoensso.timbre :as timbre
-     :refer-macros (log trace debug info warn error fatal report
-                        logf tracef debugf infof warnf errorf fatalf reportf
-                        spy get-env log-env)]
-    [ajax.core :as ajax :refer [GET POST]]))
+   [clojure.string :as str]
+   [goog.crypt.base64 :as b64]
+   [clojure.walk :as w]
+   [day8.re-frame.http-fx]
+   [day8.re-frame.undo :as undo :refer [undoable]]
+   [taoensso.timbre :as timbre
+    :refer-macros (log trace debug info warn error fatal report
+                       logf tracef debugf infof warnf errorf fatalf reportf
+                       spy get-env log-env)]
+   [ajax.core :as ajax :refer [GET POST]]
+   [pinkgorilla.newnotebook :refer [create-new-worksheet]]
+   )
+  
+  )
 
 (defn text-matches-re
   [val item]
@@ -27,35 +31,7 @@
         re (re-pattern (str res ".*"))]
     (re-matches re (str/lower-case (:text item)))))
 
-(def hip-adjective ["affectionate" "amiable" "arrogant" "balmy" "barren" "benevolent"
-                    "billowing" "blessed" "breezy" "calm" "celestial" "charming" "combative"
-                    "composed" "condemned" "divine" "dry" "energized" "enigmatic" "exuberant"
-                    "flowing" "fluffy" "fluttering" "frightened" "fuscia" "gentle" "greasy"
-                    "grieving" "harmonious" "hollow" "homeless" "icy" "indigo" "inquisitive"
-                    "itchy" "joyful" "jubilant" "juicy" "khaki" "limitless" "lush" "mellow"
-                    "merciful" "merry" "mirthful" "moonlit" "mysterious" "natural" "outrageous"
-                    "pacific" "parched" "placid" "pleasant" "poised" "purring" "radioactive"
-                    "resilient" "scenic" "screeching" "sensitive" "serene" "snowy" "solitary"
-                    "spacial" "squealing" "stark" "stunning" "sunset" "talented" "tasteless"
-                    "teal" "thoughtless" "thriving" "tranquil" "tropical" "undisturbed" "unsightly"
-                    "unwavering" "uplifting" "voiceless" "wandering" "warm" "wealthy" "whispering"
-                    "withered" "wooden" "zealous"])
 
-(def hip-nouns ["abyss" "atoll" "aurora" "autumn" "badlands" "beach" "briars" "brook" "canopy"
-                "canyon" "cavern" "chasm" "cliff" "cove" "crater" "creek" "darkness" "dawn"
-                "desert" "dew" "dove" "drylands" "dusk" "farm" "fern" "firefly" "flowers" "fog"
-                "foliage" "forest" "galaxy" "garden" "geyser" "grove" "hurricane" "iceberg" "lagoon"
-                "lake" "leaves" "marsh" "meadow" "mist" "moss" "mountain" "oasis" "ocean" "peak"
-                "pebble" "pine" "plateau" "pond" "reef" "reserve" "resonance" "sanctuary" "sands"
-                "shelter" "silence" "smokescreen" "snowflake" "spring" "storm" "stream" "summer"
-                "summit" "sunrise" "sunset" "sunshine" "surf" "swamp" "temple" "thorns" "tsunami"
-                "tundra" "valley" "volcano" "waterfall" "willow" "winds" "winter"])
-
-(defn make-hip-nsname
-  []
-  (let [adj-index (-> (* (count hip-adjective) (rand)) js/Math.floor)
-        noun-index (-> (* (count hip-nouns) (rand)) js/Math.floor)]
-    (str (get hip-adjective adj-index) "-" (get hip-nouns noun-index))))
 
 (defn default-error-handler
   [{:keys [status status-text]}]
@@ -132,23 +108,7 @@
 (reg-event-db
   :initialize-new-worksheet
   (fn [db _]
-    (let [init-free-segment
-          (db/create-free-segment
-            (str "# Gorilla REPL\n\nWelcome to gorilla :-)\n\nShift + enter evaluates code. "
-                 "Hit " (db/ck) "+g twice in quick succession or click the menu icon (upper-right corner) "
-                 "for more commands ...\n\nIt's a good habit to run each worksheet in its own namespace: feel "
-                 "free to use the declaration we've provided below if you'd like."))
-          init-code-segment
-          (db/create-code-segment
-            (str "(ns " (make-hip-nsname) "\n  (:require [gorilla-plot.core :as plot]))"))
-          worksheet {:ns                   nil
-                     :segments             {}
-                     :segment-order        []
-                     :queued-code-segments #{}
-                     :active-segment       nil}]
-      (assoc db :worksheet (-> worksheet
-                               (db/insert-segment-at 0 init-free-segment)
-                               (db/insert-segment-at 1 init-code-segment))))))
+      (assoc db :worksheet (create-new-worksheet))))
 
 
 
