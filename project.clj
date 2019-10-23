@@ -14,10 +14,9 @@
                  [cider/cider-nrepl "0.14.0"]
                  [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
-                 ;[org.clojars.deas/gorilla-middleware "0.1.2"]
                  ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable, 
-                 [pinkgorilla.ui.gorilla-renderable "2.0.8"] ; 2019-10-18 awb99 added instead of gorilla-plot
-                 [pinkgorilla.ui.gorilla-middleware "0.1.7"] ; awb99: this depends on gorilla-renderable!
+                 [pinkgorilla.ui.gorilla-renderable "2.0.10"] ; 2019-10-18 awb99 added instead of gorilla-plot
+                 [pinkgorilla.ui.gorilla-middleware "0.1.7"] ; moddleware depends on gorilla-renderable!
                  
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.22"]
@@ -81,9 +80,9 @@
                  [cljsjs/parinfer "1.8.1-0"]
                  ;; Still helpful for externs!
                  [cljsjs/codemirror "5.21.0-2"]
-                 [cljsjs/vega "2.6.0-0"]
-                 [cljsjs/d3geo "0.2.15-2"]
-                 [cljsjs/d3 "3.5.16-0"]
+                 ;[cljsjs/vega "2.6.0-0"]  2019-10-20 awb99 removed because it fucks up new vega
+                 ;[cljsjs/d3geo "0.2.15-2"] 2019-10-20 awb99 removed because it fucks up new vega
+                 ;[cljsjs/d3 "3.5.16-0"] 2019-10-20 awb99 removed because it fucks up new vega
                  [cljsjs/mousetrap "1.5.3-0"]
                  [cljsjs/marked "0.3.5-0"]
                  [com.taoensso/sente "1.11.0"]

@@ -6,18 +6,19 @@
 ;;; 2019-10-19: adaptiation of core-matrix visualsation for pink-gorilla. shameless fork from (http://viewer.gorilla-repl.org/view.html?source=github&user=shark8me&repo=clojure-machinelearning-cookbook&path=core.matrix-gorilla/ws/coremat.cljw)
 ;;; 
 ;;; This page discusses the use of the [core-matrix-gorilla](https://github.com/shark8me/core-matrix-gorilla) plugin, which enables use to view [core.matrix](https://github.com/mikera/core.matrix) datasets in Gorilla-repl worksheets.
+;;; 
+;;; ** THE LAST CELL SHOULD DISPLAY AND NOW BRINGS AN ERROR - IS THIS DUE TO THE CLOJURE UPDATE ?? **
 ;; **
 
 ;; @@
 (use '[pinkgorilla.helper])
-(pinkgorilla.helper/add-dependencies '[pinkgorilla-ui-core-matrix "0.1.2"]) 
+(pinkgorilla.helper/add-dependencies '[pinkgorilla-ui-core-matrix "0.1.3"]) 
 (ns condemned-mat
-  (:require [clojure.core.matrix :as cm]
-            [clojure.core.matrix.dataset :as cd]
-            [pinkgorilla.ui.hickup :refer [html!]]
-            [pinkgorilla.ui.core-matrix :refer [mview]]))
-
-
+  (:require 
+    [clojure.core.matrix :as cm]
+    [clojure.core.matrix.dataset :as cd]
+    [pinkgorilla.ui.hiccup :refer [html!]]
+    [pinkgorilla.ui.core-matrix :refer [mview]]))
 ;; @@
 ;; ->
 ;;; 
@@ -97,16 +98,13 @@ tds
 (let [cnames (cd/column-names tds)]
   (-> tds
       ;;choose column that are even numbered
-  	(cd/select-columns (filter even? cnames))
+    (cd/select-columns (filter even? cnames)
       ;;show only the first 2 rows
-      (mview {:nrows 2})))
+      (mview {:nrows 2}))))
 ;; @@
 ;; ->
 ;;; 
 ;; <-
-;; =>
-;;; ["^ ","~:type","list-like","~:open","<center><table>","~:close","</table></center>","~:separator","\n","~:items",[["^ ","^0","list-like","^1","<tr><th>","^2","</th></tr>","^3","</th><th>","^4",[["^ ","^0","html","~:content",["span",["^ ","~:class","clj-long"],"0"],"~:value","0"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"2"],"^7","2"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"4"],"^7","4"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"6"],"^7","6"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"8"],"^7","8"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"10"],"^7","10"]],"^7","[0 2 4 6 8 10]"],["^ ","^0","list-like","^1","<tr><td>","^2","</td></tr>","^3","</td><td>","^4",[["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"0"],"^7","0"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"2"],"^7","2"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"4"],"^7","4"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"6"],"^7","6"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"8"],"^7","8"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"10"],"^7","10"]],"^7","[0 2 4 6 8 10]"],["^ ","^0","list-like","^1","<tr><td>","^2","</td></tr>","^3","</td><td>","^4",[["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"12"],"^7","12"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"14"],"^7","14"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"16"],"^7","16"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"18"],"^7","18"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"20"],"^7","20"],["^ ","^0","html","^5",["span",["^ ","^6","clj-long"],"22"],"^7","22"]],"^7","[12 14 16 18 20 22]"]],"^7","#clojure.core.matrix.impl.dataset.DataSet{:column-names [0 2 4 6 8 10], :columns [[0 12 24 36 48 60 72 84 96 108 120 132] [2 14 26 38 50 62 74 86 98 110 122 134] [4 16 28 40 52 64 76 88 100 112 124 136] [6 18 30 42 54 66 78 90 102 114 126 138] [8 20 32 44 56 68 80 92 104 116 128 140] [10 22 34 46 58 70 82 94 106 118 130 142]]}"]
-;; <=
 
 ;; @@
 

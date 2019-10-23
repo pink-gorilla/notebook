@@ -7,8 +7,8 @@
 ;; **
 
 ;; @@
-(use 'gorilla-plot.vega :reload)
-(use 'gorilla-plot.core :reload)
+;(use 'gorilla-plot.vega :reload)
+;(use 'gorilla-plot.core :reload)
 (use 'clojure.pprint)
 ;; @@
 ;; =>
