@@ -2,8 +2,10 @@
   (:require [gorilla-repl.core :as core]
             [figwheel.client :as figwheel :include-macros true]
             [devtools.core :as devtools]
+            [clojure.string :refer [replace]]
             ;; [dirac.runtime]
-            [re-frisk.core :refer [enable-re-frisk!]]))
+            [re-frisk.core :refer [enable-re-frisk!]])
+  )
 
 (devtools/install!)
 ;; (dirac.runtime/install!)
@@ -12,7 +14,8 @@
 (enable-console-print!)
 
 (figwheel/watch-and-reload
-  :websocket-url "ws://localhost:3449/figwheel-ws"
+  :websocket-url (str (replace (.. js/document -location -origin) "http" "ws")
+                      "/figwheel-ws")
   :jsload-callback core/mount-root)
 
 (core/init!)
