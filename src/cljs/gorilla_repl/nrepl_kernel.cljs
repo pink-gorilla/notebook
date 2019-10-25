@@ -2,6 +2,7 @@
   (:require-macros
     [cljs.core.async.macros :as asyncm :refer (go go-loop)])
   (:require
+    [gorilla-repl.util :refer [ws-origin]]
     [clojure.string :as str]
     [cljs-uuid-utils.core :as uuid]
     ;; [cljs.core.match :refer-macros [match]]
@@ -158,11 +159,8 @@
   [path app-url]
   (info "Start ws repl at" path)
   (go
-    (let [proto (if (= (:protocol app-url) "http") "ws" "wss")
-          ws-url (str proto ":" (:host app-url) ":" (:port app-url) (str/replace (:path app-url) #"[^/]+$" path))
-          {:keys [ws-channel error]} (<! (ws-ch
-                                           ws-url           ;; (str "ws://localhost:3449/" path)
-                                           {:format :json}))]
+    (let [ws-url (ws-origin path app-url)
+          {:keys [ws-channel error]} (<! (ws-ch ws-url {:format :json}))]
       (if error
         (dispatch [:display-message error])
         #_(do

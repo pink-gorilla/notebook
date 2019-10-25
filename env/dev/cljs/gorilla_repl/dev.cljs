@@ -1,5 +1,7 @@
 (ns ^:figwheel-no-load gorilla-repl.dev
   (:require [gorilla-repl.core :as core]
+            [gorilla-repl.util :refer [ws-origin]]
+            [cemerick.url :refer [url]]
             [figwheel.client :as figwheel :include-macros true]
             [devtools.core :as devtools]
             [clojure.string :refer [replace]]
@@ -14,8 +16,7 @@
 (enable-console-print!)
 
 (figwheel/watch-and-reload
-  :websocket-url (str (replace (.. js/document -location -origin) "http" "ws")
-                      "/figwheel-ws")
+  :websocket-url (ws-origin "figwheel-ws" (url (-> js/window .-location .-href)))
   :jsload-callback core/mount-root)
 
 (core/init!)
