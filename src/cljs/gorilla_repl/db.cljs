@@ -2,7 +2,7 @@
   (:require [cljs.reader]
             [cljs-uuid-utils.core :as uuid]
             [clojure.string :as str]
-            [cljs.spec :as s]
+            [clojure.spec.alpha :as s]
             [cognitect.transit :as t]
             [gorilla-repl.editor :as editor]
             [gorilla-repl.routes :as routes]

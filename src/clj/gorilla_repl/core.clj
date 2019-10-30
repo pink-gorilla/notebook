@@ -4,14 +4,16 @@
 
 (ns gorilla-repl.core
   (:require [gorilla-repl.handle :as handle]
+            [gorilla-repl.jetty9-ws-relay :as ws-relay]
+            [gorilla-repl.route :as route]
     ;; [gorilla-repl.version :as version]
-            
+
             ; [gorilla-repl.renderer :as renderer] ; this is needed to bring the render implementations into scope
             [pinkgorilla.ui.hiccup_renderer] ; this is needed to bring the render implementations into scope
             [pinkgorilla.middleware.render-values]
             ;[pinkgorilla.ui.gorilla-renderable]
-            
-            
+
+
             [gorilla-repl.system :as sys]
             [gorilla-repl.cli :as cli]
             [clojure.set :as set]
@@ -33,8 +35,7 @@
         routes (if nrepl-host
                  "gorilla-repl.route/remote-repl-handler"
                  "gorilla-repl.route/default-handler")
-        ;; nrepl-port-file (io/file (or (:nrepl-port-file conf) ".nrepl-port"))
-
+        websockets "foobar"
         gorilla-port-file (io/file (or (:gorilla-port-file conf) ".gorilla-port"))
         project (or (:project conf) {})
         keymap (or (:keymap (:gorilla-options conf)) {})
@@ -52,8 +53,13 @@
                         :nrepl-host      (:nrepl-host conf)
                         :nrepl-port-file (io/file (or (:nrepl-port-file conf) ".nrepl-port"))
                         :server-port     webapp-requested-port
+                        ;; TODO bringing the websockets in is a little dirty for now
+                        :jetty-options   {:websockets {"/repl" (ws-relay/ws-processor route/nrepl-handler)}}
                         :ip              ip})
-          webapp-port (-> s (get-in [:server :httpkit]) .getPort)]
+          server (-> s (get-in [:server :jetty]))
+          webapp-port (-> server .getConnectors (get 0) .getLocalPort)
+          ;; webapp-port (-> s (get-in [:server :httpkit]) .getPort)
+          ]
       (spit (doto gorilla-port-file .deleteOnExit) webapp-port)
       (println (str "Running at http://" ip ":" webapp-port "/worksheet.html ."))
       (println "Ctrl+C to exit."))))

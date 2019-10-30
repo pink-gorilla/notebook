@@ -1,11 +1,7 @@
 (ns gorilla-repl.figwheel
-  (:require [gorilla-repl.handle :as handle])
-  #_(:use
-      ;; ring.server.standalone
-      ;; [leiningen.core.project :as project]
-      [figwheel-sidecar.config :as cfg]
-      )
-  )
+  (:require [gorilla-repl.handle :as handle]
+            [gorilla-repl.route :as route]
+            [gorilla-repl.jetty9-ws-relay :as ws-relay]))
 
 ;; project/read (which seems to be required be merge)
 ;; messes up cljs compiler
@@ -50,56 +46,91 @@
 
 ;; We could still pull some paths from project.clj when using read-raw
 ;; or sys/fetch-config
-(defn config
+
+(defn main-config
   []
-  {:figwheel-options {:ring-handler      'gorilla-repl.dev-middleware/dev-handler
-                      ;; :http-server-root  "public" ;; does not matter
-                      ;; :server-port      3449
-                      :nrepl-port        7002
-                      :nrepl-middleware  ["cemerick.piggieback/wrap-cljs-repl"
-                                          "cider.nrepl/cider-middleware"
-                                          ;; "dirac.nrepl/middleware"
-                                          ;; "refactor-nrepl.middleware/wrap-refactor"
-                                          ]
-                      :css-dirs          ["resources/gorilla-repl-clientcss"]
-                      ;; https://github.com/bhauman/lein-figwheel/wiki/Running-figwheel-in-a-Cursive-Clojure-REPL
-                      :open-file-command "open-in-intellij"
-                      ;; :debug            true
-                      }
-   ;;:figwheel-options nil,
-   :all-builds
-                     [{:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"],
-                       :id           "app",
-                       :compiler
-                                     {:main           'gorilla-repl.dev
-                                      :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla.js",
-                                      :output-dir     "target/cljsbuild/gorilla-repl-client/js/out"
-                                      :asset-path     "/js/out",
-                                      :optimizations  :none,
-                                      :source-map     true
-                                      ;; :preloads             [devtools.preload]
-                                      ;; :external-config      {:devtools/config {:features-to-install :all}}
-                                      :pretty-print   true
-                                      :parallel-build true
-                                      :foreign-libs   foreign-libs
-                                      }}
-                      {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
-                       :id           "devcards"
-                       :figwheel     {:devcards true}
-                       :compiler
-                                     {:main                 'gorilla-repl.cards
-                                      :output-to            "target/cljsbuild/gorilla-repl-client/js/gorilla_devcards.js"
-                                      :output-dir           "target/cljsbuild/gorilla-repl-client/js/devcards_out"
-                                      :asset-path           "js/devcards_out"
-                                      :optimizations        :none
-                                      :source-map           true
-                                      :source-map-timestamp true
-                                      ;; :preloads             [devtools.preload]
-                                      ;; :external-config      {:devtools/config {:features-to-install :all}}
-                                      :pretty-print         true
-                                      :parallel-build       true
-                                      :foreign-libs         foreign-libs
-                                      }}
-                      ]
-   :build-ids        ["app" "devcards"]}
-  )
+  {
+   :id      "app"
+   :options {:main           'gorilla-repl.dev
+             :source-paths   ["src/cljs" "src/cljc" "env/dev/cljs"]
+             :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla.js",
+             :output-dir     "target/cljsbuild/gorilla-repl-client/js/out"
+             :asset-path     "/js/out",
+             :optimizations  :none,
+             :source-map     true
+             ;; :preloads             [devtools.preload]
+             ;; :external-config      {:devtools/config {:features-to-install :all}}
+             :pretty-print   true
+             :parallel-build true
+             :verbose        true
+             :foreign-libs   foreign-libs
+             }
+   :config  {:ring-handler        'gorilla-repl.dev-middleware/dev-handler
+             :ring-server-options {:port       3449
+                                   ;; The following "abuses" knowledge that figwheel main
+                                   ;; leverages ring-jetty9-adapter under the covers
+                                   :websockets {"/repl" (ws-relay/ws-processor route/nrepl-handler)}}
+             ;; :http-server-root  "public" ;; does not matter
+             ;; :server-port      3449
+             :nrepl-port          7002
+             :nrepl-middleware    ["cemerick.piggieback/wrap-cljs-repl"
+                                   "cider.nrepl/cider-middleware"]
+             :css-dirs            ["resources/gorilla-repl-client/css"]
+             :open-file-command   "open-in-intellij"
+             ;; :debug            true
+             }                                              ; an options map of figwheel.main config options
+   })
+
+#_(defn sidecar-config
+    []
+    {:figwheel-options {:ring-handler      'gorilla-repl.dev-middleware/dev-handler
+                        ;; :http-server-root  "public" ;; does not matter
+                        ;; :server-port      3449
+                        :nrepl-port        7002
+                        :nrepl-middleware  ["cemerick.piggieback/wrap-cljs-repl"
+                                            "cider.nrepl/cider-middleware"
+                                            ;; "dirac.nrepl/middleware"
+                                            ;; "refactor-nrepl.middleware/wrap-refactor"
+                                            ]
+                        :css-dirs          ["resources/gorilla-repl-client/css"]
+                        ;; https://github.com/bhauman/lein-figwheel/wiki/Running-figwheel-in-a-Cursive-Clojure-REPL
+                        :open-file-command "open-in-intellij"
+                        ;; :debug            true
+                        }
+     ;;:figwheel-options nil,
+     :all-builds
+                       [{:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"],
+                         :id           "app",
+                         :compiler
+                                       {:main           'gorilla-repl.dev
+                                        :output-to      "target/cljsbuild/gorilla-repl-client/js/gorilla.js",
+                                        :output-dir     "target/cljsbuild/gorilla-repl-client/js/out"
+                                        :asset-path     "/js/out",
+                                        :optimizations  :none,
+                                        :source-map     true
+                                        ;; :preloads             [devtools.preload]
+                                        ;; :external-config      {:devtools/config {:features-to-install :all}}
+                                        :pretty-print   true
+                                        :parallel-build true
+                                        :foreign-libs   foreign-libs
+                                        }}
+                        {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
+                         :id           "devcards"
+                         :figwheel     {:devcards true}
+                         :compiler
+                                       {:main                 'gorilla-repl.cards
+                                        :output-to            "target/cljsbuild/gorilla-repl-client/js/gorilla_devcards.js"
+                                        :output-dir           "target/cljsbuild/gorilla-repl-client/js/devcards_out"
+                                        :asset-path           "js/devcards_out"
+                                        :optimizations        :none
+                                        :source-map           true
+                                        :source-map-timestamp true
+                                        ;; :preloads             [devtools.preload]
+                                        ;; :external-config      {:devtools/config {:features-to-install :all}}
+                                        :pretty-print         true
+                                        :parallel-build       true
+                                        :foreign-libs         foreign-libs
+                                        }}
+                        ]
+     :build-ids        ["app" "devcards"]}
+    )
