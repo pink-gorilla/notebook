@@ -1,11 +1,14 @@
 # Pink Gorilla Notebook
 
 
-Pink Gorilla Notebook is a rich browser based notebook style REPL for Clojure and ClojureScript. It aims at
-extensibility (development- and runtime) and user experience while being very lightweight. Extensibility
-primarily revolves around UI widgets and data. Use cases we are trying to cover are
+Pink Gorilla Notebook is a decendant of [Gorilla REPL](http://gorilla-repl.org). It is a rich browser based notebook
+ style REPL for Clojure and ClojureScript which aims at extensibility (development- and runtime) and user experience
+  while being very lightweight. Extensibility primarily revolves around UI widgets and data. As of October 2019, it already
+   enhances its parent project in various ways.
 
-- Quick experiments and demos (Clojure/ClojureScript libraries!) that can be persisted 
+Use cases we are trying to cover are
+
+- Persistent experiments and demos (Clojure/ClojureScript libraries!)
 - Courses and education on all matters related to clojure
 - Data science
 - Pluggable "alien" JEE webapp instrumentation
@@ -15,8 +18,7 @@ leveraging R is one example that comes to mind.
 
 ## History
 
-[Gorilla REPL](http://gorilla-repl.org) is our root. In 2016, Andreas was working on the [first iteration of
- modernisation](https://www.contentreich.de/pimping-gorilla-repl-with-react-clojurescript-and-beyond). Amongst other
+In 2016, Andreas was working on the [first iteration of Gorilla REPL modernisation](https://www.contentreich.de/pimping-gorilla-repl-with-react-clojurescript-and-beyond). Amongst other
   things, [Reagent](http://reagent-project.github.io/) was introduced at that time. Unfortunately, it went silent again -
   for almost three years. [This issue](https://github.com/pink-gorilla/gorilla-notebook/issues/2) revived the project.
   
