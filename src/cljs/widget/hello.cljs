@@ -15,3 +15,14 @@
                              [:h2 "World, from Reagent."]]
                           [:h2 (str "It is so NICE to see " @name)]
                           )])}))
+
+(defn love [activity]
+  (reagent/create-class 
+   {:display-name "love"
+    :reagent-render 
+    (fn []
+      (println "activity is: " activity)
+      [:h1 
+       (if (nil? activity)
+         "I love THE WHOLE WORLD!"
+         (str "I love " activity))])}))

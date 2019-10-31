@@ -1,21 +1,26 @@
 (ns gorilla-repl.core
-  (:require [gorilla-repl.events]
-            [gorilla-repl.views :as v]
-            [reagent.core :as ra]
-            [secretary.core :as secretary]
-            [cemerick.url :as url]
-            [re-frame.core :refer [dispatch dispatch-sync]]
-            [gorilla-repl.editor :as editor]
-            [gorilla-repl.routes :as routes]
-            [gorilla-repl.nrepl-kernel :as nrepl]
-            [gorilla-repl.browser-kernel :as brwrepl]
-            [clojure.string :as str]))
+  (:require 
+   [gorilla-repl.events]
+   [gorilla-repl.views :as v]
+   [reagent.core :as ra]
+   [secretary.core :as secretary]
+   [cemerick.url :as url]
+   [re-frame.core :refer [dispatch dispatch-sync]]
+   [gorilla-repl.editor :as editor]
+   [gorilla-repl.routes :as routes]
+   [gorilla-repl.nrepl-kernel :as nrepl]
+   [gorilla-repl.browser-kernel :as brwrepl]
+   [clojure.string :as str]
+   
+   ;[widget.replikativ]
+   ))
 
 (defn mount-root
   []
   (ra/render [v/gorilla-app] (.getElementById js/document "react-app")))
 
 (defn ^:export init! []
+  ;(widget.replikativ/setup-replikativ)
   (routes/app-routes)
   (editor/init-cm-globally!)
   (v/init-mathjax-globally!)

@@ -26,6 +26,7 @@
 #_(component/start-system @system)
 
 ;; (start-figwheel! cfg)
+;(pinkgorilla.replikativ/start-replikativ)
 
 #_(def figwheel-server
     (:figwheel-server @(get-in figwheel-sidecar.repl-api/*repl-api-system* [:figwheel-system :system])))

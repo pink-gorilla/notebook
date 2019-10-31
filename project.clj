@@ -16,7 +16,7 @@
                  ;; [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
                  ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable,
-                 [pinkgorilla.ui.gorilla-renderable "2.0.12"] ; 2019-10-18 awb99 added instead of gorilla-plot
+                 [org.pinkgorilla/gorilla-renderable "2.0.13"] ; 2019-10-18 awb99 added instead of gorilla-plot
                  [org.pinkgorilla/gorilla-middleware "0.2.0"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.22"]
@@ -105,6 +105,9 @@
                   :exclusions [org.clojure/clojurescript]]
                  ;; [com.cemerick/piggieback "0.2.1"]
                  [com.cemerick/pomegranate "0.3.1"]]
+                 ;; REPLIKATIV
+               ;  [io.replikativ/replikativ "0.2.4"]
+               ;  [com.cognitect/transit-cljs "0.8.239" :scope "provided"]
 
   :plugins [[lein-environ "1.1.0"]
             [lein-cljsbuild "1.1.7"]

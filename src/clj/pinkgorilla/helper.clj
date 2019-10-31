@@ -1,6 +1,6 @@
 (ns pinkgorilla.helper
    (:require
-     [cemerick.pomegranate :as pg]))
+    [cemerick.pomegranate :as pg]))
 
 ; shamelessly stolen from: https://github.com/clojupyter/clojupyter/blob/40c6d47ec9c9e4634c8e28fca3209b5c3ac8430c/src/clojupyter/misc/helper.clj
 
@@ -17,3 +17,5 @@
                                       "clojars" "https://clojars.org/repo"}}}]
   (pg/add-dependencies :coordinates `[~dependencies]
                        :repositories repositories))
+
+
