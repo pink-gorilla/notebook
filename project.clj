@@ -97,6 +97,7 @@
                   ;; TODO: Trim to bare minimum
                   ;; :exclusions [*/*]
                   ]
+                 [org.eclipse.jetty.websocket/websocket-server "9.4.12.v20180830"]
                  [de.otto/tesla-jetty "0.2.6"
                   :exclusions [org.eclipse.jetty/jetty-server]]
                  ;; [com.rpl/specter "0.13.2"]
@@ -115,11 +116,12 @@
             [lein-asset-minifier "0.4.6"
              :exclusions [org.clojure/clojure]]]
 
-  :uberjar-name "gorilla-workbook-standalone.jar"
+  :uberjar-name "gorilla-notebook-standalone.jar"
 
   ;; Those websocket exclusions are ugly but needed since "ring uberwar" does
   ;; not honor :provided
-  :uberjar-exclusions [#".*javax/websocket.*" #".*javax/servlet.*"]
+  ;; TODO: Not sure if this still applies as of 2019 - however, uberjar uses jetty9 which depends on servlet
+  ;; :uberjar-exclusions [#".*javax/websocket.*" #".*javax/servlet.*"]
 
   ;; :jar-exclusions   [#"(?:^|\/)foo\/" #"(?:^|\/)demo\/" #"(?:^|\/)compiled.*\/" #"html$"]
 

@@ -1,13 +1,13 @@
 (ns pinkgorilla.replikativ
   (:require 
-   [replikativ.peer :refer [server-peer]]
-   [replikativ.stage :refer [create-stage! connect!]]
+   ;; [replikativ.peer :refer [server-peer]]
+   ;; [replikativ.stage :refer [create-stage! connect!]]
 
-   [kabel.peer :refer [start stop]]
-   [konserve.memory :refer [new-mem-store]]
-   [konserve.filestore :refer [new-fs-store]]
+   ;; [kabel.peer :refer [start stop]]
+   ;; [konserve.memory :refer [new-mem-store]]
+   ;; [konserve.filestore :refer [new-fs-store]]
 
-   [superv.async :refer [<?? S]] ;; core.async error handling
+   ;; [superv.async :refer [<?? S]] ;; core.async error handling
    [clojure.core.async :refer [chan] :as async]
    
    [taoensso.timbre :as timbre]
@@ -15,7 +15,7 @@
 
 (def uri "ws://0.0.0.0:31744")
 
-(defn start-replikativ []
+#_(defn start-replikativ []
   (let [_ (timbre/set-level! :info)
         store (<?? S #_(new-mem-store) (new-fs-store "/tmp/chat42-store"))
         peer (<?? S (server-peer S store uri))
