@@ -32,8 +32,6 @@
   [handler]
   (-> handler
       (wrap-defaults api-defaults)
-      (keyword-params/wrap-keyword-params)
-      (params/wrap-params)
       (wrap-restful-format :formats [:json :transit-json :edn])
       #_(json/wrap-json-response)))
 
@@ -91,6 +89,8 @@
   {:status  200
    ;; utf-8 needed HERE, content sets ISO-8859-1 default which
    ;; supercedes meta header in document
+   ;; Session key is required to force setting the cookie
+   :session (:session req)
    :headers {"Content-Type" "text/html; charset=utf-8"}
    :body    (slurp (io/resource
                      (str "gorilla-repl-client/" filename)))})

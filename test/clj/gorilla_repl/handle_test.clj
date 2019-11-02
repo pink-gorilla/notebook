@@ -19,17 +19,16 @@
 
 ;; (use-fixtures :once my-test-fixture)
 
-(deftest default-handler-404-test
+(deftest not-found-test
   (is (= (#'gorilla-repl.route/default-handler (mock/request :get "/404"))
          {:status  404
           :headers {"Content-Type" "text/html; charset=utf-8"}
           :body    "Bummer, not found"}))
-  (let [resp (#'gorilla-repl.route/default-handler
-               (mock/request :get "/gorilla-files"))
+  (let [resp (#'gorilla-repl.route/default-handler (mock/request :get "/gorilla-files"))
         status (:status resp)]
     (is (= 200 status))))
 
-(deftest default-handler-files-test
+(deftest files-test
   (let [resp (#'gorilla-repl.route/default-handler
                (mock/request :get "/gorilla-files"))
         status (:status resp)
@@ -38,25 +37,25 @@
     (is (= 200 status))
     (is (= "application/json; charset=utf-8" content-type))))
 
-(deftest default-handler-config-test
-  (let [resp (#'gorilla-repl.route/default-handler
-               (mock/request :get "/config"))
+(deftest config-test
+  (let [resp (#'gorilla-repl.route/default-handler (mock/request :get "/config"))
         status (:status resp)
         headers (:headers resp)
         content-type (get headers "Content-Type")]
     (is (= 200 status))
     (is (= "application/json; charset=utf-8" content-type))))
 
-(deftest default-handler-document-test
-  (let [resp (#'gorilla-repl.route/default-handler
-               (mock/request :get "/worksheet.html"))
+(deftest document-test
+  (let [resp (#'gorilla-repl.route/default-handler (mock/request :get "/worksheet.html"))
         status (:status resp)
         headers (:headers resp)
+        cookie (get headers "Set-Cookie")
         content-type (get headers "Content-Type")]
+    (is cookie)
     (is (= 200 status))
     (is (= "text/html; charset=utf-8" content-type))))
 
-(deftest default-handler-resource-test
+(deftest resource-test
   (let [resp (#'gorilla-repl.route/default-handler
                (mock/request :get "/favicon.ico"))
         status (:status resp)

@@ -35,7 +35,6 @@
         routes (if nrepl-host
                  "gorilla-repl.route/remote-repl-handler"
                  "gorilla-repl.route/default-handler")
-        websockets "foobar"
         gorilla-port-file (io/file (or (:gorilla-port-file conf) ".gorilla-port"))
         project (or (:project conf) {})
         keymap (or (:keymap (:gorilla-options conf)) {})

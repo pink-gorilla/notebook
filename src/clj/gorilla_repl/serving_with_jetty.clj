@@ -14,9 +14,9 @@
   (start [self]
     (log/info "-> starting server")
     (let [handler-404 (comp/ANY "*" _request (resp/status (resp/response "") 404))
-          all-routes (comp/routes (handler/handler handler) handler-404)
+          all-handlers (comp/routes (handler/handler handler) handler-404)
           options (tesla-jetty/jetty-options (:config self))
-          server (fw-jetty/run-jetty all-routes (merge {:port (tesla-jetty/port config)
+          server (fw-jetty/run-jetty all-handlers (merge {:port  (tesla-jetty/port config)
                                                         :join? false
                                                         ;; TODO: Use this instrumentation once we got websocket
                                                         ;; stuff working
@@ -33,5 +33,6 @@
 
 (defn new-server [] (map->JettyServer {}))
 
-(defn add-server [base-system & server-dependencies]
+(defn add-server
+  [base-system & server-dependencies]
   (assoc base-system :server (c/using (new-server) (reduce conj [:config :handler] server-dependencies))))

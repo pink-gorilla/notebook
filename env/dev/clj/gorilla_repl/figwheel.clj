@@ -65,7 +65,7 @@
              :verbose        true
              :foreign-libs   foreign-libs
              }
-   :config  {:ring-handler        'gorilla-repl.dev-middleware/dev-handler
+   :config  {:ring-handler        'gorilla-repl.dev-handle/dev-handler
              :ring-server-options {:port       3449
                                    ;; The following "abuses" knowledge that figwheel main
                                    ;; leverages ring-jetty9-adapter under the covers
@@ -83,7 +83,7 @@
 
 #_(defn sidecar-config
     []
-    {:figwheel-options {:ring-handler      'gorilla-repl.dev-middleware/dev-handler
+    {:figwheel-options {:ring-handler      'gorilla-repl.dev-handle/dev-handler
                         ;; :http-server-root  "public" ;; does not matter
                         ;; :server-port      3449
                         :nrepl-port        7002
