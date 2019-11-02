@@ -10,15 +10,16 @@
               :exposes-methods {init superInit}))
 
 #_(defn default-handler
-  [request]
-  {:status  200
-   :headers {"Content-Type" "text/html"}
-   :body    "Set a decent handler"})
+    [request]
+    {:status  200
+     :headers {"Content-Type" "text/html"}
+     :body    "Set a decent handler"})
 
 (def ring-service (atom nil))
 
-;; (servlet/set-handler (gorilla/get-routes))
-(defn set-handler [handler]
+;; (servlet/set-handler (gorilla/get-handlers))
+(defn set-handler
+  [handler]
   (log/info "Creating new service method from handler " handler)
   (reset! ring-service (servlet/make-service-method handler)))
 
