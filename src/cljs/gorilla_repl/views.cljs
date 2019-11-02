@@ -1,8 +1,8 @@
 (ns gorilla-repl.views
   (:require [clojure.string :as str]
     ;; [hickory.core :as hick]
-            [gorilla-repl.webpack-include]
-            [gorilla-repl.webpack-extern]
+    ;; [gorilla-repl.webpack-include]
+    ;; [gorilla-repl.webpack-extern]
             [gorilla-repl.editor :as editor]
             [cljs-uuid-utils.core :as uuid]
     ;; [clojure.walk :as w]
