@@ -32,43 +32,48 @@ existing functionality. Given the nature of reagent, this did not seem reasonabl
  [here](http://localhost:3449/worksheet.html#/view?source=github&user=JonyEpsilon&repo=gorilla-test&path=ws/graph-examples.clj)
 in case you have it running with figwheel.
 
-## Development
+## Usage / Development
 
+The easiest way to run it locally is by leveraging the docker image:
+```
+docker run --rm -p 9000:9000 pinkgorillawb/gorilla-notebook
+```
+
+If you want to bring your own java, make sure to use jdk 8 for now.
+
+The following should get you the uberjar:
+```
+LEIN_SNAPSHOTS_IN_RELEASE=1 lein do clean, uberjar
+```
+The uberjar is what the docker image uses. It can be run by executing
+
+```
+java -jar target/gorilla-notebook-standalone.jar
+```
+
+The uberjar may also work by just dropping it into another webapp (in `WEB-INF/lib`) . Whether you are lucky
+ or not depends on the dependencies of your app. If all goes well, Pink Gorilla will appear at
+`.../your-app-context/gorilla-repl/worksheet.html`.
+
+```
+lein do clean, ring uberwar
+```
+should give you the standalone war file. Drop it into your servlet container and visit the root url of the webapp.
+ 
 ```
 ./run-figwheel-with-jpda.sh
 ```
 spins up the figwheel based development environment. The script uses `rlwrap` for convenience.
 
-Alternatively, you can simply run
+Once things are running, you can jump in at either `http://localhost:3449/worksheet.html` for the app
+ or `http://localhost:3449/devcards.html` if you want to play with devcards.
 
-```
-lein run -m clojure.main script/figwheel.clj
-```
-
-Once things runnig, you can jump in at
- either `http://localhost:3449/worksheet.html` for the app or `http://localhost:3449/devcards.html`
-if you want to play with devcards.
-
+To compile ClojureScript and run the main entrypoint, execute
 ```
 lein do cljsbuild once, run
 ```
-compile cljs and run main entrypoint.
 
-```
-lein do clean, ring uberwar
-```
-
-should give you the standalone war file. Drop it into your servlet container
- and visit the root url of the webapp.
-
-```
-LEIN_SNAPSHOTS_IN_RELEASE=1 lein do clean, uberjar
-```
-should give you the all-in uberjar. It is used by the docker image and can be run
-executing `java -jar target/gorilla-workbook-standalone.jar`. It may also work dropped
- into a webapp (in `WEB-INF/lib`). Whether you are lucky or depends on the dependencies
-(if you run into conflicts). If all goes well, Pink Gorilla will appear at
-`.../your-app-context/gorilla-repl/worksheet.html`.
+## Configuration
 
 TODO : Explain delegation mode
 
