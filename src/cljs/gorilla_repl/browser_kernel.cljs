@@ -1,5 +1,6 @@
 (ns gorilla-repl.browser-kernel
-  (:require [replumb.core :as replumb]))
+  ;; (:require [replumb.core :as replumb])
+  )
 
 #_(defn handle-result!
     [console result]

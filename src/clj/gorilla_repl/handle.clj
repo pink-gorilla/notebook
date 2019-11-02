@@ -13,7 +13,7 @@
     ;; [ring.middleware.json :as json]
             [ring.middleware.format :refer [wrap-restful-format]]
             [ring.util.response :as res]
-            [org.httpkit.client :as http]
+    ;; [org.httpkit.client :as http]
     ;; [ring.middleware.webjars :refer [wrap-webjars]]
             [gorilla-repl.files :as files]
             [clojure.tools.logging :refer (info)]
@@ -56,7 +56,8 @@
   (when-let [ws-file (:worksheet-filename (:params req))]
     (let [_ (info (str "Loading: " ws-file " ... "))
           ws-data (if (re-find #"^http[s]*" ws-file)
-                    (:body @(http/get ws-file))
+                    (slurp ws-file)
+                    ;; (:body @(http/get ws-file))
                     (read-sheet-locally ws-file))
           _ (info "done.")]
       (res/response {:worksheet-data ws-data}))))

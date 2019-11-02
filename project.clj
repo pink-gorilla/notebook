@@ -3,26 +3,24 @@
   :url "https://github.com/pink-gorilla/gorilla-notebook"
   :license {:name "MIT"}
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 ;; [org.clojure/clojure "1.10.1"]
-                 ;; async/reader overrides - clojure(script) 1.10 WIP
                  [org.clojure/core.async "0.4.500"]
                  [org.clojure/tools.reader "1.3.2"]
                  ;;  ring-json introduces jackson along with its tail
                  ;; [ring/ring-json "0.4.0"]
                  [org.clojure/data.json "0.2.6"]
-                 [http-kit "2.2.0"]
+                 ;; [http-kit "2.2.0"]
                  [cider/cider-nrepl "0.22.4"]
                  [nrepl "0.6.0"]
-                 ;; [org.clojure/tools.nrepl "0.2.12"]
                  ;; [cljs-tooling "0.2.0"]
                  ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable,
-                 [org.pinkgorilla/gorilla-renderable "2.0.13"] ; 2019-10-18 awb99 added instead of gorilla-plot
-                 [org.pinkgorilla/gorilla-middleware "0.2.0"]
+                 ;; [org.pinkgorilla/gorilla-renderable "2.0.13"]
+                 ; 2019-10-18 awb99 added instead of gorilla-plot
+                 [org.pinkgorilla/gorilla-middleware "0.2.1"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
-                 [org.slf4j/slf4j-api "1.7.22"]
-                 [ch.qos.logback/logback-core "1.1.8"]
-                 [ch.qos.logback/logback-classic "1.1.8"]
-                 [com.taoensso/timbre "4.8.0"]
+                 [org.slf4j/slf4j-api "1.7.29"]
+                 [ch.qos.logback/logback-core "1.2.3"]
+                 [ch.qos.logback/logback-classic "1.2.3"]
+                 [com.taoensso/timbre "4.10.0"]
                  ;; Things get very noise with slf4j-timbre - needs configuration
                  ;; [com.fzakaria/slf4j-timbre "0.3.2"]
                  ;; [cljs-ajax "0.5.8"]
@@ -31,15 +29,15 @@
                  ;; [enfocus "2.1.1"]
                  [prismatic/dommy "1.1.0"]
                  ;; [selmer "1.0.3"] ;; django like templates - deps worth the hassle?
-                 [reagent "0.6.0"
+                 [reagent "0.8.1"
                   :exclusions [org.clojure/tools.reader
                                ; cljsjs/react
                                ; cljsjs/react-dom
                                ; ;; cljsjs/react-dom-server
                                ]]
-                 [re-com "1.3.0"]
-                 [day8.re-frame/http-fx "0.1.3"]
-                 [day8.re-frame/undo "0.3.2"]
+                 [re-com "2.6.0"]
+                 [day8.re-frame/http-fx "0.1.6"]
+                 [day8.re-frame/undo "0.3.3"]
                  ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of
                  ;; React.
                  ;;
@@ -53,12 +51,12 @@
                  ;; [reagent-forms "0.5.27"]
                  ;; [reagent-utils "0.2.0"]
                  ;; [hickory "0.6.0"] html -> hiccup as very last ressort only
-                 [replumb "0.2.4"]
+                 ;; [replumb "0.2.4"]
                  [org.webjars/MathJax "2.7.0"]              ;; TODO Not quite sure about value
-                 [re-frame "0.9.1"]
+                 [re-frame "0.10.9"]
                  [com.cemerick/url "0.1.1"]
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.2"]
-                 [org.clojure/tools.cli "0.3.5"]
+                 [org.clojure/tools.cli "0.4.2"]
                  [ring "1.7.1"
                   ;; :exclusions [ring/ring-jetty-adapter]
                   ]
@@ -68,28 +66,28 @@
                  ;;  [ring.middleware.logger "0.5.0"]
                  ;; [ring-webjars "0.1.1"]                     ;; Although not matching servlet3 paths
                  [ring-middleware-format "0.7.4"]
-                 [javax.websocket/javax.websocket-api "1.0"]
-                 [javax.servlet/javax.servlet-api "3.1.0"]
-                 [compojure "1.5.2"]
+                 [javax.websocket/javax.websocket-api "1.1"]
+                 [javax.servlet/javax.servlet-api "4.0.1"]
+                 [compojure "1.6.1"]
                  [hiccup "1.0.5"]
                  [environ "1.1.0"]
-                 [com.stuartsierra/component "0.3.2"]
+                 [com.stuartsierra/component "0.4.0"]
                  [org.clojure/clojurescript "1.10.520" :scope "provided"]
                  ;; https://github.com/bhauman/lein-figwheel/issues/612
                  ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
                  [secretary "1.2.3"]
                  [cljsjs/parinfer "1.8.1-0"]
                  ;; Still helpful for externs!
-                 [cljsjs/codemirror "5.21.0-2"]
+                 [cljsjs/codemirror "5.44.0-1"]
                  ;[cljsjs/vega "2.6.0-0"]  2019-10-20 awb99 removed because it fucks up new vega
                  ;[cljsjs/d3geo "0.2.15-2"] 2019-10-20 awb99 removed because it fucks up new vega
                  ;[cljsjs/d3 "3.5.16-0"] 2019-10-20 awb99 removed because it fucks up new vega
                  [cljsjs/mousetrap "1.5.3-0"]
-                 [cljsjs/marked "0.3.5-0"]
-                 [com.taoensso/sente "1.11.0"]
-                 [org.danielsz/system "0.3.1"]
-                 [jarohen/chord "0.7.0"]
-                 [org.clojure/core.match "0.3.0-alpha4"]
+                 [cljsjs/marked "0.3.5-1"]
+                 [com.taoensso/sente "1.14.0"]
+                 [org.danielsz/system "0.4.3"]
+                 [jarohen/chord "0.8.1"]
+                 [org.clojure/core.match "0.3.0"]
                  [de.otto/tesla-microservice "0.13.1"]
                  ;; [de.otto/tesla-httpkit "1.0.1"]
                  ;; Bringing it in here bc that is where the websocket "processors" come in
@@ -102,10 +100,10 @@
                   :exclusions [org.eclipse.jetty/jetty-server]]
                  ;; [com.rpl/specter "0.13.2"]
                  [clojail "1.0.6"]
-                 [cider/piggieback "0.4.2"
-                  :exclusions [org.clojure/clojurescript]]
-                 ;; [com.cemerick/piggieback "0.2.1"]
-                 [com.cemerick/pomegranate "0.3.1"]]
+                 ;[cider/piggieback "0.4.2"
+                 ; :exclusions [org.clojure/clojurescript]]
+                 ;; TODO : Replace pomegranate with tools alpha
+                 [com.cemerick/pomegranate "1.1.0"]]
                  ;; REPLIKATIV
                ;  [io.replikativ/replikativ "0.2.4"]
                ;  [com.cognitect/transit-cljs "0.8.239" :scope "provided"]
@@ -129,7 +127,7 @@
          :handler        gorilla-repl.route/redirect-handler
          :servlet-class  gorilla_repl.RedirectServlet
          :servlet-name   redirect-servlet
-         :uberwar-name   "gorilla-repl-ng.war"}
+         :uberwar-name   "gorilla-notebook.war"}
 
   :min-lein-version "2.5.0"
 
@@ -208,40 +206,42 @@
                        :dependencies   [[com.bhauman/figwheel-main "0.2.3"]
                                         [com.bhauman/rebel-readline-cljs "0.1.4"]
                                         ;; [figwheel-sidecar "0.5.8" :exclusions [org.clojure/tools.nrepl]]
-                                        [karma-reporter "2.0.1"]
+                                        [karma-reporter "3.1.0"]
                                         ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
                                         [ring/ring-mock "0.4.0"]
                                         [ring/ring-devel "1.7.1"]
-                                        [prone "1.1.4"]
+                                        [prone "2019-07-08"]
                                         ;; [org.clojure/tools.nrepl "0.2.12"]
                                         [nrepl "0.6.0"]
                                         ;; Dirac or piggieback - there can only be one of them
                                         [binaryage/dirac "RELEASE"] ;; 0.6.7
                                         [cider/piggieback "0.4.2"
-                                         :exclusions [org.clojure/clojurescript]]
-                                        ;; [com.cemerick/piggieback "0.2.1"]
+                                         ;; :exclusions [org.clojure/clojurescript]
+                                         ]
                                         [lein-doo "0.1.11"]
-                                        [re-frisk "0.3.2"]
-                                        [day8.re-frame/test "0.1.3"]
-                                        [devcards "0.2.2"
+                                        [re-frisk "0.5.4.1"]
+                                        [day8.re-frame/test "0.1.5"]
+                                        [devcards "0.2.6"
                                          :exclusions [org.clojure/tools.reader
-                                                      cljsjs/react
-                                                      cljsjs/react-dom]]
-                                        [pjstadig/humane-test-output "0.8.1"]
+                                                      ;; cljsjs/react
+                                                      ;; cljsjs/react-dom
+                                                      ]]
+                                        [pjstadig/humane-test-output "0.10.0"]
                                         ;; https://github.com/day8/re-frame-tracer
-                                        [org.clojars.stumitchell/clairvoyant "0.2.0"]
-                                        [day8/re-frame-tracer "0.1.1-SNAPSHOT"]
-                                        [binaryage/devtools "0.8.3"]
+                                        ;; [org.clojars.stumitchell/clairvoyant "0.2.1"]
+                                        ;; [day8/re-frame-tracer "0.1.1-SNAPSHOT"]
+                                        [day8.re-frame/re-frame-10x "0.4.5"]
+                                        [binaryage/devtools "0.9.10"]
                                         ;; Gorilla server side stuff
                                         [hiccup "1.0.5"]
                                         ;; https://github.com/clojure-numerics/expresso/issues/19
-                                        [expresso "0.2.2-SNAPSHOT"]
-                                        [instaparse "1.4.5"]
+                                        [expresso "0.2.2"]
+                                        [instaparse "1.4.10"]
                                         ;[aysylu/loom "0.6.0"]  ; 2019-10-18 awb99 removed - is in plugin
                                         ;[loom-gorilla "0.1.0"]  ; 2019-10-18 awb99 removed - is in plugin
                                         [org.clojure/data.xml "0.0.8"]
                                         ;[incanter-gorilla "0.1.0"]  ; 2019-10-18 awb99 removed - is in plugin
-                                        [me.lomin/component-restart "0.1.1"]]
+                                        [me.lomin/component-restart "0.1.2"]]
 
                        :source-paths   ^:replace ["src/clj" "src/cljc" "env/dev/clj" "src/cljs" "env/dev/cljs"]
 
