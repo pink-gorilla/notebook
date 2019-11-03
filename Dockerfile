@@ -12,12 +12,16 @@
 FROM openjdk:8-jre-alpine
 # FROM openjdk:8-jre
 MAINTAINER Andreas Steffan <a.steffan@contentreich.de>
-# EXPOSE 8080
 
-CMD ["java", "-Dlog_level=info", "-jar", "/gorilla-notebook-standalone.jar"]
-
+EXPOSE 9000
 
 # instead of logging to stdout, you may log to file in /log. create volume or mount host volume to /log
 # RUN mkdir /log && chown daemon /log
 
 ADD target/gorilla-notebook-standalone.jar /
+
+RUN mkdir /work
+
+WORKDIR /work
+
+CMD ["java", "-Dlog_level=info", "-jar", "../gorilla-notebook-standalone.jar"]

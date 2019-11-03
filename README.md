@@ -39,6 +39,14 @@ The easiest way to run it locally is by leveraging the docker image:
 docker run --rm -p 9000:9000 pinkgorillawb/gorilla-notebook
 ```
 
+If you want some samples to play with, you might want to clone and mount the samples repo
+into the container:
+
+```
+git clone https://github.com/pink-gorilla/sample-notebooks
+docker run --rm -p 9000:9000 -v `pwd`/sample-notebooks:/work/sample-notebooks:rw pinkgorillawb/gorilla-notebook
+```
+
 If you want to bring your own java, make sure to use jdk 8 for now.
 
 The following should get you the uberjar:
