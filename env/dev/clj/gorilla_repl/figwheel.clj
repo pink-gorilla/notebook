@@ -65,6 +65,8 @@
              :parallel-build true
              :verbose        true
              :foreign-libs   foreign-libs
+             :closure-defines {"re_frame.trace.trace_enabled_QMARK_" true}
+             :preloads        ['day8.re-frame-10x.preload]
              }
    :config  {:ring-handler        'gorilla-repl.dev-handle/dev-handler
              :ring-server-options {:port       3449
