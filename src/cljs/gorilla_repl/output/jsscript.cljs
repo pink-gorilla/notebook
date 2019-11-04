@@ -75,11 +75,15 @@
           ;:component-did-update (fn [this]
           ;                        (run-script uuid data snippet))
           
-          :component-will-update (fn [this [_ new-spec]]
+ ;(let [[_ series-values] (reagent/argv this)]
+
+          :component-will-update (fn [this [_ new-params]]
+              ; with changing of parameters, re-render the component. (important for vega charts)
+                                  ;(println "new params: " new-params)
                                    ;(run-script uuid data snippet)
-                                   (run-script (reagent/dom-node this) data snippet)
+                                   (run-script (reagent/dom-node this) (get-in new-params [:content :data]) snippet)
                                    )
-                                   ;(render-vega new-spec (r/dom-node this)))
+                                   
           
           })))
 

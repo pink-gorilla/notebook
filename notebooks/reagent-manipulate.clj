@@ -12,9 +12,6 @@
      [pinkgorilla.ui.hiccup :refer [html!]] 
      [pinkgorilla.ui.reagent :refer [reagent!]]))
 ;; @@
-;; ->
-;;; 
-;; <-
 ;; =>
 ;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
 ;; <=
@@ -45,28 +42,31 @@
 ;; @@
 (reagent!
  '[:div
-   [:p "sample vega plot:"]
+   [:p "select the sample vega plot you want to see:"]
    [combo :widget-state :x 
      [{:label "bar-chart" :id "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"}
       {:label "population-pyramid" :id "https://vega.github.io/vega/examples/population-pyramid.vg.json"}
-      {:label "tree" :id "https://vega.github.io/editor/spec/vega/tree-layout.vg.json"}]]
-   [:p "And the chart:"]
-   [vegaa :widget-state :x]
- 
-   ])
+      {:label "tree-layout" :id "https://vega.github.io/editor/spec/vega/tree-layout.vg.json"}
+      {:label "tree-map" :id "https://vega.github.io/editor/spec/vega/treemap.vg.json"}
+      {:label "force directed layout" :id "https://vega.github.io/editor/spec/vega/force-directed-layout.vg.json"}
+      {:label "stock index" :id "https://vega.github.io/editor/spec/vega/stock-index-chart.vg.json"}
+      {:label "overview-details" :id "https://vega.github.io/editor/spec/vega/overview-plus-detail.vg.json"}
+      {:label "scatterplot interaction" :id "https://vega.github.io/editor/spec/vega/brushing-scatter-plots.vg.json"}
+      {:label "unemployment map" :id "https://vega.github.io/editor/spec/vega/county-unemployment.vg.json"}
+      {:label "box plot" :id "https://vega.github.io/editor/spec/vega/box-plot.vg.json"}
+      {:label "contour" :id "https://vega.github.io/editor/spec/vega/contour-plot.vg.json"}]]
+   [vegaa :widget-state :x]])
 ;; @@
-;; ->
-;;; 
-;; <-
 ;; =>
-;;; ["^ ","~:type","reagent","~:content",["div",["p","sample vega plot:"],["combo","widget-state","x",[["^ ","~:label","bar-chart","~:id","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"],["^ ","^2","population-pyramid","^3","https://vega.github.io/vega/examples/population-pyramid.vg.json"]]],["p","And the chart:"],["vegaa","widget-state","x"]],"~:value","[:div [:p \"sample vega plot:\"] [combo :widget-state :x [{:label \"bar-chart\", :id \"https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json\"} {:label \"population-pyramid\", :id \"https://vega.github.io/vega/examples/population-pyramid.vg.json\"}]] [:p \"And the chart:\"] [vegaa :widget-state :x]]"]
+;;; ["^ ","~:type","reagent","~:content",["div",["p","select the sample vega plot you want to see:"],["combo","widget-state","x",[["^ ","~:label","bar-chart","~:id","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"],["^ ","^2","population-pyramid","^3","https://vega.github.io/vega/examples/population-pyramid.vg.json"],["^ ","^2","tree-layout","^3","https://vega.github.io/editor/spec/vega/tree-layout.vg.json"],["^ ","^2","tree-map","^3","https://vega.github.io/editor/spec/vega/treemap.vg.json"],["^ ","^2","force directed layout","^3","https://vega.github.io/editor/spec/vega/force-directed-layout.vg.json"],["^ ","^2","stock index","^3","https://vega.github.io/editor/spec/vega/stock-index-chart.vg.json"],["^ ","^2","overview-details","^3","https://vega.github.io/editor/spec/vega/overview-plus-detail.vg.json"],["^ ","^2","scatterplot interaction","^3","https://vega.github.io/editor/spec/vega/brushing-scatter-plots.vg.json"],["^ ","^2","unemployment map","^3","https://vega.github.io/editor/spec/vega/county-unemployment.vg.json"],["^ ","^2","box plot","^3","https://vega.github.io/editor/spec/vega/box-plot.vg.json"],["^ ","^2","contour","^3","https://vega.github.io/editor/spec/vega/contour-plot.vg.json"]]],["vegaa","widget-state","x"]],"~:value","[:div [:p \"select the sample vega plot you want to see:\"] [combo :widget-state :x [{:label \"bar-chart\", :id \"https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json\"} {:label \"population-pyramid\", :id \"https://vega.github.io/vega/examples/population-pyramid.vg.json\"} {:label \"tree-layout\", :id \"https://vega.github.io/editor/spec/vega/tree-layout.vg.json\"} {:label \"tree-map\", :id \"https://vega.github.io/editor/spec/vega/treemap.vg.json\"} {:label \"force directed layout\", :id \"https://vega.github.io/editor/spec/vega/force-directed-layout.vg.json\"} {:label \"stock index\", :id \"https://vega.github.io/editor/spec/vega/stock-index-chart.vg.json\"} {:label \"overview-details\", :id \"https://vega.github.io/editor/spec/vega/overview-plus-detail.vg.json\"} {:label \"scatterplot interaction\", :id \"https://vega.github.io/editor/spec/vega/brushing-scatter-plots.vg.json\"} {:label \"unemployment map\", :id \"https://vega.github.io/editor/spec/vega/county-unemployment.vg.json\"} {:label \"box plot\", :id \"https://vega.github.io/editor/spec/vega/box-plot.vg.json\"} {:label \"contour\", :id \"https://vega.github.io/editor/spec/vega/contour-plot.vg.json\"}]] [vegaa :widget-state :x]]"]
 ;; <=
 
 ;; @@
+; this renders the above selected graph - widget state is notebook scoped. 
 (reagent!
  '[:div
-   [vegaa :widget-state :x]
-   ])
+   [vegaa :widget-state :x]])
+   
 ;; @@
 ;; ->
 ;;; 
