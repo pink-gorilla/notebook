@@ -9,8 +9,8 @@
                  ;; [ring/ring-json "0.4.0"]
                  [org.clojure/data.json "0.2.6"]
                  ;; [http-kit "2.2.0"]
-                 [cider/cider-nrepl "0.22.4"]
-                 [nrepl "0.6.0"]
+                 ;; [cider/cider-nrepl "0.22.4"]
+                 ;; [nrepl "0.6.0"]
                  ;; [cljs-tooling "0.2.0"]
                  ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable,
                  ;; [org.pinkgorilla/gorilla-renderable "2.0.13"]
@@ -120,6 +120,8 @@
   ;; not honor :provided
   ;; TODO: Not sure if this still applies as of 2019 - however, uberjar uses jetty9 which depends on servlet
   ;; :uberjar-exclusions [#".*javax/websocket.*" #".*javax/servlet.*"]
+  ;; Cider. Does. Not. Play. With. AOT (cider.nrepl/delayed-handlers empty)
+  :uberjar-exclusions [#"cider/nrepl.*\.class$"]
 
   ;; :jar-exclusions   [#"(?:^|\/)foo\/" #"(?:^|\/)demo\/" #"(?:^|\/)compiled.*\/" #"html$"]
 
@@ -212,13 +214,13 @@
                                         [ring/ring-devel "1.7.1"]
                                         [prone "2019-07-08"]
                                         ;; [org.clojure/tools.nrepl "0.2.12"]
-                                        [nrepl "0.6.0"]
+                                        ;; [nrepl "0.6.0"]
                                         ;; Dirac or piggieback - there can only be one of them
                                         [binaryage/dirac "RELEASE"] ;; 0.6.7
-                                        [cider/piggieback "0.4.2"
-                                         ;; :exclusions [org.clojure/clojurescript]
-                                         ]
-                                        [lein-doo "0.1.11"]
+                                        ;[cider/piggieback "0.4.2"
+                                        ; ;; :exclusions [org.clojure/clojurescript]
+                                        ; ]
+                                        ;[lein-doo "0.1.11"]
                                         [re-frisk "0.5.4.1"]
                                         [day8.re-frame/test "0.1.5"]
                                         [devcards "0.2.6"

@@ -76,7 +76,7 @@
              ;; :http-server-root  "public" ;; does not matter
              ;; :server-port      3449
              :nrepl-port          7002
-             :nrepl-middleware    ["cemerick.piggieback/wrap-cljs-repl"
+             :nrepl-middleware    ["cider.piggieback/wrap-cljs-repl"
                                    "cider.nrepl/cider-middleware"]
              :css-dirs            ["resources/gorilla-repl-client/css"]
              :open-file-command   "open-in-intellij"

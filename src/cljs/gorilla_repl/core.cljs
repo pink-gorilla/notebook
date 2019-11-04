@@ -1,5 +1,5 @@
 (ns gorilla-repl.core
-  (:require 
+  (:require
    [gorilla-repl.events]
    [gorilla-repl.views :as v]
    [reagent.core :as ra]
@@ -11,7 +11,7 @@
    [gorilla-repl.nrepl-kernel :as nrepl]
    [gorilla-repl.browser-kernel :as brwrepl]
    [clojure.string :as str]
-   
+
    ;[widget.replikativ]
    ))
 
