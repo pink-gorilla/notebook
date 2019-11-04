@@ -98,7 +98,7 @@
         _ (println "reagent component: " component)
         component (resolve-functions component)
         component (resolve-atoms component)
-        ;_ (println "resolved component: " component)
+        _ (println "resolved component: " component)
         ;initial-state (:initial-state content)
         ;state (reagent/atom initial-state)
         

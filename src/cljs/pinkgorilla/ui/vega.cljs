@@ -44,7 +44,11 @@
    (let [spec (k @a)]
       (if (nil? spec)
           [:p "spec missing"]
-          [output-jsscript {:content {:module module :data spec}}])))
+          [:div 
+           ; [:p  (k @a)]
+            [output-jsscript {:content {:module module :data spec}}]]
+          
+          )))
 
 
 
