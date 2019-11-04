@@ -1,14 +1,20 @@
 (ns gorilla-repl.output.reagent
   (:require
    [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   
+   [cljs.reader]
+
    [widget.hello] ; only included for testing.
    [widget.clock]
    [widget.combo]
    [widget.text]
+   [pinkgorilla.ui.vega :refer [vega vegaa]]
+   [pinkgorilla.ui.combo :refer [combo]]
    ))
 
+
+(defn clj->json
+  [ds]
+  (.stringify js/JSON (clj->js ds)))
 
 (defn widget-not-found
   [name]
@@ -16,8 +22,7 @@
    [:h3 "WIDGET NOT FOUND!"]
    [:p "You need to specify the fully-qualified name of the widget"]
    [:p "Example: widget.hello/world"]
-   [:p "Example: widget.clock/binary-clock"]
-   [:p (str "You have entered: " name) ]
+   [:p (str "You have entered: " (clj->json name) )]
    ]
   )
 
@@ -32,6 +37,9 @@
       widget.hello/world widget.hello/world
       widget.hello/love widget.hello/love
       text widget.text/atom-text
+      vega vega
+      vegaa vegaa
+      combo combo
       widget-not-found)))
 
 (defn resolve-vector [x]

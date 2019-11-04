@@ -92,15 +92,25 @@
     [text :widget-state :time]
     [:h4 "super duper"]]) 
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
 ;;; ["^ ","~:type","reagent","~:content",["div",["text","widget-state","name"],["text","widget-state","time"],["h4","super duper"]],"~:value","[:div [text :widget-state :name] [text :widget-state :time] [:h4 \"super duper\"]]"]
 ;; <=
 
+;; **
+;;; vega charts rendered with **reagent**
+;; **
+
 ;; @@
-(+ 5 5)
+(reagent!
+ '[:div
+   [:p "sample vega plot:"]
+  [vega "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"]])
 ;; @@
 ;; =>
-;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-long"],"10"],"~:value","10"]
+;;; ["^ ","~:type","reagent","~:content",["div",["p","sample vega plot:"],["vega","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"]],"~:value","[:div [:p \"sample vega plot:\"] [vega \"https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json\"]]"]
 ;; <=
 
 ;; @@
@@ -109,3 +119,7 @@
 ;; ->
 ;;; 
 ;; <-
+
+;; @@
+
+;; @@
