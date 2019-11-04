@@ -1,10 +1,8 @@
 (ns gorilla-repl.core-test
-  (:require 
+  (:require
     ;; this is needed to bring the render implementations into scope
     [pinkgorilla.ui.hiccup_renderer :as renderer]
     [pinkgorilla.middleware.render-values]
-   
-   
    )
   (:use clojure.test))
 

@@ -1,16 +1,18 @@
 (ns gorilla-repl.repl
-  (:require [cemerick.piggieback :as pback]
+  (:require [cider.piggieback :as pback]
             [cljs.build.api]
             [cljs.repl]
             [cljs.repl.node]
             [clojure.core.async :refer [go]]
             [gorilla-repl.core :as core]
-            [gorilla-repl.figwheel :refer [config]]
-            [figwheel.main :as ra :refer [start-figwheel! cljs-repl]]
-            [gorilla-repl.system :as gsys])
-  (:use                                                     ;; reagent-sample.handler
-    ;; ring.server.standalone
-    [ring.middleware file-info file]))
+            [figwheel.main.api :refer [start start-join cljs-repl]]
+            [clojure.pprint :refer [pprint]]
+            [gorilla-repl.figwheel :as gfw :refer [main-config]]
+            [gorilla-repl.system :as gsys]
+            )
+  #_(:use
+      ;; ring.server.standalone
+      [ring.middleware file-info file]))
 
 ;; (defonce server (atom nil))
 
@@ -50,17 +52,17 @@
                          :output-to "out/main.js"
                          :verbose   true})
 
-(defn start-cljs-repl
-  []
-  (pback/cljs-repl (cljs.repl.node/repl-env)
-                   :watch "in"
-                   ;; :reader
-                   :output-dir "out"))
+#_(defn start-cljs-repl
+    []
+    (pback/cljs-repl (cljs.repl.node/repl-env)
+                     :watch "in"
+                     ;; :reader
+                     :output-dir "out"))
 
-(defn run-cljs
-  []
-  (core/run-gorilla-server {})
-  (start-cljs-repl))
+#_(defn run-cljs
+    []
+    (core/run-gorilla-server {})
+    (start-cljs-repl))
 #_(go
     (cljs.repl/repl (cljs.repl.node/repl-env)
                     ;; :watch "in"
