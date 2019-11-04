@@ -9,6 +9,7 @@
    [widget.text]
    [pinkgorilla.ui.vega :refer [vega vegaa]]
    [pinkgorilla.ui.combo :refer [combo]]
+   [pinkgorilla.ui.slider :refer [slider]]
    ))
 
 
@@ -40,6 +41,7 @@
       vega vega
       vegaa vegaa
       combo combo
+      slider slider
       widget-not-found)))
 
 (defn resolve-vector [x]
