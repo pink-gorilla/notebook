@@ -1,11 +1,13 @@
 (ns ^:figwheel-no-load gorilla-repl.dev
-  (:require [gorilla-repl.core :as core]
-    ;;        [gorilla-repl.util :refer [ws-origin]]
+  (:require 
+     [devtools.core :as devtools]
+     [re-frisk.core :refer [enable-re-frisk!]]
     ;;        [cemerick.url :refer [url]]
     ;; [figwheel.client :as figwheel :include-macros true]
-            [devtools.core :as devtools]
     ;; [dirac.runtime]
-            [re-frisk.core :refer [enable-re-frisk!]]))
+     [pinkgorilla.core :as core]
+    ;;[pinkgorilla.util :refer [ws-origin]]
+            ))
 
 (devtools/install!)
 ;; (dirac.runtime/install!)

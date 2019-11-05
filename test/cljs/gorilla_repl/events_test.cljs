@@ -1,11 +1,12 @@
 (ns gorilla-repl.events-test
-  (:require [cljs.test :refer-macros [is are deftest testing use-fixtures]]
-            [re-frame.core :as reframe]
-            [re-frame.db :as db]
-            [reagent.core :as reagent :refer [atom]]
-            [gorilla-repl.events :as gev]
-            [gorilla-repl.db :as gdb]
-            [gorilla-repl.core :as grc]))
+  (:require 
+     [cljs.test :refer-macros [is are deftest testing use-fixtures]]
+     [re-frame.core :as reframe]
+     [re-frame.db :as db]
+     [reagent.core :as reagent :refer [atom]]
+     [pinkgorilla.events :as gev]
+     [pinkgorilla.db :as gdb]
+     [pinkgorilla.core :as grc]))
 
 (defn my-handler
   [db [_ v]]

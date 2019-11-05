@@ -1,12 +1,13 @@
-  (ns gorilla-repl.cards
-  (:require [cljs.test :refer-macros [is testing]]
-            [reagent.core :as reagent :refer [atom]]
+(ns gorilla-repl.cards
+  (:require 
+    [cljs.test :refer-macros [is testing]]
+    [reagent.core :as reagent :refer [atom]]
     ;; [reagent.session :as session]
-            [gorilla-repl.core :as core])
+    [pinkgorilla.core :as core])
   (:require-macros
     [devcards.core
-     :as dc
-     :refer [defcard defcard-doc defcard-rg deftest]]))
+       :as dc
+       :refer [defcard defcard-doc defcard-rg deftest]]))
 
 ;; https://8thlight.com/blog/eric-smith/2016/10/05/a-testable-clojurescript-setup.html
 ;; rlwrap lein run -m clojure.main script/figwheel.clj

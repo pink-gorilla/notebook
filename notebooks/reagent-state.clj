@@ -109,6 +109,9 @@
    [:p "sample vega plot:"]
   [vega "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"]])
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
 ;;; ["^ ","~:type","reagent","~:content",["div",["p","sample vega plot:"],["vega","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"]],"~:value","[:div [:p \"sample vega plot:\"] [vega \"https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json\"]]"]
 ;; <=
@@ -123,3 +126,6 @@
 ;; @@
 
 ;; @@
+;; ->
+;;; 
+;; <-
