@@ -133,7 +133,7 @@
 
   :min-lein-version "2.5.0"
 
-  :main ^:skip-aot gorilla-repl.core
+  :main ^:skip-aot pinkgorilla.core
 
   ;; :aot [gorilla-repl.servlet]
 

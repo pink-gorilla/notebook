@@ -1,7 +1,7 @@
 (ns pinkgorilla.ui.vega
   "reagent component that render vega-charts"
   (:require 
-   [gorilla-repl.output.jsscript :refer [output-jsscript]]
+   [pinkgorilla.output.jsscript :refer [output-jsscript]]
    ))
 
 ;; copied from renderable
