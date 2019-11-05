@@ -1,4 +1,4 @@
-(ns gorilla-repl.events-test
+(ns pinkgorilla.events-test
   (:require 
      [cljs.test :refer-macros [is are deftest testing use-fixtures]]
      [re-frame.core :as reframe]

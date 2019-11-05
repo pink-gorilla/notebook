@@ -1,5 +1,5 @@
-(ns gorilla-repl.test-macros
-  #?(:cljs (:require-macros gorilla-repl.test-macros))
+(ns pinkgorilla.test-macros
+  #?(:cljs (:require-macros pinkgorilla.test-macros))
   #?(:cljs (:require [cljs.test])))
 
 

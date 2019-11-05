@@ -192,7 +192,7 @@
                 }
         :paths
                {;; :phantom "phantomjs --web-security=false"
-                :karma "karma --port=9881 --no-colors"}}
+                :karma "./node_modules/karma/bin/karma --port=9881 --no-colors"}}
 
   :profiles {:dev     {:repl-options   {:init-ns pinkgorilla.repl
                                         :port    4001}

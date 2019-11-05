@@ -1,4 +1,4 @@
-(ns gorilla-repl.core-test
+(ns pinkgorilla.core-test
   (:require 
      [cljs.test :refer-macros [is are deftest testing use-fixtures]]
      [reagent.core :as reagent :refer [atom]]

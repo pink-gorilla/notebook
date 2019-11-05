@@ -1,11 +1,11 @@
-(ns gorilla-repl.karma-runner
+(ns pinkgorilla.karma-runner
   (:require [jx.reporter.karma :as karma :include-macros true]
-    ;; [gorilla-repl.webpack-bundle]
-            [gorilla-repl.test-test]))
+    ;; [pinkgorilla.webpack-bundle]
+            [pinkgorilla.test-test]))
 
 (enable-console-print!)
 
 (defn ^:export run-karma [karma]
   (karma/run-tests
     karma
-    'gorilla-repl.test-test))
+    'pinkgorilla.test-test))

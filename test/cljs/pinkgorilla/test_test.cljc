@@ -1,8 +1,8 @@
-(ns gorilla-repl.test-test
+(ns pinkgorilla.test-test
   (:require #?(:cljs [cljs.test :refer-macros [deftest is]]
                :clj  [clojure.test :refer [deftest is]])
-            #?(:cljs [gorilla-repl.test-macros :refer-macros [assert-captured-test-results]]
-               :clj  [gorilla-repl.test-macros :refer [assert-captured-test-results]])
+            #?(:cljs [pinkgorilla.test-macros :refer-macros [assert-captured-test-results]]
+               :clj  [pinkgorilla.test-macros :refer [assert-captured-test-results]])
             [day8.re-frame.test :as rf-test]
             [re-frame.core :as rf]
             re-frame.db
