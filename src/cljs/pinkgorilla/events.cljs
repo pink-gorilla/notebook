@@ -1,28 +1,29 @@
 (ns pinkgorilla.events
   (:require
-    [clojure.spec.alpha :as s]
+   [clojure.spec.alpha :as s]
     ;; [cemerick.url :as url]
-    [clojure.string :as str]
-    [goog.crypt.base64 :as b64]
-    [clojure.walk :as w]
-    [taoensso.timbre :as timbre
-        :refer-macros (log trace debug info warn error fatal report
+   [clojure.string :as str]
+   [goog.crypt.base64 :as b64]
+   [clojure.walk :as w]
+   [taoensso.timbre :as timbre
+    :refer-macros (log trace debug info warn error fatal report
                        logf tracef debugf infof warnf errorf fatalf reportf
                        spy get-env log-env)]
-    [ajax.core :as ajax :refer [GET POST]]
-    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]] 
-    [day8.re-frame.http-fx]
-    [day8.re-frame.undo :as undo :refer [undoable]]
+   [ajax.core :as ajax :refer [GET POST]]
+   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]] 
+   [day8.re-frame.http-fx]
+   [day8.re-frame.undo :as undo :refer [undoable]]
 
-    [cljsjs.mousetrap]
-    [cljsjs.mousetrap-global-bind]
+   [cljsjs.mousetrap]
+   [cljsjs.mousetrap-global-bind]
 
-    [pinkgorilla.db :as db :refer [initial-db]]
-    [pinkgorilla.worksheet-parser] ; awb99: hack - parsing is done via js file!! via externs!!
-    [pinkgorilla.editor.core :as editor]
-    [pinkgorilla.kernel.nrepl :as nrepl]
-    [pinkgorilla.routes :as routes]
-    [pinkgorilla.newnotebook :refer [create-new-worksheet]]))
+   [pinkgorilla.db :as db :refer [initial-db]]
+   [pinkgorilla.worksheet-parser] ; awb99: hack - parsing is done via js file!! via externs!!
+   [pinkgorilla.editor.core :as editor]
+   [pinkgorilla.kernel.nrepl :as nrepl]
+   [pinkgorilla.routes :as routes]
+   [pinkgorilla.newnotebook :refer [create-new-worksheet]]
+   ))
 
 
 (defn text-matches-re
@@ -139,6 +140,18 @@
                   :response-format (ajax/transit-response-format) ;; IMPORTANT!: You must provide this.
                   :on-success      [:process-config-response]
                   :on-failure      [:process-error-response]}}))
+
+(reg-event-db
+ :app:showsettings
+ (fn [db [_ doc]]
+   (assoc-in db [:settings] {:show true})))
+
+(reg-event-db
+ :app:hide-settings
+ (fn [db _]
+   (assoc-in db [:settings] {:show false})))
+
+
 
 (reg-event-db
   :show-doc
