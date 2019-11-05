@@ -1,41 +1,42 @@
 (ns pinkgorilla.views
   (:require 
-     [clojure.string :as str]
+   [clojure.string :as str]
       ;; [hickory.core :as hick]
       ;; [gorilla-repl.webpack-include]
       ;; [gorilla-repl.webpack-extern]
       ;; [clojure.walk :as w]
-
-      [reagent.core :as reagent :refer [atom]]
-      [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-      [re-com.core :as re-com]
-      [goog.dom :as gdom]
-      [dommy.core :as dom :refer-macros [sel1]]
-      [taoensso.timbre :as timbre
-             :refer-macros (log trace debug info warn error fatal report
-                                logf tracef debugf infof warnf errorf fatalf reportf
-                                spy get-env log-env)]
-           
-      [cljs-uuid-utils.core :as uuid]
-      [cljsjs.marked]
+   
+   [reagent.core :as reagent :refer [atom]]
+   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [re-com.core :as re-com]
+   [goog.dom :as gdom]
+   [dommy.core :as dom :refer-macros [sel1]]
+   [taoensso.timbre :as timbre
+    :refer-macros (log trace debug info warn error fatal report
+                       logf tracef debugf infof warnf errorf fatalf reportf
+                       spy get-env log-env)]
+   
+   [cljs-uuid-utils.core :as uuid]
+   [cljsjs.marked]
       ;; TODO : vega 2.6 does  not quite work yet - throw spec at http://vega.github.io/vega-editor/?mode=vega
       ;; https://github.com/vega/vega/wiki/Upgrading-to-2.0
       ;; data. prefix removed
       ;[cljsjs.d3]    2019-10-20 awb99 removed as it fucks up the new vega
       ;[cljsjs.d3geo]  2019-10-20 awb99 removed as it fucks up the new vega
       ;[cljsjs.vega] 2019-10-20 awb99 removed as it fucks up the new vega
-      
-      [pinkgorilla.subs]
-      [pinkgorilla.editor.core :as editor]
-      [pinkgorilla.output.hack :refer [temp-comp-hack]]
-      [pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
-      [pinkgorilla.output.core :refer [output-fn]]
-      [pinkgorilla.dialog.save :refer [save-dialog]]
-      [pinkgorilla.dialog.palette :refer [palette-dialog]]
-      [pinkgorilla.worksheet.core :refer [worksheet]]
+   
+   [pinkgorilla.subs]
+   [pinkgorilla.editor.core :as editor]
+   [pinkgorilla.output.hack :refer [temp-comp-hack]]
+   [pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
+   [pinkgorilla.output.core :refer [output-fn]]
+   [pinkgorilla.dialog.save :refer [save-dialog]]
+   [pinkgorilla.dialog.palette :refer [palette-dialog]]
+   [pinkgorilla.dialog.settings :refer [settings-dialog]]
+   [pinkgorilla.worksheet.core :refer [worksheet]]
 
       ;widgets are only included here so they get compiled to the bundle.js
-      [widget.hello]))
+   [widget.hello]))
 
 ;; <!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 ;; <script type="text/x-mathjax-config">
@@ -121,11 +122,13 @@
                                hamburger-comp (if rw ^{:key :hamburger} [hamburger])
                                palette-comp (if rw ^{:key :palette-dialog} [palette-dialog])
                                save-comp (if rw ^{:key :save-dialog} [save-dialog])
+                               settings-comp (if rw ^{:key :settings-dialog} [settings-dialog])
                                doc-comp (if rw ^{:key :doc-viewer} [doc-viewer])
                                other-children [^{:key :status} [app-status]
                                                hamburger-comp
                                                palette-comp
                                                save-comp
+                                               settings-comp
                                                doc-comp
                                                ^{:key :worksheet} [worksheet
                                                                    rw

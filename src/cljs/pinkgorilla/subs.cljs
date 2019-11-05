@@ -36,6 +36,12 @@
   (fn [db _]
     (get-in db [:save])))
 
+
+(reg-sub
+ :settings
+ (fn [db _]
+   (get-in db [:settings])))
+
 (reg-sub
   :segment-query
   (fn [db [_ seg-id]]
