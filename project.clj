@@ -80,7 +80,7 @@
                  [cljsjs/marked "0.3.5-1"]
                  [com.taoensso/sente "1.14.0"]
                  [org.danielsz/system "0.4.3"]
-                 [jarohen/chord "0.8.1"]
+                 [jarohen/chord "0.8.1"] ; websockets with core.async
                  [org.clojure/core.match "0.3.0"]
                  [de.otto/tesla-microservice "0.13.1"]
                  ;; [de.otto/tesla-httpkit "1.0.1"]
