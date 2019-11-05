@@ -21,14 +21,14 @@ segmentWithBlankLine = seg:segment lineEnd? {return seg;}
 segment = freeSegment / codeSegment
 
 freeSegment = freeSegmentOpenTag content:stringNoDelim? freeSegmentCloseTag
-                {return gorilla_repl.db.create_free_segment(gorilla_repl.db.unmake_clojure_comment(content));}
+                {return pinkgorilla.db.create_free_segment(pinkgorilla.db.unmake_clojure_comment(content));}
 
 freeSegmentOpenTag = ";; **" lineEnd
 
 freeSegmentCloseTag = lineEnd ";; **" lineEnd
 
 codeSegment = codeSegmentOpenTag content:stringNoDelim? codeSegmentCloseTag cs:consoleSection? out:outputSection?
-                {return gorilla_repl.db.create_code_segment(content, gorilla_repl.db.unmake_clojure_comment(cs), gorilla_repl.db.unmake_clojure_comment(out), worksheetVersion);}
+                {return pinkgorilla.db.create_code_segment(content, pinkgorilla.db.unmake_clojure_comment(cs), pinkgorilla.db.unmake_clojure_comment(out), worksheetVersion);}
 
 codeSegmentOpenTag = ";; @@" lineEnd
 

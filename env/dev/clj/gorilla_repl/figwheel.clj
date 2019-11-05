@@ -43,7 +43,7 @@
     :requires ["cljsjs.mousetrap"]
     :provides ["cljsjs.mousetrap-global-bind"]}
    {:file     "./resources/gorilla-repl-client/js/worksheetParser.js"
-    :provides ["gorilla-repl.worksheet-parser"]}])
+    :provides ["pinkgorilla.worksheet-parser"]}])
 
 ;; We could still pull some paths from project.clj when using read-raw
 ;; or sys/fetch-config

@@ -1,6 +1,6 @@
 (ns pinkgorilla.newnotebook
   (:require 
-   [gorilla-repl.db :as db]))
+   [pinkgorilla.db :as db]))
 
 ;; awb99:
 ;; Create a new notebook

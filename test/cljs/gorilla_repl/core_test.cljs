@@ -1,7 +1,8 @@
 (ns gorilla-repl.core-test
-  (:require [cljs.test :refer-macros [is are deftest testing use-fixtures]]
-            [reagent.core :as reagent :refer [atom]]
-            [gorilla-repl.views :as gv]))
+  (:require 
+     [cljs.test :refer-macros [is are deftest testing use-fixtures]]
+     [reagent.core :as reagent :refer [atom]]
+     [pinkgorilla.views :as gv]))
 
 
 (def isClient (not (nil? (try (.-document js/window)

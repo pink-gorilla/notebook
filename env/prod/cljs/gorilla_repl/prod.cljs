@@ -1,5 +1,6 @@
 (ns gorilla-repl.prod
-  (:require [gorilla-repl.core :as core]))
+  (:require 
+    [pinkgorilla.core :as core]))
 
 ;;ignore println statements in prod
 (set! *print-fn* (fn [& _]))
