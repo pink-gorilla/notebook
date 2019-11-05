@@ -12,9 +12,6 @@
                  ;; [cider/cider-nrepl "0.22.4"]
                  ;; [nrepl "0.6.0"]
                  ;; [cljs-tooling "0.2.0"]
-                 ;[org.clojars.deas/gorilla-plot "0.2.0"] ; gorilla polot uses renderable,
-                 ;; [org.pinkgorilla/gorilla-renderable "2.0.13"]
-                 ; 2019-10-18 awb99 added instead of gorilla-plot
                  [org.pinkgorilla/gorilla-middleware "0.2.1"]
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.29"]
@@ -23,10 +20,7 @@
                  [com.taoensso/timbre "4.10.0"]
                  ;; Things get very noise with slf4j-timbre - needs configuration
                  ;; [com.fzakaria/slf4j-timbre "0.3.2"]
-                 ;; [cljs-ajax "0.5.8"]
                  [cljs-ajax "0.8.0"]
-                 ;; goog.dom should be enough
-                 ;; [enfocus "2.1.1"]
                  [prismatic/dommy "1.1.0"]
                  ;; [selmer "1.0.3"] ;; django like templates - deps worth the hassle?
                  [reagent "0.8.1"
@@ -63,7 +57,7 @@
                  [ring-cors "0.1.13"]
                  [ring/ring-defaults "0.3.2"
                   :exclusions [javax.servlet/servlet-api]]
-                 ;;  [ring.middleware.logger "0.5.0"]
+                 ;; [ring.middleware.logger "0.5.0"]
                  ;; [ring-webjars "0.1.1"]                     ;; Although not matching servlet3 paths
                  [ring-middleware-format "0.7.4"]
                  [javax.websocket/javax.websocket-api "1.1"]
@@ -126,8 +120,8 @@
   ;; :jar-exclusions   [#"(?:^|\/)foo\/" #"(?:^|\/)demo\/" #"(?:^|\/)compiled.*\/" #"html$"]
 
   :ring {:war-exclusions [#"WEB-INF/lib/javax.websocket-api-1.0.jar"]
-         :handler        gorilla-repl.route/redirect-handler
-         :servlet-class  gorilla_repl.RedirectServlet
+         :handler        pinkgorilla.route/redirect-handler
+         :servlet-class  pinkgorilla.RedirectServlet
          :servlet-name   redirect-servlet
          :uberwar-name   "gorilla-notebook.war"}
 
@@ -158,8 +152,6 @@
               :builds
                    {:app {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
-                                         ;; :output-dir      "target/js/out"
-                                         ;; :asset-path      "/js/out"
                                          :foreign-libs    [
                                                            ;{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
                                                            ; :provides ["gorilla-repl.webpack-include"
@@ -180,8 +172,8 @@
                                                             :requires ["cljsjs.mousetrap"]
                                                             :provides ["cljsjs.mousetrap-global-bind"]}
                                                            {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
-                                                            :provides ["gorilla-repl.worksheet-parser"]}]
-                                         :main            gorilla-repl.prod
+                                                            :provides ["pinkgorilla.worksheet-parser"]}]
+                                         :main            pinkgorilla.prod
                                          :verbose         true
                                          :compiler-stats  true
                                          :closure-defines {goog.DEBUG false}
@@ -202,25 +194,22 @@
                {;; :phantom "phantomjs --web-security=false"
                 :karma "karma --port=9881 --no-colors"}}
 
-  :profiles {:dev     {:repl-options   {:init-ns gorilla-repl.repl
+  :profiles {:dev     {:repl-options   {:init-ns pinkgorilla.repl
                                         :port    4001}
                        :prep-tasks     ^:replace ["javac" "compile"]
                        :dependencies   [[com.bhauman/figwheel-main "0.2.3"]
                                         [com.bhauman/rebel-readline-cljs "0.1.4"]
-                                        ;; [figwheel-sidecar "0.5.8" :exclusions [org.clojure/tools.nrepl]]
                                         [karma-reporter "3.1.0"]
                                         ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
                                         [ring/ring-mock "0.4.0"]
                                         [ring/ring-devel "1.7.1"]
                                         [prone "2019-07-08"]
-                                        ;; [org.clojure/tools.nrepl "0.2.12"]
-                                        ;; [nrepl "0.6.0"]
                                         ;; Dirac or piggieback - there can only be one of them
                                         [binaryage/dirac "RELEASE"] ;; 0.6.7
                                         ;[cider/piggieback "0.4.2"
                                         ; ;; :exclusions [org.clojure/clojurescript]
                                         ; ]
-                                        ;[lein-doo "0.1.11"]
+                                        [doo "0.1.11"]
                                         [re-frisk "0.5.4.1"]
                                         [day8.re-frame/test "0.1.5"]
                                         [devcards "0.2.6"
@@ -239,18 +228,14 @@
                                         ;; https://github.com/clojure-numerics/expresso/issues/19
                                         [expresso "0.2.2"]
                                         [instaparse "1.4.10"]
-                                        ;[aysylu/loom "0.6.0"]  ; 2019-10-18 awb99 removed - is in plugin
-                                        ;[loom-gorilla "0.1.0"]  ; 2019-10-18 awb99 removed - is in plugin
                                         [org.clojure/data.xml "0.0.8"]
-                                        ;[incanter-gorilla "0.1.0"]  ; 2019-10-18 awb99 removed - is in plugin
                                         [me.lomin/component-restart "0.1.2"]]
 
                        :source-paths   ^:replace ["src/clj" "src/cljc" "env/dev/clj" "src/cljs" "env/dev/cljs"]
 
                        :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
 
-                       :plugins        [[lein-doo "0.1.7"]
-                                        ;; [cider/cider-nrepl "0.14.0"]
+                       :plugins        [[lein-doo "0.1.11"]
                                         [org.clojure/tools.namespace "0.3.1"
                                          :exclusions [org.clojure/tools.reader]]
                                         ;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
@@ -269,7 +254,7 @@
                                         ;; lein doo
                                         ;; Uncaught Error: js/React is missing
                                         {:doo-test {:source-paths ["src/cljs" "src/cljc" "test/cljs"]
-                                                    :compiler     {:main           gorilla-repl.doo-runner
+                                                    :compiler     {:main           pinkgorilla.doo-runner
                                                                    ;; :main gorilla-repl.karma-runner
                                                                    :optimizations  :none
                                                                    :source-map     true
@@ -284,7 +269,9 @@
                                                                    ;; :source-map     "target/cljsbuild/gorilla-repl-client/js/gorilla_doo.js.map"
                                                                    :pretty-print   true
                                                                    :parallel-build true
-                                                                   :foreign-libs   [;{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
+                                                                   :foreign-libs   [{:file     "node_modules/babel-polyfill/browser.js"
+                                                                                     :provides ["phantomjs.polyfill"]}
+                                                                                    ;{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
                                                                                     ; :provides ["gorilla-repl.webpack-include"
                                                                                     ;            ;; "cljsjs.react"
                                                                                     ;            ;; "cljsjs.react.dom"
@@ -300,7 +287,7 @@
                                                                                      :requires ["cljsjs.mousetrap"]
                                                                                      :provides ["cljsjs.mousetrap-global-bind"]}
                                                                                     {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
-                                                                                     :provides ["gorilla-repl.worksheet-parser"]}]}}}
+                                                                                     :provides ["pinkgorilla.worksheet-parser"]}]}}}
                                         }}
 
              :uberjar {:hooks       [minify-assets.plugin/hooks]

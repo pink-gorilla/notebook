@@ -1,4 +1,4 @@
-(ns pinkgorilla.core
+(ns ^:figwheel-hooks pinkgorilla.core
   (:require
    [clojure.string :as str]
    [reagent.core :as ra]
@@ -15,6 +15,12 @@
 
    ;[widget.replikativ]
    ))
+
+(defn ^:before-load my-before-reload-callback []
+  (println "BEFORE reload!!!"))
+
+(defn ^:after-load my-after-reload-callback []
+  (println "AFTER reload!!!"))
 
 (defn mount-root
   []
