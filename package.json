@@ -1,20 +1,18 @@
 {
   "//": "hint: npm-check-updates is the new lein ancient",
-  "name": "gorilla-repl",
+  "name": "gorilla-notebook-devtooling",
   "version": "0.37.0",
   "author": "a.steffan@contentreich.de",
   "scripts": {
     "watch": "webpack -d --watch",
     "build": "webpack -p --module-bind 'json=json-loader'"
   },
-  "dependencies": {
-    "codemirror": "5.22.0",
-  
-    "fixed-data-table": "^0.6.3",
-
-    "webpack": "1.13.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "json-loader": "^0.5.4"
+    "babel-polyfill": "^6.26.0",
+    "karma": "^4.4.1",
+    "karma-cljs-test": "^0.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "webpack": "^4.41.2"
   }
 }

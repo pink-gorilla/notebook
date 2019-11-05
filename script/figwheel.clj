@@ -1,12 +1,13 @@
-(require                                                    ;; '[figwheel-sidecar.repl :as r]
+(require                                                    
+  ;; '[figwheel-sidecar.repl :as r]
   '[figwheel.main.api :refer [start start-join cljs-repl]]
   ;; '[com.stuartsierra.component :as component]
   ;; '[me.lomin.component-restart :as restart]
-  ;; '[clojure.core.async :refer [go]]
+  ;; '[clojure.core.async :refer [go]]gorilla-repl
   ;; '[gorilla-repl.system :as system]
   '[clojure.pprint :refer [pprint]]
-  '[gorilla-repl.figwheel :as gfw :refer [main-config]]
-  ;; '[gorilla-repl.core :as gorilla]
+  '[pinkgorilla.figwheel :as gfw :refer [main-config]]
+  ;; '[pinkgorilla.core :as gorilla]
   )
 
 ;; rlwrap lein run -m clojure.main script/figwheel.clj
