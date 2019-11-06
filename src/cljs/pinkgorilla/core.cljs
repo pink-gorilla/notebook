@@ -1,25 +1,30 @@
 (ns ^:figwheel-hooks pinkgorilla.core
   (:require
-   [clojure.string :as str]
-   [reagent.core :as ra]
-   [re-frame.core :refer [dispatch-sync]]
-   [cemerick.url :as url]
-   [secretary.core :as secretary]
+    [clojure.string :as str]
+    [reagent.core :as ra]
+    [re-frame.core :refer [dispatch-sync]]
+    [cemerick.url :as url]
+    [secretary.core :as secretary]
+    [pinkgorilla.prefs :as prefs]
+    [pinkgorilla.events]
+    [pinkgorilla.views :as v]
+    [pinkgorilla.editor.core :as editor]
+    [pinkgorilla.routes :as routes]
+    [pinkgorilla.kernel.nrepl :as nrepl]
+    [pinkgorilla.kernel.browser :as brwrepl]
+    [taoensso.timbre :refer-macros (info)]
+    ;[widget.replikativ]
+    ))
 
-   [pinkgorilla.events]
-   [pinkgorilla.views :as v]
-   [pinkgorilla.editor.core :as editor]
-   [pinkgorilla.routes :as routes]
-   [pinkgorilla.kernel.nrepl :as nrepl]
-
-   ;[widget.replikativ]
-   ))
+(prefs/if-cljs-kernel
+ (require '[pinkgorilla.kernel.klipsecljs :as cljs-kernel])
+ (require '[pinkgorilla.kernel.mock :as cljs-kernel]))
 
 (defn ^:before-load my-before-reload-callback []
-  (println "BEFORE reload!!!"))
+  (info "BEFORE reload!!!"))
 
 (defn ^:after-load my-after-reload-callback []
-  (println "AFTER reload!!!"))
+  (info "AFTER reload!!!"))
 
 (defn mount-root
   []
@@ -30,6 +35,7 @@
   (routes/app-routes)
   (editor/init-cm-globally!)
   (v/init-mathjax-globally!)
+  (cljs-kernel/init-klipse!)
   (let [app-url (url/url (-> js/window .-location .-href))
         route (:anchor app-url)
         read-write (or (not route) (not (str/index-of route "/view")))]

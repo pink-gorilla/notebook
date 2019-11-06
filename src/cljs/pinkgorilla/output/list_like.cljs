@@ -46,6 +46,5 @@
     "<center><table>"
     (output-list-like-table output-fn output seg-id :center>table>tbody nil)
     (output-list-like-other output-fn output seg-id)))
-;; (map hick/as-hiccup (hick/parse-fragment "<h1>HELLO WORLD!</h1>"))
-;; return wrapWithValue(data, data.open + renderedItems.join(data.separator) + data.close);
+
 

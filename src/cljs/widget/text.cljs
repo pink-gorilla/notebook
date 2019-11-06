@@ -2,11 +2,12 @@
   (:require
    [reagent.core :as reagent :refer [atom]]
    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [taoensso.timbre :refer-macros (info)]
    ))
 
 
 (defn update-key [a k v]
-  (println "updating atom key:" k " to val:" v)
+  (info "updating atom key:" k " to val:" v)
   (swap! a assoc k v))
 
 (defn atom-text

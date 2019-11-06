@@ -3,11 +3,12 @@
   (:require
    [reagent.core :as reagent :refer [atom]]
    [re-com.misc]
+   [taoensso.timbre :refer-macros (info)]
    ))
 
 
 (defn update-key [a k v]
-  (println "updating atom key:" k " to val:" v)
+  (info "updating atom key:" k " to val:" v)
   (swap! a assoc k v))
 
 (defn slider
@@ -15,7 +16,7 @@
   (let [v (k @a)
         v (if (nil? v) min v)
         s (reagent/atom v)
-        change (fn [v] (do 
+        change (fn [v] (do
            (reset! s v)
            (update-key a k v)))]
     (fn []
