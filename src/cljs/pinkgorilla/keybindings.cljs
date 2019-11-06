@@ -1,7 +1,6 @@
 (ns pinkgorilla.keybindings
-  (:require 
-    [pinkgorilla.routes :as routes]
-   ))
+  (:require
+    [pinkgorilla.routes :as routes]))
 
 
 ;; TODO: Hacky editor access
@@ -72,12 +71,12 @@
     :desc    "Save the worksheet."
     :kb      "alt+g alt+s"
     :handler "app:save"}
-   
+
    {:name    "command:app:showsettings"
     :desc    "Settings Edit."
     :kb       ["ctrl+1" "alt+g alt+p"]
     :handler "app:showsettings"}
-   
+
    {:name    "command:app:saveas"
     :desc    "Save the worksheet to a new filename."
     :kb      "alt+g alt+e"

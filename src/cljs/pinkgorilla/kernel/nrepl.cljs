@@ -2,7 +2,6 @@
   (:require-macros
     [cljs.core.async.macros :as asyncm :refer (go go-loop)])
   (:require
-    [clojure.string :as str]
     [cljs-uuid-utils.core :as uuid]
     ;; [cljs.core.match :refer-macros [match]]
     [cljs.core.async :as async :refer (<! >! put! chan)]
@@ -20,7 +19,7 @@
     ))
 
 ;; TODO : Fixme handle breaking websocket connections
-(defonce ws-repl 
+(defonce ws-repl
   (atom {:channel     nil ; created by start-ws-repl!
          :session-id  nil
          :evaluations {}
@@ -28,12 +27,12 @@
 
 
 (defn- send-message!
-  "awb99: TODO: if websocket is nil, this will throw! (or not?). 
+  "awb99: TODO: if websocket is nil, this will throw! (or not?).
    This could be the error of some of the notebooks not loading.
    Why dont we keep the core.async channels open all the time. And when we have a
    websocket connection, then the messages get sent. Or we just dump messages that happen
    before the socket gets opened. But in this case we have to LOG message dumping.
-   I have seen situations where the first eval does not go through. Might be this issue.  
+   I have seen situations where the first eval does not go through. Might be this issue.
    "
   [key message storeval]
   (let [uuid (uuid/uuid-string (uuid/make-random-uuid))
@@ -85,14 +84,14 @@
 
 (defn- process-msg
   [message]
-  (let [id (keyword (get message "id")) ; a good Json parser can keywordize. (see metosins parser) 
+  (let [id (keyword (get message "id")) ; a good Json parser can keywordize. (see metosins parser)
         out (get message "out")         ; cannot we do one assignment for all the parts?, a proper keyword destructuring
         err (get message "err")
         root-ex (get message "root-ex")
         ns (get message "ns")
         value (get message "value")
         status (get message "status")
-        segment-id (get-in @ws-repl [:evaluations id]) ; awb99: should clj evals be separate or not? 
+        segment-id (get-in @ws-repl [:evaluations id]) ; awb99: should clj evals be separate or not?
         cider-cb (get-in @ws-repl [:ciders id])]
     (info "Got message" id "for segment" segment-id)
     (cond

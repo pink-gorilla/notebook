@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as str]
    [reagent.core :as ra]
-   [re-frame.core :refer [dispatch dispatch-sync]]
+   [re-frame.core :refer [dispatch-sync]]
    [cemerick.url :as url]
    [secretary.core :as secretary]
 
@@ -11,7 +11,6 @@
    [pinkgorilla.editor.core :as editor]
    [pinkgorilla.routes :as routes]
    [pinkgorilla.kernel.nrepl :as nrepl]
-   [pinkgorilla.kernel.browser :as brwrepl]
 
    ;[widget.replikativ]
    ))

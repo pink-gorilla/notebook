@@ -1,12 +1,11 @@
 (ns pinkgorilla.worksheet.free-output
   (:require
    [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-
+   [reagent.core :as reagent]
+   [re-frame.core :refer [subscribe]]
+   [dommy.core :as dom :refer-macros [sel1]]
    [pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
-   [pinkgorilla.output.core :refer [output-fn]]
-   [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment error-text console-text exception colorize-cm!]]))
+   [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment]]))
 
 
 
@@ -29,10 +28,13 @@
       :component-did-update (fn [this]
                               (if @is-active
                                 (do
-                                  ((partial init-cm!
-                                            seg-id
-                                            (get-in content [:type])
-                                            editor-options) this)
+                                  (let [text-area (-> (reagent/dom-node this)
+                                                      (sel1 :textarea))]
+                                    (when-not (= "none" (.. text-area -style -display))
+                                      ((partial init-cm!
+                                                seg-id
+                                                (get-in content [:type])
+                                                editor-options) this)))
                                   (focus-active-segment this true))
                                 (queue-mathjax-rendering prev-uuid)
                                 #_(let [el (gdom/getElement prev-uuid)])))
@@ -47,5 +49,3 @@
                                               :read-only true}]]]
                                 [prev-div-kw {:class                   "free-preview"
                                               :dangerouslySetInnerHTML {:__html (js/marked (:value content))}}]))})))
-
-
