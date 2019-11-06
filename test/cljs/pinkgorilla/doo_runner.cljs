@@ -1,6 +1,5 @@
 (ns pinkgorilla.doo-runner
-  (:require [phantomjs.polyfill]
-            [doo.runner :refer-macros [doo-tests]]
+  (:require [doo.runner :refer-macros [doo-tests]]
             [pinkgorilla.core-test]
             [pinkgorilla.events-test]))
 

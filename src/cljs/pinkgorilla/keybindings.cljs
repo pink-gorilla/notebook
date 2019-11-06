@@ -76,7 +76,10 @@
     :desc    "Settings Edit."
     :kb       ["ctrl+1" "alt+g alt+p"]
     :handler "app:showsettings"}
-
+   {:name    "command:app:kernel-toggle"
+    :desc    "Kernel Toggle."
+    :kb       ["ctrl+2" "alt+g alt+2"]
+    :handler "app:kernel-toggle"}
    {:name    "command:app:saveas"
     :desc    "Save the worksheet to a new filename."
     :kb      "alt+g alt+e"

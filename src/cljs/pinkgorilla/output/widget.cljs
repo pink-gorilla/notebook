@@ -4,6 +4,7 @@
    [widget.hello] ; only included for testing.
    [widget.clock]
    [widget.combo]
+   [taoensso.timbre :refer-macros (info)]
    ))
 
 
@@ -33,7 +34,7 @@
 (defn output-widget
   [output _]
   (let [content (:content output)
-        _ (println "content: " content)
+        _ (info "content: " content)
         initial-state (:initial-state content)
         state (reagent/atom initial-state)
         widget-name (:widget content)

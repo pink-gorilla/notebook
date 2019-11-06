@@ -1,0 +1,225 @@
+;; gorilla-repl.fileformat = 2
+
+;; **
+;;; # Body Mass Indicator Demo 
+;;; 
+;;; Uses cljs kernel with reagent.
+;; **
+
+;; @@ [cljs]
+(def bmi-data (reagent.core/atom {:height 180 :weight 80}))
+;; @@
+;; ->
+;;; [:ok #'cljs.user/bmi-data] type: function (val,sym,_meta){
+;;; this.val = val;
+;;; this.sym = sym;
+;;; this._meta = _meta;
+;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/bmi-data</span>","~:value","#'cljs.user/bmi-data"]
+;; <=
+
+;; @@ [cljs]
+; note: pr-str is here because of a bug in list-alike rendering in cljs
+(pr-str @bmi-data)
+;; @@
+;; ->
+;;; [:ok "{:height 180, :weight 80}"] type: function String() {
+;;;     [native code]
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-string'>&quot;{:height 180, :weight 80}&quot;</span>","~:value","\"{:height 180, :weight 80}\""]
+;; <=
+
+;; @@ [cljs]
+(defn calc-bmi []
+  (let [{:keys [height weight bmi] :as data} @bmi-data
+        h (/ height 100)]
+    (if (nil? bmi)
+      (assoc data :bmi (/ weight (* h h)))
+      (assoc data :weight (* bmi h h)))))
+;; @@
+;; ->
+;;; [:ok #'cljs.user/calc-bmi] type: function (val,sym,_meta){
+;;; this.val = val;
+;;; this.sym = sym;
+;;; this._meta = _meta;
+;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/calc-bmi</span>","~:value","#'cljs.user/calc-bmi"]
+;; <=
+
+;; @@ [cljs]
+(pr-str (calc-bmi))
+;; @@
+;; ->
+;;; [:ok "{:height 180, :weight 80, :bmi 24.691358024691358}"] type: function String() {
+;;;     [native code]
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-string'>&quot;{:height 180, :weight 80, :bmi 24.691358024691358}&quot;</span>","~:value","\"{:height 180, :weight 80, :bmi 24.691358024691358}\""]
+;; <=
+
+;; @@ [cljs]
+(defn slider [param value min max]
+  [:input {:type "range" :value value :min min :max max
+           :style {:width "100%"}
+           :on-change (fn [e]
+                        (println "slider has changed!")
+                        (swap! bmi-data assoc param (.. e -target -value))
+                        (when (not= param :bmi)
+                          (swap! bmi-data assoc :bmi nil)))}])
+;; @@
+;; ->
+;;; [:ok #'cljs.user/slider] type: function (val,sym,_meta){
+;;; this.val = val;
+;;; this.sym = sym;
+;;; this._meta = _meta;
+;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/slider</span>","~:value","#'cljs.user/slider"]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=
+
+;; @@ [cljs]
+(pinkgorilla.kernel.cljs-tools/r! 
+ (fn []
+ [:div 
+  [:p(str  "height: " (:height @bmi-data))]
+  [cljs.user/slider :height (:height @bmi-data) 100 220]
+  ]))
+
+;; @@
+;; ->
+;;; [:ok #object[pinkgorilla.kernel.cljs-tools.t_pinkgorilla$kernel$cljs_tools24847]] type: function (vec_or_reagent_f,meta24848){
+;;; this.vec_or_reagent_f = vec_or_reagent_f;
+;;; this.meta24848 = meta24848;
+;;; this.cljs$lang$protocol_mask$partition0$ = 393216;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:content",["^ "]]
+;; <=
+
+;; @@ [cljs]
+(swap! bmi-data assoc :height 150)
+:88
+;; @@
+;; ->
+;;; [:ok :88] type: function (ns,name,fqn,_hash){
+;;; this.ns = ns;
+;;; this.name = name;
+;;; this.fqn = fqn;
+;;; this._hash = _hash;
+;;; this.cljs$lang$protocol_mask$partition0$ = 2153775105;
+;;; this.cljs$lang$protocol_mask$partition1$ = 4096;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-keyword'>:88</span>","~:value",":88"]
+;; <=
+
+;; @@ [cljs]
+(swap! bmi-data assoc :height 180)
+6
+;; @@
+;; ->
+;;; [:ok 6] type: function Number() {
+;;;     [native code]
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-number'>6</span>","~:value","6"]
+;; <=
+
+;; @@ [cljs]
+(pr-str @bmi-data)
+;; @@
+;; ->
+;;; [:ok "{:height 180, :weight 80}"] type: function String() {
+;;;     [native code]
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-string'>&quot;{:height 180, :weight 80}&quot;</span>","~:value","\"{:height 180, :weight 80}\""]
+;; <=
+
+;; @@ [cljs]
+(defn bmi-component []
+  (let [{:keys [weight height bmi]} (calc-bmi)
+        [color diagnose] (cond
+                          (< bmi 18.5) ["orange" "underweight"]
+                          (< bmi 25) ["inherit" "normal"]
+                          (< bmi 30) ["orange" "overweight"]
+                          :else ["red" "obese"])]
+    [:div
+     [:h3 "BMI calculator"]
+     [:div
+      "Height: " (int height) "cm"
+      [slider :height height 100 220]]
+     [:div
+      "Weight: " (int weight) "kg"
+      [slider :weight weight 30 150]]
+     [:div
+      "BMI: " (int bmi) " "
+      [:span {:style {:color color}} diagnose]
+      [slider :bmi bmi 10 50]]]))
+;; @@
+;; ->
+;;; [:ok #'cljs.user/bmi-component] type: function (val,sym,_meta){
+;;; this.val = val;
+;;; this.sym = sym;
+;;; this._meta = _meta;
+;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/bmi-component</span>","~:value","#'cljs.user/bmi-component"]
+;; <=
+
+;; @@ [cljs]
+(pinkgorilla.kernel.cljs-tools/r! bmi-component)
+;; @@
+;; ->
+;;; [:ok #object[pinkgorilla.kernel.cljs-tools.t_pinkgorilla$kernel$cljs_tools24847]] type: function (vec_or_reagent_f,meta24848){
+;;; this.vec_or_reagent_f = vec_or_reagent_f;
+;;; this.meta24848 = meta24848;
+;;; this.cljs$lang$protocol_mask$partition0$ = 393216;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:content",["^ "]]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=

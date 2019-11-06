@@ -9,6 +9,7 @@
    [pinkgorilla.ui.vega :refer [vega vegaa]]
    [pinkgorilla.ui.combo :refer [combo]]
    [pinkgorilla.ui.slider :refer [slider]]
+   [taoensso.timbre :refer-macros (info)]
    ))
 
 
@@ -29,7 +30,7 @@
 
 (defn resolve-function [s]
   (let [;pinkgorilla.output.reagentwidget (cljs.core/resolve (symbol widget-name)) ; this is what we want, but resolve is a macro
-        _ (println "resolving-function " s)
+        _ (info "resolving-function " s)
         ]
     (case s
       widget.clock/binary-clock widget.clock/binary-clock
@@ -44,14 +45,14 @@
       widget-not-found)))
 
 (defn resolve-vector [x]
-  (let [;_ (println "reagent function found: " x)
-        ;_ (println "type of arg: " (type (first (rest x))))
+  (let [;_ (info "reagent function found: " x)
+        ;_ (info "type of arg: " (type (first (rest x))))
         a [(resolve-function (first x))]
         b (into [] (assoc x 0 (resolve-function (first x))))
         ;b (into [] (assoc x 0 :h1))
         ]
-    ;(println "a is: " a)
-    ;(println "b is: " b)
+    ;(info "a is: " a)
+    ;(info "b is: " b)
 
     ;a
     b
@@ -76,7 +77,7 @@
     reagent-hiccup-syntax))
 
 (defn resolve-state [x]
-  (println "found :widget-state: " x)
+  (info "found :widget-state: " x)
   state-atom
   )
 
@@ -96,10 +97,10 @@
   [output _]
   (let [content (:content output)
         component (cljs.reader/read-string (:value output))
-        _ (println "reagent component: " component)
+        _ (info "reagent component: " component)
         component (resolve-functions component)
         component (resolve-atoms component)
-        _ (println "resolved component: " component)
+        _ (info "resolved component: " component)
         ;initial-state (:initial-state content)
         ;state (reagent/atom initial-state)
 

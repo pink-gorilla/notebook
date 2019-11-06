@@ -1,0 +1,57 @@
+;; gorilla-repl.fileformat = 2
+
+;; **
+;;; # PinkGorilla 
+;;; 
+;;; Shift + enter evaluates code. Hit CTRL+g twice in quick succession or click the menu icon (upper-right corner) for more commands.
+;;; 
+;;; It's a good habit to run each worksheet in its own namespace. We created a random namespace for you; you can keep using it.
+;; **
+
+;; @@ [cljs]
+(defn timer-component []
+  (let [seconds-elapsed (reagent.core/atom 0)]
+    (fn []
+      (js/setTimeout #(swap! seconds-elapsed inc) 1000)
+      [:div
+       "Seconds Elapsed: " @seconds-elapsed])))
+;; @@
+;; ->
+;;; [:ok #'cljs.user/timer-component] type: function (val,sym,_meta){
+;;; this.val = val;
+;;; this.sym = sym;
+;;; this._meta = _meta;
+;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/timer-component</span>","~:value","#'cljs.user/timer-component"]
+;; <=
+
+;; @@ [cljs]
+(pinkgorilla.kernel.cljs-tools/r! 
+ [timer-component])
+
+;; @@
+;; ->
+;;; [:ok #object[pinkgorilla.kernel.cljs-tools.t_pinkgorilla$kernel$cljs_tools24847]] type: function (vec_or_reagent_f,meta24848){
+;;; this.vec_or_reagent_f = vec_or_reagent_f;
+;;; this.meta24848 = meta24848;
+;;; this.cljs$lang$protocol_mask$partition0$ = 393216;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:content",["^ "]]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=

@@ -1,0 +1,97 @@
+;; gorilla-repl.fileformat = 2
+
+;; **
+;;; # Quil 
+;;; 
+;;; http://quil.info
+;; **
+
+;; @@ [cljs]
+(defn init [width height]
+  (fn []
+    {:width   width
+     :height  height
+     :circles []}))
+
+(defn draw [{:keys [circles]}]
+  (quil.core/background 255)
+  (doseq [{[x y] :pos [r g b] :color} circles]
+    (quil.core/fill r g b)
+    (quil.core/ellipse x y 10 10)))
+
+(defn update-state [{:keys [width height] :as state}]
+  (update state :circles conj {:pos   [(+ 20 (rand-int (- width 40)))
+                                       (+ 20 (rand-int (- height 40)))]
+                               :color (repeatedly 3 #(rand-int 250))}))
+
+;; @@
+;; ->
+;;; [:ok #'cljs.user/update-state] type: function (val,sym,_meta){
+;;; this.val = val;
+;;; this.sym = sym;
+;;; this._meta = _meta;
+;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/update-state</span>","~:value","#'cljs.user/update-state"]
+;; <=
+
+;; @@ [cljs]
+(defn canvas []
+  (let [width  500; (/ (.-innerWidth js/window) 2)
+        height 500;/ (.-innerHeight js/window) 2)
+                ]
+    (reagent.core/create-class
+     {:component-did-mount
+      (fn [component]
+        (quil.core/sketch
+           :host       (reagent.core/dom-node component)
+           :draw       draw
+           :setup      (init width height)
+           :update     update-state
+           :size       [width height]
+           :middleware [quil.middleware/fun-mode]))
+      :render
+      (fn []
+        [:div])})))
+;; @@
+;; ->
+;;; [:ok #'cljs.user/canvas] type: function (val,sym,_meta){
+;;; this.val = val;
+;;; this.sym = sym;
+;;; this._meta = _meta;
+;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/canvas</span>","~:value","#'cljs.user/canvas"]
+;; <=
+
+;; @@ [cljs]
+(pinkgorilla.kernel.cljs-tools/r! 
+ [canvas])
+;; @@
+;; ->
+;;; [:ok #object[pinkgorilla.kernel.cljs-tools.t_pinkgorilla$kernel$cljs_tools24847]] type: function (vec_or_reagent_f,meta24848){
+;;; this.vec_or_reagent_f = vec_or_reagent_f;
+;;; this.meta24848 = meta24848;
+;;; this.cljs$lang$protocol_mask$partition0$ = 393216;
+;;; this.cljs$lang$protocol_mask$partition1$ = 0;
+;;; }
+;; <-
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:content",["^ "]]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=

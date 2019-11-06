@@ -8,6 +8,7 @@
    [pinkgorilla.output.widget :refer [output-widget]]
    [pinkgorilla.output.jsscript :refer [output-jsscript]]
    [pinkgorilla.output.reagent :refer [output-reagent]]
+   [pinkgorilla.output.reagent-cljs :refer [output-reagent-cljs]]
    ))
 
 ;; 2019 10 16 awb:
@@ -18,11 +19,20 @@
 (defn output-fn
   [value-output]
   (case (:type value-output)
+    ; awb99 a hack - cljs renderer gives back keyword. todo: clj repl has to give back keyword also
+    :html output-html
+    :list-like (partial output-list-like output-fn)
+    ;:vega output-vega
+    :latex output-latex
+    :widget output-widget
+    :reagent output-reagent
+    :reagent-cljs output-reagent-cljs
+    :jsscript output-jsscript
+    
     "html" output-html
     "list-like" (partial output-list-like output-fn)
     ;"vega" output-vega
     "latex" output-latex
-    
     "widget" output-widget
     "reagent" output-reagent
     "jsscript" output-jsscript

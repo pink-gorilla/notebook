@@ -18,7 +18,7 @@
 
 (def dev-ws-processor (ws-relay/ws-processor route/nrepl-handler))
 
-(handle/set-config :project
+#_(handle/set-config :project
                    {:gorilla-options
                     {:editor {:text/x-clojure {:opts    [:paren-mode {:parinfer-mode :paren-mode}]
                                                :cm-opts {:mode "clojure-parinfer"}}}}}
@@ -40,16 +40,13 @@
    ;            "cljsjs.react.dom"]}
    ;{:file     "resources/gorilla-repl-client/jslib/cljs-extern-empty.js"
    ; :provides ["gorilla-repl.webpack-extern"]}
-   {:file     "node_modules/babel-polyfill/browser.js"
-    :provides ["phantomjs.polyfill"]}
    {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
     :requires ["cljsjs.codemirror"]
     :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
    {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
     :requires ["cljsjs.mousetrap"]
     :provides ["cljsjs.mousetrap-global-bind"]}
-   {:file     "./resources/gorilla-repl-client/js/worksheetParser.js"
-    :provides ["pinkgorilla.worksheet-parser"]}])
+   ])
 
 ;; We could still pull some paths from project.clj when using read-raw
 ;; or sys/fetch-config
@@ -69,10 +66,11 @@
                  ;; :external-config      {:devtools/config {:features-to-install :all}}
                  :pretty-print    true
                  :parallel-build  true
-                 :verbose         true
+                 :verbose         false
                  :foreign-libs    foreign-libs
                  :closure-defines {"re_frame.trace.trace_enabled_QMARK_" true}
                  :preloads        ['day8.re-frame-10x.preload]
+                 :external-config {:gorilla/config {:with-cljs-kernel true}}
                  }
        :config  { :auto-testing true
                  ;; :open-url         "http://100.115.92.204:3449/worksheet.html"

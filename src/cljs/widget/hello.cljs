@@ -2,6 +2,7 @@
   (:require
    [reagent.core :as reagent :refer [atom]]
    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [taoensso.timbre :refer-macros (info)]
    ))
 
 (defn world [& [name]] ; name==state. state is an atom
@@ -17,12 +18,12 @@
                           )])}))
 
 (defn love [activity]
-  (reagent/create-class 
+  (reagent/create-class
    {:display-name "love"
-    :reagent-render 
+    :reagent-render
     (fn []
-      (println "activity is: " activity)
-      [:h1 
+      (info "activity is: " activity)
+      [:h1
        (if (nil? activity)
          "I love THE WHOLE WORLD!"
          (str "I love " activity))])}))
