@@ -1,7 +1,7 @@
 
 (ns pinkgorilla.ui.combo
   (:require
-   [reagent.core :as reagent :refer [atom]]
+   [reagent.core :as reagent]
    [re-com.core     :refer [single-dropdown label]]
    [re-com.dropdown :refer [filter-choices-by-keyword single-dropdown-args-desc]]
    ))

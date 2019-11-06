@@ -1,8 +1,6 @@
 (ns pinkgorilla.output.widget
   (:require
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   
+   [reagent.core :as reagent]
    [widget.hello] ; only included for testing.
    [widget.clock]
    [widget.combo]
@@ -41,9 +39,9 @@
         widget-name (:widget content)
         widget (name-to-reagent widget-name)
         ]
-        (reagent/create-class 
+        (reagent/create-class
          {:display-name "output-widget"
-          :reagent-render 
+          :reagent-render
           (fn []
             [:div.widget
              (if (nil? widget)

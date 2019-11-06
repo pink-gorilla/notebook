@@ -1,8 +1,7 @@
 (ns pinkgorilla.ui.vega
   "reagent component that render vega-charts"
-  (:require 
-   [pinkgorilla.output.jsscript :refer [output-jsscript]]
-   ))
+  (:require
+   [pinkgorilla.output.jsscript :refer [output-jsscript]]))
 
 ;; copied from renderable
 ;; this bypasses the module system - needed because cljs has to be compiled
@@ -36,7 +35,7 @@
 ")
 
 
-(defn vega 
+(defn vega
 [spec]
   [output-jsscript {:content {:module module :data spec}}])
 
@@ -44,10 +43,10 @@
    (let [spec (k @a)]
       (if (nil? spec)
           [:p "spec missing"]
-          [:div 
+          [:div
            ; [:p  (k @a)]
             [output-jsscript {:content {:module module :data spec}}]]
-          
+
           )))
 
 

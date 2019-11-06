@@ -1,11 +1,7 @@
 (ns pinkgorilla.worksheet.free-output-view
   (:require
    [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-
-   [pinkgorilla.output.core :refer [output-fn]]
-   [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment error-text console-text exception colorize-cm!]]))
+   [reagent.core :as reagent]))
 
 
 (defn free-output-view

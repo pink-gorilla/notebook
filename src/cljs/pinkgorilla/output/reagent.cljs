@@ -2,7 +2,6 @@
   (:require
    [reagent.core :as reagent :refer [atom]]
    [cljs.reader]
-
    [widget.hello] ; only included for testing.
    [widget.clock]
    [widget.combo]
@@ -53,14 +52,14 @@
         ]
     ;(println "a is: " a)
     ;(println "b is: " b)
-    
+
     ;a
     b
     ))
 
 (def state-atom
-  (reagent/atom 
-   {:name "bongo" 
+  (reagent/atom
+   {:name "bongo"
     :time "5 before 12"}))
 
 
@@ -70,7 +69,7 @@
    Leaves regular hiccup data unchanged."
   [reagent-hiccup-syntax]
   (clojure.walk/prewalk
-    (fn [x] 
+    (fn [x]
       (if (and (coll? x) (symbol? (first x)))
           (resolve-vector x)
           x))
@@ -87,7 +86,7 @@
   [reagent-hiccup-syntax]
   (clojure.walk/prewalk
    (fn [x]
-     (if (= x :widget-state) 
+     (if (= x :widget-state)
         (resolve-state x)
        x))
    reagent-hiccup-syntax))
@@ -103,10 +102,10 @@
         _ (println "resolved component: " component)
         ;initial-state (:initial-state content)
         ;state (reagent/atom initial-state)
-        
+
         ;widget (name-to-reagent widget-name)
         ]
-        (reagent/create-class 
+        (reagent/create-class
          {:display-name "output-reagent"
           :reagent-render (fn []
                             [:div.reagent

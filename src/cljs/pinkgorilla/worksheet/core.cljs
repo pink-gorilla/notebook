@@ -1,20 +1,12 @@
 (ns pinkgorilla.worksheet.core
   (:require
-   [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [re-frame.core :refer [subscribe]]
 
-   [pinkgorilla.output.core :refer [output-fn]]
-   
+
    [pinkgorilla.worksheet.code-segment :refer [code-segment]]
    [pinkgorilla.worksheet.code-segment-view :refer [code-segment-view]]
    [pinkgorilla.worksheet.free-segment :refer [free-segment]]
-   [pinkgorilla.worksheet.free-segment-view :refer [free-segment-view]]
-   [pinkgorilla.worksheet.free-output-view :refer [free-output-view]]
-   [pinkgorilla.worksheet.free-output :refer [free-output]]
-   [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment error-text console-text exception]]
-   
-   ))
+   [pinkgorilla.worksheet.free-segment-view :refer [free-segment-view]]))
 
 
 (defn worksheet

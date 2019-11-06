@@ -1,12 +1,11 @@
 (ns pinkgorilla.dialog.palette
   (:require
-   [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
+   [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   
+
    [dommy.core :as dom :refer-macros [sel1]]
    [goog.dom :as gdom]
-   
+
    ))
 
 (defn palette-dialog

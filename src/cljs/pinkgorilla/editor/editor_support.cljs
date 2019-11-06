@@ -1,7 +1,6 @@
 (ns pinkgorilla.editor.editor-support
   "Connects parinfer mode functions to CodeMirror"
   (:require
-    [clojure.string :as string :refer [join]]
     [pinkgorilla.editor.parinfer :refer [indent-mode paren-mode]]))
 
 
