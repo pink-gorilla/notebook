@@ -1,7 +1,8 @@
 ;;^{:css-dirs            ["resources/gorilla-repl-client/css"]
 ;;  :watch-dirs          ["src/cljs" "src/cljc" "env/dev/cljs"]}
 {:main            pinkgorilla.dev
- :source-paths    ["src/cljs" "src/cljc" "env/dev/cljs"]
+ :devcards true
+ ;; :source-paths    ["src/cljs" "src/cljc" "test/cljs" "env/dev/cljs"]
  :output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
  :output-dir      "target/cljsbuild/gorilla-repl-client/js/out"
  :asset-path      "/js/out"
@@ -11,7 +12,7 @@
              ;; :external-config      {:devtools/config {:features-to-install :all}}
  :pretty-print    true
  :parallel-build  true
- :verbose         true
+ ;; :verbose         true
  :foreign-libs    [;{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
    ; :provides ["gorilla-repl.webpack-include"
    ;            ;; "cljsjs.react"
@@ -22,6 +23,8 @@
    ;            "cljsjs.react.dom"]}
    ;{:file     "resources/gorilla-repl-client/jslib/cljs-extern-empty.js"
    ; :provides ["gorilla-repl.webpack-extern"]}
+                   {:file     "node_modules/babel-polyfill/browser.js"
+                    :provides ["phantomjs.polyfill"]}
                    {:file     "src/npm-cljs/codemirror/mode/clojure/clojure-parinfer.js"
                     :requires ["cljsjs.codemirror"]
                     :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
