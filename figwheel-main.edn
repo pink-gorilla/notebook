@@ -1,4 +1,10 @@
-{:ring-handler        pinkgorilla.dev-handle/dev-handler
+{;; Should likely be using
+ :auto-testing true
+ ;; :open-url         "http://100.115.92.204:3449/worksheet.html"
+ :extra-main-files {:devcards {:main pinkgorilla.cards}
+                    ;; :tests    {:main pinkgorilla.core-test}
+                    }
+ :ring-handler        pinkgorilla.dev-handle/dev-handler
  :ring-server-options {:port       3449
                         ;; :host       "100.115.92.204"
                         ;; The following "abuses" knowledge that figwheel main
@@ -11,4 +17,5 @@
              ;;                      "cider.nrepl/cider-middleware"]
  :css-dirs            ["resources/gorilla-repl-client/css"]
  :open-file-command   "open-in-intellij"
- :watch-dirs          ["src/cljs" "src/cljc" "env/dev/cljs"]}
+ :watch-dirs          ["src/cljs" "src/cljc" "test/cljs" "env/dev/cljs"]
+ }

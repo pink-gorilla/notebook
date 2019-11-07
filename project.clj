@@ -174,9 +174,9 @@
                                                            {:file     "resources/gorilla-repl-client/js/worksheetParser.js"
                                                             :provides ["pinkgorilla.worksheet-parser"]}]
                                          :main            pinkgorilla.prod
-                                         :verbose         true
-                                         :compiler-stats  true
-                                         :closure-defines {goog.DEBUG false}
+                                         ;; :verbose         true
+                                         ;; :compiler-stats  true
+                                         ;; :closure-defines {goog.DEBUG false}
                                          :elide-asserts   true
                                          :optimizations   :advanced
                                          ;; https://gist.github.com/swannodette/4fc9ccc13f62c66456daf19c47692799
@@ -231,7 +231,7 @@
                                         [org.clojure/data.xml "0.0.8"]
                                         [me.lomin/component-restart "0.1.2"]]
 
-                       :source-paths   ^:replace ["src/clj" "src/cljc" "env/dev/clj" "src/cljs" "env/dev/cljs"]
+                       :source-paths   ^:replace ["src/clj" "test/cljs" "src/cljc" "env/dev/clj" "src/cljs" "env/dev/cljs"]
 
                        :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
 
