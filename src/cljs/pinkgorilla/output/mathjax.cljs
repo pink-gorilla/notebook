@@ -1,4 +1,3 @@
-
 (ns pinkgorilla.output.mathjax
   (:require
     [taoensso.timbre :as timbre

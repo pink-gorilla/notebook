@@ -1,9 +1,7 @@
 (ns pinkgorilla.output.jsscript
   (:require
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   [cljs-uuid-utils.core :as uuid]
-   ))
+   [reagent.core :as reagent]
+   [cljs-uuid-utils.core :as uuid]))
 
 ;; SCRIPT INJECTION could be done by adding script-elements to the dom with addChild,
 ;; But we currently use RequireJS to load modules from third party components.
@@ -11,8 +9,8 @@
 ; this is the container of loaded scripts
 ; (def jsscript-container (reagent/atom {}))
 ; (def jsscript-root (.getElementById js/document "jsscript-root"))
-  
-; (defn inject-script 
+
+; (defn inject-script
 ;  "inject a javascript snippet to the dom
 ;   Does not keep track of which scripts were loaded or not."
 ;  [javascript-snippet]
@@ -22,7 +20,7 @@
 ;    (set! (.-innerHTML script) javascript-snippet)
 ;    (.appendChild jsscript-root script)
 ;    ))
-  
+
 
 (defn execute-render [id-or-el data module-js]
   (let [;_ (println "executing script!")
@@ -65,7 +63,7 @@
         ;_ (println "content: " content)
         snippet (:module content)
         data (:data content)]
-        (reagent/create-class 
+        (reagent/create-class
          {:display-name "output-jsscript"
           :reagent-render (fn [] [:div {:id uuid}])
           :component-did-mount (fn [this]
@@ -74,7 +72,7 @@
                                  )
           ;:component-did-update (fn [this]
           ;                        (run-script uuid data snippet))
-          
+
  ;(let [[_ series-values] (reagent/argv this)]
 
           :component-will-update (fn [this [_ new-params]]
@@ -83,9 +81,8 @@
                                    ;(run-script uuid data snippet)
                                    (run-script (reagent/dom-node this) (get-in new-params [:content :data]) snippet)
                                    )
-                                   
-          
+
+
           })))
 
 
- 

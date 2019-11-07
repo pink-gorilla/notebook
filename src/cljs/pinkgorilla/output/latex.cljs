@@ -1,9 +1,7 @@
 (ns pinkgorilla.output.latex
   (:require
    [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   
+   [reagent.core :as reagent]
    [pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
    [pinkgorilla.output.hack :refer [value-wrap]]
    ))

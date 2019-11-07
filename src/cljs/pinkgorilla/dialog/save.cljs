@@ -1,10 +1,8 @@
 (ns pinkgorilla.dialog.save
   (:require
-   [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   [dommy.core :as dom :refer-macros [sel1]]
-   ))
+   [reagent.core :as reagent]
+   [re-frame.core :refer [subscribe dispatch]]
+   [dommy.core :as dom :refer-macros [sel1]]))
 
 
 

@@ -1,9 +1,9 @@
 (ns pinkgorilla.output.vega
-  (:require 
+  (:require
    [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   
+   [reagent.core :as reagent]
+   [re-frame.core :refer [dispatch]]
+
    [pinkgorilla.output.hack :refer [value-wrap]]
    ))
 

@@ -1,12 +1,11 @@
-(require                                                    
-  ;; '[figwheel-sidecar.repl :as r]
-  '[figwheel.main.api :refer [start start-join cljs-repl]]
+(require
+  '[figwheel.main.api :refer [start]]
   ;; '[com.stuartsierra.component :as component]
   ;; '[me.lomin.component-restart :as restart]
   ;; '[clojure.core.async :refer [go]]gorilla-repl
   ;; '[gorilla-repl.system :as system]
   '[clojure.pprint :refer [pprint]]
-  '[pinkgorilla.figwheel :as gfw :refer [main-config]]
+  ;; '[pinkgorilla.figwheel :as gfw :refer [main-config]]
   ;; '[pinkgorilla.core :as gorilla]
   )
 
@@ -44,6 +43,10 @@
     ;; (start)
     )
 
-(def cfg (main-config))
-(start cfg)
-(cljs-repl "app")
+;; (def cfg (main-config))
+;; (start cfg)
+;; (repl-env "app")
+;; (cljs-repl "app")
+;; (+ 1 3)
+
+(start "dev")

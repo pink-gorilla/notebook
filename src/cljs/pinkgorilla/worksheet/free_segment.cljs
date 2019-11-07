@@ -1,12 +1,10 @@
 (ns pinkgorilla.worksheet.free-segment
   (:require
-   [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [reagent.core :as reagent]
+   [re-frame.core :refer [subscribe dispatch]]
 
-   [pinkgorilla.output.core :refer [output-fn]]
    [pinkgorilla.worksheet.free-output :refer [free-output]]
-   [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment error-text console-text exception]]))
+   [pinkgorilla.worksheet.helper :refer [focus-active-segment]]))
 
 
 (defn free-segment

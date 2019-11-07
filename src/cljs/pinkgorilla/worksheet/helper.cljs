@@ -1,10 +1,8 @@
 (ns pinkgorilla.worksheet.helper
   (:require
-   [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [reagent.core :as reagent]
    [goog.dom :as gdom]
-   
+
    [dommy.core :as dom :refer-macros [sel1]]
    [pinkgorilla.editor.core :as editor]
    ;[pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]

@@ -2,8 +2,8 @@
   (:require
    [clojure.string :as str]
    [clojure.spec.alpha :as s]
-   [cognitect.transit :as t] 
-   [re-frame.core :refer [dispatch dispatch-sync]]
+   [cognitect.transit :as t]
+   [re-frame.core :refer [dispatch-sync]]
    [cljs.reader]
    [cljs-uuid-utils.core :as uuid]
    ;[pinkgorilla.editor.core :as editor]

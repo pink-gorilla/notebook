@@ -1,11 +1,6 @@
 (ns pinkgorilla.output.list-like
   (:require
-   [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   
-   [pinkgorilla.output.hack :refer [temp-comp-hack]]
-   ))
+   [pinkgorilla.output.hack :refer [temp-comp-hack]]))
 
 
 ;(declare output-fn)

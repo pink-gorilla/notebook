@@ -1,5 +1,5 @@
 (ns pinkgorilla.figwheel
-  (:require 
+  (:require
     [pinkgorilla.handle :as handle]
     [pinkgorilla.route :as route]
     [pinkgorilla.jetty9-ws-relay :as ws-relay]))
@@ -70,14 +70,17 @@
              }
    :config  {:ring-handler        'pinkgorilla.dev-handle/dev-handler
              :ring-server-options {:port       3449
+                                   :host       "100.115.92.204"
+
+                                   ;; :host       "penguin.linux.test"
                                    ;; The following "abuses" knowledge that figwheel main
                                    ;; leverages ring-jetty9-adapter under the covers
                                    :websockets {"/repl" (ws-relay/ws-processor route/nrepl-handler)}}
              ;; :http-server-root  "public" ;; does not matter
              ;; :server-port      3449
-             :nrepl-port          7002
-             :nrepl-middleware    ["cider.piggieback/wrap-cljs-repl"
-                                   "cider.nrepl/cider-middleware"]
+             ;; :nrepl-port          7002
+             ;; :nrepl-middleware    ["cider.piggieback/wrap-cljs-repl"
+             ;;                      "cider.nrepl/cider-middleware"]
              :css-dirs            ["resources/gorilla-repl-client/css"]
              :open-file-command   "open-in-intellij"
              :watch-dirs          ["src/cljs" "src/cljc" "env/dev/cljs"]

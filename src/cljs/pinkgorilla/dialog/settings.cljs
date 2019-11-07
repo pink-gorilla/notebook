@@ -1,6 +1,6 @@
 (ns pinkgorilla.dialog.settings
   (:require
-    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+    [re-frame.core :refer [subscribe dispatch]]
     [re-com.core
     :as rcm
     :refer [h-box v-box box border gap line h-split v-split scroller
