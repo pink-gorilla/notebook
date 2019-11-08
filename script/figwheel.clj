@@ -5,7 +5,7 @@
   ;; '[clojure.core.async :refer [go]]gorilla-repl
   ;; '[gorilla-repl.system :as system]
   '[clojure.pprint :refer [pprint]]
-  ;; '[pinkgorilla.figwheel :as gfw :refer [main-config]]
+  '[pinkgorilla.figwheel :as gfw :refer [main-config]]
   ;; '[pinkgorilla.core :as gorilla]
   )
 
@@ -47,6 +47,11 @@
 ;; (start cfg)
 ;; (repl-env "app")
 ;; (cljs-repl "app")
-;; (+ 1 3)
 
-(start "dev")
+;; TODO: Does not use :websockets declared figwheel edn
+;; (start "dev")
+
+(def cfg (main-config))
+(start cfg)
+;; (repl-env "app")
+;; (cljs-repl "app")

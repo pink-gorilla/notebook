@@ -9,7 +9,7 @@
                         ;; :host       "100.115.92.204"
                         ;; The following "abuses" knowledge that figwheel main
                         ;; leverages ring-jetty9-adapter under the covers
-                       :websockets {"/repl" (ws-relay/ws-processor route/nrepl-handler)}}
+                       :websockets {"/repl" (resolve 'pinkgorilla.figwheel/dev-ws-processor)}}
              ;; :http-server-root  "public" ;; does not matter
              ;; :server-port      3449
              ;; :nrepl-port          7002

@@ -331,3 +331,6 @@ We can pass in an arbitray number of arguments to our reagent component if we wr
 
 (defn ^:export main []
   (devcards.core/start-devcard-ui!))
+
+;; Y U no start exported fn?
+(main)
