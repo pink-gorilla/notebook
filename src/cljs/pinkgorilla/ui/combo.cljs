@@ -4,11 +4,12 @@
    [reagent.core :as reagent]
    [re-com.core     :refer [single-dropdown label]]
    [re-com.dropdown :refer [filter-choices-by-keyword single-dropdown-args-desc]]
+   [taoensso.timbre :refer-macros (info)]
    ))
 
 
 (defn update-key [a k v]
-  (println "updating atom key:" k " to val:" v)
+  (info "updating atom key:" k " to val:" v)
   (swap! a assoc k v))
 
 (defn combo

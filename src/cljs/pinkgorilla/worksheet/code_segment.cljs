@@ -2,11 +2,24 @@
   (:require
    [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch]]
+   [re-catch.core :as rc]
    [pinkgorilla.output.core :refer [output-fn]]
    [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment error-text console-text exception]]))
 
 
-(defn code-segment
+(defn output-view [seg-id segment]
+  (try
+    (if-let [value-output (not-empty (:value-response @segment))]
+      (let [output-value (output-fn value-output)
+            component ^{:key :value-response} [:div.output>pre [output-value value-output seg-id]]    
+            ]
+        (println "returning reagent: " component)
+        component
+        
+        ))
+    (catch Exception e [:p (str "exception rendering cell output: " (.getMessage e))])))
+
+(defn code-segment-unsafe
   [seg-data editor-options]
   ;; TODO: active <=> selected, executing <=> running
   (let [seg-id (:id seg-data)
@@ -37,10 +50,7 @@
                                               ^{:key :exception} [exception ex])
                                     console-comp (if-let [cons-text (not-empty (:console-response @segment))]
                                                    ^{:key :console-response} [console-text cons-text])
-                                    output-comp (if-let [value-output (not-empty (:value-response @segment))]
-                                                  (let [output-value (output-fn value-output)]
-                                                    ^{:key :value-response}
-                                                    [:div.output>pre [output-value value-output seg-id]]))
+                                    output-comp (output-view seg-id segment)
                                     div-kw (keyword (str "div#" (name seg-id))) ;; Aid with debugging
                                     class (str "segment code"
                                                (if @is-active
@@ -59,6 +69,10 @@
                                              {:class    class
                                               :on-click #(dispatch [:worksheet:segment-clicked seg-id])}]
                                        (filter some? other-children))))})))
+
+(defn code-segment [seg-data editor-options]
+  [rc/catch
+   [code-segment-unsafe seg-data editor-options]])
 
 
 

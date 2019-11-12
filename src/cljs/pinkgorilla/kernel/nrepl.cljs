@@ -83,6 +83,9 @@
 
 
 (defn- process-msg
+  "processes an incoming message from websocket that comes from nrepl (and has cider enhancements)
+   dispatches events to reagent to update notebook state ui.
+  "
   [message]
   (let [id (keyword (get message "id")) ; a good Json parser can keywordize. (see metosins parser)
         out (get message "out")         ; cannot we do one assignment for all the parts?, a proper keyword destructuring
@@ -126,17 +129,17 @@
                                                     {:exception msg}))))))
 
 
-      root-ex
-      (info "Got root-ex" root-ex "for" segment-id)
-      (>= (.indexOf status "done") 0)
+        root-ex
+        (info "Got root-ex" root-ex "for" segment-id)
+        (>= (.indexOf status "done") 0)
+        (do
+          (swap! ws-repl dissoc [:evaluations id])
+          (dispatch [:evaluator:done-response segment-id])))
+      cider-cb
       (do
-        (swap! ws-repl dissoc [:evaluations id])
-        (dispatch [:evaluator:done-response segment-id])))
-    cider-cb
-    (do
-      (cider-cb message)
-      (if (and status (>= (.indexOf status "done") 0))
-        (swap! ws-repl dissoc [:ciders id]))))))
+        (cider-cb message)
+        (if (and status (>= (.indexOf status "done") 0))
+          (swap! ws-repl dissoc [:ciders id]))))))
 
 
 (defn- receive-msgs!
@@ -164,7 +167,7 @@
 
 (defn start-ws-repl!
   [path app-url]
-  (info "Start ws repl at" path)
+  (info "clj kernel starting at" path)
   (go
     (let [ws-url (ws-origin path app-url)
           {:keys [ws-channel error]} (<! (ws-ch ws-url {:format :json}))]

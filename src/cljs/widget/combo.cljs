@@ -1,7 +1,8 @@
 (ns widget.combo
   (:require
    [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]))
+   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [taoensso.timbre :refer-macros (info)]))
 
 ; COMBOBOX 2
 
@@ -21,7 +22,7 @@
       [:select keys :value
        (when list (map-indexed (fn [idx item] [:option {:key idx :value item} item]) list))]))
   ([value-atom list]
-   (list-selector value-atom list #(println "list selected: " %))))
+   (list-selector value-atom list #(info "list selected: " %))))
 
 (defn assoc-selected [props current-val val]
   (if (= current-val val)

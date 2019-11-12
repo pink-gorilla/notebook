@@ -15,7 +15,7 @@
     [cljsjs.codemirror.mode.markdown]
     [cljsjs.codemirror.mode.xml]
     [re-frame.core :refer [dispatch]]
-    [pinkgorilla.kernel.nrepl :as nrepl]
+    [pinkgorilla.kernel.core :as kernel]
     [pinkgorilla.editor.editor-support :refer [fix-text!
                                          IEditor
                                          frame-updated?
@@ -171,7 +171,7 @@
          "select"
          (fn [s]
            (if-not (str/starts-with? s "/")
-             (nrepl/get-completion-doc s
+             (kernel/get-completion-doc :clj s   ;awb99 :clj is a hack
                                        ns
                                        (fn [docs]
                                          (if-not (str/blank? docs)
@@ -199,7 +199,8 @@
     ;; TODO: this is a workaround for https://github.com/alexander-yakushev/compliment/issues/15
     ;; Should be fixed, no?
     ;; if (word[0] != "/")
-    (nrepl/get-completions word ns (.getValue doc) (partial do-completions cur start end callback ns))))
+    ;awb99 clj is a hack - dont know where segment var is
+    (kernel/get-completions :clj word ns (.getValue doc) (partial do-completions cur start end callback ns))))
 
 (defn complete
   [segment-id ns]

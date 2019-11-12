@@ -1,10 +1,10 @@
 (ns pinkgorilla.routes
   (:require-macros [secretary.core :refer [defroute]])
-  (:import 
+  (:import
      [goog History]
      ;; [goog.history Html5History]
       )
-  (:require 
+  (:require
      [secretary.core :as secretary]
      [goog.events :as events]
      [goog.history.EventType :as EventType]
