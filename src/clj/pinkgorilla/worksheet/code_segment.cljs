@@ -11,13 +11,13 @@
   (try
     (if-let [value-output (not-empty (:value-response @segment))]
       (let [output-value (output-fn value-output)
-            component ^{:key :value-response} [:div.output>pre [output-value value-output seg-id]]    
+            component ^{:key :value-response} [:div.output>pre [output-value value-output seg-id]]
             ]
         (println "returning reagent: " component)
         component
-        
+
         ))
-    (catch Exception e [:p (str "exception rendering cell output: " (.getMessage e))])))
+    (catch js/Error e [:p (str "exception rendering cell output: " (. e -message))])))
 
 (defn code-segment-unsafe
   [seg-data editor-options]

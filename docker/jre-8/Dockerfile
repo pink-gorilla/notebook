@@ -14,6 +14,8 @@ EXPOSE 9000
 ADD target/gorilla-notebook-standalone.jar /
 
 RUN mkdir /work
+# RUN adduser --gecos "" --home /bar --uid 2000  --disabled-login gorilla
+# USER gorilla
 
 WORKDIR /work
 

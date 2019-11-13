@@ -15,6 +15,8 @@ EXPOSE 9000
 ADD target/gorilla-notebook-standalone.jar /
 
 RUN mkdir /work
+# RUN adduser -d /work --uid 2000 gorilla
+# USER gorilla
 
 WORKDIR /work
 

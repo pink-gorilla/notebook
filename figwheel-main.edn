@@ -17,5 +17,5 @@
              ;;                      "cider.nrepl/cider-middleware"]
  :css-dirs            ["resources/gorilla-repl-client/css"]
  :open-file-command   "open-in-intellij"
- :watch-dirs          ["src/cljs" "src/cljc" "test/cljs" "env/dev/cljs"]
+ :watch-dirs          ["src/clj" "test" "env/dev/clj"]
  }
