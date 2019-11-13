@@ -56,7 +56,7 @@
       {:id      "app"
        :options {:main            'pinkgorilla.dev
                  :devcards        true
-                 ;; :source-paths    ["src/cljs" "src/cljc" "env/dev/cljs"]
+                 ;; :source-paths    ["src/cljs" "env/dev/cljs"]
                  :output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js",
                  :output-dir      "target/cljsbuild/gorilla-repl-client/js/out"
                  :asset-path      "/js/out",
@@ -90,7 +90,7 @@
                  ;;                      "cider.nrepl/cider-middleware"]
                  :css-dirs            ["resources/gorilla-repl-client/css"]
                  :open-file-command   "open-in-intellij"
-                 :watch-dirs          ["src/cljs" "src/cljc" "test/cljs" "env/dev/cljs"]
+                 :watch-dirs          ["src/clj" "test" "env/dev/clj"]
                  ;; :debug            true
                  }                                          ; an options map of figwheel.main config options
        })
@@ -113,7 +113,7 @@
                             }
          ;;:figwheel-options nil,
          :all-builds
-                           [{:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"],
+                           [{:source-paths ["src/clj" "env/dev/clj"],
                              :id           "app",
                              :compiler
                                            {:main           'pinkgorilla.dev
@@ -128,7 +128,7 @@
                                             :parallel-build true
                                             :foreign-libs   foreign-libs
                                             }}
-                            {:source-paths ["src/cljs" "src/cljc" "env/dev/cljs"]
+                            {:source-paths ["src/clj" "env/dev/clj"]
                              :id           "devcards"
                              :figwheel     {:devcards true}
                              :compiler

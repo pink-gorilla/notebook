@@ -171,8 +171,8 @@
 
   ;; :jvm-opts ["-Xmx1g"]
   :java-source-paths ["src/java"]
-  :source-paths ["src/clj" "src/cljc" "env/prod/clj"]
-  :test-paths ["test/clj"]
+  :source-paths ["src/clj" "env/prod/clj"]
+  :test-paths ["test"]
   :resource-paths ["resources" "target/cljsbuild"]
 
   ;; ["resources/public/js/compiled" "target"]
@@ -188,7 +188,7 @@
 
   :cljsbuild {:jar true
               :builds
-                   {:with-cljs-kernel    {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
+                   {:with-cljs-kernel    {:source-paths ["src/clj" "env/prod/clj"]
                                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
                                                          :output-dir      "target/cljsbuild/gorilla-repl-client/js/modules"
                                                          :asset-path      "./js/modules"
@@ -201,7 +201,7 @@
                                                          :externs         ["src/cljs/gorilla-repl-externs.js"]
                                                          :pretty-print    false
                                                          :parallel-build  true}}
-                    :without-cljs-kernel {:source-paths ["src/cljs" "src/cljc" "env/prod/cljs"]
+                    :without-cljs-kernel {:source-paths ["src/clj" "env/prod/clj"]
                                           :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla-mock-cljs.js"
                                                          :foreign-libs    ~foreign-libs
                                                          :main            pinkgorilla.prod
@@ -263,13 +263,14 @@
                                         [org.clojure/data.xml "0.0.8"]
                                         [me.lomin/component-restart "0.1.2"]]
 
-                       :source-paths   ^:replace ["src/clj" "test/cljs" "src/cljc" "env/dev/clj" "src/cljs" "env/dev/cljs"]
+                       :source-paths   ^:replace ["src/clj" "test" "env/dev/clj"]
 
                        :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
 
                        :plugins        [[lein-doo "0.1.11"]
-                                        [org.clojure/tools.namespace "0.3.1"
-                                         :exclusions [org.clojure/tools.reader]]
+                                        #_[org.clojure/tools.namespace "0.3.1"
+                                         :exclusions [org.clojure/tools.reader]
+                                         ]
                                         ;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
                                         ]
 
@@ -285,7 +286,7 @@
                                         ;; due to auto-build and so on
                                         ;; lein doo
                                         ;; Uncaught Error: js/React is missing
-                                        {:doo-test {:source-paths ["src/cljs" "src/cljc" "test/cljs"]
+                                        {:doo-test {:source-paths ["src/clj" "test"]
                                                     :compiler     {:main           pinkgorilla.doo-runner
                                                                    ;; :main gorilla-repl.karma-runner
                                                                    :optimizations  :none
