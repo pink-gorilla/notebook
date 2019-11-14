@@ -53,12 +53,17 @@ lein do clean, ring uberwar
 should give you the standalone war file. Drop it into your servlet container and visit the root url of the webapp.
  
 ```
-./run-figwheel-with-jpda.sh
+./run-repls-with-jpda.sh
 ```
-spins up the figwheel based development environment. The script uses `rlwrap` for convenience.
 
-Once things are running, you can jump in at either `http://localhost:3449/worksheet.html` for the app
- or `http://localhost:3449/devcards.html` if you want to play with devcards.
+runs `lein repl`, with JPDA debugging, `rlwrap` for convenience and spins up the server. NREPL should be up at
+ port 4001. Once jacked in, run `(start "dev")` to launch the figwheel server.
+
+Finally, go to
+ - [`http://localhost:9000/worksheet.html`](http://localhost:9000/worksheet.html) for the app
+ - [`http://localhost:9000/devcards.html`](http://localhost:9000/devcards.html) for devcards
+ - [`http://localhost:3449/figwheel-extra-main/auto-testing`](http://localhost:3449/figwheel-extra-main/auto-testing)
+  for figwheels built in auto-testing
 
 To compile ClojureScript and run the main entrypoint, execute
 ```

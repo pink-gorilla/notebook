@@ -2,7 +2,6 @@
   (:require
    [clojure.set :as set]
    [clojure.java.io :as io]
-
    [pinkgorilla.handle :as handle]
    [pinkgorilla.jetty9-ws-relay :as ws-relay]
    [pinkgorilla.route :as route]
@@ -10,7 +9,7 @@
    [pinkgorilla.middleware.render-values]
      ;[pinkgorilla.ui.gorilla-renderable]
    [pinkgorilla.storage.explore-handler :refer [update-excludes]]
-   
+
    [pinkgorilla.system :as sys]
    [pinkgorilla.cli :as cli])
   (:gen-class))
@@ -56,7 +55,7 @@
           ]
       (spit (doto gorilla-port-file .deleteOnExit) webapp-port)
       (println (str "Running at http://" ip ":" webapp-port "/worksheet.html ."))
-      (println "Ctrl+C to exit."))))
+      s)))
 
 (defn -main
   [& args]

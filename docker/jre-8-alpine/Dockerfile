@@ -23,6 +23,7 @@ EXPOSE 9000
 # RUN mkdir /log && chown daemon /log
 
 ADD target/gorilla-notebook-standalone.jar /
+ADD docker/gorilla-notebook.sh /
 
 RUN mkdir /work
 # RUN adduser --home /work --disabled-login --uid 2000 --gecos "" gorilla

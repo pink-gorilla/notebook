@@ -177,6 +177,7 @@
 
   ;; :jvm-opts ["-Xmx1g"]
   :java-source-paths ["src/java"]
+  :javac-options     ["-target" "1.8" "-source" "1.8"]
   :source-paths ["src/clj" "env/prod/clj"]
   :test-paths ["test"]
   :resource-paths ["resources" "target/cljsbuild"]
@@ -233,7 +234,8 @@
          :karma "./node_modules/karma/bin/karma --port=9881 --no-colors"}}
 
   :profiles {:dev     {:repl-options   {:init-ns pinkgorilla.repl
-                                        :port    4001}
+                                        :port    4001
+                                        :nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
                        :prep-tasks     ^:replace ["javac" "compile"]
                        :dependencies   [[com.bhauman/figwheel-main "0.2.3"]
                                         [com.bhauman/rebel-readline-cljs "0.1.4"]

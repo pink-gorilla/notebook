@@ -1,18 +1,47 @@
 (ns pinkgorilla.repl
-  (:require 
-    [cider.piggieback :as pback]
-    [cljs.build.api]
-    [cljs.repl]
-    [cljs.repl.node]
-    [clojure.core.async :refer [go]]
+  (:require
+    ;; '[com.stuartsierra.component :as component]
+    ;; '[me.lomin.component-restart :as restart]
+    [nrepl.server :refer [start-server stop-server]]
+    ;; [cljs.build.api]
+    ;; [cljs.repl]
+    ;; [cljs.repl.node]
+    ;; [clojure.core.async :refer [go]]
     [pinkgorilla.core :as core]
     [figwheel.main.api :refer [start start-join cljs-repl]]
     [clojure.pprint :refer [pprint]]
-    [pinkgorilla.figwheel :as gfw :refer [main-config]]
-    [pinkgorilla.system :as gsys] )
-  #_(:use
-      ;; ring.server.standalone
-      [ring.middleware file-info file]))
+    ;; [pinkgorilla.figwheel :as gfw :refer [main-config]]
+    ;; [pinkgorilla.system :as gsys]
+    ))
+
+;; (def system (atom (sys/create-figwheel-system cfg)))
+;; (def system (atom (sys/figwheel-system cfg)))
+
+#_(component/start @system)
+
+#_(component/start-system @system)
+
+;; (start-figwheel! cfg)
+;(pinkgorilla.replikativ/start-replikativ)
+
+#_(def figwheel-server
+    (:figwheel-server @(get-in figwheel-sidecar.repl-api/*repl-api-system* [:figwheel-system :system])))
+
+#_(defn start-figwheel-component []
+    ;; (component/start figwheel-server)
+    ;; (swap! system component/start)
+    )
+
+#_(defn stop-figwheel-component []
+    ;; (component/stop figwheel-server)
+    ;; (swap! system component/stop)
+    )
+
+#_(defn reload []
+    (print "Reload all the things")
+    ;; (stop)
+    ;; (start)
+    )
 
 ;; (defonce server (atom nil))
 
@@ -20,17 +49,6 @@
 
 ;; (ra/print-config)
 ;; (cljs-repl)
-
-#_(defn get-handler []
-    ;; #'app expands to (var app) so that when we reload our code,
-    ;; the server is forced to re-resolve the symbol in the var
-    ;; rather than having its own copy. When the root binding
-    ;; changes, the server picks it up without having to restart.
-    (-> #'app
-        ; Makes static assets in $PROJECT_DIR/resources/public/ available.
-        (wrap-file "resources")
-        ; Content-Type, Content-Length, and Last Modified headers for files in body
-        (wrap-file-info)))
 
 #_(defn start-server
     "used for starting the server in development mode from REPL"
@@ -63,14 +81,27 @@
     []
     (core/run-gorilla-server {})
     (start-cljs-repl))
+
 #_(go
     (cljs.repl/repl (cljs.repl.node/repl-env)
                     ;; :watch "in"
                     :reader
                     :output-dir "out"))
 
-(def m {:content 1
-        :b       2
-        :c       3
-        :d       4})
-(apply dissoc m [:content :b :c])
+
+
+(def gorilla-default-cli-config {:port 9000})
+
+(def gorilla-system (atom nil))
+
+(defn start-system
+  ([]
+   (start-system gorilla-default-cli-config))
+  ([gorilla-config]
+   (reset! gorilla-system (core/run-gorilla-server gorilla-config))))
+
+;; TODO: Ugly workaround
+(defn -main [& args]
+  (defonce server (start-server :port 4001))
+  (start-system gorilla-default-cli-config)
+  (start "dev"))
