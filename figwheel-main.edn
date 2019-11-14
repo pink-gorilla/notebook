@@ -1,20 +1,18 @@
 {;; Should likely be using
- :auto-testing true
+ :auto-testing        true
  ;; :open-url         "http://100.115.92.204:3449/worksheet.html"
- :extra-main-files {:devcards {:main pinkgorilla.cards}
-                    ;; :tests    {:main pinkgorilla.core-test}
-                    }
+ :extra-main-files    {:devcards {:main pinkgorilla.cards}
+                       ;; :tests    {:main pinkgorilla.core-test}
+                       }
  :ring-handler        pinkgorilla.dev-handle/dev-handler
- :ring-server-options {:port       3449
-                        ;; :host       "100.115.92.204"
-                        ;; The following "abuses" knowledge that figwheel main
-                        ;; leverages ring-jetty9-adapter under the covers
-                       :websockets {"/repl" (resolve 'pinkgorilla.figwheel/dev-ws-processor)}}
-             ;; :http-server-root  "public" ;; does not matter
-             ;; :server-port      3449
-             ;; :nrepl-port          7002
-             ;; :nrepl-middleware    ["cider.piggieback/wrap-cljs-repl"
-             ;;                      "cider.nrepl/cider-middleware"]
+ :ring-server-options {:port 3449
+                       ;; :host       "100.115.92.204"
+                       }
+ ;; :http-server-root  "public" ;; does not matter
+ ;; :server-port      3449
+ ;; :nrepl-port          7002
+ ;; :nrepl-middleware    ["cider.piggieback/wrap-cljs-repl"
+ ;;                      "cider.nrepl/cider-middleware"]
  :css-dirs            ["resources/gorilla-repl-client/css"]
  :open-file-command   "open-in-intellij"
  :watch-dirs          ["src/clj" "test" "env/dev/clj"]
