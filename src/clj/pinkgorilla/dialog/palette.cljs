@@ -37,9 +37,9 @@
                                  cmd-items)
               ul (into [:ul] items)]
           [:div.PaletteDialog {:style (if (false? (:show @palette)) {:display "none"} {})}
-           [:div.PaletteDialog.modal-overlay
+           [:div.PaletteDialog.gorilla-modal-overlay
             {:on-click #(dispatch [:palette-blur])}]
-           [:div.PaletteDialog.modal
+           [:div.PaletteDialog.gorilla-modal
             [:h3 {:dangerouslySetInnerHTML {:__html (:label @palette)}}]
             [:div.modal-content
              [:input {:type        "text"

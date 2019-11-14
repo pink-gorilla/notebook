@@ -5,10 +5,12 @@
      ;; [goog.history Html5History]
       )
   (:require
-     [secretary.core :as secretary]
-     [goog.events :as events]
-     [goog.history.EventType :as EventType]
-     [re-frame.core :as re-frame]))
+   [secretary.core :as secretary]
+   [goog.events :as events]
+   [goog.history.EventType :as EventType]
+   [re-frame.core :as re-frame]
+   [pinkgorilla.explore.utils :as u]
+   ))
 
 ;; Fix browser/History URL http://www.lispcast.com/mastering-client-side-routing-with-secretary-and-goog-history
 #_(defn get-token []
@@ -66,10 +68,25 @@
        :or   {hook-navigation false}}]]
   (secretary/set-config! :prefix "#")
   (defroute "/new" [query-params]
-            (re-frame/dispatch [:initialize-new-worksheet]))
+    (re-frame/dispatch [:initialize-new-worksheet]))
   (defroute "/edit" [query-params]
-            (re-frame/dispatch [:edit-file (:worksheet-filename query-params)]))
+    (re-frame/dispatch [:edit-file query-params]))
   (defroute "/view" [query-params]
-            (re-frame/dispatch [:view-file query-params]))
+    (re-frame/dispatch [:view-file query-params]))
   (defroute "/reset" []
-             (nav! "/new")))
+    (nav! "/new"))
+  
+  )
+
+  
+
+
+  (defroute projects-path "/explore" [query-params]
+    (println "navigated to /explore")
+    (re-frame/dispatch [:list-projects (set (u/split-tags (:tags query-params)) )]))
+
+
+
+;; tODO; oauth callbacks
+;   {:route/url  "/foursquare-hello"
+;    :route/page foursquare/hello-page}

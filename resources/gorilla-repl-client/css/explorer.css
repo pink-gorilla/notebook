@@ -1,0 +1,113 @@
+/*
+http://open-source.braveclojure.com/stylesheets/main.css?at=1562864438
+ */
+.clear {
+    clear: both;
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.field {
+    margin-bottom: 1.5em;
+}
+
+.field label {
+    display: inline-block;
+    margin-right: .5em;
+}
+
+.main {
+    width: 74.57627119%;
+    float: left;
+    margin-right: 1.69491525%;
+}
+
+.secondary {
+    width: 23.72881356%;
+    float: right;
+    margin-right: 0;
+    color: #888;
+}
+
+.secondary h3 {
+    color: #777;
+    font-weight: normal;
+    margin-bottom: 0.6em;
+}
+
+.secondary .section {
+    margin-bottom: 1.5em;
+}
+
+.listing, .detail {
+    background: white;
+    border: 1px solid #eee;
+    padding: 1em;
+}
+
+.listing {
+    display: block;
+    color: #3f464c;
+}
+
+.listing:hover {
+    color: #3f464c;
+}
+
+.listings.public .secondary {
+    float: right;
+}
+
+.tag-container {
+    height: 22px;
+    padding-top: 2px;
+    display: inline-block;
+}
+
+.tag {
+    font-size: 0.8em;
+    line-height: 1.875em;
+    background: #eee;
+    display: inline-block;
+    padding: 0 .6em;
+    margin-right: .2em;
+    color: #3f464c;
+    cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+}
+
+.tag:hover {
+    cursor: pointer;
+    background: #77c4d3;
+}
+
+.tag.active {
+    background: #ff7f66;
+}
+
+.list .tag:hover {
+    cursor: pointer;
+    top: -1px;
+}
+
+.listing .logo img {
+    vertical-align: middle;
+}
+
+.listing .text {
+    margin-left: 57px;
+}
+
+.listing .remote {
+    text-align: right;
+}

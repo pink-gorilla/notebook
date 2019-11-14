@@ -1,0 +1,164 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # Shapes (from maria cloud)
+;; **
+
+;; @@ [cljs]
+(require '[awb99.shapes.core :as s])
+
+;(ns bongistan.bongo
+;  (:require 
+;   [awb99.shapes.core :refer [color-names square layer colorise]]))
+
+;; @@
+
+;; @@ [cljs]
+
+(s/circle 20)
+;; @@
+
+;; @@ [cljs]
+{:square (s/square 25) :circle (s/circle 15)}
+;; @@
+
+;; @@ [cljs]
+(doc s/circle)
+;; @@
+
+;; @@ [cljs]
+(s/rectangle )
+;; @@
+
+;; @@ [cljs]
+(map #(+ 7 %) (range 5))
+;; @@
+
+;; @@ [cljs]
+(vec (map #(s/circle (+ 10 %)) (range 50)))
+;; @@
+
+;; @@ [clj]
+; clj output
+(vec (range 5))
+;; @@
+
+;; @@ [cljs]
+; cljs output:
+(vec (range 5))
+;; @@
+
+;; @@ [cljs]
+(range 5)
+;; @@
+
+;; @@ [cljs]
+s/color-names
+;; @@
+
+;; @@ [cljs]
+(s/colors-named "yellow")
+;; @@
+
+;; @@ [cljs]
+(s/layer
+ (s/colorize "aqua" (s/square 50))
+ (s/colorize "magenta" (s/circle 25)))
+;; @@
+
+;; @@ [cljs]
+(s/layer
+ (s/colorize "springgreen" (s/circle 25))
+ (s/position 50 25 (s/colorize "pink" (s/circle 25))))
+;; @@
+
+;; @@ [cljs]
+(s/layer
+ (s/colorize "aqua" (s/circle 40))
+ (s/position 10 10 (s/colorize "magenta" (s/triangle 24)))
+ (s/position 45 10 (s/colorize "magenta" (s/triangle 24)))
+ (s/position 40 55 (s/colorize "white" (s/circle 10))))
+;; @@
+
+;; @@ [cljs]
+(map s/square [2 4 8 16 32 64 128])
+;; @@
+
+;; @@ [cljs]
+(map (fn [color] (s/colorize color (s/circle 25)))
+     ["red" "blue" "green"])
+;; @@
+
+;; @@ [cljs]
+(map (fn [o] (s/opacity o (s/square 40)))
+     [0, 1/4, 1/2, 3/4, 1])
+;; @@
+
+;; @@ [cljs]
+(let [t (s/triangle 100)] ;; <-- this vector holds our name/value pair
+  ;; now we write an expression using that name:
+  (s/layer t
+         (s/position 50 0 t)
+         (s/position 88 0 t)
+         (s/position 113 0 t)
+         (s/position 185 0 t)
+         (s/position 195 0 t)
+         (s/position 238 0 t)))
+;; @@
+
+;; @@ [cljs]
+(def rainbow
+  ["red" "orange" "yellow" "green" "blue" "indigo" "violet"])
+;; @@
+
+;; @@ [cljs]
+(map (fn [c] (s/colorize c (s/circle 25))) rainbow)
+;; @@
+
+;; @@ [cljs]
+(def colorized-circle
+  (fn [c] (s/colorize c (s/circle 25))))
+;; @@
+
+;; @@ [cljs]
+(colorized-circle "slategray")
+;; @@
+
+;; @@ [cljs]
+(map (fn [c] (s/colorize c (s/rectangle 300 20))) 
+     rainbow)
+;; @@
+
+;; @@ [cljs]
+(defn vertical-flag [colors] 
+  (apply s/above
+         (map (fn [c]
+                (s/colorize c (s/rectangle 300 (/ 200 (count colors))))) 
+              colors)))
+;; @@
+
+;; @@ [cljs]
+; germany
+(vertical-flag ["black" "red" "gold"])
+;; @@
+
+;; @@ [cljs]
+; indonesia
+(vertical-flag ["red" "white"])
+;; @@
+
+;; @@ [cljs]
+
+; catalonia
+(vertical-flag ["gold" "red" "gold" "red" "gold" "red" "gold" "red" "gold"])
+
+;; @@
+
+;; @@ [clj]
+
+;; @@
