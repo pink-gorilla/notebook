@@ -13,7 +13,7 @@
       (let [output-value (output-fn value-output)
             component ^{:key :value-response} [:div.output>pre [output-value value-output seg-id]]
             ]
-        (println "returning reagent: " component)
+        ;(println "returning reagent: " component)
         component
 
         ))

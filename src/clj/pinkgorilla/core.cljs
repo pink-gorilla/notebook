@@ -43,7 +43,10 @@
     (if read-write
       (do
         (nrepl/start-ws-repl! "repl" app-url)
-        (dispatch-sync [:initialize-config])))
+        (dispatch-sync [:initialize-config])
+        (dispatch-sync [:explore-load])
+        ))
+    (dispatch-sync [:settings-localstorage-load])
     (mount-root)
     (if (not route)
       (routes/nav! "/new")

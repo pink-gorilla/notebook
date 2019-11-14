@@ -60,7 +60,7 @@ div.menu-icon:hover {
     opacity: 0.5;
 }
 
-div.modal {
+div.gorilla-modal {
     position: fixed;
     /* There seems to be a bug in Safari with rendering text in fixed elements. */
     -webkit-font-smoothing: subpixel-antialiased;
@@ -76,12 +76,12 @@ div.modal {
     font-size: 16px
 }
 
-div.modal h3 {
+div.gorilla-modal h3 {
     padding: 0;
     margin: 0;
 }
 
-div.modal-overlay {
+div.gorilla-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;

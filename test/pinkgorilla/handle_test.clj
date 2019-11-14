@@ -1,18 +1,18 @@
 (ns pinkgorilla.handle-test
   (:require [ring.mock.request :as mock]
             [clojure.java.io :as io]
-            [pinkgorilla.handle :as handle]
             [pinkgorilla.route :refer :all])
   (:use clojure.test))
 
 ;; TODO: How about the repl websocket handler?
 
-(defn mock-persist
-  [file data])
 
-(defn mock-read-sheet-locally
-  [ws-file]
-  (slurp (io/resource ws-file) :encoding "UTF-8"))
+#_(defn mock-save-notebook
+    [file data])
+
+#_(defn mock-load-notebook
+    [ws-file]
+    (slurp (io/resource ws-file) :encoding "UTF-8"))
 
 #_(defn my-test-fixture [f]
     (f))
@@ -65,25 +65,29 @@
     (is (= "image/x-icon" content-type))))
 
 (deftest default-handler-save-test
-  (with-redefs [handle/persist mock-persist]
-    (let [resp (#'pinkgorilla.route/default-handler
-                 (mock/request :post "/save" {:worksheet-data     "dummy"
-                                              :worksheet-filename "foobar.clj"}))
-          status (:status resp)
-          headers (:headers resp)
-          content-type (get headers "Content-Type")]
-      (is (= 200 status))
-      (is (= "application/json; charset=utf-8" content-type)))))
+  (let [resp (#'pinkgorilla.route/default-handler
+               (mock/request :post "/save" {:notebook    ";; gorilla-repl.fileformat = 2\n"
+                                            :storagetype "file"
+                                            :filename    "target/test-save.cljg"
+                                            ;; :tokens[default-kernel]: "clj"
+                                            ;; :tokens[editor]: "text"
+                                            ;; :tokens[github-token]: ""
+                                            }))
+        status (:status resp)
+        headers (:headers resp)
+        content-type (get headers "Content-Type")]
+    (is (= 200 status))
+    (is (= "application/json; charset=utf-8" content-type))))
 
 (deftest default-handler-load-test
-  (with-redefs [handle/read-sheet-locally mock-read-sheet-locally]
-    (let [resp (#'pinkgorilla.route/default-handler
-                 (mock/request :get "/load?worksheet-filename=pinkgorilla%2Fhandle_test.clj"))
-          status (:status resp)
-          headers (:headers resp)
-          content-type (get headers "Content-Type")]
-      (is (= 200 status))
-      (is (= "application/json; charset=utf-8" content-type)))))
+  ;;(with-redefs [storage-handle/load-notebook mock-load-notebook])
+  (let [resp (#'pinkgorilla.route/default-handler
+               (mock/request :get "/load?filename=./notebooks/cljs/demo.cljg&storagetype=file&tokens[default-kernel]=clj&tokens[editor]=text&tokens[github-token]="))
+        status (:status resp)
+        headers (:headers resp)
+        content-type (get headers "Content-Type")]
+    (is (= 200 status))
+    (is (= "application/json; charset=utf-8" content-type))))
 
 
 

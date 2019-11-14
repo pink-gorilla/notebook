@@ -1,22 +1,18 @@
-;;;; This file is part of gorilla-repl. Copyright (C) 2014-, Jony Hudson.
-;;;;
-;;;; gorilla-repl is licenced to you under the MIT licence. See the file LICENCE.txt for full details.
-
 (ns pinkgorilla.core
-  (:require 
-     [pinkgorilla.handle :as handle]
-     [pinkgorilla.jetty9-ws-relay :as ws-relay]
-     [pinkgorilla.route :as route]
-     ;; [pinkgorilla.version :as version]
-     ; [pinkgorilla.renderer :as renderer] ; this is needed to bring the render implementations into scope
-     [pinkgorilla.ui.hiccup_renderer] ; this is needed to bring the render implementations into scope
-     [pinkgorilla.middleware.render-values]
-     ;[pinkgorilla.ui.gorilla-renderable]
+  (:require
+   [clojure.set :as set]
+   [clojure.java.io :as io]
 
-      [pinkgorilla.system :as sys]
-      [pinkgorilla.cli :as cli]
-      [clojure.set :as set]
-      [clojure.java.io :as io])
+   [pinkgorilla.handle :as handle]
+   [pinkgorilla.jetty9-ws-relay :as ws-relay]
+   [pinkgorilla.route :as route]
+   [pinkgorilla.ui.hiccup_renderer] ; this is needed to bring the render implementations into scope
+   [pinkgorilla.middleware.render-values]
+     ;[pinkgorilla.ui.gorilla-renderable]
+   [pinkgorilla.storage.explore-handler :refer [update-excludes]]
+   
+   [pinkgorilla.system :as sys]
+   [pinkgorilla.cli :as cli])
   (:gen-class))
 
 
@@ -37,7 +33,7 @@
         gorilla-port-file (io/file (or (:gorilla-port-file conf) ".gorilla-port"))
         project (or (:project conf) {})
         keymap (or (:keymap (:gorilla-options conf)) {})
-        _ (handle/update-excludes (fn [x] (set/union x (:load-scan-exclude (:gorilla-options conf)))))]
+        _ (update-excludes (fn [x] (set/union x (:load-scan-exclude (:gorilla-options conf)))))]
     ;; app startup
     (println "Gorilla-REPL:" version)
     (println "Using project" project)

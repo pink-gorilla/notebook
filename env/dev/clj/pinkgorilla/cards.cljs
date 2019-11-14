@@ -1,7 +1,8 @@
 (ns ^:figwheel-hooks pinkgorilla.cards
 (:require
  [devcards.core]
- [reagent.core :as reagent])
+ [reagent.core :as reagent]
+ [pinkgorilla.bongo])
 (:require-macros
  [devcards.core :as dc :refer [defcard defcard-rg defcard-doc]]))
 

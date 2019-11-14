@@ -4,6 +4,12 @@
   (:require 
      [re-frame.core :refer [reg-sub-raw reg-sub]]))
 
+(reg-sub
+ :main
+ (fn [db _]
+   (:main db)))
+
+
 ;; -- Subscription handlers
 
 (reg-sub
@@ -32,10 +38,22 @@
     (get-in db [:worksheet])))
 
 (reg-sub
+ :meta
+ (fn [db _]
+   (get-in db [:worksheet :meta])))
+
+
+(reg-sub
   :save-dialog
   (fn [db _]
     (get-in db [:save])))
 
+
+; The dialog subscription can be used by all dialogs to manage dialog-visibility.
+(reg-sub
+ :dialog
+ (fn [db _]
+   (get-in db [:dialog])))
 
 (reg-sub
  :settings

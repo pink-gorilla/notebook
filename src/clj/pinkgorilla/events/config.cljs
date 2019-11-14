@@ -3,27 +3,13 @@
   (:require
    [ajax.core :as ajax :refer [GET POST]]
    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-    [pinkgorilla.db :as db :refer [initial-db]]
+   [pinkgorilla.db :as db :refer [initial-db]]
+   [pinkgorilla.keybindings :as keybindings]
    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
    ))
 
-(def install-commands
-  (re-frame.core/->interceptor
-   :id :install-commands
-   :after (fn
-            [context]
-            (db/install-commands (get-in context [:coeffects :db :all-commands]))
-            context)))
 
-(reg-event-db
- :process-config-response
- [install-commands]
- (fn [db [_ response]]
-   (-> (assoc-in db [:config] response)
-       (assoc :message nil))))
-
-
-(reg-event-fx                                               ;; note the trailing -fx
+(reg-event-fx
  :initialize-config
  (fn [{:keys [db]} _]
    {:db         (merge db {:message "Loading configuration ..."})
@@ -33,4 +19,22 @@
                  :response-format (ajax/transit-response-format) ;; IMPORTANT!: You must provide this.
                  :on-success      [:process-config-response]
                  :on-failure      [:process-error-response]}}))
+
+
+(def install-commands
+  (re-frame.core/->interceptor
+   :id :install-commands
+   :after (fn
+            [context]
+            (keybindings/install-commands (get-in context [:coeffects :db :all-commands]))
+            context)))
+
+
+(reg-event-db
+ :process-config-response
+ [install-commands]
+ (fn [db [_ response]]
+   (-> (assoc-in db [:config] response)
+       (assoc :message nil))))
+
 

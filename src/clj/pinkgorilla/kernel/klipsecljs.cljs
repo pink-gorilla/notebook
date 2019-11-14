@@ -77,7 +77,8 @@
    (users can define their own render implementations)"
   [result]
   (let [response   {:value-response (render result)}
-        _ (println "response: " response)]
+        ;_ (println "response: " response)
+        ]
     response))
 
 ;; PREPL

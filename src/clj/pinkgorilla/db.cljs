@@ -5,9 +5,9 @@
    [cognitect.transit :as t]
    [re-frame.core :refer [dispatch-sync]]
    [cljs.reader]
-   ;[pinkgorilla.editor.core :as editor]
-   [pinkgorilla.keybindings :refer [all-commands]]
-   ))
+   [pinkgorilla.keybindings :refer [all-commands visible-commands]]
+    [pinkgorilla.explore.data]
+    ))
 
 
 (def debug?
@@ -37,9 +37,9 @@
 #_(s/def ::done boolean?)
 #_(s/def ::todo (s/keys :req-un [::id ::title ::done]))
 #_(s/def ::todos (s/and                                     ;; should use the :kind kw to s/map-of (not supported yet)
-                   (s/map-of ::id ::todo)                   ;; in this map, each todo is keyed by its :id
-                   #(instance? PersistentTreeMap %)         ;; is a sorted-map (not just a map)
-                   ))
+                  (s/map-of ::id ::todo)                   ;; in this map, each todo is keyed by its :id
+                  #(instance? PersistentTreeMap %)         ;; is a sorted-map (not just a map)
+                  ))
 #_(s/def ::showing                                          ;; what todos are shown to the user?
     #{:all                                                  ;; all todos are shown
       :active                                               ;; only todos whose :done is false
@@ -54,12 +54,6 @@
 
 
 
-(defn- command-item
-  [item]
-  (let [kb (:kb item)
-        shortcut (or kb "&nbsp;")]
-    (merge item {:text (:desc item)
-                 :desc (str "<div class= \"command\" >" (:desc item) "</div><div class= \"command-shortcut\" >" shortcut "</div>")})))
 
 (defn ck
   []
@@ -67,32 +61,12 @@
     "alt"
     "ctrl"))
 
-;; Experimental externs inference
-;; https://gist.github.com/swannodette/4fc9ccc13f62c66456daf19c47692799
-(defn kb-bind
-  [^js/Mousetrap.bindGlobal mousetrap command]
-  (if-let [kb (:kb command)]
-    (let [kb-val (if (vector? kb) (clj->js kb) kb)
-          handler (keyword (:handler command))]
-      (.bindGlobal mousetrap kb-val
-                   #(dispatch-sync [handler])))))
 
 
-
-(defn install-commands
-  [command-keymap]
-  ;; ** Patch Mousetrap **
-  ;;  Install a custom stopCallback so that our keyboard shortcuts work in the codeMirror textareas.
-  ;;  This also lets us disable mousetrap processing when we show dialogs
-  ;;  (this idea shamelessly stolen from the Mousetrap 'pause' plugin).
-  (if-let [mousetrap (if (and (exists? js/window) (.-Mousetrap js/window))
-                       (.-Mousetrap js/window))]
-    (do
-      (set! (.-enabled mousetrap) true)
-      (set! (.-enable mousetrap) (fn [x] (set! (.-enabled mousetrap) x)))
-      (set! (.-stopCallback mousetrap) #(not (.-enabled mousetrap)))
-      (doall (map (partial kb-bind mousetrap) command-keymap)))))
-
+; explore:
+(def form-default {:data    {}
+                   :errors  {}
+                   :state   :sleeping})
 
 ;; -- Initial app-db Value  ---------------------------------------------------
 (def initial-db
@@ -104,22 +78,33 @@
                   ;; Should probably be two instances
                   :visible-items        nil
                   :show                 false
-                  :all-visible-commands (->> all-commands
-                                             #_(filter #(:showInMenu %))
-                                             (map command-item)
-                                             (into []))
+                  :all-visible-commands visible-commands
                   :all-items            nil
                   :filter               ""
                   :label                ""
                   :highlight            0}
-   :worksheet    {}
-   :config       {:read-only true}
+   :worksheet    {:meta {}}
+   :config       {:read-only true
+                  }
    :base-path    nil
    :message      nil
-   :save         {:show     false
-                  :filename nil}
-   :settings {:show false }
-   })
+   :dialog {:settings false
+            :save false
+            :meta false}
+   :settings
+   {:default-kernel :clj
+    :editor :text
+    :github-token ""}
+   :storage nil
+   ; explore:
+   :main :notebook
+   :projects     {:selected nil}
+   :forms {:projects {:create form-default
+                      :update form-default
+                      :search form-default}}
+   :data {:projects pinkgorilla.explore.data/projects}
+   :nav {}
+   :initialized true})
 
 
 
