@@ -47,3 +47,10 @@
   (rf/dispatch [:auth/parse-token :foursquare])
   (fn []
     [:div.container.content ""]))
+
+
+; [:button.github {:on-click (fn [_] (set! (.-location js/window) "/github-login"))}
+;          "Login with Github"]]
+
+
+

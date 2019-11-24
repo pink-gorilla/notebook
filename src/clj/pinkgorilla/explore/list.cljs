@@ -12,6 +12,11 @@
    ;[open-source.routes :as r]
    [pinkgorilla.explore.form-helpers :as fh]))
 
+
+;; new version:
+;; https://github.com/braveclojure/open-source-2/blob/master/src/frontend/open_source/components/project/list.cljs
+
+
 (defn filter-tag
   [tags tag]
   [:span.tag-container
@@ -29,8 +34,7 @@
   (let [storage (:storage entry)]
     (if (nil? storage)
       ""
-      (gorilla-path storage)
-      )))
+      (gorilla-path storage))))
 
 
 (defn view
@@ -56,19 +60,27 @@
           (for [l listings]
             ^{:key (str "os-project-" (:index l))}
             [:div.listing-container
-             [:a.listing.clearfix {
-                                   :on-click #(routes/nav! (link l))
-                                   ;:href (link l)
-                                   }
 
-              [:div.core
+             [:div.core
+
+              [:a.listing.clearfix {:on-click #(routes/nav! (link l))
+                                   ;:href (link l)
+                                    }
                [:div.title [ui/attr (pname l) :name]]
                [ui/attr (:meta l) :tagline]
-               ;(if (:project/beginner-friendly l)  [:div.beginner-friendly "beginner friendly"])
+
+               [:div.stars (:stars l)]
+               [:div.storage (:type l)]
+               [:div.user (:user l)]
+
                (if-let [t (get-in l [:meta :tags])]
                  [:div.tags
                   (for [tag (u/split-tags t)]
-                    ^{:key (gensym)} [filter-tag selected-tags tag])])]]])]
+                    ^{:key (gensym)} [filter-tag selected-tags tag])])
+               
+               ]]
+             
+             ])]
           ;]
 
          [:div.secondary.listings
@@ -80,7 +92,30 @@
 
           ;[:div.section.beginner-toggle
            ;[search-input :checkbox :project/beginner-friendly :label "Beginner friendly?"]]
-
+          
+          [:div.field.stargazers-count
+           [:label.label {:for "stargazers-count"}]
+           [:span
+            [:i.fa.fa-star] 
+            "min github stars"]
+           [:div.projects.filter.data.stargazers-count
+            [:input.input.stargazers-count {:type "number" 
+            :label "span,i.fa.fa-star, min github stars" :id "stargazers-count"
+          :value "5"} ]]]
+            
+           [:div.field.days-since-push
+            [:label.label {:for "days-since-push"}
+             [:span 
+              [:i.fa.fa-clock-o]
+              "most days since last edit" ]]
+            [:div.projects.filter.data.days-since-push
+             [:input.input.days-since-push {:type "number" 
+                      :label "span,i.fa.fa-clock-o, most days since last push" 
+                      :id "days-since-push" 
+                                           :value "368"}]]]
+            
+                   
+          
           [:div.section.tags
            [:div
             (for [tag tags]
