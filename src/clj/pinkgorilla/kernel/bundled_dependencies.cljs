@@ -15,11 +15,14 @@
   klipse-clj.tools
   
   ;; libraries we want in the bundle:
+  reagent.core
   pinkgorilla.ui.gorilla-renderable
   pinkgorilla.ui.rendererCLJS
   pinkgorilla.kernel.cljs-tools
+  
   fortune.core
-  reagent.core
+  awb99.shapes.core
+  
   quil.core
   quil.middleware
 

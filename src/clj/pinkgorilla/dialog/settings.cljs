@@ -1,7 +1,7 @@
 (ns pinkgorilla.dialog.settings
   (:require
-    [re-frame.core :refer [subscribe dispatch]]
-    [re-com.core
+   [re-frame.core :refer [subscribe dispatch]]
+   [re-com.core
     :as rcm
     :refer [h-box v-box box border gap line h-split v-split scroller
             button row-button md-icon-button md-circle-icon-button info-button
@@ -15,23 +15,63 @@
 
 
 (defn settings-dialog []
-  (let [settings (subscribe [:settings])
+  (let [dialog (subscribe [:dialog])
+        settings (subscribe [:settings])
         closefn (fn [event] (dispatch [:app:hide-settings]))]
-    (when (:show @settings)
-    [modal-panel
-     :backdrop-color   "grey"
-     :backdrop-opacity 0.4
-     :child [v-box :gap "10px"
-             :children
-             [[label :style {:font-size "18px"} :label "Settings:"]
-              [scroller
-               :max-height "400px"
-               :max-width "600px"
-               :child [:p {:style {:fond-size "16px" :width "600px"}}
-                       "help is coming!"]]
-              [h-box :gap "5px" :justify :end
+    (when (:settings @dialog)
+      [modal-panel
+       :backdrop-color   "grey"
+       :backdrop-opacity 0.4
+       :child [v-box :gap "10px"
                :children
-               [[md-circle-icon-button
-                 :md-icon-name "zmdi-close"
-                 :tooltip "Close"
-                 :on-click closefn]]]]]])))
+               [[label :style {:font-size "18px"} :label "Settings"]
+
+                [gap :size "20px"]
+                [label :label "github token"]
+                [gap :size "5px"]
+                [input-text
+                 :model           (:github-token @settings)
+                 :width            "300px"
+                 :placeholder      "github token"
+                 :on-change        #(dispatch [:settings-set :github-token %])
+                 :disabled?        false]
+
+                [gap :size "20px"]
+                [label :label "default kernel"]
+                [radio-button
+                 :label       "clj"
+                 :value       :clj
+                 :model       (:default-kernel @settings)
+                 :on-change   #(dispatch [:settings-set :default-kernel %])]
+                [radio-button
+                 :label       "cljs"
+                 :value       :cljs
+                 :model       (:default-kernel @settings)
+                 :on-change   #(dispatch [:settings-set :default-kernel %])]
+
+                [gap :size "20px"]
+                [label :label "code text edit mode"]
+                [radio-button
+                 :label       "text"
+                 :value       :text
+                 :model       (:editor @settings)
+                 :on-change   #(dispatch [:settings-set :editor %])]
+                [radio-button
+                 :label       "paredit"
+                 :value       :paredit
+                 :model       (:editor @settings)
+                 :on-change   #(dispatch [:settings-set :editor %])]
+
+
+                [scroller
+                 :max-height "400px"
+                 :max-width "600px"
+                 :child [:p {:style {:fond-size "16px" :width "600px"}}
+                         "BIG LONG HELP TEXT ON SETTINGS..."]]
+
+                [h-box :gap "5px" :justify :end
+                 :children
+                 [[md-circle-icon-button
+                   :md-icon-name "zmdi-close"
+                   :tooltip "Close"
+                   :on-click closefn]]]]]])))

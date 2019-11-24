@@ -3,13 +3,10 @@
    [clojure.spec.alpha :as s]
     ;; [cemerick.url :as url]
    [clojure.string :as str]
-   [goog.crypt.base64 :as b64]
-   [clojure.walk :as w]
    [taoensso.timbre :as timbre
     :refer-macros (log trace debug info warn error fatal report
                        logf tracef debugf infof warnf errorf fatalf reportf
                        spy get-env log-env)]
-   [ajax.core :as ajax :refer [GET POST]]
    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
    [day8.re-frame.http-fx]
    [day8.re-frame.undo :as undo :refer [undoable]]
@@ -17,27 +14,34 @@
    [cljsjs.mousetrap]
    [cljsjs.mousetrap-global-bind]
 
-   [pinkgorilla.db :as db :refer [initial-db]]
-   [pinkgorilla.editor.core :as editor]
-   [pinkgorilla.kernel.nrepl :as nrepl]
-   [pinkgorilla.routes :as routes]
-   [pinkgorilla.notebook.newnb :refer [create-new-worksheet]]
-
+   [pinkgorilla.db :as db :refer [initial-db]]   
    [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
+
+   
+   ;; event requires produce side effects (they register the event handlers)
    [pinkgorilla.events.worksheet]
-   [pinkgorilla.events.persistence]
    [pinkgorilla.events.palette]
    [pinkgorilla.events.kernel]
-   [pinkgorilla.events.uiload]
    [pinkgorilla.events.message]
    [pinkgorilla.events.doc]
    [pinkgorilla.events.settings]
    [pinkgorilla.events.config]
-   [pinkgorilla.events.multikernel]))
+   [pinkgorilla.events.explore]
+   [pinkgorilla.events.multikernel]
+   
+   [pinkgorilla.notebook.newnb :refer [create-new-worksheet]]
+   [pinkgorilla.events.storage]
+   [pinkgorilla.events.storage-save-dialog]
+   [pinkgorilla.events.storage-file]
+
+   [pinkgorilla.explore.subs]
+   [pinkgorilla.explore.handlers]
+   ;[pinkgorilla.explore.list]
+   
+   
+   ))
 
 
-;; http://localhost:3449/worksheet.html#/view?source=github&user=JonyEpsilon&repo=gorilla-test&path=ws/graph-examples.clj
-;; http://localhost:3449/worksheet.html#/view?source=gist&id=2c210794185e9d8c0c80564db581b136&filename=new-render.clj
 
 ;; -- the register of event handlers --------------------------------------------------------------
 

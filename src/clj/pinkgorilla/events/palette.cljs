@@ -51,13 +51,10 @@
        13 (let [item (if (not-empty items) (nth items hl))
                 handler (:handler item)]
             (if handler
-              (if (string? handler)
                 (do
                    ;; Gotcha Cannot call dispatch-sync in event handler
-                  (dispatch [(keyword handler)])
+                  (dispatch handler)
                   (reset-palette db))
-                (do
-                  (handler (reset-palette db))))
               db))
        db))))
 

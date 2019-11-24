@@ -38,13 +38,10 @@
 ;; Before going further, we want it working and compatible
 (defn output-list-like
   [output-fn output seg-id]
-  (case (:open output)
-    "<tr><td>"
-    (output-list-like-table output-fn output seg-id :tr :td)
-    "<tr><th>"
-    (output-list-like-table output-fn output seg-id :tr :th)
-    "<center><table>"
-    (output-list-like-table output-fn output seg-id :center>table>tbody nil)
-    (output-list-like-other output-fn output seg-id)))
-
+  ;(println "rendering list-alike: " output)
+  (case (:open output) "<tr><td>"
+        (output-list-like-table output-fn output seg-id :tr :td) "<tr><th>"
+        (output-list-like-table output-fn output seg-id :tr :th) "<center><table>"
+        (output-list-like-table output-fn output seg-id :center>table>tbody nil)
+        (output-list-like-other output-fn output seg-id)))
 

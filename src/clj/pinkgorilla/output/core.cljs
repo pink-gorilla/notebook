@@ -16,6 +16,10 @@
 ;; since cross-namespace "declare" does not work, we do partial
 ;; application and pass output-fn to output-list-like
 
+(defn output-unknown
+  [output _]
+  (output-html "<p> Error: Unknown output-type </p>" nil))
+
 (defn output-fn
   [value-output]
   (case (:type value-output)
@@ -36,4 +40,5 @@
     "widget" output-widget
     "reagent" output-reagent
     "jsscript" output-jsscript
+    output-unknown
     ))

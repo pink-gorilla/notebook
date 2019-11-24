@@ -1,22 +1,27 @@
 (ns pinkgorilla.route
   (:use compojure.core)
   (:require 
-     [compojure.route :as route]
-     [compojure.core :as compojure]
-     [ring.middleware.session :refer [wrap-session]]
-     [pinkgorilla.middleware.cider :as cider]
+   [clojure.tools.logging :refer (info)]
+   [compojure.route :as route]
+   [compojure.core :as compojure]
+   [ring.middleware.session :refer [wrap-session]]
+   [pinkgorilla.middleware.cider :as cider]
      ;; [gorilla-middleware.cljs :as cljs]
-     [pinkgorilla.jetty9-ws-relay :as ws-relay]
+   [pinkgorilla.jetty9-ws-relay :as ws-relay]
      ; [pinkgorilla.renderer :as renderer]            ; this is needed to bring the render implementations into scope
-     [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
-     [pinkgorilla.handle :as handle]))
+   [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
+   [pinkgorilla.handle :as handle]
+   [pinkgorilla.storage.storage-handler :refer [save-notebook load-notebook]]
+   [pinkgorilla.storage.explore-handler :refer [gorilla-files]]
+   ))
 
 ;; TODO Somebody clean up the routes!
 (defn create-api-handlers
   [prefix]
-  [(GET (str prefix "load") [] ((comp handle/wrap-cors-handler handle/wrap-api-handler) handle/load-worksheet))
-   (POST (str prefix "save") [] (handle/wrap-api-handler handle/save))
-   (GET (str prefix "gorilla-files") [] (handle/wrap-api-handler handle/gorilla-files))
+  (info "creating api handlers wih prefix: " prefix)
+  [(GET (str prefix "load") [] ((comp handle/wrap-cors-handler handle/wrap-api-handler) load-notebook))
+   (POST (str prefix "save") [] (handle/wrap-api-handler save-notebook))
+   (GET (str prefix "gorilla-files") [] (handle/wrap-api-handler gorilla-files))
    (GET (str prefix "config") [] (handle/wrap-api-handler handle/config))])
 
 #_(defn create-repl-handlers

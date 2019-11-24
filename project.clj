@@ -1,5 +1,4 @@
-(def foreign-libs [
-                   ;{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
+(def foreign-libs [;{:file     "resources/gorilla-repl-client/jslib/cljs-include.js"
                    ; :provides ["gorilla-repl.webpack-include"
                    ;            ;; "cljsjs.react"
                    ;            ;; "cljsjs.react.dom"
@@ -16,8 +15,7 @@
                     :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
                    {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
                     :requires ["cljsjs.mousetrap"]
-                    :provides ["cljsjs.mousetrap-global-bind"]}
-                   ])
+                    :provides ["cljsjs.mousetrap-global-bind"]}])
 
 (defproject org.pinkgorilla/gorilla-notebook "0.4.0-SNAPSHOT"
   :description "A rich REPL for Clojure in the notebook style."
@@ -50,10 +48,12 @@
                                ; cljsjs/react-dom
                                ; ;; cljsjs/react-dom-server
                                ]]
-                 [re-com "2.6.0"]
-                 [day8.re-frame/http-fx "0.1.6"]
+                 [re-com "2.6.0"] ; reagent reuseable ui components
+                 [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests 
                  [day8.re-frame/undo "0.3.3"]
                  [re-catch "0.1.4"] ; exception handling for reagent components
+                 ;awb99: kee-frame seems to bring old dependencies?
+                 ;[kee-frame "0.3.3"] ; reframe with batteries - scroll fix, chains
 
                  ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of
                  ;; React.
@@ -68,7 +68,7 @@
                  ;; [reagent-forms "0.5.27"]
                  ;; [reagent-utils "0.2.0"]
                  ;; [hickory "0.6.0"] html -> hiccup as very last ressort only
-                 ;; [replumb "0.2.4"]
+                 ;; [replumb "0.2.4"] ; self hosted clojurescript
                  [org.webjars/MathJax "2.7.0"]              ;; TODO Not quite sure about value
                  [re-frame "0.10.9"]
                  [com.cemerick/url "0.1.1"]
@@ -128,14 +128,20 @@
                  [viebel/klipse-clj "10.1.3"]               ; todo: remove parinfer dependency
 
                  ;pinkgorilla sub projects
-                 [org.pinkgorilla/gorilla-renderable "2.1.0"] ; klipse-cljs needs renderable
-                 [org.pinkgorilla/encoding "0.0.6"]         ; notebook encoding
+                 [org.pinkgorilla/gorilla-renderable "2.1.2"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
+                 [org.pinkgorilla/encoding "0.0.14"]         ; notebook encoding
+                 [irresponsible/tentacles "0.6.6"] ; github api 
+                 ; notebook exploration:
+                 [clj-time "0.11.0"]
+                 [com.andrewmcveigh/cljs-time "0.4.0"]
+                 ;[cljsjs/marked "0.3.5-0"] ; awb99: already required above
 
                  ; ui plugins bundled with notebook
                  [awb99.fortune "0.0.1"]
                  [quil "3.1.0"]
+                 [awb99/shapes "0.1.2"]]
 
-                 ]
+
   ;; REPLIKATIV
   ;  [io.replikativ/replikativ "0.2.4"]
   ;  [com.cognitect/transit-cljs "0.8.239" :scope "provided"]
@@ -188,34 +194,34 @@
 
   :cljsbuild {:jar true
               :builds
-                   {:with-cljs-kernel    {:source-paths ["src/clj" "env/prod/clj"]
-                                          :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
-                                                         :output-dir      "target/cljsbuild/gorilla-repl-client/js/modules"
-                                                         :asset-path      "./js/modules"
-                                                         :foreign-libs    ~foreign-libs
-                                                         :main            pinkgorilla.prod
-                                                         :elide-asserts   true
-                                                         :optimizations   :none
-                                                         :external-config {:gorilla/config {:with-cljs-kernel true}}
-                                                         :infer-externs   true
-                                                         :externs         ["src/cljs/gorilla-repl-externs.js"]
-                                                         :pretty-print    false
-                                                         :parallel-build  true}}
-                    :without-cljs-kernel {:source-paths ["src/clj" "env/prod/clj"]
-                                          :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla-mock-cljs.js"
-                                                         :foreign-libs    ~foreign-libs
-                                                         :main            pinkgorilla.prod
-                                                         :elide-asserts   true
+              {:with-cljs-kernel    {:source-paths ["src/clj" "env/prod/clj"]
+                                     :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
+                                                    :output-dir      "target/cljsbuild/gorilla-repl-client/js/modules"
+                                                    :asset-path      "./js/modules"
+                                                    :foreign-libs    ~foreign-libs
+                                                    :main            pinkgorilla.prod
+                                                    :elide-asserts   true
+                                                    :optimizations   :none
+                                                    :external-config {:gorilla/config {:with-cljs-kernel true}}
+                                                    :infer-externs   true
+                                                    :externs         ["src/cljs/gorilla-repl-externs.js"]
+                                                    :pretty-print    false
+                                                    :parallel-build  true}}
+               :without-cljs-kernel {:source-paths ["src/clj" "env/prod/clj"]
+                                     :compiler     {:output-to       "target/cljsbuild/gorilla-repl-client/js/gorilla-mock-cljs.js"
+                                                    :foreign-libs    ~foreign-libs
+                                                    :main            pinkgorilla.prod
+                                                    :elide-asserts   true
                                                          ;; :verbose         true
                                                          ;; :compiler-stats  true
                                                          ;; :closure-defines {goog.DEBUG false}
-                                                         :optimizations   :advanced
-                                                         :external-config {:gorilla/config {:with-cljs-kernel false}}
+                                                    :optimizations   :advanced
+                                                    :external-config {:gorilla/config {:with-cljs-kernel false}}
                                                          ;; https://gist.github.com/swannodette/4fc9ccc13f62c66456daf19c47692799
-                                                         :infer-externs   true
-                                                         :externs         ["src/cljs/gorilla-repl-externs.js"]
-                                                         :pretty-print    false
-                                                         :parallel-build  true}}}}
+                                                    :infer-externs   true
+                                                    :externs         ["src/cljs/gorilla-repl-externs.js"]
+                                                    :pretty-print    false
+                                                    :parallel-build  true}}}}
 
   :doo {:build    "doo-test"
         :default  [#_:chrome #_:phantom :karma-phantom]
@@ -223,8 +229,8 @@
         :alias    {:default [:chrome-headless]}
         :karma    {:config {"proxies" {"/target" "./target"}}}
         :paths
-                  {;; :phantom "phantomjs --web-security=false"
-                   :karma "./node_modules/karma/bin/karma --port=9881 --no-colors"}}
+        {;; :phantom "phantomjs --web-security=false"
+         :karma "./node_modules/karma/bin/karma --port=9881 --no-colors"}}
 
   :profiles {:dev     {:repl-options   {:init-ns pinkgorilla.repl
                                         :port    4001}
@@ -269,8 +275,7 @@
 
                        :plugins        [[lein-doo "0.1.11"]
                                         #_[org.clojure/tools.namespace "0.3.1"
-                                         :exclusions [org.clojure/tools.reader]
-                                         ]
+                                           :exclusions [org.clojure/tools.reader]]
                                         ;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
                                         ]
 
@@ -316,9 +321,7 @@
                                                                                      :provides ["cljsjs.codemirror.mode.clojure-parinfer"]}
                                                                                     {:file     "resources/gorilla-repl-client/jslib/mousetrap-global-bind.min.js"
                                                                                      :requires ["cljsjs.mousetrap"]
-                                                                                     :provides ["cljsjs.mousetrap-global-bind"]}
-                                                                                    ]}}}
-                                        }}
+                                                                                     :provides ["cljsjs.mousetrap-global-bind"]}]}}}}}
 
              :uberjar {:hooks       [minify-assets.plugin/hooks]
                        ;; :source-paths ["env/prod/clj"]
