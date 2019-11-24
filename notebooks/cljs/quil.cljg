@@ -1,9 +1,16 @@
 ;; gorilla-repl.fileformat = 2
 
+;; @@ [meta]
+{:name "quil svg demo", :tagline "charts with quil", :tags "cljs, demo, quil, svg", :description ""}
+
+;; @@
+
 ;; **
 ;;; # Quil 
 ;;; 
 ;;; http://quil.info
+;;; 
+;;; Note: the canvas currently does not get saved to the notebook. This is because dynamic reagent components cannot be persisted,
 ;; **
 
 ;; @@ [cljs]
@@ -26,16 +33,10 @@
 
 ;; @@
 ;; ->
-;;; [:ok #'cljs.user/update-state] type: function (val,sym,_meta){
-;;; this.val = val;
-;;; this.sym = sym;
-;;; this._meta = _meta;
-;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
-;;; this.cljs$lang$protocol_mask$partition1$ = 0;
-;;; }
+;;;  type: data: #'cljs.user/update-state
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/update-state</span>","~:value","#'cljs.user/update-state"]
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-unknown"],"#'cljs.user/update-state"],"~:value","#'cljs.user/update-state"]
 ;; <=
 
 ;; @@ [cljs]
@@ -58,16 +59,10 @@
         [:div])})))
 ;; @@
 ;; ->
-;;; [:ok #'cljs.user/canvas] type: function (val,sym,_meta){
-;;; this.val = val;
-;;; this.sym = sym;
-;;; this._meta = _meta;
-;;; this.cljs$lang$protocol_mask$partition0$ = 6717441;
-;;; this.cljs$lang$protocol_mask$partition1$ = 0;
-;;; }
+;;;  type: data: #'cljs.user/canvas
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content","<span class='cljs-unknown'>#&#x27;cljs.user/canvas</span>","~:value","#'cljs.user/canvas"]
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-unknown"],"#'cljs.user/canvas"],"~:value","#'cljs.user/canvas"]
 ;; <=
 
 ;; @@ [cljs]
@@ -75,12 +70,7 @@
  [canvas])
 ;; @@
 ;; ->
-;;; [:ok #object[pinkgorilla.kernel.cljs-tools.t_pinkgorilla$kernel$cljs_tools24847]] type: function (vec_or_reagent_f,meta24848){
-;;; this.vec_or_reagent_f = vec_or_reagent_f;
-;;; this.meta24848 = meta24848;
-;;; this.cljs$lang$protocol_mask$partition0$ = 393216;
-;;; this.cljs$lang$protocol_mask$partition1$ = 0;
-;;; }
+;;;  type: data: #object[pinkgorilla.kernel.cljs-tools.t_pinkgorilla$kernel$cljs_tools54774]
 ;; <-
 ;; =>
 ;;; ["^ ","~:type","~:reagent-cljs","~:content",["^ "]]

@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{}
+{:name "mariacloud-shapes", :tagline "svg shapes (from maria cloud)", :tags "cljs,demo,mariacloud, svg", :description ""}
 
 ;; @@
 
