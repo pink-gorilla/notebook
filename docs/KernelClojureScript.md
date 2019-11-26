@@ -107,4 +107,6 @@ https://gist.github.com/mfikes/e00202b2de7cc2352fedcf92b1fe60dc
 https://github.com/pink-gorilla/cljs-eval-example/blob/master/project.clj
 
 
+https://code.thheller.com/blog/shadow-cljs/2017/10/14/bootstrap-support.html
+
 

@@ -82,7 +82,7 @@
 (deftest default-handler-load-test
   ;;(with-redefs [storage-handle/load-notebook mock-load-notebook])
   (let [resp (#'pinkgorilla.route/default-handler
-               (mock/request :get "/load?filename=./notebooks/canvas-svg.cljgg&storagetype=file&tokens[default-kernel]=clj&tokens[editor]=text&tokens[github-token]="))
+               (mock/request :get "/load?filename=./notebooks/reagent-demo-err-renderex.cljg&storagetype=file&tokens[default-kernel]=clj&tokens[editor]=text&tokens[github-token]="))
         status (:status resp)
         headers (:headers resp)
         content-type (get headers "Content-Type")]
