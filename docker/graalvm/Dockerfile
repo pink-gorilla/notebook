@@ -13,6 +13,7 @@ EXPOSE 9000
 # RUN mkdir /log && chown daemon /log
 
 ADD target/gorilla-notebook-standalone.jar /
+ADD docker/gorilla-notebook.sh /
 
 RUN mkdir /work
 # RUN adduser -d /work --uid 2000 gorilla
