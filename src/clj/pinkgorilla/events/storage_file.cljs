@@ -33,9 +33,7 @@
                          (map (fn [x] {:text    x
                                        :desc    (str "<div class=\"command\">" x "</div>")
                                        ;; For now, we have to take/return db due to clojuredocs sync window.open
-                                       :handler (fn [db]
-                                                  (routes/nav! (str "/edit?source=file&filename=" x))
-                                                  db)})))
+                                       :handler [:nav (str "/edit?source=file&filename=" x) db]})))
          palette (:palette db)]
      (assoc-in db [:palette] (merge palette {:all-items     file-items
                                              :visible-items file-items
