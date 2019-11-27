@@ -43,7 +43,7 @@
     (put! (:channel @ws-repl) nrepl-msg)
     uuid))
 
-(defn send-eval-message!
+(defn eval!
   [segment-id content]
   (send-message! :evaluations
                  {:op   "eval"

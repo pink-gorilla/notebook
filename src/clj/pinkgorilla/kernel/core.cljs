@@ -8,15 +8,16 @@
    [pinkgorilla.kernel.mock :as mock]))
 
 (prefs/if-cljs-kernel
- (require '[pinkgorilla.kernel.klipsecljs :as cljs-kernel])
+ ;(require '[pinkgorilla.kernel.klipsecljs :as cljs-kernel])
+ (require '[pinkgorilla.kernel.shadowcljs :as cljs-kernel])
  (require '[pinkgorilla.kernel.mock :as cljs-kernel]))
 
 
-(defn send-eval-message! [kernel segment-id snippet]
+(defn eval! [kernel segment-id snippet]
   (case kernel
-    :clj (nrepl/send-eval-message! segment-id snippet)
-    :mock (mock/send-eval-message! segment-id snippet)
-    :cljs (cljs-kernel/send-eval-message! segment-id snippet)
+    :clj (nrepl/eval! segment-id snippet)
+    :mock (mock/eval! segment-id snippet)
+    :cljs (cljs-kernel/eval! segment-id snippet)
     (info "cannot eval - unknown kernel!")))
 
 
