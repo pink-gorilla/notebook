@@ -92,7 +92,7 @@
                                                    :exception      nil})
          kernel (:kernel active-segment)
          queued-segs (get-in db [:worksheet :queued-code-segments])]
-     (kernel/send-eval-message! kernel active-id (get-in active-segment [:content :value]))
+     (kernel/eval! kernel active-id (get-in active-segment [:content :value]))
      (-> (assoc-in db [:worksheet :segments active-id] new-active-segment)
          (assoc-in [:worksheet :queued-code-segments] (conj queued-segs (:id new-active-segment)))))))
 
@@ -104,7 +104,7 @@
          segment-order (get-in db [:worksheet :segment-order])
          sorted-code-segments (->> (map #(% segments) segment-order)
                                    (filter (fn [segment] (= :code (:type segment)))))]
-     (doall (map #(kernel/send-eval-message!
+     (doall (map #(kernel/eval!
                    (get-in % [:kernel])
                    (:id %)
                    (get-in % [:content :value])) sorted-code-segments))

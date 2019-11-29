@@ -54,7 +54,7 @@
                  [re-catch "0.1.4"] ; exception handling for reagent components
                  ;awb99: kee-frame seems to bring old dependencies?
                  ;[kee-frame "0.3.3"] ; reframe with batteries - scroll fix, chains
-
+                 
                  ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of
                  ;; React.
                  ;;
@@ -121,25 +121,30 @@
                  ; :exclusions [org.clojure/clojurescript]]
                  ;; TODO : Replace pomegranate with tools alpha
                  [com.cemerick/pomegranate "1.1.0"]         ; add-dependency in clj kernel
-                 ; klipse and its dependencies
-                 [cljs-http "0.1.42"]
-                 [appliedscience/js-interop "0.1.13"]
-                 [viebel/gadjett "0.5.2"]
-                 [viebel/klipse-clj "10.1.3"]               ; todo: remove parinfer dependency
-
+                 
+                 ; cljs-kernel-shadow
+                 [org.pinkgorilla/kernel-cljs-shadow "0.0.7"]
+                 
+                 ; cljs-kernel-klipse and its dependencies
+                 ;[cljs-http "0.1.42"]
+                 ;[appliedscience/js-interop "0.1.13"]
+                 ;[viebel/gadjett "0.5.2"]
+                 ;[viebel/klipse-clj "10.1.3"]               ; todo: remove parinfer dependency
+                 
                  ;pinkgorilla sub projects
                  [org.pinkgorilla/gorilla-renderable "2.1.2"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
-                 [org.pinkgorilla/encoding "0.0.14"]         ; notebook encoding
+                 [org.pinkgorilla/encoding "0.0.18"]         ; notebook encoding
                  [irresponsible/tentacles "0.6.6"] ; github api 
                  ; notebook exploration:
                  [clj-time "0.11.0"]
                  [com.andrewmcveigh/cljs-time "0.4.0"]
                  ;[cljsjs/marked "0.3.5-0"] ; awb99: already required above
-
+                 
                  ; ui plugins bundled with notebook
-                 [awb99.fortune "0.0.1"]
-                 [quil "3.1.0"]
-                 [awb99/shapes "0.1.2"]]
+                 ;[awb99.fortune "0.0.1"]
+                 ;[quil "3.1.0"]
+                 ;[awb99/shapes "0.1.2"]
+                 ]
 
 
   ;; REPLIKATIV

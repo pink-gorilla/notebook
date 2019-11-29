@@ -11,13 +11,13 @@
     [pinkgorilla.editor.core :as editor]
     [pinkgorilla.routes :as routes]
     [pinkgorilla.kernel.nrepl :as nrepl]
-    [pinkgorilla.kernel.browser :as brwrepl]
     [taoensso.timbre :refer-macros (info)]
     ;[widget.replikativ]
     ))
 
 (prefs/if-cljs-kernel
- (require '[pinkgorilla.kernel.klipsecljs :as cljs-kernel])
+ ;(require '[pinkgorilla.kernel.klipsecljs :as cljs-kernel])
+ (require '[pinkgorilla.kernel.shadowcljs :as cljs-kernel])
  (require '[pinkgorilla.kernel.mock :as cljs-kernel]))
 
 (defn ^:before-load my-before-reload-callback []
@@ -35,7 +35,7 @@
   (routes/app-routes)
   (editor/init-cm-globally!)
   (v/init-mathjax-globally!)
-  (cljs-kernel/init-klipse!)
+  (cljs-kernel/init!)
   (let [app-url (url/url (-> js/window .-location .-href))
         route (:anchor app-url)
         read-write (or (not route) (not (str/index-of route "/view")))]

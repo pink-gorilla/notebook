@@ -72,6 +72,8 @@
                [:div.stars (:stars l)]
                [:div.storage (:type l)]
                [:div.user (:user l)]
+               [:div.repo (:repo l)]
+
 
                (if-let [t (get-in l [:meta :tags])]
                  [:div.tags

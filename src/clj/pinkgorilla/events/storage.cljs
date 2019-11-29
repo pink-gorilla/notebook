@@ -64,11 +64,12 @@
          _ (info "Load Response:\n" response-body)
          content (:content response-body)
          ;content (decode-content storage content)
-         _ (info "Content Only:\n" content)
+         ; _ (info "Content Only:\n" content)
          notebook (if (nil? content)
                     nil
                     (load-notebook-hydrated content))
-         _ (info "notebook: " notebook)]
+         ;_ (info "notebook: " notebook)
+         ]
      (assoc db
             :worksheet notebook
             :storage storage))))
@@ -102,7 +103,10 @@
                    :uri             url
                    :params          params
                    :timeout         5000                     ;; optional see API docs
-                   :format          (ajax/url-request-format) ; request encoding POST body url-encoded
+                   
+                   ;; awb99: transit request does not work - possibly missing dependency?
+                   ;; awb99: url-request format does not work because server has problem decoding token maps
+                   :format       (ajax/json-request-format {:keywords? true}) ; (ajax/transit-request-format) ;  (ajax/url-request-format) ; request encoding POST body url-encoded
                    :response-format (ajax/json-response-format {:keywords? true}) ;(ajax/transit-response-format) ;; response encoding TRANSIT
                    :on-success      [:after-save-success storage]
                    :on-failure      [:process-error-response]}})))

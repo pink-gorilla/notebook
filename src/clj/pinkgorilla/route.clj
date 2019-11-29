@@ -8,7 +8,6 @@
    [pinkgorilla.middleware.cider :as cider]
      ;; [gorilla-middleware.cljs :as cljs]
    [pinkgorilla.jetty9-ws-relay :as ws-relay]
-     ; [pinkgorilla.renderer :as renderer]            ; this is needed to bring the render implementations into scope
    [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
    [pinkgorilla.handle :as handle]
    [pinkgorilla.storage.storage-handler :refer [save-notebook load-notebook]]

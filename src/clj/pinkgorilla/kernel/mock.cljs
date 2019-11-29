@@ -7,12 +7,12 @@
    [cljs-uuid-utils.core :as uuid]
    [re-frame.core :refer [dispatch]]))
 
-(defn init-klipse! []
+(defn init! []
   (info "mock init done"))
 
 (defn send-result [segment-id result]
   (dispatch [:evaluator:console-response segment-id {:console-response result}]))
 
-(defn send-eval-message!
+(defn eval!
   [segment-id content]
   (send-result segment-id "Everything is wunderbar!"))
