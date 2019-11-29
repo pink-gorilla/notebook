@@ -21,59 +21,34 @@
   :description "A rich REPL for Clojure in the notebook style."
   :url "https://github.com/pink-gorilla/gorilla-notebook"
   :license {:name "MIT"}
-  :dependencies [[org.clojure/clojure "1.10.1"]
+  :dependencies [;; CLOJURE ESSENTIAL
+                 [org.clojure/clojure "1.10.1"]
                  [org.clojure/core.async "0.5.527"]
                  [org.clojure/tools.reader "1.3.2"]
-                 ;;  ring-json introduces jackson along with its tail
-                 ;; [ring/ring-json "0.4.0"]
-                 [org.clojure/data.json "0.2.7"]
-                 ;; [http-kit "2.2.0"]
-                 ;; [cider/cider-nrepl "0.22.4"]
-                 ;; [nrepl "0.6.0"]
-                 ;; [cljs-tooling "0.2.0"]
-                 [org.pinkgorilla/gorilla-middleware "0.2.2"]
+                 ;; [com.rpl/specter "0.13.2"]
+                 [org.clojure/core.match "0.3.0"]
+
+                 ;; CONFIGURATION / LOGGING / SYSTEM MANAGEMENT                 
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.29"]
                  [ch.qos.logback/logback-core "1.2.3"]
                  [ch.qos.logback/logback-classic "1.2.3"]
-                 [com.taoensso/timbre "4.10.0"]
+                 [com.taoensso/timbre "4.10.0"] ; clojurescript logging
                  ;; Things get very noise with slf4j-timbre - needs configuration
                  ;; [com.fzakaria/slf4j-timbre "0.3.2"]
-                 [cljs-ajax "0.8.0"]
-                 [prismatic/dommy "1.1.0"]
-                 ;; [selmer "1.0.3"] ;; django like templates - deps worth the hassle?
-                 [reagent "0.8.1"
-                  :exclusions [org.clojure/tools.reader
-                               ; cljsjs/react
-                               ; cljsjs/react-dom
-                               ; ;; cljsjs/react-dom-server
-                               ]]
-                 [re-com "2.6.0"] ; reagent reuseable ui components
-                 [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests 
-                 [day8.re-frame/undo "0.3.3"]
-                 [re-catch "0.1.4"] ; exception handling for reagent components
-                 ;awb99: kee-frame seems to bring old dependencies?
-                 ;[kee-frame "0.3.3"] ; reframe with batteries - scroll fix, chains
+                 [environ "1.1.0"]
+                 [com.stuartsierra/component "0.4.0"]
+                 [org.danielsz/system "0.4.3"]
+                 [de.otto/tesla-microservice "0.13.1"]
+
+                 ;; ENCODING / SERIALIZATION
+                 [com.taoensso/sente "1.15.0"]
+                 [jarohen/chord "0.8.1"]                    ; websockets with core.async
+                 [org.clojure/data.json "0.2.7"]
+                 ;;  ring-json introduces jackson along with its tail
+                 ;; [ring/ring-json "0.4.0"]
                  
-                 ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of
-                 ;; React.
-                 ;;
-                 ;; React experimentally migrated to webpack/node
-                 ;; To bundle cljsjs version, remove comments here and remove webpack_bundle.js from worksheet.html
-                 ;; npm run build creates a fresh webpack_bundle.js
-                 ;; [cljsjs/react "15.4.2-0"]
-                 ;; [cljsjs/react-dom "15.4.2-0"]
-                 ;;
-                 ;; [flupot "0.4.0"]
-                 ;; [reagent-forms "0.5.27"]
-                 ;; [reagent-utils "0.2.0"]
-                 ;; [hickory "0.6.0"] html -> hiccup as very last ressort only
-                 ;; [replumb "0.2.4"] ; self hosted clojurescript
-                 [org.webjars/MathJax "2.7.0"]              ;; TODO Not quite sure about value
-                 [re-frame "0.10.9"]
-                 [com.cemerick/url "0.1.1"]
-                 [com.lucasbradstreet/cljs-uuid-utils "1.0.2"] ;; awb99: in encoding, and clj/cljs proof
-                 [org.clojure/tools.cli "0.4.2"]
+                 ;; WEB SERVER
                  [ring "1.7.1"
                   ;; :exclusions [ring/ring-jetty-adapter]
                   ]
@@ -85,14 +60,54 @@
                  [ring-middleware-format "0.7.4"]
                  [javax.websocket/javax.websocket-api "1.1"]
                  [javax.servlet/javax.servlet-api "4.0.1"]
-                 [compojure "1.6.1"]
+                     ;; [http-kit "2.2.0"]
+                 [org.eclipse.jetty.websocket/websocket-server "9.4.12.v20180830"]
+                 [de.otto/tesla-jetty "0.2.6"
+                  :exclusions [org.eclipse.jetty/jetty-server]]
+                  ;; [de.otto/tesla-httpkit "1.0.1"]
+                 [compojure "1.6.1"] ; Routing
+
+                 ;; Templating
                  [hiccup "1.0.5"]
-                 [environ "1.1.0"]
-                 [com.stuartsierra/component "0.4.0"]
+                 [prismatic/dommy "1.1.0"]
+                 ;; [selmer "1.0.3"] ;; django like templates - deps worth the hassle?                 
+                 ;; [flupot "0.4.0"]
+                 ;; [hickory "0.6.0"] html -> hiccup as very last ressort only
+                 [com.cemerick/url "0.1.1"]
+
+                 ;; CLOJURESCRIPT
                  [org.clojure/clojurescript "1.10.597" :scope "provided"]
+                 ;; [cljs-tooling "0.2.0"]
                  ;; https://github.com/bhauman/lein-figwheel/issues/612
                  ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
-                 [secretary "1.2.3"]
+                 [secretary "1.2.3"] ; client side routing
+                 [cljs-ajax "0.8.0"] ; needed by reagent hhttp-fx ??
+                 [com.lucasbradstreet/cljs-uuid-utils "1.0.2"] ;; awb99: in encoding, and clj/cljs proof
+                 
+                 ;; REACT / REAGENT / REFRAME
+                 [reagent "0.8.1"
+                  :exclusions [org.clojure/tools.reader
+                               ; cljsjs/react
+                               ; cljsjs/react-dom
+                               ; ;; cljsjs/react-dom-server
+                               ]]
+                 ;; React experimentally migrated to webpack/node
+                 ;; To bundle cljsjs version, remove comments here and remove webpack_bundle.js from worksheet.html
+                 ;; npm run build creates a fresh webpack_bundle.js
+                 ;; [cljsjs/react "15.4.2-0"]
+                 ;; [cljsjs/react-dom "15.4.2-0"]
+                 [re-com "2.6.0"] ; reagent reuseable ui components
+                 [re-frame "0.10.9"]
+                 [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests 
+                 [day8.re-frame/undo "0.3.3"]
+                 [re-catch "0.1.4"] ; exception handling for reagent components
+                 ;awb99: kee-frame seems to bring old dependencies?
+                 ;[kee-frame "0.3.3"] ; reframe with batteries - scroll fix, chains
+                 ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of React.
+                 ;; [reagent-forms "0.5.27"]
+                 ;; [reagent-utils "0.2.0"]
+                 
+                 ;; UI Components 
                  [cljsjs/parinfer "1.8.1-0"]
                  ;; Still helpful for externs!
                  [cljsjs/codemirror "5.44.0-1"]
@@ -101,35 +116,35 @@
                  ;[cljsjs/d3 "3.5.16-0"] 2019-10-20 awb99 removed because it fucks up new vega
                  [cljsjs/mousetrap "1.5.3-0"]
                  [cljsjs/marked "0.3.5-1"]
-                 [com.taoensso/sente "1.15.0"]
-                 [org.danielsz/system "0.4.3"]
-                 [jarohen/chord "0.8.1"]                    ; websockets with core.async
-                 [org.clojure/core.match "0.3.0"]
-                 [de.otto/tesla-microservice "0.13.1"]
-                 ;; [de.otto/tesla-httpkit "1.0.1"]
+                 [org.webjars/MathJax "2.7.0"]              ;; TODO Not quite sure about value
+
                  ;; Bringing it in here bc that is where the websocket "processors" come in
                  [com.bhauman/figwheel-repl "0.2.3"
                   ;; TODO: Trim to bare minimum
                   ;; :exclusions [*/*]
                   ]
-                 [org.eclipse.jetty.websocket/websocket-server "9.4.12.v20180830"]
-                 [de.otto/tesla-jetty "0.2.6"
-                  :exclusions [org.eclipse.jetty/jetty-server]]
-                 ;; [com.rpl/specter "0.13.2"]
-                 [clojail "1.0.6"]
+
+                 ;; *** PINK GORILLA ***
+
+                 ; CLJ Kernel
+                 [org.pinkgorilla/gorilla-middleware "0.2.2"]
+                 [com.cemerick/pomegranate "1.1.0"]         ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
                  ;[cider/piggieback "0.4.2"
                  ; :exclusions [org.clojure/clojurescript]]
-                 ;; TODO : Replace pomegranate with tools alpha
-                 [com.cemerick/pomegranate "1.1.0"]         ; add-dependency in clj kernel
+                 ;; [cider/cider-nrepl "0.22.4"]
+                 ;; [nrepl "0.6.0"]
+                 [org.clojure/tools.cli "0.4.2"]
+                 [clojail "1.0.6"] ; sandboxing
                  
+                 ;; CLJS KERNEL
                  ; cljs-kernel-shadow
                  [org.pinkgorilla/kernel-cljs-shadow "0.0.7"]
-                 
                  ; cljs-kernel-klipse and its dependencies
                  ;[cljs-http "0.1.42"]
                  ;[appliedscience/js-interop "0.1.13"]
                  ;[viebel/gadjett "0.5.2"]
                  ;[viebel/klipse-clj "10.1.3"]               ; todo: remove parinfer dependency
+                  ;; [replumb "0.2.4"] ; self hosted clojurescript
                  
                  ;pinkgorilla sub projects
                  [org.pinkgorilla/gorilla-renderable "2.1.2"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
