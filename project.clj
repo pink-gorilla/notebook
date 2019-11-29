@@ -28,6 +28,10 @@
                  ;; [com.rpl/specter "0.13.2"]
                  [org.clojure/core.match "0.3.0"]
 
+                 ; cljs-ajax requires [com.cognitect/transit-cljxxx]
+                 ; awb99: if ajax is not here then chord will  require an older version and build will break
+                 [cljs-ajax "0.8.0"] ; needed by reagent http-fx ?? 
+                 
                  ;; CONFIGURATION / LOGGING / SYSTEM MANAGEMENT                 
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.29"]
@@ -66,7 +70,7 @@
                   :exclusions [org.eclipse.jetty/jetty-server]]
                   ;; [de.otto/tesla-httpkit "1.0.1"]
                  [compojure "1.6.1"] ; Routing
-
+                 
                  ;; Templating
                  [hiccup "1.0.5"]
                  [prismatic/dommy "1.1.0"]
@@ -81,7 +85,7 @@
                  ;; https://github.com/bhauman/lein-figwheel/issues/612
                  ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
                  [secretary "1.2.3"] ; client side routing
-                 [cljs-ajax "0.8.0"] ; needed by reagent hhttp-fx ??
+                 
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.2"] ;; awb99: in encoding, and clj/cljs proof
                  
                  ;; REACT / REAGENT / REFRAME
@@ -117,7 +121,7 @@
                  [cljsjs/mousetrap "1.5.3-0"]
                  [cljsjs/marked "0.3.5-1"]
                  [org.webjars/MathJax "2.7.0"]              ;; TODO Not quite sure about value
-
+                 
                  ;; Bringing it in here bc that is where the websocket "processors" come in
                  [com.bhauman/figwheel-repl "0.2.3"
                   ;; TODO: Trim to bare minimum
@@ -125,7 +129,7 @@
                   ]
 
                  ;; *** PINK GORILLA ***
-
+                 
                  ; CLJ Kernel
                  [org.pinkgorilla/gorilla-middleware "0.2.2"]
                  [com.cemerick/pomegranate "1.1.0"]         ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
