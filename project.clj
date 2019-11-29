@@ -22,11 +22,11 @@
   :url "https://github.com/pink-gorilla/gorilla-notebook"
   :license {:name "MIT"}
   :dependencies [[org.clojure/clojure "1.10.1"]
-                 [org.clojure/core.async "0.4.500"]
+                 [org.clojure/core.async "0.5.527"]
                  [org.clojure/tools.reader "1.3.2"]
                  ;;  ring-json introduces jackson along with its tail
                  ;; [ring/ring-json "0.4.0"]
-                 [org.clojure/data.json "0.2.6"]
+                 [org.clojure/data.json "0.2.7"]
                  ;; [http-kit "2.2.0"]
                  ;; [cider/cider-nrepl "0.22.4"]
                  ;; [nrepl "0.6.0"]
@@ -89,7 +89,7 @@
                  [hiccup "1.0.5"]
                  [environ "1.1.0"]
                  [com.stuartsierra/component "0.4.0"]
-                 [org.clojure/clojurescript "1.10.520" :scope "provided"]
+                 [org.clojure/clojurescript "1.10.597" :scope "provided"]
                  ;; https://github.com/bhauman/lein-figwheel/issues/612
                  ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
                  [secretary "1.2.3"]
@@ -101,7 +101,7 @@
                  ;[cljsjs/d3 "3.5.16-0"] 2019-10-20 awb99 removed because it fucks up new vega
                  [cljsjs/mousetrap "1.5.3-0"]
                  [cljsjs/marked "0.3.5-1"]
-                 [com.taoensso/sente "1.14.0"]
+                 [com.taoensso/sente "1.15.0"]
                  [org.danielsz/system "0.4.3"]
                  [jarohen/chord "0.8.1"]                    ; websockets with core.async
                  [org.clojure/core.match "0.3.0"]
@@ -136,8 +136,8 @@
                  [org.pinkgorilla/encoding "0.0.18"]         ; notebook encoding
                  [irresponsible/tentacles "0.6.6"] ; github api 
                  ; notebook exploration:
-                 [clj-time "0.11.0"]
-                 [com.andrewmcveigh/cljs-time "0.4.0"]
+                 [clj-time "0.15.2"]
+                 [com.andrewmcveigh/cljs-time "0.5.2"]
                  ;[cljsjs/marked "0.3.5-0"] ; awb99: already required above
                  
                  ; ui plugins bundled with notebook
@@ -267,7 +267,7 @@
                                         ;; [org.clojars.stumitchell/clairvoyant "0.2.1"]
                                         ;; [day8/re-frame-tracer "0.1.1-SNAPSHOT"]
                                         [day8.re-frame/re-frame-10x "0.4.5"]
-                                        [binaryage/devtools "0.9.10"]
+                                        [binaryage/devtools "0.9.11"]
                                         ;; Gorilla server side stuff
                                         [hiccup "1.0.5"]
                                         ;; https://github.com/clojure-numerics/expresso/issues/19
