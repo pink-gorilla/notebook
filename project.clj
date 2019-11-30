@@ -113,8 +113,7 @@
                  
                  ;; UI Components 
                  [cljsjs/parinfer "1.8.1-0"]
-                 ;; Still helpful for externs!
-                 [cljsjs/codemirror "5.44.0-1"]
+                 [cljsjs/codemirror "5.44.0-1"]  ;; Still helpful for externs!
                  ;[cljsjs/vega "2.6.0-0"]  2019-10-20 awb99 removed because it fucks up new vega
                  ;[cljsjs/d3geo "0.2.15-2"] 2019-10-20 awb99 removed because it fucks up new vega
                  ;[cljsjs/d3 "3.5.16-0"] 2019-10-20 awb99 removed because it fucks up new vega
@@ -142,7 +141,7 @@
                  
                  ;; CLJS KERNEL
                  ; cljs-kernel-shadow
-                 [org.pinkgorilla/kernel-cljs-shadow "0.0.7"]
+                 [org.pinkgorilla/kernel-cljs-shadow "0.0.10"]
                  ; cljs-kernel-klipse and its dependencies
                  ;[cljs-http "0.1.42"]
                  ;[appliedscience/js-interop "0.1.13"]
