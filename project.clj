@@ -30,9 +30,9 @@
 
                  ; cljs-ajax requires [com.cognitect/transit-cljxxx]
                  ; awb99: if ajax is not here then chord will  require an older version and build will break
-                 [cljs-ajax "0.8.0"] ; needed by reagent http-fx ?? 
-                 
-                 ;; CONFIGURATION / LOGGING / SYSTEM MANAGEMENT                 
+                 [cljs-ajax "0.8.0"] ; needed by reagent http-fx ??
+
+                 ;; CONFIGURATION / LOGGING / SYSTEM MANAGEMENT
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  [org.slf4j/slf4j-api "1.7.29"]
                  [ch.qos.logback/logback-core "1.2.3"]
@@ -51,7 +51,7 @@
                  [org.clojure/data.json "0.2.7"]
                  ;;  ring-json introduces jackson along with its tail
                  ;; [ring/ring-json "0.4.0"]
-                 
+
                  ;; WEB SERVER
                  [ring "1.7.1"
                   ;; :exclusions [ring/ring-jetty-adapter]
@@ -70,11 +70,11 @@
                   :exclusions [org.eclipse.jetty/jetty-server]]
                   ;; [de.otto/tesla-httpkit "1.0.1"]
                  [compojure "1.6.1"] ; Routing
-                 
+
                  ;; Templating
                  [hiccup "1.0.5"]
                  [prismatic/dommy "1.1.0"]
-                 ;; [selmer "1.0.3"] ;; django like templates - deps worth the hassle?                 
+                 ;; [selmer "1.0.3"] ;; django like templates - deps worth the hassle?
                  ;; [flupot "0.4.0"]
                  ;; [hickory "0.6.0"] html -> hiccup as very last ressort only
                  [com.cemerick/url "0.1.1"]
@@ -85,9 +85,9 @@
                  ;; https://github.com/bhauman/lein-figwheel/issues/612
                  ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
                  [secretary "1.2.3"] ; client side routing
-                 
+
                  [com.lucasbradstreet/cljs-uuid-utils "1.0.2"] ;; awb99: in encoding, and clj/cljs proof
-                 
+
                  ;; REACT / REAGENT / REFRAME
                  [reagent "0.8.1"
                   :exclusions [org.clojure/tools.reader
@@ -102,7 +102,7 @@
                  ;; [cljsjs/react-dom "15.4.2-0"]
                  [re-com "2.6.0"] ; reagent reuseable ui components
                  [re-frame "0.10.9"]
-                 [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests 
+                 [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests
                  [day8.re-frame/undo "0.3.3"]
                  [re-catch "0.1.4"] ; exception handling for reagent components
                  ;awb99: kee-frame seems to bring old dependencies?
@@ -110,8 +110,8 @@
                  ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of React.
                  ;; [reagent-forms "0.5.27"]
                  ;; [reagent-utils "0.2.0"]
-                 
-                 ;; UI Components 
+
+                 ;; UI Components
                  [cljsjs/parinfer "1.8.1-0"]
                  ;; Still helpful for externs!
                  [cljsjs/codemirror "5.44.0-1"]
@@ -121,7 +121,7 @@
                  [cljsjs/mousetrap "1.5.3-0"]
                  [cljsjs/marked "0.3.5-1"]
                  [org.webjars/MathJax "2.7.0"]              ;; TODO Not quite sure about value
-                 
+
                  ;; Bringing it in here bc that is where the websocket "processors" come in
                  [com.bhauman/figwheel-repl "0.2.3"
                   ;; TODO: Trim to bare minimum
@@ -129,7 +129,7 @@
                   ]
 
                  ;; *** PINK GORILLA ***
-                 
+
                  ; CLJ Kernel
                  [org.pinkgorilla/gorilla-middleware "0.2.2"]
                  [com.cemerick/pomegranate "1.1.0"]         ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
@@ -139,7 +139,7 @@
                  ;; [nrepl "0.6.0"]
                  [org.clojure/tools.cli "0.4.2"]
                  [clojail "1.0.6"] ; sandboxing
-                 
+
                  ;; CLJS KERNEL
                  ; cljs-kernel-shadow
                  [org.pinkgorilla/kernel-cljs-shadow "0.0.7"]
@@ -149,16 +149,16 @@
                  ;[viebel/gadjett "0.5.2"]
                  ;[viebel/klipse-clj "10.1.3"]               ; todo: remove parinfer dependency
                   ;; [replumb "0.2.4"] ; self hosted clojurescript
-                 
+
                  ;pinkgorilla sub projects
                  [org.pinkgorilla/gorilla-renderable "2.1.2"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
                  [org.pinkgorilla/encoding "0.0.18"]         ; notebook encoding
-                 [irresponsible/tentacles "0.6.6"] ; github api 
+                 [irresponsible/tentacles "0.6.6"] ; github api
                  ; notebook exploration:
                  [clj-time "0.15.2"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
                  ;[cljsjs/marked "0.3.5-0"] ; awb99: already required above
-                 
+
                  ; ui plugins bundled with notebook
                  ;[awb99.fortune "0.0.1"]
                  ;[quil "3.1.0"]
@@ -355,7 +355,8 @@
                        ;; :env          {:production true}
                        :aot         :all
                        :omit-source true}
-
+             :python {:dependencies [[cnuernber/libpython-clj "1.13"]]
+                      :uberjar-name "gorilla-notebook-standalone-with-python.jar"}
              ;; :cljs-jar  {:clean-targets ^{:protect false} ["run/resources/public/compiled_prod"] }
              }
   :shell {:commands {"open" {:windows ["cmd" "/c" "start"]
