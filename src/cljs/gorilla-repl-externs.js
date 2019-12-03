@@ -15,3 +15,20 @@ MathJax.Hub.Queue = function(item) {};
 //var vg = {};
 //vg.parse.spec = function (spec, callback) {};
 
+
+
+/**
+ * @dict
+ */
+var shadow$provide = {};
+window.shadow$provide = {};
+
+/**
+ * @dict
+ */
+var shadow$modules = {};
+window.shadow$modules = {};
+
+
+var shadow$umd$export = {};
+window.shadow$umd$export = {};
