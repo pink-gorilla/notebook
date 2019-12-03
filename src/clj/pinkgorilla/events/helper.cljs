@@ -16,7 +16,7 @@
 
 (defn default-error-handler
   [{:keys [status status-text]}]
-  (dispatch [:process-error-response status status-text]))
+  (dispatch [:process-error-response "default" status status-text]))
 
 
 ;; -- Interceptors  --------------------------------------------------------------

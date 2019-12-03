@@ -4,14 +4,25 @@
   "version": "0.37.0",
   "author": "a.steffan@contentreich.de",
   "scripts": {
-    "watch": "webpack -d --watch",
-    "build": "webpack -p --module-bind 'json=json-loader'"
+    "_dev": "shadow-cljs watch app",
+    "_release": "shadow-cljs release app"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "create-react-class": "^15.6.3",
+    "codemirror": "^5.49.2",
+    "highlight.js": "9.15.10",
+    "react-highlight.js": "1.0.7",
+    "marked": "^0.7.0",
+    "mousetrap": "^1.6.3",
+    "mousetrap-global-bind": "^1.1.0",
+    "parinfer": "^3.12.0",
+    "parinfer-codemirror": "^1.4.2"
+  },
   "devDependencies": {
     "karma": "^4.4.1",
     "karma-chrome-launcher": "^3.1.0",
-    "karma-cljs-test": "^0.1.0",
-    "webpack": "^4.41.2"
+    "karma-cljs-test": "^0.1.0"
   }
 }

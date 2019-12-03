@@ -8,7 +8,9 @@
     ;; [cljs.repl.node]
     ;; [clojure.core.async :refer [go]]
     [pinkgorilla.core :as core]
-    [figwheel.main.api :refer [start start-join cljs-repl]]
+    ;; [figwheel.main.api :refer [start start-join cljs-repl]]
+    [shadow.cljs.devtools.api :as shadow]
+    [shadow.cljs.devtools.server :as shadow-server]
     [clojure.pprint :refer [pprint]]
     ;; [pinkgorilla.figwheel :as gfw :refer [main-config]]
     ;; [pinkgorilla.system :as gsys]
@@ -101,7 +103,12 @@
    (reset! gorilla-system (core/run-gorilla-server gorilla-config))))
 
 ;; TODO: Ugly workaround
-(defn -main [& args]
-  (defonce server (start-server :port 4001))
+(defn -main
+  {:shadow/requires-server true}
+  [& args]
+  (defonce nrepl-server (start-server :port 4001))
   (start-system gorilla-default-cli-config)
-  (start "dev"))
+  (shadow-server/start!)
+  (shadow/watch :app-with-cljs-kernel-dev {:verbose true})
+  ;; (start "dev")
+  )

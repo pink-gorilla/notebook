@@ -1,7 +1,13 @@
-(ns cljs-karaoke.notifications
-  (:require [re-frame.core :as rf :include-macros true]
-            [cljs-karaoke.events.notifications :as events]
-            [cljs-karaoke.subs :as s]))
+(ns pinkgorilla.notifications
+  (:require 
+   [re-frame.core :as rf :include-macros true]
+   [pinkgorilla.events.notifications :as events]
+   [pinkgorilla.subs :as s]))
+
+;; stolen from:
+;; https://github.com/baskeboler/cljs-karaoke-client/blob/master/src/main/cljs_karaoke/notifications.cljs
+
+
 (def notification-types #{:info :warning :danger :primary :success})
 
 (defn type-css-class [notification-type]

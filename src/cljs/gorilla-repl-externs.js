@@ -20,15 +20,16 @@ MathJax.Hub.Queue = function(item) {};
 /**
  * @dict
  */
-var shadow$provide = {};
-window.shadow$provide = {};
+
+// var shadow$provide = {};
+//window.shadow$provide = {};
 
 /**
  * @dict
  */
-var shadow$modules = {};
-window.shadow$modules = {};
+//var shadow$modules = {};
+//window.shadow$modules = {};
 
 
-var shadow$umd$export = {};
-window.shadow$umd$export = {};
+//var shadow$umd$export = {};
+//window.shadow$umd$export = {};

@@ -1,5 +1,5 @@
-(ns pinkgorilla.prod
-  (:require 
+(ns pinkgorilla.app
+  (:require
     [pinkgorilla.core :as core]))
 
 ;;ignore println statements in prod

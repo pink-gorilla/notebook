@@ -1,5 +1,6 @@
 (ns pinkgorilla.keybindings
   (:require
+    ;; ["mousetrap-global-bind"]
    [pinkgorilla.routes :as routes]
    [re-frame.core :refer [dispatch-sync]]))
 

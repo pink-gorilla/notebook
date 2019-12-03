@@ -5,7 +5,7 @@
       ;; [gorilla-repl.webpack-include]
       ;; [gorilla-repl.webpack-extern]
       ;; [clojure.walk :as w]
-   
+
    [reagent.core :as reagent :refer [atom]]
    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
    [re-com.core :as re-com]
@@ -24,7 +24,7 @@
       ;[cljsjs.d3]    2019-10-20 awb99 removed as it fucks up the new vega
       ;[cljsjs.d3geo]  2019-10-20 awb99 removed as it fucks up the new vega
       ;[cljsjs.vega] 2019-10-20 awb99 removed as it fucks up the new vega
-   
+
    [pinkgorilla.subs]
    [pinkgorilla.editor.core :as editor]
    [pinkgorilla.output.hack :refer [temp-comp-hack]]
@@ -36,11 +36,11 @@
    [pinkgorilla.dialog.meta :refer [meta-dialog]]
    [pinkgorilla.worksheet.core :refer [worksheet]]
    [pinkgorilla.storage.core]
+   [pinkgorilla.notifications :as notifications]
       ;widgets are only included here so they get compiled to the bundle.js
    [widget.hello]
-   
-   [pinkgorilla.explore.list]
-   ))
+
+   [pinkgorilla.explore.list]))
 
 ;; <!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 ;; <script type="text/x-mathjax-config">
@@ -144,8 +144,9 @@
 (defn gorilla-app
   []
   (let [main (subscribe [:main])]
-    (case @main 
-      :explore [pinkgorilla.explore.list/view]
-      :notebook [gorilla-app-doc]
-      [gorilla-app-doc]
-      )))
+    [:<>
+     [notifications/notifications-container-component]
+     (case @main
+       :explore [pinkgorilla.explore.list/view]
+       :notebook [gorilla-app-doc]
+       [gorilla-app-doc])]))

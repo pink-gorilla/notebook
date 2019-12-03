@@ -7,7 +7,8 @@
    [pinkgorilla.notebook.core :refer [load-notebook-hydrated save-notebook-hydrated]]
    [pinkgorilla.storage.storage :refer [Storage storagetype query-params-to-storage gorilla-path]]
    [pinkgorilla.storage.direct.direct :refer [Direct load-url decode-content]]
-   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]))
+   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
+   [pinkgorilla.notifications :refer [add-notification notification]]))
 
 
 ;; Load File (from URL Parameters) - in view or edit mode
@@ -52,7 +53,7 @@
                    :timeout         15000
                    :response-format (ajax/json-response-format {:keywords? true})
                    :on-success      [:process-load-file-response storage]
-                   :on-failure      [:process-error-response]}})))
+                   :on-failure      [:process-error-response "load-notebook"]}})))
 
 
 (reg-event-db
@@ -109,7 +110,7 @@
                    :format       (ajax/json-request-format {:keywords? true}) ; (ajax/transit-request-format) ;  (ajax/url-request-format) ; request encoding POST body url-encoded
                    :response-format (ajax/json-response-format {:keywords? true}) ;(ajax/transit-response-format) ;; response encoding TRANSIT
                    :on-success      [:after-save-success storage]
-                   :on-failure      [:process-error-response]}})))
+                   :on-failure      [:process-error-response "save-notebook"]}})))
 
 
 (defn hack-gist [storage result db]
@@ -127,7 +128,7 @@
  (fn [db [_ storage result]]
    (info "storage is:" storage ", result is: " result)
    (do
-     (dispatch [:display-message (str "saved.") 2000])
+      (add-notification (notification :info "Notebook Saved."))
      (hack-gist storage result db))
    ;(routes/nav! (str "/edit?source=local&filename=" filename))
    ))

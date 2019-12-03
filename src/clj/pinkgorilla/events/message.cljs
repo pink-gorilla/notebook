@@ -1,5 +1,6 @@
 (ns pinkgorilla.events.message
   (:require
+    [taoensso.timbre :refer-macros (info)]
    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
    [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]))
 
@@ -17,7 +18,8 @@
 
 (reg-event-db
  :process-error-response
- (fn [db [_ response]]
-   (display-message db [:process-error-response (str "Ugh, got bad response : "
+ (fn [db [_ location response]]
+   (info "ERROR RESPONSE: " response)
+   (display-message db [:process-error-response (str location " Error: "
                                                      (:status-text response) " ("
                                                      (:status response) ")")])))

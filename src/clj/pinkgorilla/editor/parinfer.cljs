@@ -1,6 +1,8 @@
 (ns pinkgorilla.editor.parinfer
   (:require
-    [cljsjs.parinfer]))
+    ["parinfer" :as parinfer]
+    ;; [cljsjs.parinfer]
+    ))
 
 (defn- convert-changed-line [e]
   {:line-no (aget e "lineNo")
@@ -26,13 +28,13 @@
        :cursorDx           (:cursor-dx option)
        :previewCursorScope (:preview-cursor-scope option)})
 
-(def indent-mode* (aget js/window "parinfer" "indentMode"))
-(def paren-mode* (aget js/window "parinfer" "parenMode"))
+;; (def indent-mode* (aget js/window "parinfer" "indentMode"))
+;; (def paren-mode* (aget js/window "parinfer" "parenMode"))
 
 (defn indent-mode
-  ([text] (convert-result (indent-mode* text)))
-  ([text options] (convert-result (indent-mode* text (convert-options options)))))
+  ([text] (convert-result (parinfer/indent-mode text)))
+  ([text options] (convert-result (parinfer/indent-mode text (convert-options options)))))
 
 (defn paren-mode
-  ([text] (convert-result (paren-mode* text)))
-  ([text options] (convert-result (paren-mode* text (convert-options options)))))
+  ([text] (convert-result (parinfer/paren-mode text)))
+  ([text options] (convert-result (parinfer/paren-mode text (convert-options options)))))

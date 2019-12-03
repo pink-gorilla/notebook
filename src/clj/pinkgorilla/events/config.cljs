@@ -18,7 +18,7 @@
                  :timeout         5000                     ;; optional see API docs
                  :response-format (ajax/transit-response-format) ;; IMPORTANT!: You must provide this.
                  :on-success      [:process-config-response]
-                 :on-failure      [:process-error-response]}}))
+                 :on-failure      [:process-error-response "load-config"]}}))
 
 
 (def install-commands

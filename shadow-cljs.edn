@@ -1,0 +1,95 @@
+{:lein   true
+ ;; :dependencies []
+
+ ;; :source-paths
+ #_["src"                                                   ; cljs-kernel-shadow
+    "test"                                                  ; unit tests for cljs-kernel-test
+    "env/dev"                                               ; demo app
+    ]
+
+
+
+ :nrepl  {:port 8703}
+ :builds {; https://github.com/mhuebert/shadow-re-frame/blob/master/shadow-cljs.edn
+          ;; :none optimized build we ship
+          :app-with-cljs-kernel     {:target           :browser
+                                     :build-options    {:ns-aliases {pinkgorilla.kernel.cljs pinkgorilla.kernel.shadowcljs}}
+                                     :output-dir       "target/cljsbuild/gorilla-repl-client/js/cljs"
+                                     :asset-path       "./js/cljs"
+                                     :compiler-options {;; preferrably implicit by shadow-cljs compile/watch/release
+                                                        ;; Beware: releasing :none not supported by shadow
+                                                        ;; :optimizations   :none
+                                                        :external-config {:gorilla/config {:with-cljs-kernel true}}
+                                                        :externs         ["src/cljs/gorilla-repl-externs.js"]}
+                                     :modules          {:gorilla {:entries [pinkgorilla.app]}}}
+          :app-without-cljs-kernel  {:target           :browser
+                                     :build-options    {:ns-aliases {pinkgorilla.kernel.cljs pinkgorilla.kernel.mock}}
+                                     :output-dir       "target/cljsbuild/gorilla-repl-client/js/mock"
+                                     :asset-path       "./js/mock"
+                                     :compiler-options {:external-config {:gorilla/config {:with-cljs-kernel false}}
+                                                        :externs         ["src/cljs/gorilla-repl-externs.js"]}
+                                     :modules          {:gorilla {:entries [pinkgorilla.app]}}}
+          ;; Must not use dev profile stuff here! Again: We ship this build
+          ;; :devtools         {}
+
+          :ci                       {:target           :karma
+                                     :output-to        "target/ci.js"
+                                     :build-options    {:ns-aliases {pinkgorilla.kernel.cljs pinkgorilla.kernel.mock}}
+                                     :compiler-options {:external-config {:gorilla/config {:with-cljs-kernel false}}
+                                                        :externs         ["src/cljs/gorilla-repl-externs.js"]}}
+
+          :browser-test             {:target           :browser-test
+                                     :test-dir         "target/cljsbuild/gorilla-repl-client/js/test"
+                                     :build-options    {:ns-aliases {pinkgorilla.kernel.cljs pinkgorilla.kernel.mock}}
+                                     :compiler-options {:external-config {:gorilla/config {:with-cljs-kernel false}}
+                                                        :externs         ["src/cljs/gorilla-repl-externs.js"]}
+                                     ;; :ns-regexp        "-spec$"
+                                     ;;; :runner-ns        tests.client-test-main
+                                     :devtools         {:http-port 8021
+                                                        :http-root "target/cljsbuild/gorilla-repl-client/js/test"}}
+
+          :cards                    {:target        nubank.workspaces.shadow-cljs.target
+                                     :build-options {:ns-aliases {pinkgorilla.kernel.cljs pinkgorilla.kernel.mock}}
+                                     :ns-regexp     "-(test|cards)$"
+                                     :output-name   "target/cljsbuild/gorilla-repl-client/js/cards"
+                                     :asset-path    "./js/cards"
+                                     :preloads      []      ; optional, list namespaces to be pre loaded
+                                     }
+
+          :app-with-cljs-kernel-dev {:target           :browser
+                                     :build-options    {:ns-aliases {pinkgorilla.kernel.cljs pinkgorilla.kernel.shadowcljs}}
+                                     ;; Not honored with :browser :target
+                                     ;; :output-to        "target/cljsbuild/gorilla-repl-client/js/gorilla.js"
+                                     :output-dir       "target/cljsbuild/gorilla-repl-client/js/cljs"
+                                     :asset-path       "./js/cljs"
+                                     :compiler-options {:optimizations   :simple
+                                                        :external-config {:gorilla/config {:with-cljs-kernel true}}
+                                                        :closure-defines {re_frame.trace.trace_enabled? true}
+                                                        :externs         ["src/cljs/gorilla-repl-externs.js"]
+                                                        ;; :devcards        true
+                                                        }
+                                     :modules          {;; :core     {:entries [pinkgorilla.core]}
+                                                        :gorilla {:entries [pinkgorilla.app]
+                                                                  ;; :depends-on #{:core}
+                                                                  }
+                                                        ;; :devcards
+                                                        #_{:entries    [pinkgorilla.cards]
+                                                           :depends-on #{:core}}
+                                                        }
+                                     :devtools         {:http-root "out/public"
+                                                        :http-port 8702
+                                                        ;; Just in case we really want this:
+                                                        ;; https://clojureverse.org/t/improving-initial-load-time-for-browser-builds-during-development/2518
+                                                        ;; :loader-mode :script
+                                                        :preloads
+                                                                   [pinkgorilla.dev-preload
+                                                                    devtools.preload
+                                                                    frisk.preload
+                                                                    day8.re-frame-10x.preload]
+
+                                                        ;; :http-handler     shadow.http.push-state/handle
+                                                        ;; :push-state/index "devcards.html"
+                                                        ;; ;:before-load     sniff.devcards/before-load
+                                                        ;; ;:preloads        [dev.devcards]
+                                                        ;; :after-load       sniff.devcards/main
+                                                        }}}}

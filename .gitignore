@@ -18,3 +18,4 @@ ws/
 /node_modules/
 /figwheel_server.log
 /gorilla-repl.log
+.shadow-cljs/

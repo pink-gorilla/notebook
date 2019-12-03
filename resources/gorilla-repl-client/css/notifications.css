@@ -1,0 +1,19 @@
+
+
+.notifications-container {
+    position: fixed;
+    width: calc(100vw - 3em);
+    top: 1em;
+    right: 1em;
+    z-index: 3;
+    overflow:hidden;
+}
+
+.notification {
+    opacity: 0.8;
+    margin-bottom: 0.5em !important;
+}
+
+.notification:hover {
+    opacity: 1;
+} 
