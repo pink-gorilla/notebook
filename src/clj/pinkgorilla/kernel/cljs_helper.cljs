@@ -51,6 +51,20 @@
     response))
 
 
+(defn render-renderable-meta
+  "rendering via the Renderable protocol (needs renderable project)
+   (users can define their own render implementations)"
+  [result]
+  (let [m (meta result)]
+    {:value-response
+    (if (contains? m :r)
+      {:type :reagent-cljs 
+       :reagent result}
+      (render result)
+      )}))
+
+
+
 ;; result:
 ;; [:ok value]
 ;; [:error #error {:message "ERROR", :data {:tag :cljs/analysis-error}, :cause #object[TypeError TypeError: bongo.trott.g is undefined]}]
@@ -59,7 +73,7 @@
     (info "cljs eval result:" result)
     (send-console segment-id (str " type: " (type data) "data: " (pr-str data)))
     (case type
-      :ok  (send-value segment-id (render-renderable data))
+      :ok  (send-value segment-id (render-renderable-meta data))
       :error (send-error segment-id (pr-str data))
       (info "cljs kernel received unknown result type: " type "data: " data))
     (dispatch [:evaluator:done-response segment-id]))) ; assumption: only one response to eval
