@@ -141,7 +141,7 @@
 
                  ;; CLJS KERNEL
                  ; cljs-kernel-shadow
-                 [org.pinkgorilla/kernel-cljs-shadow "0.0.10"]
+                 [org.pinkgorilla/kernel-cljs-shadow "0.0.14"]
                  ; cljs-kernel-klipse and its dependencies
                  ;[cljs-http "0.1.42"]
                  ;[appliedscience/js-interop "0.1.13"]
@@ -150,7 +150,7 @@
                   ;; [replumb "0.2.4"] ; self hosted clojurescript
 
                  ;pinkgorilla sub projects
-                 [org.pinkgorilla/gorilla-renderable "2.1.2"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
+                 [org.pinkgorilla/gorilla-renderable "2.1.3"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
                  [org.pinkgorilla/encoding "0.0.18"]         ; notebook encoding
                  [irresponsible/tentacles "0.6.6"] ; github api
                  ; notebook exploration:
