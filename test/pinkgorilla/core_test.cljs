@@ -1,5 +1,5 @@
 (ns pinkgorilla.core-test
-  (:require 
+  (:require
      [cljs.test :refer-macros [is are deftest testing use-fixtures]]
      [reagent.core :as reagent :refer [atom]]
      [pinkgorilla.views :as gv]))
@@ -46,12 +46,13 @@
   (let [cm (.-CodeMirror js/window)]
     (is cm)
     (is (.. cm -prototype -findMatchingBracket))
-    ;; (is (.. cm -modes -clojure-parinfer)) ;; nil?
+    ;; TODO: Fix (is (.. cm -modes -clojure-parinfer)) ;; nil?
     (is (.. cm -modes -clojure))
     (is (.. cm -modes -markdown))
     (is (.-colorize cm))
     (is (.-runMode cm))
-    (is (.-showHint cm))))
+    (is (.-showHint cm))
+    ))
 
 ;; [cljsjs.codemirror.addon.edit.closebrackets]
 ;;  [cljsjs.codemirror.addon.edit.matchbrackets]
