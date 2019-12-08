@@ -4,6 +4,7 @@
    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
    [taoensso.timbre :refer-macros (info)]
+   [pinkgorilla.notifications :refer [add-notification notification]]
    ))
 
 
@@ -29,7 +30,7 @@
      (if (nil? new-kernel) ; free segments dont have a kernel, so we wont toggle
        db
        (do
-         (dispatch [:display-message (str "cell kernel is now" new-kernel) ])
+         (add-notification (notification :info (str "cell kernel is now" new-kernel)))
          (assoc-in db [:worksheet :segments active-id :kernel] new-kernel )))
          )))
 

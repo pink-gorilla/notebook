@@ -20,10 +20,10 @@
    {:db         (merge db {:message "Exploring notebooks ..."})
     :http-xhrio {:method          :get
                  :uri             "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"
-                 :timeout         5000                     ;; optional
+                 :timeout         10000                     ;; optional
                  :response-format (ajax/json-response-format {:keywords? true}) ; (ajax/transit-response-format) ;; IMPORTANT!: You must provide this.
                  :on-success      [:explore-response]
-                 :on-failure      [:process-error-response]}}))
+                 :on-failure      [:process-error-response "load-explore-data"]}}))
 
 
 (defn remove-repo-id [item]

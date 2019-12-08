@@ -1,27 +1,27 @@
 (ns pinkgorilla.kernel.nrepl
   (:require-macros
-    [cljs.core.async.macros :as asyncm :refer (go go-loop)])
+   [cljs.core.async.macros :as asyncm :refer (go go-loop)])
   (:require
-    [cljs-uuid-utils.core :as uuid]
+   [cljs-uuid-utils.core :as uuid]
     ;; [cljs.core.match :refer-macros [match]]
-    [cljs.core.async :as async :refer (<! >! put! chan)]
-    [re-frame.core :refer [dispatch]]
-    [clojure.walk :as w]
-    [taoensso.timbre :as timbre
-     :refer-macros (log trace debug info warn error fatal report
-                        logf tracef debugf infof warnf errorf fatalf reportf
-                        spy get-env log-env)]
+   [cljs.core.async :as async :refer (<! >! put! chan)]
+   [re-frame.core :refer [dispatch]]
+   [clojure.walk :as w]
+   [taoensso.timbre :as timbre
+    :refer-macros (log trace debug info warn error fatal report
+                       logf tracef debugf infof warnf errorf fatalf reportf
+                       spy get-env log-env)]
     ;; [com.stuartsierra.component :as component]
     ;; [system.components.sente :refer [new-channel-socket-client]]
     ;; [taoensso.sente :as sente :refer (cb-success?)]
-    [chord.client :refer [ws-ch]] ; websockets with core.async
-    [pinkgorilla.util :refer [ws-origin]]
-    ))
+   [chord.client :refer [ws-ch]] ; websockets with core.async
+   [pinkgorilla.util :refer [ws-origin]]
+   [pinkgorilla.notifications :refer [add-notification notification]]))
 
 ;; TODO : Fixme handle breaking websocket connections
 (defonce ws-repl
   (atom {:channel     nil ; created by start-ws-repl!
-         :session-id  nil
+         :session-id  nil ; set by receive-msgs!
          :evaluations {}
          :ciders      {}}))
 
@@ -35,13 +35,13 @@
    I have seen situations where the first eval does not go through. Might be this issue.
    "
   [key message storeval]
-  (let [uuid (uuid/uuid-string (uuid/make-random-uuid))
+  (let [eval-id (uuid/uuid-string (uuid/make-random-uuid))
         nrepl-msg (clj->js (merge message
-                                  {:id      uuid
+                                  {:id      eval-id
                                    :session (:session-id @ws-repl)}))]
-    (swap! ws-repl assoc-in [key (keyword uuid)] storeval)  ;; Store segment-id value
+    (swap! ws-repl assoc-in [key (keyword eval-id)] storeval)  ;; Store segment-id value
     (put! (:channel @ws-repl) nrepl-msg)
-    uuid))
+    eval-id))
 
 (defn eval!
   [segment-id content]
@@ -53,6 +53,21 @@
 (defn send-cider-message!
   [message storeval]
   (send-message! :ciders message storeval))
+
+
+(defn ^export clj-eval
+  "Eval CLJ snippet with callback"
+  [snippet callback]
+  (send-cider-message! {:op "eval" :code snippet}
+                       (fn [message]
+                         (let [ns    (get message "ns")
+                               _ (println "ns: " ns) ; this does not work
+                               _ (.log js/console (str "ns2: " ns)) ; this works
+                               value (get message "value")
+                               data  (-> (.parse js/JSON (.parse js/JSON value))
+                                         js->clj
+                                         w/keywordize-keys)]
+                           (when ns (callback (:value data)))))))
 
 
 (defn get-completions
@@ -102,10 +117,11 @@
       (cond
         ns
         (dispatch [:evaluator:value-response
-                   segment-id {;; TODO: Never ask!
-                               :value-response (-> (.parse js/JSON (.parse js/JSON value))
-                                                   js->clj
-                                                   w/keywordize-keys)} ns]) ;; :ns ns
+                   segment-id
+                   {:value-response (-> (.parse js/JSON (.parse js/JSON value))
+                                        js->clj
+                                        w/keywordize-keys)}
+                   ns]) ;; :ns ns
         out
         (dispatch [:evaluator:console-response segment-id {:console-response out}])
 
@@ -151,19 +167,19 @@
         (do
           (swap! ws-repl assoc :session-id new-session)
           (go-loop []
-                   (let [{:keys [message error] :as msg} (<! server-ch)]
-                     (if message
-                       (do
-                         (process-msg message)
-                         (recur))
-                       (dispatch [:display-message (str "Fatal Error: " error " - Game over")])))))
-        (dispatch [:display-message (str "Fatal Error : " error " - Unable to create session. Game over")])))))
+            (let [{:keys [message error] :as msg} (<! server-ch)]
+              (if message
+                (do
+                  (process-msg message)
+                  (recur))
+                (add-notification (notification :danger (str "clj-kernel Fatal Error: " error " - Game over")))))))
+        (add-notification (notification :danger (str "clj-kernel Fatal Error : " error " - Unable to create session. Game over")))))))
 
 (defn- send-msgs! [new-msg-ch server-ch]
   (go-loop []
-           (when-let [msg (<! new-msg-ch)]
-             (>! server-ch msg)
-             (recur))))
+    (when-let [msg (<! new-msg-ch)]
+      (>! server-ch msg)
+      (recur))))
 
 (defn start-ws-repl!
   [path app-url]
@@ -172,7 +188,7 @@
     (let [ws-url (ws-origin path app-url)
           {:keys [ws-channel error]} (<! (ws-ch ws-url {:format :json}))]
       (if error
-        (dispatch [:display-message error])
+        (add-notification (notification :danger (str "clj-kernel " error)))
         #_(do
             (print msg "to " ws-channel)
             (>! ws-channel msg))

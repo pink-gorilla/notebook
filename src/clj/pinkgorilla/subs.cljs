@@ -74,3 +74,9 @@
   :is-queued-query
   (fn [db [_ seg-id]]
     (contains? (get-in db [:worksheet :queued-code-segments]) seg-id)))
+
+(reg-sub
+ ::notifications
+ (fn [db _]
+   (:notifications db)))
+

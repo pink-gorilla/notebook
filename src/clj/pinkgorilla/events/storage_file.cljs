@@ -20,7 +20,7 @@
                  :timeout         5000                     ;; optional see API docs
                  :response-format (ajax/transit-response-format) ;; IMPORTANT!: You must provide this.
                  :on-success      [:process-files-response]
-                 :on-failure      [:process-error-response]}}))
+                 :on-failure      [:process-error-response "browse-file-local"]}}))
 
 
 

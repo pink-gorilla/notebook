@@ -88,6 +88,7 @@
                   }
    :base-path    nil
    :message      nil
+   :notifications []
    :dialog {:settings false
             :save false
             :meta false}
