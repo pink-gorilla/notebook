@@ -35,7 +35,7 @@
   (testing "Samples"
     (testing "Initial DB"
       (is (get @db/app-db :all-commands)))
-    (testing "Save as change"
-      (let [filename "foo.clj"]
-        (reframe/dispatch-sync [:save-as-change filename])
-        (is (= filename (get-in @db/app-db [:save :filename])))))))
+    (testing "Save Notebook as file"
+      (let [filename "foo.cljg"]
+        (reframe/dispatch-sync [:save-as-storage {:source :file :filename filename}])
+        (is (= filename (get-in @db/app-db [:storage :filename])))))))

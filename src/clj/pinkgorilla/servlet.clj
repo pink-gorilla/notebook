@@ -1,9 +1,9 @@
 (ns pinkgorilla.servlet
   (:use compojure.core)
-  (:require 
-     [ring.util.servlet :as servlet]
-     [pinkgorilla.route :as route]
-     [clojure.tools.logging :as log])
+  (:require
+   [clojure.tools.logging :as log]
+   [ring.util.servlet :as servlet]
+   [pinkgorilla.route :as route])
   (:import (javax.servlet ServletConfig)
            (javax.servlet.http HttpServletRequest HttpServletResponse))
   (:gen-class :name pinkgorilla.RingServlet
@@ -29,13 +29,13 @@
    (log/debug "Servlet initialized with no params")
    (.superInit this)
    (set-handler
-     (route/war-handler (-> (.getServletContext this) .getContextPath))))
+    (route/war-handler (-> (.getServletContext this) .getContextPath))))
 
   ([this ^ServletConfig config]
    (log/debug "Servlet initialized with servlet config" config)
    (.superInit this config)
    (set-handler
-     (route/war-handler (-> (.getServletContext this) .getContextPath)))))
+    (route/war-handler (-> (.getServletContext this) .getContextPath)))))
 
 
 (defn -service

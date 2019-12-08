@@ -6,8 +6,7 @@
    [re-frame.core :refer [dispatch-sync]]
    [cljs.reader]
    [pinkgorilla.keybindings :refer [all-commands visible-commands]]
-    [pinkgorilla.explore.data]
-    ))
+   [pinkgorilla.explore.data]))
 
 
 (def debug?
@@ -70,9 +69,20 @@
 
 ;; -- Initial app-db Value  ---------------------------------------------------
 (def initial-db
-  {:docs
-   {:content  ""
-    :position []}
+  {; config
+   :config       {:read-only true}
+   :base-path    nil
+
+   :docs {:content  ""
+          :position []}
+
+   ; navbar, and main page navigation
+   :navbar-menu-active? true
+   :current-view :home
+   :main :notebook ; integrate this to the way navbar works.
+   :nav {}  ; todo: remove this - came form notebook explorer from open source clojure
+   
+   ; old command palette
    :all-commands all-commands
    :palette      {;; TODO: We are (ab)using it for files and commands, "inherited" from js version
                   ;; Should probably be two instances
@@ -83,28 +93,29 @@
                   :filter               ""
                   :label                ""
                   :highlight            0}
-   :worksheet    {:meta {}}
-   :config       {:read-only true
-                  }
-   :base-path    nil
-   :message      nil
+   
+   ; notifications
    :notifications []
+   :message      nil  ; TODO: remove message, after notification system works 100% ok
+   
+   ; dialogs
    :dialog {:settings false
             :save false
             :meta false}
-   :settings
-   {:default-kernel :clj
-    :editor :text
-    :github-token ""}
+
+   ; notebook editor
+   :worksheet    {:meta {}}
+   :settings     {:default-kernel :clj
+                  :editor :text
+                  :github-token ""}
    :storage nil
+
    ; explore:
-   :main :notebook
    :projects     {:selected nil}
-   :forms {:projects {:create form-default
-                      :update form-default
-                      :search form-default}}
-   :data {:projects pinkgorilla.explore.data/projects}
-   :nav {}
+   :forms        {:projects {:create form-default
+                             :update form-default
+                             :search form-default}}
+   :data         {:projects pinkgorilla.explore.data/projects}
    :initialized true})
 
 

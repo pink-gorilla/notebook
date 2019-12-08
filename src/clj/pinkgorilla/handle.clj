@@ -3,6 +3,13 @@
   use Gorilla's embedded HTTPKit server. Note that as well as the handlers there are two functions in this NS,
   `update-excludes` and `set-config` that modify the state returned by handlers."
   (:require
+   [clojure.tools.logging :refer (info)]
+   #_[taoensso.timbre :as timbre
+      :refer (log trace debug info warn error fatal report
+                  logf tracef debugf infof warnf errorf fatalf reportf
+                  spy get-env log-env)]
+   [clojure.java.io :as io]
+
    [ring.middleware.keyword-params :as keyword-params]
    [ring.middleware.cors :refer [wrap-cors]]
    [ring.middleware.params :as params]
@@ -12,13 +19,7 @@
    [ring.util.response :as res]
     ;; [org.httpkit.client :as http]
     ;; [ring.middleware.webjars :refer [wrap-webjars]]
-   [pinkgorilla.storage.files :as files]
-   [clojure.tools.logging :refer (info)]
-   [clojure.java.io :as io]
-   #_[taoensso.timbre :as timbre
-      :refer (log trace debug info warn error fatal report
-                  logf tracef debugf infof warnf errorf fatalf reportf
-                  spy get-env log-env)]))
+   [pinkgorilla.storage.files :as files]))
 
 (defn redirect-app
   [req]
@@ -57,13 +58,4 @@
 
 
 
-(defn document-utf8
-  [filename req]
-  {:status  200
-   ;; utf-8 needed HERE, content sets ISO-8859-1 default which
-   ;; supercedes meta header in document
-   ;; Session key is required to force setting the cookie
-   :session (:session req)
-   :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (slurp (io/resource
-                    (str "gorilla-repl-client/" filename)))})
+

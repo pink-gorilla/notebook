@@ -80,3 +80,21 @@
  (fn [db _]
    (:notifications db)))
 
+
+;; navbar
+
+(reg-sub
+ ::current-view
+ (fn [db _]
+   (:current-view db)))
+
+(reg-sub
+ ::navbar-visible?
+ :<- [::current-view]
+ (fn [view _]
+   (#{:playlist :home} view)))
+
+(reg-sub
+ ::navbar-menu-active?
+ (fn [db _]
+   (:navbar-menu-active? db)))

@@ -2,12 +2,10 @@
   (:require
    [clojure.string :as str]
       ;; [hickory.core :as hick]
-      ;; [gorilla-repl.webpack-include]
-      ;; [gorilla-repl.webpack-extern]
       ;; [clojure.walk :as w]
-
+   
    [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
+   [re-frame.core :as rf :refer [subscribe dispatch dispatch-sync]]
    [re-com.core :as re-com]
    [goog.dom :as gdom]
    [dommy.core :as dom :refer-macros [sel1]]
@@ -24,8 +22,8 @@
       ;[cljsjs.d3]    2019-10-20 awb99 removed as it fucks up the new vega
       ;[cljsjs.d3geo]  2019-10-20 awb99 removed as it fucks up the new vega
       ;[cljsjs.vega] 2019-10-20 awb99 removed as it fucks up the new vega
-
-   [pinkgorilla.subs]
+   
+   [pinkgorilla.subs :as s]
    [pinkgorilla.editor.core :as editor]
    [pinkgorilla.output.hack :refer [temp-comp-hack]]
    [pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
@@ -36,7 +34,9 @@
    [pinkgorilla.dialog.meta :refer [meta-dialog]]
    [pinkgorilla.worksheet.core :refer [worksheet]]
    [pinkgorilla.storage.core]
+   [pinkgorilla.views.navbar :as navbar]
    [pinkgorilla.notifications :as notifications]
+   
       ;widgets are only included here so they get compiled to the bundle.js
    [widget.hello]
 
@@ -109,10 +109,6 @@
        [:h3 @message]])))
 
 
-
-
-
-
 (defn gorilla-app-doc
   []
   (let [config (subscribe [:config])]
@@ -123,16 +119,16 @@
                               rw (not (:read-only @config))
                               hamburger-comp (if rw ^{:key :hamburger} [hamburger])
                               palette-comp (if rw ^{:key :palette-dialog} [palette-dialog])
-                              save-comp (if rw ^{:key :save-dialog} [save-dialog])
-                              settings-comp (if rw ^{:key :settings-dialog} [settings-dialog])
-                              meta-comp (if rw ^{:key :meta-dialog} [meta-dialog])
+                              ;save-comp (if rw ^{:key :save-dialog} [save-dialog])
+                              ;settings-comp (if rw ^{:key :settings-dialog} [settings-dialog])
+                              ;meta-comp (if rw ^{:key :meta-dialog} [meta-dialog])
                               doc-comp (if rw ^{:key :doc-viewer} [doc-viewer])
                               other-children [^{:key :status} [app-status]
                                               hamburger-comp
                                               palette-comp
-                                              save-comp
-                                              settings-comp
-                                              meta-comp
+                                              ;save-comp
+                                              ;settings-comp
+                                              ;meta-comp
                                               doc-comp
                                               ^{:key :worksheet} [worksheet
                                                                   rw
@@ -145,7 +141,14 @@
   []
   (let [main (subscribe [:main])]
     [:<>
+     (when @(rf/subscribe [::s/navbar-visible?])
+       [navbar/navbar-component])
      [notifications/notifications-container-component]
+     
+     [meta-dialog]
+     [settings-dialog]
+     [save-dialog]
+     
      (case @main
        :explore [pinkgorilla.explore.list/view]
        :notebook [gorilla-app-doc]

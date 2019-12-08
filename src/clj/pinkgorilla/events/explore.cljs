@@ -55,4 +55,9 @@
        (assoc :message nil))))
 
 
-
+(reg-event-db
+ :goto-main
+ [standard-interceptors]
+ (fn [db [_ response]]
+   (-> (assoc-in db [:main] :notebook
+       ))))

@@ -1,7 +1,8 @@
 (ns pinkgorilla.route
   (:use compojure.core)
-  (:require 
+  (:require
    [clojure.tools.logging :refer (info)]
+   [clojure.java.io :as io]
    [compojure.route :as route]
    [compojure.core :as compojure]
    [ring.middleware.session :refer [wrap-session]]
@@ -11,8 +12,7 @@
    [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
    [pinkgorilla.handle :as handle]
    [pinkgorilla.storage.storage-handler :refer [save-notebook load-notebook]]
-   [pinkgorilla.storage.explore-handler :refer [gorilla-files]]
-   ))
+   [pinkgorilla.storage.explore-handler :refer [gorilla-files]]))
 
 ;; TODO Somebody clean up the routes!
 (defn create-api-handlers
@@ -28,6 +28,18 @@
     [(GET (str prefix "repl") [] (ws-relay/jetty-repl-ring-handler receive-fn))])
 
 
+(defn document-utf8
+  [filename req]
+  {:status  200
+   ;; utf-8 needed HERE, content sets ISO-8859-1 default which
+   ;; supercedes meta header in document
+   ;; Session key is required to force setting the cookie
+   :session (:session req)
+   :headers {"Content-Type" "text/html; charset=utf-8"}
+   :body    (slurp (io/resource
+                    (str "gorilla-repl-client/" filename)))})
+
+
 (defn create-resource-handlers
   [prefix]
   [(route/resources prefix)                                 ;; Needed during development
@@ -37,10 +49,10 @@
    (GET (str prefix ":document.html") [document]
      ;; Beware! Wrap session appears to be in place already!
      #_(wrap-session
-         (partial handle/document-utf8 (str document ".html"))
-       {:cookie-name  "gorilla-session"
-        :cookie-attrs {:max-age 3600}})
-         (partial handle/document-utf8 (str document ".html")))
+        (partial document-utf8 (str document ".html"))
+        {:cookie-name  "gorilla-session"
+         :cookie-attrs {:max-age 3600}})
+     (partial document-utf8 (str document ".html")))
    (route/resources prefix {:root "gorilla-repl-client"})
    (route/files (str prefix "project-files") {:root "."})
    (route/not-found "Bummer, not found")])
@@ -52,9 +64,9 @@
 (def default-resource-handlers (create-resource-handlers "/"))
 ;; Only wrap session once - Figwheel does that already, so this handler should not be used with Figwheel
 (def default-handler (wrap-session
-                       (apply compojure/routes (concat default-api-handlers
+                      (apply compojure/routes (concat default-api-handlers
                                                        ;; default-repl-handlers
-                                                       default-resource-handlers))))
+                                                      default-resource-handlers))))
 (def remote-repl-handler (apply compojure/routes (concat default-api-handlers
                                                          ;; remote-repl-handlers
                                                          default-resource-handlers)))

@@ -26,7 +26,9 @@
 (reg-event-db
  :initialize-new-worksheet
  (fn [db _]
-   (assoc db :worksheet (create-new-worksheet))))
+   (assoc db
+          :worksheet (create-new-worksheet)
+          :storage nil)))
 
 (reg-event-db
  :worksheet:segment-clicked

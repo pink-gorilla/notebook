@@ -3,6 +3,7 @@
    [cljs.core.async.macros :as asyncm :refer (go go-loop)])
   (:require
    [cljs-uuid-utils.core :as uuid]
+   [reagent.core :as reagent]
     ;; [cljs.core.match :refer-macros [match]]
    [cljs.core.async :as async :refer (<! >! put! chan)]
    [re-frame.core :refer [dispatch]]
@@ -53,21 +54,6 @@
 (defn send-cider-message!
   [message storeval]
   (send-message! :ciders message storeval))
-
-
-(defn ^export clj-eval
-  "Eval CLJ snippet with callback"
-  [snippet callback]
-  (send-cider-message! {:op "eval" :code snippet}
-                       (fn [message]
-                         (let [ns    (get message "ns")
-                               _ (println "ns: " ns) ; this does not work
-                               _ (.log js/console (str "ns2: " ns)) ; this works
-                               value (get message "value")
-                               data  (-> (.parse js/JSON (.parse js/JSON value))
-                                         js->clj
-                                         w/keywordize-keys)]
-                           (when ns (callback (:value data)))))))
 
 
 (defn get-completions
@@ -144,7 +130,6 @@
                                                         (merge ex err)))
                                                     {:exception msg}))))))
 
-
         root-ex
         (info "Got root-ex" root-ex "for" segment-id)
         (>= (.indexOf status "done") 0)
@@ -198,3 +183,55 @@
         (swap! ws-repl assoc :channel new-msg-ch)
         (receive-msgs! ws-channel)
         (>! new-msg-ch #js {:op "clone"})))))
+
+
+;; CLJ eval
+
+;; 
+;; pinkgorilla.kernel.nrepl.clj_eval("(+ 7 9 )", (function (r) {console.log ("result!!: " +r);}))
+
+(defn ^export clj-eval
+  ;"Eval CLJ snippet with callback"
+  [snippet callback]
+  (println "clj-eval: " snippet)
+  (.log js/console (str "clj-eval: " snippet))
+  (send-cider-message! {:op "eval" :code snippet}
+                       (fn [message]
+                         (let [ns    (get message "ns")
+                               ;_ (println "ns: " ns) ; this does not work
+                               _ (.log js/console (str "ns: " ns)) ; this works
+                               value (get message "value")
+                               data  (-> (.parse js/JSON (.parse js/JSON value))
+                                         js->clj
+                                         w/keywordize-keys)
+                               ]
+                           (when ns (let [v2 (cljs.reader/read-string (:value data)) ]
+                                      (do
+                                        (.log js/console "clj-eval response: " data " type: " (type value))
+                                        (.log js/console "clj-eval result: " v2 " type: " (type v2))
+                                        (callback v2))))))))
+
+
+(defn ^export clj-eval-sync [result-atom snippet]
+  (let [result-chan (chan)]
+    (go 
+      (clj-eval snippet (fn [result] 
+                          (.log js/console (str "async evalued result: " result))
+                          (put! result-chan result))))
+     (go (reset! result-atom (<! result-chan) )
+      )
+    result-atom))
+
+
+
+(defn ^export clj [result-atom function-as-string & params]
+  (let [_ (.log js/console "params: " params)
+        expr (concat [ "(" function-as-string] params [")"]) ; params)
+        str_eval (clojure.string/join " " expr)
+        _ (.log js/console (str "Calling CLJ: " str_eval))
+        ]
+    ;expr
+    ;str_eval
+    (clj-eval-sync result-atom str_eval)
+    ;function-as-string^export
+    ))
