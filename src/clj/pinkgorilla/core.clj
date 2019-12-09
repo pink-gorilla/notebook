@@ -15,6 +15,14 @@
   (:gen-class))
 
 
+
+(def gorilla-system (atom nil))
+
+;; (keys @gorilla-system)
+;; (get-in-system [:config :config])
+(defn get-in-system [path]
+  (get-in @gorilla-system path))
+
 ;; TODO WIP, we can to better
 ;; lein plugin entry point
 (defn run-gorilla-server
@@ -60,4 +68,5 @@
 (defn -main
   [& args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args)]
-    (run-gorilla-server options)))
+    (reset! gorilla-system
+            (run-gorilla-server options))))
