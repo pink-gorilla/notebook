@@ -66,6 +66,8 @@
                  ;pinkgorilla sub projects
                  [org.pinkgorilla/gorilla-renderable "2.1.3"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
                  [org.pinkgorilla/encoding "0.0.18"]        ; notebook encoding
+                 [org.pinkgorilla/explore "0.1.2"] ; notebook exploration
+
                  [irresponsible/tentacles "0.6.6"]          ; github api
                  ; notebook exploration:
                  [clj-time "0.15.2"]
@@ -224,7 +226,7 @@
                                       [re-frame "0.10.9"]
                                       [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests
                                       [day8.re-frame/undo "0.3.3"]
-                                      ;[day8.re-frame/tracing "0.5.1"] ; da master does not want new dependencies
+                                      [day8.re-frame/tracing "0.5.3"]
                                       [re-catch "0.1.4"]    ; exception handling for reagent components
                                       ;awb99: kee-frame seems to bring old dependencies?
                                       ;[kee-frame "0.3.3"] ; reframe with batteries - scroll fix, chains

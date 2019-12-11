@@ -2,8 +2,8 @@
   (:require-macros
    [cljs.core.async.macros :refer [go go-loop]])
   (:require
+   [taoensso.timbre :refer-macros (info)]   
    [re-frame.core :refer [dispatch]]
-   [taoensso.timbre :refer-macros (info)]
    [pinkgorilla.kernel.cljs-tools :refer [r!]]
    [pinkgorilla.ui.gorilla-renderable :refer [render]]
    [pinkgorilla.ui.rendererCLJS]))

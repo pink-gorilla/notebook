@@ -166,7 +166,7 @@
       (>! server-ch msg)
       (recur))))
 
-(defn start-ws-repl!
+(defn init!
   [path app-url]
   (info "clj kernel starting at" path)
   (go

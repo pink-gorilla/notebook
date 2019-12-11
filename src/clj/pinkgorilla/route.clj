@@ -12,15 +12,17 @@
    [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
    [pinkgorilla.handle :as handle]
    [pinkgorilla.storage.storage-handler :refer [save-notebook load-notebook]]
-   [pinkgorilla.storage.explore-handler :refer [gorilla-files]]))
+   [pinkgorilla.storage.explore-handler :refer [gorilla-files req-explore-directories]]))
 
 ;; TODO Somebody clean up the routes!
 (defn create-api-handlers
   [prefix]
-  (info "creating api handlers wih prefix: " prefix)
+  (info "creating api handlers with prefix: " prefix)
   [(GET (str prefix "load") [] ((comp handle/wrap-cors-handler handle/wrap-api-handler) load-notebook))
    (POST (str prefix "save") [] (handle/wrap-api-handler save-notebook))
    (GET (str prefix "gorilla-files") [] (handle/wrap-api-handler gorilla-files))
+   (GET (str prefix "explore") [] (handle/wrap-api-handler req-explore-directories))
+
    (GET (str prefix "config") [] (handle/wrap-api-handler handle/config))])
 
 #_(defn create-repl-handlers
@@ -62,6 +64,8 @@
 #_(def default-repl-handlers (create-repl-handlers "/" (partial ws-relay/on-receive-mem nrepl-handler)))
 #_(def remote-repl-handlers (create-repl-handlers "/" ws-relay/on-receive-net))
 (def default-resource-handlers (create-resource-handlers "/"))
+
+
 ;; Only wrap session once - Figwheel does that already, so this handler should not be used with Figwheel
 (def default-handler (wrap-session
                       (apply compojure/routes (concat default-api-handlers

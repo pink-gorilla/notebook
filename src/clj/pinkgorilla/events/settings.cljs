@@ -3,7 +3,7 @@
   (:require
    [taoensso.timbre :refer-macros (info)]
    [cljs.reader :as reader] ; local storage parsing
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
+   [re-frame.core :as re-frame :refer [reg-event-db dispatch]]
    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
    ))
 
@@ -46,7 +46,8 @@
 (reg-event-db
  :settings-localstorage-load
  (fn [db [_]]
-   (let [settings (ls-get :notebook-settings)]
+   (let [_ (info "Loading Settings from Localstorage..")
+         settings (ls-get :notebook-settings)]
      (if (nil? settings)
        (do (info "localstorage does not contain settings.")
            db)
