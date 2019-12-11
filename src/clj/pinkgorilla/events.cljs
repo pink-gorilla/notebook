@@ -3,35 +3,34 @@
    [day8.re-frame.http-fx]
    [day8.re-frame.undo :as undo :refer [undoable]]
 
-   ;; [cljsjs.mousetrap]
-   ;; [cljsjs.mousetrap-global-bind]
    ["mousetrap"]
    ["mousetrap-global-bind"]
 
    ;; event requires produce side effects (they register the event handlers)
-   [pinkgorilla.events.worksheet]
-   [pinkgorilla.events.palette]
-   [pinkgorilla.events.kernel]
+   [pinkgorilla.events.common :refer [reg-set-attr]]
+
+   [pinkgorilla.events.config]
    [pinkgorilla.events.message]
    [pinkgorilla.events.notifications]
-   [pinkgorilla.events.doc]
+   [pinkgorilla.events.palette]
+   [pinkgorilla.events.views] ; main component in the browser / navbar
+   
    [pinkgorilla.events.settings]
-   [pinkgorilla.events.config]
-   [pinkgorilla.events.explore]
-   [pinkgorilla.events.multikernel]
    [pinkgorilla.events.notebook]
-
    [pinkgorilla.events.storage]
    [pinkgorilla.events.storage-save-dialog]
    [pinkgorilla.events.storage-file]
+   [pinkgorilla.events.explore]
 
+   [pinkgorilla.events.kernel]
+   [pinkgorilla.events.kernel-toggle]
+   [pinkgorilla.events.kernel-docstring]
+   
+   ; pinkgorilla ui
+   
    [pinkgorilla.explore.subs]
    [pinkgorilla.explore.handlers]
    ;[pinkgorilla.explore.list]
-   
-   [pinkgorilla.events.common :refer [reg-set-attr]]
-   [pinkgorilla.events.views]
-   
    ))
 
 

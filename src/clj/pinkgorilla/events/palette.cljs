@@ -1,7 +1,7 @@
 (ns pinkgorilla.events.palette
   (:require
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]))
+   [re-frame.core :as re-frame :refer [reg-event-db dispatch ]]
+   [pinkgorilla.events.helper :refer [text-matches-re standard-interceptors]]))
 
 
 (defn- reset-palette
@@ -48,7 +48,7 @@
                                                        (+ hl 1)
                                                        hl)})) ;; down
        27 (reset-palette db)                               ;; esc
-       13 (let [item (if (not-empty items) (nth items hl))
+       13 (let [item (when (not-empty items) (nth items hl))
                 handler (:handler item)]
             (if handler
                 (do

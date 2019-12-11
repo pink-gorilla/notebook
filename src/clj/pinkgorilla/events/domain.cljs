@@ -1,6 +1,7 @@
 (ns pinkgorilla.events.domain
-  (:require [re-frame.core :refer [reg-cofx reg-fx]]
-            [cemerick.url :as url]))
+  (:require 
+   [re-frame.core :refer [reg-cofx]]
+   #_[cemerick.url :as url]))
 
 
 ;; from 

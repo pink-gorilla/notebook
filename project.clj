@@ -139,6 +139,7 @@
                  [clj-time "0.15.2"]
                  [com.andrewmcveigh/cljs-time "0.5.2"]
                  ;[cljsjs/marked "0.3.5-0"] ; awb99: already required above
+                 [org.pinkgorilla/explore "0.1.2"] ; notebook exploration
                  
                  ; ui plugins bundled with notebook
                  ;[awb99.fortune "0.0.1"]

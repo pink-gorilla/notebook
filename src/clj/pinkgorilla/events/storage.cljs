@@ -18,19 +18,19 @@
 
 
 #_(reg-event-fx
- :view-file
- (fn [{:keys [db]} [_ params]]
-   (let [storage-type (keyword (:source params))
-         storage (query-params-to-storage storage-type params)
-         url (load-url storage (:base-path db))
-         _ (info "loading from storage:" storage-type " url: " url)]
-     {:db         db
-      :http-xhrio {:method          :get
-                   :uri             url
-                   :timeout         5000
-                   :response-format (ajax/json-response-format)
-                   :on-success      [:process-load-file-response storage]
-                   :on-failure      [:process-error-response]}})))
+   :view-file
+   (fn [{:keys [db]} [_ params]]
+     (let [storage-type (keyword (:source params))
+           storage (query-params-to-storage storage-type params)
+           url (load-url storage (:base-path db))
+           _ (info "loading from storage:" storage-type " url: " url)]
+       {:db         db
+        :http-xhrio {:method          :get
+                     :uri             url
+                     :timeout         5000
+                     :response-format (ajax/json-response-format)
+                     :on-success      [:process-load-file-response storage]
+                     :on-failure      [:process-error-response]}})))
 
 
 (reg-event-fx
@@ -61,8 +61,7 @@
  [standard-interceptors]
  (fn
    [db [_ storage response-body]]
-   (let [
-         _ (info "Load Response:\n" response-body)
+   (let [_ (info "Load Response:\n" response-body)
          content (:content response-body)
          ;content (decode-content storage content)
          ; _ (info "Content Only:\n" content)
@@ -104,7 +103,7 @@
                    :uri             url
                    :params          params
                    :timeout         5000                     ;; optional see API docs
-                   
+
                    ;; awb99: transit request does not work - possibly missing dependency?
                    ;; awb99: url-request format does not work because server has problem decoding token maps
                    :format       (ajax/json-request-format {:keywords? true}) ; (ajax/transit-request-format) ;  (ajax/url-request-format) ; request encoding POST body url-encoded
@@ -128,7 +127,7 @@
  (fn [db [_ storage result]]
    (info "storage is:" storage ", result is: " result)
    (do
-      (add-notification (notification :info "Notebook Saved."))
+     (add-notification (notification :info "Notebook Saved."))
      (hack-gist storage result db))
    ;(routes/nav! (str "/edit?source=local&filename=" filename))
    ))

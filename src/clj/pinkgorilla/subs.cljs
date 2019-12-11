@@ -1,8 +1,9 @@
 (ns pinkgorilla.subs
-  (:require-macros 
-     [reagent.ratom :refer [reaction]])
-  (:require 
-     [re-frame.core :refer [reg-sub-raw reg-sub]]))
+  (:require-macros
+   [reagent.ratom :refer [reaction]])
+  (:require
+   [taoensso.timbre :refer-macros (info)]
+   [re-frame.core :refer [reg-sub-raw reg-sub]]))
 
 (reg-sub
  :main
@@ -10,32 +11,30 @@
    (:main db)))
 
 
-;; -- Subscription handlers
+(reg-sub
+ :docs
+ (fn [db _]
+   (:docs db)))
 
 (reg-sub
-    :docs
-    (fn [db _]
-      (:docs db)))
+ :config
+ (fn [db _]
+   (:config db)))
 
 (reg-sub
-  :config
-  (fn [db _]
-    (:config db)))
+ :palette
+ (fn [db _]
+   (:palette db)))
 
 (reg-sub
-  :palette
-  (fn [db _]
-    (:palette db)))
+ :message
+ (fn [db _]
+   (:message db)))
 
 (reg-sub
-  :message
-  (fn [db _]
-    (:message db)))
-
-(reg-sub
-  :worksheet
-  (fn [db _]
-    (get-in db [:worksheet])))
+ :worksheet
+ (fn [db _]
+   (get-in db [:worksheet])))
 
 (reg-sub
  :meta
@@ -44,9 +43,9 @@
 
 
 (reg-sub
-  :save-dialog
-  (fn [db _]
-    (get-in db [:save])))
+ :save-dialog
+ (fn [db _]
+   (get-in db [:save])))
 
 
 ; The dialog subscription can be used by all dialogs to manage dialog-visibility.
@@ -61,22 +60,22 @@
    (get-in db [:settings])))
 
 (reg-sub
-  :segment-query
-  (fn [db [_ seg-id]]
-    (get-in db [:worksheet :segments seg-id])))
+ :segment-query
+ (fn [db [_ seg-id]]
+   (get-in db [:worksheet :segments seg-id])))
 
 (reg-sub
-  :is-active-query
-  (fn [db [_ seg-id]]
-    (= seg-id (get-in db [:worksheet :active-segment]))))
+ :is-active-query
+ (fn [db [_ seg-id]]
+   (= seg-id (get-in db [:worksheet :active-segment]))))
 
 (reg-sub
-  :is-queued-query
-  (fn [db [_ seg-id]]
-    (contains? (get-in db [:worksheet :queued-code-segments]) seg-id)))
+ :is-queued-query
+ (fn [db [_ seg-id]]
+   (contains? (get-in db [:worksheet :queued-code-segments]) seg-id)))
 
 (reg-sub
- ::notifications
+ :notifications
  (fn [db _]
    (:notifications db)))
 
@@ -95,6 +94,9 @@
    (#{:playlist :home} view)))
 
 (reg-sub
- ::navbar-menu-active?
+ :navbar-menu-is-active?
  (fn [db _]
    (:navbar-menu-active? db)))
+
+
+(info "reframe subscriptions loaded.")

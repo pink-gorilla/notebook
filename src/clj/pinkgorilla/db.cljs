@@ -1,12 +1,11 @@
 (ns pinkgorilla.db
   (:require
-   [clojure.string :as str]
    [clojure.spec.alpha :as s]
-   [cognitect.transit :as t]
-   [re-frame.core :refer [dispatch-sync]]
+  ; [cognitect.transit :as t]
+  ; [re-frame.core :refer [dispatch-sync]]
    [cljs.reader]
    [pinkgorilla.keybindings :refer [all-commands visible-commands]]
-   [pinkgorilla.explore.data]))
+  ))
 
 
 (def debug?
@@ -33,7 +32,7 @@
 ;; (s/def ::segment-order vector?)
 #_(s/def ::id int?)
 #_(s/def ::title string?)
-#_(s/def ::done boolean?)
+(s/def ::navbar-menu-active? boolean?)
 #_(s/def ::todo (s/keys :req-un [::id ::title ::done]))
 #_(s/def ::todos (s/and                                     ;; should use the :kind kw to s/map-of (not supported yet)
                   (s/map-of ::id ::todo)                   ;; in this map, each todo is keyed by its :id
@@ -44,23 +43,19 @@
       :active                                               ;; only todos whose :done is false
       :done                                                 ;; only todos whose :done is true
       })
+
+
 (s/def ::db (s/keys :req-un
                     ;; [::docs ::config ::segments ::segment-order]
                     [::config ::worksheet ::docs]
                     ;; [::todos ::showing]
                     ))
 
-
-
-
-
 (defn ck
   []
   (if (re-matches #".*Win|Linux.*" (.-platform js/navigator))
     "alt"
     "ctrl"))
-
-
 
 ; explore:
 (def form-default {:data    {}
@@ -115,10 +110,9 @@
    :forms        {:projects {:create form-default
                              :update form-default
                              :search form-default}}
-   :data         {:projects pinkgorilla.explore.data/projects}
+   :data         {:projects []}
    :initialized true})
 
 
 
-(defn swap [v i1 i2]
-  (assoc v i2 (v i1) i1 (v i2)))
+
