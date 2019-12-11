@@ -1,24 +1,20 @@
-;;;; This file is part of gorilla-repl. Copyright (C) 2014-, Jony Hudson.
-;;;;
-;;;; gorilla-repl is licenced to you under the MIT licence. See the file LICENCE.txt for full details.
-
-;;; A websocket handler that passes messages back and forth to an already running nREPL server.
-
 (ns pinkgorilla.jetty9-ws-relay
-  (:require 
-    [nrepl.server :as nrepl-server]
-    [nrepl.core :as nrepl]
-    [nrepl.transport :as transport]
-    [pinkgorilla.nrepl :as gnrepl]
-    [pinkgorilla.middleware.render-values]              ;; it's essential this import comes after the previous one!
-    ;; [ring.middleware.session :as session]
-    ;; [ring.middleware.session.memory :as mem]
-    [clojure.data.json :as json]
-    [clojure.walk :as w]
-    [clojure.tools.logging :refer (debug info warn error)]
-    [ring.adapter.jetty9 :as jetty]
-    ;; [org.httpkit.server :as server]
-    #_[cheshire.core :as json]))
+  "A websocket handler that passes messages back and forth to an already running nREPL server."
+  (:require
+   [clojure.tools.logging :refer (debug info warn error)]
+   [clojure.data.json :as json]
+   #_[cheshire.core :as json]
+   [clojure.walk :as w]
+   ;; [org.httpkit.server :as server]
+   [ring.adapter.jetty9 :as jetty]
+   ;; [ring.middleware.session :as session]
+   ;; [ring.middleware.session.memory :as mem]
+   [nrepl.server :as nrepl-server]
+   [nrepl.core :as nrepl]
+   [nrepl.transport :as transport]
+   [pinkgorilla.nrepl :as gnrepl]
+   [pinkgorilla.middleware.render-values]  ;; it's essential this import comes after the previous one!
+   ))
 
 
 ;; Not as nice as doall, but doall does not work with piped transports / read-timeout (in mem)
@@ -39,8 +35,8 @@
           reply-fn (partial process-replies
                             (fn [msg]
                               (server/send!
-                                channel
-                                {:body (json/write-str msg)}))
+                               channel
+                               {:body (json/write-str msg)}))
                             (fn [v] (some #(= "done" %) v)))]
       (reply-fn replies-seq)))
 
@@ -59,16 +55,16 @@
                               (jetty/send! ws payload)))
                           #_(fn [msg]
                               (server/send!
-                                channel
-                                {:body    (json/write-str msg)
-                                 :session {::tranport transport}}))
+                               channel
+                               {:body    (json/write-str msg)
+                                :session {::tranport transport}}))
                           (fn [s] (contains? s :done)))]
     (debug "Received " data)
     (reply-fn
-      (do
-        (when (:op msg)
-          (future (nrepl-server/handle* msg @nrepl-handler write)))
-        (client)))))
+     (do
+       (when (:op msg)
+         (future (nrepl-server/handle* msg @nrepl-handler write)))
+       (client)))))
 
 #_(defn- memory-session
     "Wraps the supplied handler in session middleware that uses a

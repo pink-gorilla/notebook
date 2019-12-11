@@ -1,16 +1,17 @@
 (ns pinkgorilla.jee-interop
   (:use compojure.core)
-  (:require                                                 ;; [cheshire.core :as json]
-    [clojure.data.json :as json]
-    [clojure.walk :as w]
-    [nrepl.server :as nrepl-server]
-    [nrepl.core :as nrepl]
-    [nrepl [transport :as transport]]
-    [pinkgorilla.middleware.cider :as gch]
-    [clojure.tools.logging :as log :refer (info)]
-    [clojure.pprint :as pp])
-  #_(:refer [clojure.data.json :rename {write-str generate-string
-                                        read-str  parse-string}]))
+  (:require
+   [clojure.tools.logging :as log :refer (info)]
+   ;; [cheshire.core :as json]
+   #_(:refer [clojure.data.json :rename {write-str generate-string
+                                         read-str  parse-string}])
+   [clojure.data.json :as json]
+   [clojure.walk :as w]
+   [clojure.pprint :as pp]
+   [nrepl.server :as nrepl-server]
+   [nrepl.core :as nrepl]
+   [nrepl [transport :as transport]]
+   [pinkgorilla.middleware.cider :as gch]))
 
 (def handler (atom gch/cider-handler))
 
@@ -44,10 +45,10 @@
 
     (log/debug "Processing message " (with-out-str (pp/pprint msg) " response timeout = " read-timeout))
     (reply-fn
-      (do
-        (when (:op msg)
-          (future (nrepl-server/handle* msg nrepl-handler write)))
-        (client)))))
+     (do
+       (when (:op msg)
+         (future (nrepl-server/handle* msg nrepl-handler write)))
+       (client)))))
 
 ;; Called from java
 (defn process-json-message

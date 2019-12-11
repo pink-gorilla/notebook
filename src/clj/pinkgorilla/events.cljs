@@ -29,8 +29,13 @@
    [pinkgorilla.explore.handlers]
    ;[pinkgorilla.explore.list]
    
-
+   [pinkgorilla.events.common :refer [reg-set-attr]]
+   [pinkgorilla.events.views]
+   
    ))
+
+
+(reg-set-attr ::set-navbar-menu-active? :navbar-menu-active?)
 
 
 ;; TODO Should move evaluation state out of worksheet

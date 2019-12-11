@@ -1,13 +1,10 @@
 # Pink Gorilla Notebook
 
-
-Pink Gorilla Notebook is a decendant of [Gorilla REPL](http://gorilla-repl.org). It is a rich browser based notebook
- style REPL for Clojure and ClojureScript which aims at extensibility (development- and runtime) and user experience
-  while being very lightweight. Extensibility primarily revolves around UI widgets and data. As of October 2019, it already
-   enhances its parent project in various ways.
+[Pink Gorilla Notebook] (http://pink-gorilla.org) is a rich browser based notebook REPL for Clojure and ClojureScript,
+which aims at extensibility (development- and runtime) and user experience while being very lightweight. 
+Extensibility primarily revolves around UI widgets and data. 
 
 Use cases we are trying to cover are
-
 - Persistent experiments and demos (Clojure/ClojureScript libraries!)
 - Courses and education on all matters related to clojure
 - Data science
@@ -15,6 +12,10 @@ Use cases we are trying to cover are
 
 We'll try to borrow from other ecosystems where bridging from Clojure/ClojureScript appears reasonable. Wrapping and
 leveraging R is one example that comes to mind.
+
+Try it out at [Online] (http://pink-gorilla.org)
+
+We are a  is a decendant of [Gorilla REPL](http://gorilla-repl.org).
 
 ## Usage / Development
 
@@ -83,6 +84,13 @@ lein do clean, install
 add a dependency in your project and tweak dependencies until things work. This is
  what I do with [lambdalf](https://github.com/deas/lambdalf). Again, if things go well,
  gorilla REPL will appear at `.../your-app-context/gorilla-repl/worksheet.html`.
+
+## Tests
+
+```
+lein ci && karma start --single-run
+```
+
 
 ## Contributing
 

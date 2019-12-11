@@ -1,11 +1,12 @@
 (ns pinkgorilla.nrepl
-  (:require 
-     [nrepl.server :as srv]
-     [com.stuartsierra.component :as component]
-     [clojure.tools.logging :as log]
-     [pinkgorilla.middleware.cider :as ci]
-     [nrepl.core :as nrepl]
-     [cider.nrepl :as cider]))
+  (:require
+   [clojure.tools.logging :as log]
+   [com.stuartsierra.component :as component]
+
+   [nrepl.server :as srv]
+   [nrepl.core :as nrepl]
+   [cider.nrepl :as cider]
+   [pinkgorilla.middleware.cider :as ci]))
 
 
 ;; We will open a single connection to the nREPL server for the life of the application. It will be stored here.
@@ -20,7 +21,7 @@
   (reset! conn (nrepl/connect :host host :port port)))
 
 (defrecord NReplServer
-  [handler server]
+           [handler server]
   component/Lifecycle
   (start [self]
     (let [nrepl-port (get-in self [:config :config :nrepl-port])
@@ -34,8 +35,7 @@
           (do
             (log/info "Starting nREPL server on port " nrepl-port)
             (spit (doto nrepl-port-file .deleteOnExit) nrepl-port)
-            (assoc self :server (srv/start-server :port nrepl-port :handler ci/cider-handler #_(gmw/nrepl-handler false cider/cider-middleware)
-                                                  ))))
+            (assoc self :server (srv/start-server :port nrepl-port :handler ci/cider-handler #_(gmw/nrepl-handler false cider/cider-middleware)))))
         self)))
   (stop [self]
     (when server
@@ -49,12 +49,12 @@
 #_(def nrepl (atom nil))
 
 #_(defn start-and-connect
-  ([nrepl-requested-port repl-port-file nrepl-connect-fn]
-   (let [nr (srv/start-server :port nrepl-requested-port
-                              :handler (nrepl-handler false cider/cider-middleware))
-         nrepl-port (:port nr)]
-     (println "Started nREPL server on port" nrepl-port)
-     (reset! nrepl nr)
-     (nrepl-connect-fn "localhost" nrepl-port)
-     (spit (doto repl-port-file .deleteOnExit) nrepl-port))))
+    ([nrepl-requested-port repl-port-file nrepl-connect-fn]
+     (let [nr (srv/start-server :port nrepl-requested-port
+                                :handler (nrepl-handler false cider/cider-middleware))
+           nrepl-port (:port nr)]
+       (println "Started nREPL server on port" nrepl-port)
+       (reset! nrepl nr)
+       (nrepl-connect-fn "localhost" nrepl-port)
+       (spit (doto repl-port-file .deleteOnExit) nrepl-port))))
 

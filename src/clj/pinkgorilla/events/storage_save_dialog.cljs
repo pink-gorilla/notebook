@@ -39,7 +39,9 @@
  [standard-interceptors]
  (fn [db [_ params]]
    (let [storage (:storage db)]
-     (routes/nav! (gorilla-path storage))
+     (if (nil? storage)
+       (routes/nav! "/edit")
+       (routes/nav! (gorilla-path storage)))
      db)))
 
 
@@ -47,9 +49,8 @@
 (reg-event-fx
  :nav
  [standard-interceptors]
-  (fn [{:keys [db]} [_ url]]
-   (routes/nav! url)
-   ))
+ (fn [{:keys [db]} [_ url]]
+   (routes/nav! url)))
 
 
 

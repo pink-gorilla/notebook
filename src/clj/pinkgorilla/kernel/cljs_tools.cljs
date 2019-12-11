@@ -4,7 +4,7 @@
 
 
 (defn r! [vec_or_reagent_f]
-  "renders a (hydrated) reagent component"
+ ; "renders a (hydrated) reagent component"
   (reify Renderable
     (render [_] 
       {:type :reagent-cljs
@@ -12,5 +12,7 @@
        :reagent vec_or_reagent_f
              ;:value result
        })))
+
+
 
 

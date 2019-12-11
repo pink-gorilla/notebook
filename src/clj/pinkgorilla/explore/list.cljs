@@ -78,46 +78,38 @@
                (if-let [t (get-in l [:meta :tags])]
                  [:div.tags
                   (for [tag (u/split-tags t)]
-                    ^{:key (gensym)} [filter-tag selected-tags tag])])
-               
-               ]]
-             
-             ])]
+                    ^{:key (gensym)} [filter-tag selected-tags tag])])]]])]
           ;]
 
          [:div.secondary.listings
 
           [:div.section.search
            [search-input :search :query
-            :no-label true
+            ;:no-label true
             :placeholder "Search: `music`, `database` ..."]]
 
-          ;[:div.section.beginner-toggle
-           ;[search-input :checkbox :project/beginner-friendly :label "Beginner friendly?"]]
-          
           [:div.field.stargazers-count
            [:label.label {:for "stargazers-count"}]
            [:span
-            [:i.fa.fa-star] 
+            [:i.fa.fa-star]
             "min github stars"]
            [:div.projects.filter.data.stargazers-count
-            [:input.input.stargazers-count {:type "number" 
-            :label "span,i.fa.fa-star, min github stars" :id "stargazers-count"
-          :value "5"} ]]]
-            
-           [:div.field.days-since-push
-            [:label.label {:for "days-since-push"}
-             [:span 
-              [:i.fa.fa-clock-o]
-              "most days since last edit" ]]
-            [:div.projects.filter.data.days-since-push
-             [:input.input.days-since-push {:type "number" 
-                      :label "span,i.fa.fa-clock-o, most days since last push" 
-                      :id "days-since-push" 
+            [:input.input.stargazers-count {:type "number"
+                                            :label "span,i.fa.fa-star, min github stars" 
+                                            :id "stargazers-count"
+                                            :value "5"}]]]
+
+          [:div.field.days-since-push
+           [:label.label {:for "days-since-push"}
+            [:span
+             [:i.fa.fa-clock-o]
+             "most days since last edit"]]
+           [:div.projects.filter.data.days-since-push
+            [:input.input.days-since-push {:type "number"
+                                           :label "span,i.fa.fa-clock-o, most days since last push"
+                                           :id "days-since-push"
                                            :value "368"}]]]
-            
-                   
-          
+
           [:div.section.tags
            [:div
             (for [tag tags]
