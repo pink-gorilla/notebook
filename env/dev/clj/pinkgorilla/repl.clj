@@ -2,7 +2,9 @@
   (:require
     ;; '[com.stuartsierra.component :as component]
     ;; '[me.lomin.component-restart :as restart]
-    [nrepl.server :refer [start-server stop-server]]
+    [nrepl.server :as nrepl :refer [start-server stop-server]]
+    [shadow.cljs.devtools.server :as shadow-server]
+    [cider.nrepl :as cider-nrepl]
     ;; [cljs.build.api]
     ;; [cljs.repl]
     ;; [cljs.repl.node]
@@ -10,7 +12,8 @@
     [pinkgorilla.core :as core]
     ;; [figwheel.main.api :refer [start start-join cljs-repl]]
     [shadow.cljs.devtools.api :as shadow]
-    [shadow.cljs.devtools.server :as shadow-server]
+    [shadow.cljs.devtools.server.nrepl :as shadow-nrepl]
+
     [clojure.pprint :refer [pprint]]
     ;; [pinkgorilla.figwheel :as gfw :refer [main-config]]
     ;; [pinkgorilla.system :as gsys]
@@ -92,8 +95,8 @@
 
 
 
+(def cljs-build :app-with-cljs-kernel-dev)
 (def gorilla-default-cli-config {:port 9000})
-
 (def gorilla-system (atom nil))
 
 (defn start-system
@@ -106,9 +109,15 @@
 (defn -main
   {:shadow/requires-server true}
   [& args]
-  (defonce nrepl-server (start-server :port 4001))
+  (defonce nrepl-server (start-server :port 4001
+                                      :handler (apply nrepl/default-handler
+                                                      (map resolve (into cider-nrepl/cider-middleware
+                                                                         ['shadow.cljs.devtools.server.nrepl/middleware])))))
   (start-system gorilla-default-cli-config)
   (shadow-server/start!)
-  (shadow/watch :app-with-cljs-kernel-dev {:verbose true})
+  (shadow/watch cljs-build {:verbose true})
   ;; (start "dev")
   )
+
+(comment (+ 1 1)
+         (shadow/repl cljs-build))

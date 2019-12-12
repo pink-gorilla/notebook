@@ -1,4 +1,5 @@
-{:lein   true
+{;; :lein   true
+ :lein {:profile "+cljs"}
  ;; :dependencies []
 
  ;; :source-paths
@@ -84,8 +85,11 @@
                                                         :preloads
                                                                    [pinkgorilla.dev-preload
                                                                     devtools.preload
-                                                                    frisk.preload
-                                                                    day8.re-frame-10x.preload]
+                                                                    ;; frisk is the plain reagent version w/o re-frame
+                                                                    ;; frisk.preload
+                                                                    ;; re-frisk.preload
+                                                                    day8.re-frame-10x.preload
+                                                                    ]
 
                                                         ;; :http-handler     shadow.http.push-state/handle
                                                         ;; :push-state/index "devcards.html"
