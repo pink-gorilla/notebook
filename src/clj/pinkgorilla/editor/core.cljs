@@ -1,19 +1,19 @@
 (ns pinkgorilla.editor.core
   "Glues Parinfer's formatter to a CodeMirror editor"
   (:require
-    [clojure.string :as str :refer [join]]
-    [goog.dom :as gdom]
+   [clojure.string :as str :refer [join]]
+   [goog.dom :as gdom]
     ;; [dommy.core :as dom :refer-macros [sel sel1 by-id]]
-    [cljsjs.codemirror]
+   [cljsjs.codemirror]
     ;; ["codemirror"]
-    ["parinfer-codemirror"]
-    ["codemirror/addon/edit/closebrackets"]
-    ["codemirror/addon/edit/matchbrackets"]
-    ["codemirror/addon/runmode/runmode"]
-    ["codemirror/addon/runmode/colorize"]
-    ["codemirror/addon/hint/show-hint"]
-    ["codemirror/mode/clojure/clojure"]
-    ["codemirror/mode/markdown/markdown"]
+   ["parinfer-codemirror"]
+   ["codemirror/addon/edit/closebrackets"]
+   ["codemirror/addon/edit/matchbrackets"]
+   ["codemirror/addon/runmode/runmode"]
+   ["codemirror/addon/runmode/colorize"]
+   ["codemirror/addon/hint/show-hint"]
+   ["codemirror/mode/clojure/clojure"]
+   ["codemirror/mode/markdown/markdown"]
     ;; [cljsjs.codemirror.addon.edit.closebrackets]
     ;; [cljsjs.codemirror.addon.edit.matchbrackets]
     ;; [cljsjs.codemirror.addon.runmode.runmode]
@@ -23,18 +23,14 @@
     ;; [cljsjs.codemirror.mode.clojure-parinfer]
     ;; [cljsjs.codemirror.mode.markdown]
     ;; [cljsjs.codemirror.mode.xml]
-    [re-frame.core :refer [dispatch]]
-    [pinkgorilla.kernel.core :as kernel]
-    [pinkgorilla.editor.editor-support :refer [fix-text!
-                                         IEditor
-                                         frame-updated?
-                                         set-frame-updated!]]
-    [taoensso.timbre :as timbre
-     :refer-macros (log trace debug info warn error fatal report
-                        logf tracef debugf infof warnf errorf fatalf reportf
-                        spy get-env log-env)]))
-
-
+   [re-frame.core :refer [dispatch]]
+   [pinkgorilla.kernel.core :as kernel]
+   [pinkgorilla.editor.editor-support :refer [fix-text!
+                                              IEditor
+                                              frame-updated?
+                                              set-frame-updated!]]
+   [taoensso.timbre :as timbre
+    :refer-macros (info)]))
 
 (defn init-cm-globally!
   "Initialize CodeMirror globally"
@@ -83,7 +79,6 @@
     (fix-text! cm :change change)
     (set-frame-updated! cm true)))
 
-
 (defn parinfer-on-cursor-activity
   "Called after the cursor moves in the editor.
   @param {CodeMirror} cm"
@@ -104,12 +99,12 @@
       (.replaceSelection cm spaces))))
 
 (defn on-mousedown
-  [segment-id cm event]
+  [segment-id _ _] ;;  cm event
   (dispatch [:worksheet:segment-clicked segment-id]))
 
 (defn on-change
   "@param {CodeMirror} cm"
-  [segment-id cm event]
+  [segment-id cm _] ;; event
   (dispatch [:segment-value-changed segment-id (-> (.getDoc cm) .getValue)]))
 
 (defn on-keydown
@@ -120,32 +115,31 @@
       (and (= keycode 38) (false? (.-shiftKey event)))      ;;up
       (let [cursor (.getCursor cm)
             line (.-line cursor)]
-        (if (and (= 0 line) (not (.. cm -state -completionActive)))
+        (when (and (= 0 line) (not (.. cm -state -completionActive)))
           (dispatch [:worksheet:leaveBack])))               ;; :command:worksheet:leaveBack
       (and (= keycode 37) (false? (.-shiftKey event)))      ;; left
       (let [cursor (.getCursor cm)
             line (.-line cursor)
             ch (.-ch cursor)]
-        (if (= 0 line ch)
+        (when (= 0 line ch)
           (dispatch [:worksheet:leaveBack])))               ;; :command:worksheet:leaveBack
       (and (= keycode 40) (false? (.-shiftKey event)))      ;;down
       (let [cursor (.getCursor cm)
             line (.-line cursor)
             linecount (- (.lineCount cm) 1)]
-        (if (and (= line linecount) (not (.. cm -state -completionActive)))
+        (when (and (= line linecount) (not (.. cm -state -completionActive)))
           (dispatch [:worksheet:leaveForward])))            ;; :command:worksheet:leaveForward
       (and (= keycode 39) (false? (.-shiftKey event)))      ;; right
       (let [cursor (.getCursor cm)
             line (.-line cursor)
             linecount (- (.lineCount cm) 1)
             ch (.-ch cursor)]
-        (if (and (= line linecount) (= ch (.-length (.getLine cm line))))
+        (when (and (= line linecount) (= ch (.-length (.getLine cm line))))
           (dispatch [:worksheet:leaveForward])))            ;; :command:worksheet:leaveForward
       (and (= keycode 8) (empty? (.getValue (aget cm "doc") #_(.-doc cm)))) ;; delete on empty editor
       (dispatch [:worksheet:deleteBackspace])
       #_:else
-      #_(dispatch [:active-segment-value-changed (.getValue (.-doc cm))])
-      )))
+      #_(dispatch [:active-segment-value-changed (.getValue (.-doc cm))]))))
 
 (def cm-default-opts-common {:lineNumbers       false
                              :matchBrackets     true
@@ -156,16 +150,18 @@
 #_(aset js/CodeMirror "keyMap" "default" "Shift-Tab" "indentLess")
 
 (def cm-default-opts {:text/x-clojure  {:cm-opts (merge cm-default-opts-common
-                                                         {:mode "clojure"})}
+                                                        {:mode "clojure"})}
                       :text/x-markdown {:cm-opts (merge cm-default-opts-common
-                                                         {:mode "text/x-markdown"})}})
+                                                        {:mode "text/x-markdown"})}})
 
 
 ;; TODO: Should only fire when we are active!
+
+
 (defn el-editor
   [el]
   (let [cm-el (gdom/getElementByClass "CodeMirror" el)
-        cm (if cm-el (.-CodeMirror cm-el))]
+        cm (when cm-el (.-CodeMirror cm-el))]
     cm))
 
 (defn do-completions
@@ -181,29 +177,28 @@
          (fn [s]
            (if-not (str/starts-with? s "/")
              (kernel/get-completion-doc :clj s   ;awb99 :clj is a hack
-                                       ns
-                                       (fn [docs]
-                                         (if-not (str/blank? docs)
-                                           (dispatch [:show-doc docs])
-                                           (dispatch [:hide-doc])))))))
+                                        ns
+                                        (fn [docs]
+                                          (if-not (str/blank? docs)
+                                            (dispatch [:show-doc docs])
+                                            (dispatch [:hide-doc])))))))
     (.on js/CodeMirror
          completions
          "close"
          #(dispatch [:hide-doc]))
     ;; Show the UI
-    (callback completions))
-  )
+    (callback completions)))
 
-(defn completer [ns cm callback options]
+(defn completer
   "@param {CodeMirror} cm"
+  [ns cm callback _]                    ;; options
   (let [cur (.getCursor cm)
         token (.getTokenAt cm cur)
         word (.-string token)
         start (.-start token)
         end (.-end token)
         line (.-line cur)
-        doc (.copy (.getDoc cm) false)
-        ]
+        doc (.copy (.getDoc cm) false)]
     (.replaceRange doc "__prefix__" #js {:line line :ch start} #js {:line line :ch end})
     ;; TODO: this is a workaround for https://github.com/alexander-yakushev/compliment/issues/15
     ;; Should be fixed, no?
@@ -231,6 +226,7 @@
 ;; Setup
 ;;----------------------------------------------------------------------
 
+
 (defn create-regular-editor!
   "Create a non-parinfer editor."
   ([element]
@@ -238,10 +234,9 @@
   ([element opts]
    (when-not (= "none" (.. element -style -display))
      (let [cm (js/CodeMirror.fromTextArea
-                element
-                (clj->js opts))]
+               element
+               (clj->js opts))]
        cm))))
-
 
 (defn ^:export create-editor!
   "Create a CodeMirror editor."
@@ -251,20 +246,19 @@
    (let [ctkw (keyword content-type)
          override-opts (ctkw opts)
          merged-cm-opts (merge (:cm-opts (ctkw cm-default-opts)) (:cm-opts override-opts))
-         other-opts (:opts override-opts)
+         ;; other-opts (:opts override-opts)
          cm (create-regular-editor!
-              element
-              merged-cm-opts
-              )]
+             element
+             merged-cm-opts)]
      (.on cm "keydown" on-keydown)
      (.on cm "mousedown" (partial on-mousedown segment-id))
-     (if (= "clojure-parinfer" (:mode merged-cm-opts))
+     (when (= "clojure-parinfer" (:mode merged-cm-opts))
        (let [frame-updated (atom false)]
          ;; Extend the code mirror object with some utility methods.
          (specify! cm
-           IEditor
-           (frame-updated? [this] @frame-updated)
-           (set-frame-updated! [this value] (reset! frame-updated value)))
+                   IEditor
+                   (frame-updated? [this] @frame-updated)
+                   (set-frame-updated! [this value] (reset! frame-updated value)))
          (.on cm "change" parinfer-on-change)
          (.on cm "beforeChange" parinfer-before-change)
          (.on cm "cursorActivity" parinfer-on-cursor-activity)))

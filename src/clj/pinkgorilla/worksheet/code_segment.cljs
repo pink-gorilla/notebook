@@ -3,21 +3,23 @@
    [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch]]
    [re-catch.core :as rc]
+   [pinkgorilla.worksheet.code-cell-menu :refer [cell-menu]]
    [pinkgorilla.output.core :refer [output-fn]]
    [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment error-text console-text exception]]))
 
-
-(defn output-view [seg-id segment]
+(defn output-view-unsafe [seg-id segment]
   (try
     (if-let [value-output (not-empty (:value-response @segment))]
       (let [output-value (output-fn value-output)
-            component ^{:key :value-response} [:div.output>pre [output-value value-output seg-id]]
-            ]
+            component ^{:key :value-response} [:div.output>pre [output-value value-output seg-id]]]
         ;(println "returning reagent: " component)
-        component
+        component))
 
-        ))
     (catch js/Error e [:p (str "exception rendering cell output: " (. e -message))])))
+
+(defn output-view [seg-id segment]
+  [rc/catch
+   [output-view-unsafe seg-id segment]])
 
 (defn code-segment-unsafe
   [seg-data editor-options]
@@ -38,7 +40,7 @@
        ;; :component-will-mount #()
       :display-name         "code-segment"
       :component-did-update #(focus-active-segment %1 @is-active)
-      :reagent-render       (fn [seg-data]
+      :reagent-render       (fn [_] ;; repeat seg-data to use it
                               (let [main-component
                                     ^{:key :segment-main} [:div.segment-main
                                                            [:textarea {:class     "codeTextArea mousetrap"
@@ -65,10 +67,15 @@
                                                     console-comp
                                                     output-comp
                                                     footer-comp]]
-                                (apply conj [div-kw
-                                             {:class    class
-                                              :on-click #(dispatch [:worksheet:segment-clicked seg-id])}]
-                                       (filter some? other-children))))})))
+
+                                [:<>
+                                 (apply conj [div-kw
+                                              {:class    class
+                                               :on-click #(dispatch [:worksheet:segment-clicked seg-id])}]
+                                        (filter some? other-children))
+                                 ; menu is at bottom even though I want it n top, but codemirror is hard wired
+                                 ; and expects that code is first dom element
+                                 (when @is-active [cell-menu segment])]))})))
 
 (defn code-segment [seg-data editor-options]
   [rc/catch

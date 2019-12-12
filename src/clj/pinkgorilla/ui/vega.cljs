@@ -34,20 +34,17 @@
   });
 ")
 
-
 (defn vega
-[spec]
+  [spec]
   [output-jsscript {:content {:module module :data spec}}])
 
 (defn vegaa [a k]
-   (let [spec (k @a)]
-      (if (nil? spec)
-          [:p "spec missing"]
-          [:div
+  (let [spec (k @a)]
+    (if (nil? spec)
+      [:p "spec missing"]
+      [:div
            ; [:p  (k @a)]
-            [output-jsscript {:content {:module module :data spec}}]]
-
-          )))
+       [output-jsscript {:content {:module module :data spec}}]])))
 
 
 

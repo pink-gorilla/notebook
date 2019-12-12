@@ -1,15 +1,17 @@
 (ns pinkgorilla.nrepl
   (:require
-    [clojure.tools.logging :as log]
-    [com.stuartsierra.component :as component]
+   [clojure.tools.logging :as log]
+   [com.stuartsierra.component :as component]
 
-    [nrepl.server :as srv]
-    [nrepl.core :as nrepl]
-    [pinkgorilla.middleware.cider :as mw-cider]))
+   [nrepl.server :as srv]
+   [nrepl.core :as nrepl]
+   [pinkgorilla.middleware.cider :as mw-cider]))
 
 
 ;; We will open a single connection to the nREPL server for the life of the application. It will be stored here.
 ;; TODO: Ugly loophole
+
+
 (def conn (atom nil))
 
 ;; Doing it this way with an atom feels wrong, but I can't figure out how to thread an argument into Compojure's

@@ -1,6 +1,10 @@
-# Pink Gorilla Notebook
+# Pink Gorilla Notebook [![GitHub Actions status |pink-gorilla/gorilla-notebook](https://github.com/pink-gorilla/gorilla-notebook/workflows/CI/badge.svg)](https://github.com/pink-gorilla/gorilla-notebook/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-notebook.svg)](https://clojars.org/org.pinkgorilla/gorilla-notebook)
+## Docker Image
+<!-- [![dockeri.co](https://dockeri.co/image/pinkgorillawb/gorilla-notebook)](https://hub.docker.com/r/pinkgorillawb/gorilla-notebook) -->
+[![](https://images.microbadger.com/badges/version/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own image badge on microbadger.com")
 
-[Pink Gorilla Notebook](http://pink-gorilla.org) is a rich browser based notebook REPL for Clojure and ClojureScript,
+Pink Gorilla Notebook is a rich browser based notebook REPL for Clojure and ClojureScript,
 which aims at extensibility (development- and runtime) and user experience while being very lightweight.
 Extensibility primarily revolves around UI widgets and data.
 
@@ -13,15 +17,81 @@ Use cases we are trying to cover are
 We'll try to borrow from other ecosystems where bridging from Clojure/ClojureScript appears reasonable. Wrapping and
 leveraging R is one example that comes to mind.
 
-Try it out at [Online](http://pink-gorilla.org)
-
 We are a  is a decendant of [Gorilla REPL](http://gorilla-repl.org).
 
-## Usage / Development
+## Status (January 2020)
+You can probably imagine that ideas come up way faster than we can explore them. Therefore, we consider it essential
+being able to move fast and safe.
 
-The easiest way to run it locally is by leveraging the docker image:
+Basic building blocks for moving safe fast (Tests, CI, CD, Code Quality Tooling) are pretty much in place across
+our repos. We appear to have caught up with recent version of the libraries and tools we use.
+
+- Clojure/ClojureScript
+- Shadow CLJS
+- Jetty/Ring
+- Tailwind
+- React/Reagent/Reframe
+- Cider
+- Karma
+
+Not everything is rainbows yet and there is still some yak to shave and things are missing, including
+
+- Tests
+- Routing (Clojure/ClojureScript)
+- re-frame
+- UI Visual appearance ;)
+- Various things from dependency hell and the ClojureScript Kernel
+
+## Extensibility
+
+We try to keep the code shipping with the bare notebook application minimal and aim at runtime customization where
+ possible. The application (jar/uberjar) currently ships two flavors:
+
+- `:advanced` optimization without ClojureScript Kernel Support
+- `:none` optimization with ClojureScript Kernel support and runtime extensibility
+
+We support JVM library (`pomegranate`)-, ClojureScript- and JavaScript (`requirejs`) extensibility at runtime.
+
+## Run Gorilla
+
+### Via clojure / clojars
+
+The easiest (but not the fastest ;) way to run releases locally is leveraging the cli (directly)
+```
+clojure -Sdeps '{:deps {org.pinkgorilla/gorilla-notebook {:mvn/version "0.4.1"}}}' -m pinkgorilla.core
+```
+You'll get available command line options appending `--help`:
+```
+clojure -Sdeps '{:deps {org.pinkgorilla/gorilla-notebook {:mvn/version "0.4.1"}}}' -m pinkgorilla.core --help
+```
+so
+```
+clojure -Sdeps '{:deps {org.pinkgorilla/gorilla-notebook {:mvn/version "0.4.1"}}}' -m pinkgorilla.core -P 9111
+```
+will start up the HTTP server at port 9111.
+
+### Via Docker Image
+
+Alternatively, you can use the clojure docker image:
+```
+docker run -p 9000:9000 -v `pwd`/.m2:/root/.m2:rw -v `pwd`/notebooks:/tmp/notebooks:rw --rm clojure:tools-deps clojure -Sdeps '{:deps {org.pinkgorilla/gorilla-notebook {:mvn/version "0.4.1"}}}' -m pinkgorilla.core
+```
+You may want to use the two bind mounts to retain your work and to prevent downloading half of the internet.
+
+We also provide uberjar docker images which can be run as follows:
 ```
 docker run --rm -p 9000:9000 pinkgorillawb/gorilla-notebook
+```
+
+If you aim at running a docker image built on demand (by ctr.run) from git on demand you can do
+```
+docker run -p 9000:9000 -v `pwd`/.m2:/root/.m2:rw ctr.run/github.com/pink-gorilla/gorilla-notebook:a-branch-name gorilla-notebook.sh -c /root/.m2/custom.edn
+```
+
+You are free to build that image yourself:
+
+```
+docker build --rm -t me/gorilla-notebook:builder .
 ```
 
 If you want some samples to play with, you might want to clone and mount the samples repo
@@ -31,12 +101,16 @@ into the container:
 git clone https://github.com/pink-gorilla/sample-notebooks
 docker run --rm -p 9000:9000 -v `pwd`/sample-notebooks/samples:/work/sample-notebooks:rw pinkgorillawb/gorilla-notebook
 ```
+### JAR - DropIn to external web app
 
-If you want to bring your own java, make sure to use jdk 8 for now.
-
-The following should get you the uberjar:
+Install `npm` dependencies:
 ```
-LEIN_SNAPSHOTS_IN_RELEASE=1 lein do clean, uberjar
+./script/prepare.sh
+```
+
+The following should then get you the uberjar:
+```
+./script/build-uberjar.sh
 ```
 The uberjar is what the docker image uses. It can be run by executing
 
@@ -49,31 +123,36 @@ The uberjar may also work by just dropping it into another webapp (in `WEB-INF/l
 `.../your-app-context/gorilla-repl/worksheet.html`.
 
 ```
-lein do clean, ring uberwar
+./script/build-uberwar.sh
 ```
 should give you the standalone war file. Drop it into your servlet container and visit the root url of the webapp.
 
 ```
+lein with-profile +cljs tailwind-development
+```
+will build CSS once.
+
+### Compile/Run from source
+
+```
+lein build-tailwind-dev
 ./script/run-repls-with-jpda.sh
 ```
 
 runs `lein repl`, with JPDA debugging, `rlwrap` for convenience and spins up the server. NREPL should be up at
- port 4001. Once jacked in, run `(start "dev")` to launch the figwheel server.
+ port 4001.
 
-Finally, go to
- - [`http://localhost:9000/worksheet.html`](http://localhost:9000/worksheet.html) for the app
- - [`http://localhost:9000/devcards.html`](http://localhost:9000/devcards.html) for devcards
- - [`http://localhost:3449/figwheel-extra-main/auto-testing`](http://localhost:3449/figwheel-extra-main/auto-testing)
-  for figwheels built in auto-testing
+## Web Interface
 
-To compile ClojureScript and run the main entrypoint, execute
-```
-lein do cljsbuild once, run
-```
+Finally, go to [`http://localhost:9000/worksheet.html`](http://localhost:9000/worksheet.html) for the app
+
+This repository comes with various [test notebooks](notebooks/) to try and the explorer should have some more.
+
+
+There are various scripts in `./script` and there is also a bunch of aliases in `project.clj` you might want
+ to check.
 
 ## Configuration
-
-TODO : Explain delegation mode
 
 In case you are unlucky, you might want to try
 Docker
@@ -83,13 +162,11 @@ lein do clean, install
 
 add a dependency in your project and tweak dependencies until things work. This is
  what I do with [lambdalf](https://github.com/deas/lambdalf). Again, if things go well,
- gorilla REPL will appear at `.../your-app-context/gorilla-repl/worksheet.html`.
+ Pink Gorilla will appear at `.../your-app-context/gorilla-repl/worksheet.html`.
 
 ## Tests
 
-```
-lein ci && karma start --single-run
-```
+[This is how we do it](.github/workflows/ci.yml)
 
 
 ## Contributing
@@ -110,8 +187,8 @@ existing functionality. Given the nature of reagent, this did not seem reasonabl
  possible with regards to persisted html in worksheets. We ended up introducing  version 2 persistence (transit based)
   while still supporting version 1 persistence (shamelessly discarding output). Other than that, URLs have slightly changed.
  The viewer is at `.../worksheet.html#/view` now. You may want to try
- [here](http://localhost:3449/worksheet.html#/view?source=github&user=JonyEpsilon&repo=gorilla-test&path=ws/graph-examples.clj)
-in case you have it running with figwheel.
+ [here](http://localhost:9000/worksheet.html#/view?source=github&user=JonyEpsilon&repo=gorilla-test&path=ws/graph-examples.clj)
+in case you have it running at port 9000.
 
 ## Licence
 

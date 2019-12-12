@@ -1,0 +1,63 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # Pink Gorilla - libpython-clj demo : Must be on classpath!
+;;; 
+;;; WTF is Jupyther? ;)
+;; **
+
+;; @@ [clj]
+(require '[libpython-clj.python
+                 :refer [as-python as-jvm
+                         ->python ->jvm
+                         get-attr call-attr call-attr-kw
+                         get-item att-type-map
+                         call call-kw initialize!
+                         as-numpy as-tensor ->numpy
+                         run-simple-string
+                         add-module module-dict
+                         import-module
+                         python-type]])
+;; @@
+
+;; @@ [clj]
+(initialize!)
+;; @@
+
+;; @@ [clj]
+(run-simple-string "print('hey')")
+;; @@
+
+;; @@ [clj]
+(def bridged (run-simple-string "print('hey')"))
+;; @@
+
+;; @@ [clj]
+(def main-globals (-> (add-module "__main__")
+                            (module-dict)))
+;; @@
+
+;; @@ [clj]
+main-globals
+;; @@
+
+;; @@ [clj]
+(keys main-globals)
+;; @@
+
+;; @@ [clj]
+(def np (import-module "numpy"))
+;; @@
+
+;; @@ [clj]
+(def ones-ary (call-attr np "ones" [2 3]))
+;; @@
+
+;; @@ [clj]
+ones-ary
+;; @@

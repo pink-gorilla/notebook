@@ -1,15 +1,16 @@
 (ns pinkgorilla.kernel.cljs-helper
-  (:require-macros
-   [cljs.core.async.macros :refer [go go-loop]])
+  #_(:require-macros
+     [cljs.core.async.macros :refer [go go-loop]])
   (:require
-   [taoensso.timbre :refer-macros (info)]   
+   [taoensso.timbre :refer-macros (info)]
    [re-frame.core :refer [dispatch]]
-   [pinkgorilla.kernel.cljs-tools :refer [r!]]
+   ;; [pinkgorilla.kernel.cljs-tools :refer [r!]]
    [pinkgorilla.ui.gorilla-renderable :refer [render]]
    [pinkgorilla.ui.rendererCLJS]))
 
 
 ; dispatch results to reframe
+
 
 (defn send-console [segment-id result]
   (dispatch
@@ -17,12 +18,16 @@
     segment-id
     {:console-response result}]))
 
-(defn send-value [segment-id result]
-  (dispatch
-   [:evaluator:value-response
-    segment-id
-    result
-    'cljs.user]))
+(defn send-value
+  "display the eval result in the notebook"
+  ([segment-id result]
+   (send-value segment-id result 'cljs.user))
+  ([segment-id result namespace]
+   (dispatch
+    [:evaluator:value-response
+     segment-id
+     result
+     namespace])))
 
 (defn send-error [segment-id error-text]
   (dispatch
@@ -50,27 +55,28 @@
         ]
     response))
 
-
 (defn render-renderable-meta
   "rendering via the Renderable protocol (needs renderable project)
    (users can define their own render implementations)"
   [result]
   (let [m (meta result)]
     {:value-response
-    (if (contains? m :r)
-      {:type :reagent-cljs 
-       :reagent result}
-      (render result)
-      )}))
+     (cond
+       (contains? m :r) {:type :reagent-cljs :reagent result :map-keywords false}
+       (contains? m :R) {:type :reagent-cljs :reagent result :map-keywords true}
+       :else (render result))}))
 
 
 
 ;; result:
 ;; [:ok value]
 ;; [:error #error {:message "ERROR", :data {:tag :cljs/analysis-error}, :cause #object[TypeError TypeError: bongo.trott.g is undefined]}]
+
+
 (defn send-result-eval [segment-id result]
   (let [[type data] result]
     (info "cljs eval result:" result)
+    (info "cljs eval result meta:" (meta data))
     (send-console segment-id (str " type: " (type data) "data: " (pr-str data)))
     (case type
       :ok  (send-value segment-id (render-renderable-meta data))

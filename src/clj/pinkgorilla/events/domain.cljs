@@ -1,11 +1,13 @@
 (ns pinkgorilla.events.domain
-  (:require 
+  "TODO: Unused"
+  (:require
    [re-frame.core :refer [reg-cofx]]
    #_[cemerick.url :as url]))
 
 
-;; from 
+;; from
 ;; https://github.com/timgilbert/haunting-refrain-posh/blob/develop/src/cljs/haunting_refrain/fx/domain.cljs
+
 
 (defn- current-origin-coeffect
   "Coeffect which figures out what dns origin the app is currently running on and associates

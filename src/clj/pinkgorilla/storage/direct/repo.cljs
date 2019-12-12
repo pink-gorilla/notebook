@@ -13,9 +13,7 @@
     (str "https://api.github.com/repos/" (:user self) "/" (:repo self) "/contents/" (:filename self)))
 
   (decode-content [self response]
-    (b64/decodeString (get response "content")))
-
-)
+    (b64/decodeString (get response "content"))))
 
 
 

@@ -5,6 +5,7 @@
 
    [dommy.core :as dom :refer-macros [sel1]]
    [pinkgorilla.editor.core :as editor]
+   [pinkgorilla.ui.text :refer [text]]
    ;[pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
    ;[pinkgorilla-.output.hack :refer [value-wrap]]
    ))
@@ -20,21 +21,23 @@
 
 
 ;; TODO: Should only fire when we are active!
+
+
 (defn focus-active-segment
   [component active]
   (let [el (reagent/dom-node component)
         ;; TODO : Dedupe and move to editor
         cm-el (gdom/getElementByClass "CodeMirror" el)
         cm (and active (if cm-el (.-CodeMirror cm-el) nil))]
-    (if cm
+    (when cm
       (.focus cm))))
 
 (defn error-text [text]
   [:div.error-text text])
 
 (defn console-text [txt]
-  [:div.console-text txt])
-
+  [:div.console-text
+   [text txt]])
 
 (defn exception [e]
   (let [header (if (:cause e) "An exception was caused by: " "Exception thrown")
@@ -42,7 +45,7 @@
         frame-components (map-indexed (fn [idx frame]
                                         (let [type (get frame "type")
                                               tooling (.indexOf (get frame "flags") "tooling")
-                                              li-classes (str type (if tooling " tooling-stackframe"))]
+                                              li-classes (str type (when tooling " tooling-stackframe"))]
                                           (if (= type "clj")
                                             ^{:key idx}
                                             [:li {:class li-classes}
@@ -70,7 +73,6 @@
       [:span (get ex "class")]
       [:span (get ex "class")]]
      [:ul frame-components]]))
-
 
 (defn colorize-cm!
   [seg-comp]

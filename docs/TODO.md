@@ -1,7 +1,7 @@
 # TODO
 ## Dev
-- shadow-cljs
-- code coverage, linting, tracing
+- ~~shadow-cljs~~
+- ~~code coverage, linting~~, tracing
 
 ## App
 - Connection robustness / recovery

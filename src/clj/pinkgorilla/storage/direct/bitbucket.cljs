@@ -2,9 +2,7 @@
   (:require
    [taoensso.timbre :refer-macros (info)]
    [pinkgorilla.storage.direct.direct :refer [Direct]]
-[pinkgorilla.storage.bitbucket :refer [StorageBitbucket]]))
-
-
+   [pinkgorilla.storage.bitbucket :refer [StorageBitbucket]]))
 
 (extend-type StorageBitbucket
   Direct
@@ -14,9 +12,7 @@
     (str "https://bitbucket.org/api/1.0/repositories/" (:user self) "/" (:repo self) "/raw/" (:revision self) "/" (:path self)))
 
   (decode-content [self content]
-    content)
-    
-  )
+    content))
 
 
 

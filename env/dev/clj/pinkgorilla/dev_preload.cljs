@@ -4,6 +4,5 @@
 
 (enable-console-print!)
 
-; dont remove this println; otherwise println will not work in the rest of
-; the application. why is this???
+; TODO: Dont remove this println; otherwise println will not work in the rest of the application. why is this???
 (println "wunderbar!")

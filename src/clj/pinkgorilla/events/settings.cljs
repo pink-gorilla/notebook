@@ -2,9 +2,10 @@
   "events related to the settings dialog"
   (:require
    [taoensso.timbre :refer-macros (info)]
-   [cljs.reader :as reader] ; local storage parsing
-   [re-frame.core :as re-frame :refer [reg-event-db dispatch]]
-   ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
+   [cljs.reader :as reader]                                ; local storage parsing
+   [re-frame.core :refer [reg-event-db dispatch]]
+   [pinkgorilla.kernel.cljs :as cljs-kernel]
+    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
    ))
 
 ;; LocalStorage Helpers
@@ -34,11 +35,10 @@
 ;; Settings Dialog Visibility
 
 
-
 (reg-event-db
  :app:hide-settings
  (fn [db _]
-   (dispatch [:settings-localstorage-save]) ; save to localstorage on close of dialog.
+   (dispatch [:settings-localstorage-save])                ; save to localstorage on close of dialog.
    (assoc-in db [:dialog :settings] false)))
 
 ;; Settings Change
@@ -51,8 +51,21 @@
      (if (nil? settings)
        (do (info "localstorage does not contain settings.")
            db)
-       (do (info "loaded settings from localstorage: "  settings)
+       (do (info "loaded settings from localstorage: " settings)
            (assoc-in db [:settings] settings))))))
+
+(reg-event-db
+ :init-cljs
+ (fn [db [_]]
+   (let [_ (info "Init ClojureScript")
+         settings (ls-get :notebook-settings)]
+     (if (nil? settings)
+       (do (info "localstorage does not contain settings.")
+           db)
+       (do (info "loaded settings from localstorage: " settings)
+           (assoc-in db [:settings] settings)))
+     (cljs-kernel/init! (get-in db [:config :cljs]))
+     db)))
 
 (reg-event-db
  :settings-localstorage-save
@@ -61,7 +74,6 @@
      (ls-set! :notebook-settings settings)
      (info "localstorage settings saved: " settings)
      db)))
-
 
 (reg-event-db
  :settings-set

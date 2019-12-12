@@ -2,20 +2,9 @@
   (:require
    [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   [dommy.core :as dom :refer-macros [sel1]]
-
-   [re-com.core
-    :as rcm
-    :refer [h-box v-box box border gap line h-split v-split scroller
-            button row-button md-icon-button md-circle-icon-button info-button
-            input-text input-password input-textarea
-            label title p
-            single-dropdown selection-list
-            checkbox radio-button slider progress-bar throbber
-            horizontal-bar-tabs vertical-bar-tabs
-            modal-panel popover-content-wrapper popover-anchor-wrapper]]
-   [pinkgorilla.routes :as routes]))
-
+   ;; [dommy.core :refer-macros [sel1]]
+   [pinkgorilla.routes] ;; For defroute
+   [re-com.core :refer [input-text radio-button]]))
 
 (defn do-save [form]
   (dispatch-sync [:save-as-storage form]) ; sets the :storage in app db
@@ -29,8 +18,6 @@
     13 (do-save form)   ; Enter
     nil))
 
-
-
 (defn save-dialog
   []
   (let [dialog (subscribe [:dialog])
@@ -43,7 +30,7 @@
     (reagent/create-class
      {:display-name         "save-dialog"
 
-      ;:component-did-update 
+      ;:component-did-update
       #_(fn [this old-argv]
           (let [el (reagent/dom-node this)]
             (if (:save @dialog)
@@ -96,7 +83,6 @@
            :on-change        #(change! :description %)
            :disabled?        (not (= :gist (:source @form)))]
 
-
           [:h3 "Filename"]
           [:input {:type          "text"
                    :value         (:filename @form)
@@ -105,9 +91,6 @@
                    ; :on-mouse-down #(dispatch [:save-dialog-cancel])
                    :on-key-down   #(check-key @form (.-which %))
                    :on-change     #(change! :filename (-> % .-target .-value))}]
-
-
-
 
           [:div>div
            {:class    "modal-button"

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html id="document">
+
 <head>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -7,14 +8,13 @@
     <link rel="shortcut icon" href="favicon.ico"/>
     <link rel="manifest" href="webmanifest.json">
 
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <link rel="stylesheet" href="css/tailwind.css"/>
 
-    <link rel="stylesheet" href="https://pagecdn.io/lib/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
-
-
-    <link href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic|Lora:400,700,400italic,700italic'
-          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://pagecdn.io/lib/font-awesome/5.11.2/css/all.min.css"
+          integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous">
+    <link rel='stylesheet' type='text/css'
+          href='http://fonts.googleapis.com/css?family=Arvo:400,700,400italic,700italic|Lora:400,700,400italic,700italic'>
 
     <!-- link rel="stylesheet" href="webjars/codemirror/5.11/lib/codemirror.css"-->
     <link rel="stylesheet" href="css/codemirror.css">
@@ -22,16 +22,16 @@
     <link rel="stylesheet" href="css/worksheet.css"/>
     <link rel="stylesheet" href="css/gorilla.css"/>
     <link rel="stylesheet" href="css/output.css"/>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="stylesheet" href="css/notifications.css"/>
 
     <!-- recom dependencies (make sure re-com.css appears after bootstrap.css)-->
     <!--link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css"-->
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic" rel="stylesheet"
+          type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="css/re-com.css"/>
     <link rel="stylesheet" href="css/explorer.css"/>
     <!--link rel="stylesheet" href="http://open-source.braveclojure.com/stylesheets/main.css?at=1562864438"/-->
@@ -49,61 +49,61 @@
             -o-background-size: cover;
             background-size: cover;
         }
-        #spinner {
-            width:120px;
-            height:120px;
-            position:absolute;
-            left:50%;
-            top:50%;
-            margin:-60px 0 0 -60px;
-        }
 
+        #spinner {
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin: -60px 0 0 -60px;
+        }
     </style>
 </head>
+
 <body class="loading">
 <script>
 
 
-/**
- * @dict
- */
-// var shadow$provide = {};
-//window.shadow$provide = {};
+    /**
+     * @dict
+     */
+    // var shadow$provide = {};
+    //window.shadow$provide = {};
 
-/**
- * @dict
- */
-//var shadow$modules = {};
-//window.shadow$modules = {};
-
-
-//var shadow$umd$export = {};
-//window.shadow$umd$export = {};
+    /**
+     * @dict
+     */
+    //var shadow$modules = {};
+    //window.shadow$modules = {};
 
 
+    //var shadow$umd$export = {};
+    //window.shadow$umd$export = {};
 
-    window.onload = function() {
+
+    window.onload = function () {
         document.body.className =
-            document.body.className.replace(/\bloading\b/,'');
+            document.body.className.replace(/\bloading\b/, '');
         document.getElementById("spinner").remove();
     };
     /*
-    (function () {
-        var title = "Gorilla REPL",
-            pause = 500,
-            seq = ["-", "\\", "|", "/" ];
-        function setTitle(i) {
-            return function() {
-                var idx = (i + 1) % seq.length;
-                console.log(i + ":" + idx);
-                document.title = title + " " + seq[idx];
-                setTimeout(setTitle(i + 1), pause);
-            };
+        (function () {
+            var title = "Gorilla REPL",
+                pause = 500,
+                seq = ["-", "\\", "|", "/" ];
+            function setTitle(i) {
+                return function() {
+                    var idx = (i + 1) % seq.length;
+                    console.log(i + ":" + idx);
+                    document.title = title + " " + seq[idx];
+                    setTimeout(setTitle(i + 1), pause);
+                };
 
-        }
-        setTimeout(setTitle(0), pause);
-    })();
-    */
+            }
+            setTimeout(setTitle(0), pause);
+        })();
+        */
 </script>
 <img id="spinner" src="images/loading.svg">
 
@@ -112,19 +112,19 @@
 <div class="scroll-pad"></div>
 
 <!--script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./js/sw.js').then(function(registration) {
-            // Registration was successful
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }).catch(function(err) {
-            // registration failed :(
-            console.log('ServiceWorker registration failed: ', err);
-        });
-    }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./js/sw.js').then(function(registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch(function(err) {
+        // registration failed :(
+        console.log('ServiceWorker registration failed: ', err);
+    });
+}
 </script-->
 
 <script>
-    (function() {
+    (function () {
         // var src = "js/modules/gorilla.js";
         // var src = "js/modules/cljs-runtime/pinkgorilla.dev.js";
         var url = new URL(document.location),
@@ -135,70 +135,79 @@
 </script>
 
 
-<!-- awb99: requirejs is needed so that dependencies can be loaded at runtime
-     this script needs to happen AFTER the bundle gets loaded, because otherwise the
-     react dependency will try to load via requirejs -->
-<script type="text/javascript"
-        src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'>
-</script>
-
 <!-- loaded javascript snippets from the workbook need to be added to the dom somewhere.
-     We add them to #jsscript-root -->
-<div id="jsscript-root"> </div>
+ We add them to #jsscript-root -->
+<div id="jsscript-root"></div>
 
 <!-- test for require-js-render -->
 <div id="ABC-DEMO-123"></div>
 
+<!--
+ awb99: requirejs is needed so that dependencies can be loaded at runtime
+ this script needs to happen AFTER the bundle gets loaded, because otherwise the
+ react dependency will try to load via requirejs
+  -->
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js'></script>
+
 <script>
-
-    // RequireJS configuration
     require.config({
-       urlArgs: "bust=" + (new Date()).getTime(), // awb99: For development cache busting, see: https://stackoverflow.com/questions/8315088/prevent-requirejs-from-caching-required-scripts
-       paths: {
-          demo: 'js/requiredemo',
-          loadstring: 'js/loadstring', // plugin to load modules from strings
+        urlArgs: "bust=" + (new Date()).getTime(), // awb99: For development cache busting, see: https://stackoverflow.com/questions/8315088/prevent-requirejs-from-caching-required-scripts
+        paths: {
+            demo: 'js/requiredemo',
+            loadstring: 'js/loadstring', // plugin to load modules from strings
 
-          // VEGA
-          'vega-embed':  'https://cdn.jsdelivr.net/npm/vega-embed?noext',
-          'vega-lib': 'https://cdn.jsdelivr.net/npm/vega-lib?noext',
-          'vega-lite': 'https://cdn.jsdelivr.net/npm/vega-lite?noext',
-          'vega': 'https://cdn.jsdelivr.net/npm/vega?noext',
+            // VEGA
+            'vega-embed': 'https://cdn.jsdelivr.net/npm/vega-embed?noext',
+            'vega-lib': 'https://cdn.jsdelivr.net/npm/vega-lib?noext',
+            'vega-lite': 'https://cdn.jsdelivr.net/npm/vega-lite?noext',
+            'vega': 'https://cdn.jsdelivr.net/npm/vega?noext',
 
-          'highcharts': 'https://code.highcharts.com/7.0.3/highcharts' // .js extension is added automatically
-       },
-       shim: {
-           // VEGA dependencies
-           "vega-lite": { deps: ["vega"] },
-           "vega-embed": { deps: ["vega-lite"] }
-       }
+            // LEGACY VEGA
+            'lvega-embed': 'https://cdn.jsdelivr.net/npm/vega-embed@2.26.1?noext',
+            'lvega-lite': 'https://cdn.jsdelivr.net/npm/vega-lite@1.3.1?noext',
+            'lvega': 'https://cdn.jsdelivr.net/npm/vega@2.6.5?noext',
+            'lvega-dataflow': 'https://cdn.jsdelivr.net/npm/vega-dataflow@2.2.0?noext',
+
+            'highcharts': 'https://code.highcharts.com/7.0.3/highcharts' // .js extension is added automatically
+        },
+        shim: {
+            // VEGA dependencies
+            "vega-lite": {deps: ["vega"]},
+            "vega-embed": {deps: ["vega-lite"]},
+
+            "lvega-vega": {deps: ["lvega-dataflow"]},
+            "lvega-lite": {deps: ["lvega"]},
+            "lvega-embed": {deps: ["lvega-lite"]}
+        }
 
     });
 
-// ?noext
+    // ?noext
 
-//'vega-embed':  'vega-embed@3?noext',
-//      'vega-lib': 'vega-lib?noext',
-//      'vega-lite': 'vega-lite@2?noext',
-//      'vega': 'vega@3?noext'
+    //'vega-embed':  'vega-embed@3?noext',
+    //      'vega-lib': 'vega-lib?noext',
+    //      'vega-lite': 'vega-lite@2?noext',
+    //      'vega': 'vega@3?noext'
 
+    /*
+    function testRequireJS() {
+        require(["demo"], function (demo) {
+            demo.render("ABC-DEMO-123", {a: 15, b: 10, t: "render test"});
+        });
 
-    function testRequireJS () {
-       require(["demo"], function(demo) {
-          demo.render("ABC-DEMO-123", {a:15, b:10, t: "render test"});
-       });
+        // var world_module = "define([],function(){return 'world!'})";
+        var world_module = "define([],function(){return {a: function (name) {return 'hello, ' + name}}})";
+        require(["loadstring!" + world_module],
+            function (x) {
+                console.log("Hello " + x);
+            })
 
-       // var world_module = "define([],function(){return 'world!'})";
-       var world_module = "define([],function(){return {a: function (name) {return 'hello, ' + name}}})";
-       require(["loadstring!" + world_module],
-       function(x){
-          console.log("Hello "+x);
-       })
-
-       require(["vega"] , function (y) {
-         console.log("Vega Embed ");
-         console.log(y);
-      })
+        require(["vega"], function (y) {
+            console.log("Vega Embed ");
+            console.log(y);
+        })
     }
+    */
     //testRequireJS();
 
 
@@ -206,4 +215,5 @@
 
 
 </body>
+
 </html>

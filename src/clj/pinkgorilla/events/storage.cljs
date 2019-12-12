@@ -1,13 +1,12 @@
 (ns pinkgorilla.events.storage
   (:require
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-   [ajax.core :as ajax :refer [GET POST]]
+   [re-frame.core :refer [reg-event-db reg-event-fx dispatch]]
+   [ajax.core :as ajax]
    [taoensso.timbre :refer-macros (info)]
    [pinkgorilla.routes :as routes]
    [pinkgorilla.notebook.core :refer [load-notebook-hydrated save-notebook-hydrated]]
-   [pinkgorilla.storage.storage :refer [Storage storagetype query-params-to-storage gorilla-path]]
-   [pinkgorilla.storage.direct.direct :refer [Direct load-url decode-content]]
-   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
+   [pinkgorilla.storage.storage :refer [storagetype query-params-to-storage gorilla-path]]
+   [pinkgorilla.events.helper :refer [standard-interceptors]]
    [pinkgorilla.notifications :as events :refer [add-notification notification]]))
 
 
@@ -32,7 +31,6 @@
                      :on-success      [:process-load-file-response storage]
                      :on-failure      [:process-error-response]}})))
 
-
 (reg-event-fx
  :edit-file
  (fn [{:keys [db]} [_ params]]
@@ -46,22 +44,37 @@
          params (assoc storage
                        :storagetype stype
                        :tokens tokens)]
+     ;(dispatch [:ga/event :notebook :load])
      {:db         (assoc-in db [:main] :notebook) ; notebook view on loading
+      ;; :ga/event [:notebook-load]
       :http-xhrio {:method          :get
                    :uri             url
                    :params          params
                    :timeout         15000
                    :response-format (ajax/json-response-format {:keywords? true})
                    :on-success      [:process-load-file-response storage]
-                   :on-failure      [::events/add-notification (notification :warning "load-notebook")]}})))
+                   :on-failure     [:process-load-file-response-error storage]}})))
 
+(reg-event-db
+ :process-load-file-response-error
+ [standard-interceptors]
+ (fn
+   [db [_ _ response-body]] ; _ storage
+   (dispatch [:notification-add (notification :warning "Load Notebook")])
+   (let [_ (info "Load Response Error:\n" response-body)
+         content (:content response-body)
+         _ (info "Content Only:\n" content)]
+     (assoc db
+            :worksheet {:meta {}}
+            :storage-load-error content
+            :storage nil))))
 
 (reg-event-db
  :process-load-file-response
  [standard-interceptors]
  (fn
    [db [_ storage response-body]]
-   (let [_ (info "Load Response:\n" response-body)
+   (let [;_ (info "Load Response:\n" response-body)
          content (:content response-body)
          ;content (decode-content storage content)
          ; _ (info "Content Only:\n" content)
@@ -109,8 +122,7 @@
                    :format       (ajax/json-request-format {:keywords? true}) ; (ajax/transit-request-format) ;  (ajax/url-request-format) ; request encoding POST body url-encoded
                    :response-format (ajax/json-response-format {:keywords? true}) ;(ajax/transit-response-format) ;; response encoding TRANSIT
                    :on-success      [:after-save-success storage]
-                   :on-failure      [::events/add-notification (notification :warning "save-notebook")]}})))
-
+                   :on-failure      [:notification-add (notification :warning "save-notebook ERROR!!")]}})))
 
 (defn hack-gist [storage result db]
   (if (and (= (:id storage) nil)
@@ -125,12 +137,10 @@
  :after-save-success
  [standard-interceptors]
  (fn [db [_ storage result]]
-   (info "storage is:" storage ", result is: " result)
-   (do
-     (add-notification (notification :info "Notebook Saved."))
-     (hack-gist storage result db))
-   ;(routes/nav! (str "/edit?source=local&filename=" filename))
-   ))
+   (info "Storage is:" storage ", result is: " result)
+   (add-notification (notification :info "Notebook saved."))
+   (hack-gist storage result db))   ;(routes/nav! (str "/edit?source=local&filename=" filename))
+ )
 
 
 

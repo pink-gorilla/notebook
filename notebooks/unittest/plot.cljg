@@ -1,0 +1,83 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # PinkGorilla 
+;;; 
+;;; Shift + enter evaluates code. Hit CTRL+g twice in quick succession or click the menu icon (upper-right corner) for more commands.
+;;; 
+;;; It's a good habit to run each worksheet in its own namespace. We created a random namespace for you; you can keep using it.
+;; **
+
+;; @@ [clj]
+; Automatically Download Dependencies (if they are not installed already) 
+ (use '[pinkgorilla.helper]) 
+ (pinkgorilla.helper/add-dependencies '[org.pinkgorilla/gorilla-plot "0.8.9"])
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=
+
+;; @@ [clj]
+; Define Namespace for your notebook and require namespaces 
+(ns teal-leaves  
+  (:require 
+     [pinkgorilla.ui.hiccup :refer [html!]] 
+     [pinkgorilla.ui.vega :refer [vega!]] 
+     [pinkgorilla.ui.gorilla-plot.core :refer [list-plot bar-chart compose histogram plot]])) 
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=
+
+;; @@ [clj]
+(html! 
+  [:div 
+    [:h4 "Hiccup Markup"] 
+    [:div {:style "color:green;font-weight:bold;background-color:pink"} "World!" 
+    [:ol 
+       [:li "The Pinkie"] 
+       [:li "The Pinkie and the Brain"]  
+       [:li "What will we be doing today?"]]  
+    [:img {:height 100 :width 100 :src "https://images-na.ssl-images-amazon.com/images/I/61LeuO%2Bj0xL._SL1500_.jpg"}]]])
+            
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=
+
+;; @@ [clj]
+ (list-plot [5 6 7 3 9 20] ) 
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=
+
+;; @@ [clj]
+ (vega! "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json" ) 
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=

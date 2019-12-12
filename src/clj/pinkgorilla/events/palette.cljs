@@ -1,8 +1,7 @@
 (ns pinkgorilla.events.palette
   (:require
-   [re-frame.core :as re-frame :refer [reg-event-db dispatch ]]
+   [re-frame.core :refer [reg-event-db dispatch]]
    [pinkgorilla.events.helper :refer [text-matches-re standard-interceptors]]))
-
 
 (defn- reset-palette
   [db]
@@ -51,10 +50,10 @@
        13 (let [item (when (not-empty items) (nth items hl))
                 handler (:handler item)]
             (if handler
-                (do
+              (do
                    ;; Gotcha Cannot call dispatch-sync in event handler
-                  (dispatch handler)
-                  (reset-palette db))
+                (dispatch handler)
+                (reset-palette db))
               db))
        db))))
 

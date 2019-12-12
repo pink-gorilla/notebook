@@ -2,17 +2,14 @@
   (:require
    [clojure.string :as str]
    [clojure.spec.alpha :as s]
-   [re-frame.core :as re-frame :refer [ after debug dispatch]]
+   [re-frame.core :refer [after debug dispatch]]
    [pinkgorilla.db :as db]))
-
 
 (defn text-matches-re
   [val item]
   (let [res (str/join ".*" (str/split (str/lower-case val) #""))
         re (re-pattern (str res ".*"))]
     (re-matches re (str/lower-case (:text item)))))
-
-
 
 (defn default-error-handler
   [{:keys [status status-text]}]
@@ -23,6 +20,7 @@
 ;;
 ;; See https://github.com/Day8/re-frame/wiki/Using-Handler-Middleware
 ;;
+
 
 (defn check-and-throw
   "throw an exception if db doesn't match the spec."

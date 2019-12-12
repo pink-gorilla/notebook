@@ -1,0 +1,6 @@
+{:linters {:unused-namespace {:exclude [pinkgorilla.middleware.render-values
+                                        pinkgorilla.ui.hiccup_renderer
+                                        pinkgorilla.routes
+                                        pinkgorilla.subs
+                                        pinkgorilla.events
+                                        ]}}}

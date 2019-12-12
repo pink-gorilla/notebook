@@ -4,9 +4,8 @@
   ; [cognitect.transit :as t]
   ; [re-frame.core :refer [dispatch-sync]]
    [cljs.reader]
-   [pinkgorilla.keybindings :refer [all-commands visible-commands]]
-  ))
-
+    ;; [pinkgorilla.keybindings :refer [visible-commands]]
+   ))
 
 (def debug?
   ^boolean js/goog.DEBUG)
@@ -29,9 +28,6 @@
 (s/def ::config map?)
 (s/def ::docs map?)
 (s/def ::worksheet map?)
-;; (s/def ::segment-order vector?)
-#_(s/def ::id int?)
-#_(s/def ::title string?)
 (s/def ::navbar-menu-active? boolean?)
 #_(s/def ::todo (s/keys :req-un [::id ::title ::done]))
 #_(s/def ::todos (s/and                                     ;; should use the :kind kw to s/map-of (not supported yet)
@@ -43,7 +39,6 @@
       :active                                               ;; only todos whose :done is false
       :done                                                 ;; only todos whose :done is true
       })
-
 
 (s/def ::db (s/keys :req-un
                     ;; [::docs ::config ::segments ::segment-order]
@@ -64,8 +59,7 @@
 
 ;; -- Initial app-db Value  ---------------------------------------------------
 (def initial-db
-  {; config
-   :config       {:read-only true}
+  {:config       {:read-only true}
    :base-path    nil
 
    :docs {:content  ""
@@ -76,23 +70,23 @@
    :current-view :home
    :main :notebook ; integrate this to the way navbar works.
    :nav {}  ; todo: remove this - came form notebook explorer from open source clojure
-   
+
    ; old command palette
-   :all-commands all-commands
+   :all-commands []
    :palette      {;; TODO: We are (ab)using it for files and commands, "inherited" from js version
                   ;; Should probably be two instances
                   :visible-items        nil
                   :show                 false
-                  :all-visible-commands visible-commands
+                  :all-visible-commands [];; visible-commands
                   :all-items            nil
                   :filter               ""
                   :label                ""
                   :highlight            0}
-   
+
    ; notifications
    :notifications []
    :message      nil  ; TODO: remove message, after notification system works 100% ok
-   
+
    ; dialogs
    :dialog {:settings false
             :save false
@@ -103,7 +97,12 @@
    :settings     {:default-kernel :clj
                   :editor :text
                   :github-token ""}
+
    :storage nil
+   :storage-load-error nil
+
+   :kernel-clj {:connected false
+                :session-id nil}
 
    ; explore:
    :projects     {:selected nil}
@@ -111,7 +110,9 @@
                              :update form-default
                              :search form-default}}
    :data         {:projects []}
-   :initialized true})
+   :initialized true
+
+   :dev {:reframe10x-visible? false}})
 
 
 

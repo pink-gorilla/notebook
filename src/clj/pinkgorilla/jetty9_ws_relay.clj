@@ -1,23 +1,25 @@
 (ns pinkgorilla.jetty9-ws-relay
   "A websocket handler that passes messages back and forth to an already running nREPL server."
   (:require
-   [clojure.tools.logging :refer (debug info warn error)]
+   [taoensso.timbre :refer [debug info error]]
+    ;; [clojure.tools.logging :refer (debug info warn error)]
    [clojure.data.json :as json]
    #_[cheshire.core :as json]
    [clojure.walk :as w]
-   ;; [org.httpkit.server :as server]
    [ring.adapter.jetty9 :as jetty]
    ;; [ring.middleware.session :as session]
    ;; [ring.middleware.session.memory :as mem]
    [nrepl.server :as nrepl-server]
    [nrepl.core :as nrepl]
    [nrepl.transport :as transport]
-   [pinkgorilla.nrepl :as gnrepl]
+    ;; [pinkgorilla.nrepl :as gnrepl]
    [pinkgorilla.middleware.render-values]  ;; it's essential this import comes after the previous one!
    ))
 
 
 ;; Not as nice as doall, but doall does not work with piped transports / read-timeout (in mem)
+
+
 (defn- process-replies
   [reply-fn contains-pred replies-seq]
   (loop [s replies-seq]
@@ -27,7 +29,7 @@
         (recur (rest s))))))
 
 (defn- process-message-net
-  [channel data]
+  [& _] ;; channel data
   (throw "fixme")
   #_(let [msg (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
           client (nrepl/client @gnrepl/conn Long/MAX_VALUE)
@@ -43,7 +45,6 @@
 ;; (process-message-mem nrepl-handler transport ws timeout data)
 
 (defn- process-message-mem
-  ;; [nrepl-handler transport channel timeout data]
   [nrepl-handler transport ws timeout data]
   (let [msg (assoc (-> (json/read-str data) w/keywordize-keys) :as-html 1)
         [read write] transport
@@ -53,14 +54,10 @@
                             (let [payload (json/write-str msg)]
                               (debug "Send " payload)
                               (jetty/send! ws payload)))
-                          #_(fn [msg]
-                              (server/send!
-                               channel
-                               {:body    (json/write-str msg)
-                                :session {::tranport transport}}))
                           (fn [s] (contains? s :done)))]
     (debug "Received " data)
     (reply-fn
+     ;; TODO: Not redundant do as clj-kondo claims!
      (do
        (when (:op msg)
          (future (nrepl-server/handle* msg @nrepl-handler write)))
@@ -72,7 +69,6 @@
     [handler]
     (let [store (mem/memory-store)]
       (session/wrap-session handler {:store store :cookie-name "gorilla-session"})))
-
 
 (defn on-receive-net
   "Relays messages back and forth to an nREPL server. A connection to the nREPL server must have
@@ -112,17 +108,17 @@
                                (on-receive-fn (:session request) channel))))
         (memory-session))
   ;; (process-message-mem nrepl-handler transport ws timeout data)
-  {:on-connect (fn [ws]
+  {:on-connect (fn [_] ;; ws
                  (info "Connect"))
-   :on-error   (fn [ws e]
-                 (error "Error"))
-   :on-close   (fn [ws status-code reason]
-                 (info "Close"))
+   :on-error   (fn [_ e]
+                 (error "Error" e))
+   :on-close   (fn [_ws status-code reason]
+                 (info "Close" status-code reason))
    :on-text    (fn [ws text-message]
                  (debug "Text" " " text-message)
                  (let [session (:session ws)
                        transport (or (::transport session)
                                      (transport/piped-transports))]
                    (process-message-mem nrepl-handler transport ws Long/MAX_VALUE text-message)))
-   :on-bytes   (fn [ws bytes offset len]
+   :on-bytes   (fn [_ _ _ _]                    ;; ws bytes offset len
                  (info "Bytes"))})

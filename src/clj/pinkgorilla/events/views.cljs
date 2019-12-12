@@ -1,7 +1,6 @@
 (ns pinkgorilla.events.views
-  (:require 
-   [re-frame.core :as rf :include-macros true]
-   [reagent.core :as reagent :refer [atom]]
+  (:require
+   [re-frame.core :refer [reg-event-fx reg-event-db after dispatch] :include-macros true]
    [cljs.core.async :as async]
    [pinkgorilla.events.common :as common-events :refer [reg-set-attr]]
    ;[day8.re-frame.tracing :refer-macros [fn-traced]]
@@ -35,60 +34,60 @@
   {:home {}
    :playback {:options-enabled? false}})
 
-(rf/reg-event-fx
+(reg-event-fx
  ::init-views-state
  (fn ; fn-traced
-  [{:keys [db]} _]
-  {:db (-> db
-           (assoc :views initial-views-state))
-   :dispatch [::views-state-ready]}))
+   [{:keys [db]} _]
+   {:db (-> db
+            (assoc :views initial-views-state))
+    :dispatch [::views-state-ready]}))
 
-(rf/reg-event-db
+(reg-event-db
  ::views-state-ready
  (fn ; fn-traced
-  [db _]
-  (. js/console (log "views state ready"))
-  (-> db
-      (assoc :views-state-ready? true))))
+   [db _]
+   (. js/console (log "views state ready"))
+   (-> db
+       (assoc :views-state-ready? true))))
 
-(rf/reg-event-db
+(reg-event-db
  ::set-view-property
  (fn ; fn-traced
-  [db [_ view-name property-name property-value]]
-  (-> db
-      (assoc-in [:views view-name property-name] property-value))))
+   [db [_ view-name property-name property-value]]
+   (-> db
+       (assoc-in [:views view-name property-name] property-value))))
 
-(rf/reg-event-db
+(reg-event-db
  ::set-seek-buttons-visible
  (fn ; fn-traced
-  [db [_ visible]]
-  (-> db (assoc :seek-buttons-visible? visible))))
+   [db [_ visible]]
+   (-> db (assoc :seek-buttons-visible? visible))))
 
-(rf/reg-event-fx
+(reg-event-fx
  ::show-seek-buttons
- (rf/after
-  (fn [db _]
+ (after
+  (fn [_ _] ;
     (async/go
       (async/<! (async/timeout 5000))
-      (rf/dispatch [::set-seek-buttons-visible false]))))
+      (dispatch [::set-seek-buttons-visible false]))))
  (fn ; fn-traced
-  [{:keys [db]} _]
-  {:db db
-   :dispatch [::set-seek-buttons-visible true]}))
+   [{:keys [db]} _]
+   {:db db
+    :dispatch [::set-seek-buttons-visible true]}))
 
-(rf/reg-event-db
+(reg-event-db
  ::set-display-home-button
  (fn ; fn-traced
-  [db [_ display-button?]]
-  (-> db (assoc :display-home-button? display-button?))))
+   [db [_ display-button?]]
+   (-> db (assoc :display-home-button? display-button?))))
 
 (reg-set-attr ::set-current-view :current-view)
 
-(rf/reg-event-fx
+(reg-event-fx
  ::view-action-transition
  (fn ; fn-traced
-  [{:keys [db]} [_ action]]
-  (let [current (:current-view db)
-        next-view (get (transition current) action :error)]
-    {:db db
-     :dispatch [::set-current-view next-view]})))
+   [{:keys [db]} [_ action]]
+   (let [current (:current-view db)
+         next-view (get (transition current) action :error)]
+     {:db db
+      :dispatch [::set-current-view next-view]})))

@@ -1,0 +1,38 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # leaflet-gorilla
+;;; 
+;;; 2019-10-17 awb99: Ported from Gorilla REPL to PinkGorillaRepl.
+;;; 
+;;; leaflet-gorilla is a renderer for Gorilla REPL that lets you put data on maps using the [Leaflet](http://leafletjs.com/) javascript library.
+;;; 
+;;; ## Setup
+;;; 
+;;; First create the namespace and require the leaflet-gorilla code:
+;; **
+
+;; @@ [cljs]
+(ns iss-location-tracker
+  (:require 
+   [pinkgorilla.shadow] 
+   [module$node_modules$moment$moment]
+   [reagent.core :as r]
+   [ajax.core :refer [GET POST]]
+   [pinkgorilla.ui.leaflet :refer [mymap]])) 
+;; @@
+
+;; @@ [cljs]
+(pinkgorilla.kernel.cljs-tools/r! [mymap [51.505 -0.09]])
+;; @@
+
+;; @@ [cljs]
+;; @@ [cljs]
+^:r [mymap [51.505 -0.09]]
+
+;; @@

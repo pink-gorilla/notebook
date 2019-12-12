@@ -4,7 +4,6 @@
    [pinkgorilla.storage.direct.direct :refer [Direct]]
    [pinkgorilla.storage.file :refer [StorageFile]]))
 
-
 (extend-type StorageFile
   Direct
 

@@ -1,4 +1,3 @@
-
 (ns pinkgorilla.events.common
   (:require
    [re-frame.core :as rf :include-macros true]

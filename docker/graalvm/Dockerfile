@@ -12,7 +12,7 @@ EXPOSE 9000
 # instead of logging to stdout, you may log to file in /log. create volume or mount host volume to /log
 # RUN mkdir /log && chown daemon /log
 
-ADD target/gorilla-notebook-standalone.jar /
+COPY target/gorilla-notebook-*-standalone.jar /
 ADD docker/gorilla-notebook.sh /
 
 RUN mkdir /work

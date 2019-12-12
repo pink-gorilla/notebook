@@ -1,4 +1,5 @@
-(ns hpinkgorilla.events.auth
+(ns pinkgorilla.events.auth
+  "TODO: Unused"
   (:require
    [re-frame.core :refer [reg-event-fx reg-cofx reg-sub inject-cofx]]
    [cemerick.url :as url]

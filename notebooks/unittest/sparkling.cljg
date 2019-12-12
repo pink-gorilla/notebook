@@ -10,16 +10,9 @@
 ;; **
 
 ;; @@ [clj]
-(ns harmonious-aurora
-  (:use [cemerick.pomegranate :only (add-dependencies)])
-  (:require [gorilla-plot.core :as plot]))
-;; @@
 
-;; @@ [clj]
-(add-dependencies :coordinates '[[gorillalabs/sparkling "1.2.5"]
-                                 [org.apache.spark/spark-core_2.10 "1.5.1"]]
-                  :repositories (merge cemerick.pomegranate.aether/maven-central
-                                          {"clojars" "http://clojars.org/repo"}))
+(use '[pinkgorilla.helper])
+(pinkgorilla.helper/add-dependencies '[[gorillalabs/sparkling "1.2.5"] [org.apache.spark/spark-core_2.10 "1.5.1"]])
 ;; @@
 
 ;; @@ [clj]

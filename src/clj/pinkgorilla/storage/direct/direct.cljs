@@ -1,8 +1,7 @@
 (ns pinkgorilla.storage.direct.direct
   (:require
-   [taoensso.timbre :refer-macros (info)]
+   ;; [taoensso.timbre :refer-macros (info)]
    ))
-
 
 (defprotocol Direct
   (load-url [self base-path])

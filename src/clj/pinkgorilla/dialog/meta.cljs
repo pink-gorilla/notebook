@@ -2,24 +2,16 @@
   (:require
    [re-frame.core :refer [subscribe dispatch]]
    [re-com.core
-    :as rcm
-    :refer [h-box v-box box border gap line h-split v-split scroller
-            button row-button md-icon-button md-circle-icon-button info-button
-            input-text input-password input-textarea
-            label title p
-            single-dropdown selection-list
-            checkbox radio-button slider progress-bar throbber
-            horizontal-bar-tabs vertical-bar-tabs
-            modal-panel popover-content-wrapper popover-anchor-wrapper]]
+    ;; :as rcm
+    :refer [h-box v-box gap md-circle-icon-button input-text label modal-panel]]
 
-   [pinkgorilla.explore.meta :refer [form]]))
-
-
+   ;; [pinkgorilla.explore.meta :refer [form]]
+   ))
 
 (defn meta-dialog []
   (let [dialog (subscribe [:dialog])
         meta (subscribe [:meta])
-        closefn (fn [event] (dispatch [:dialog-hide :meta]))]
+        closefn (fn [_] (dispatch [:dialog-hide :meta]))]
     (when (:meta @dialog)
       [modal-panel
        :backdrop-color   "grey"
@@ -75,7 +67,7 @@
                  :children
                  [[md-circle-icon-button
                    :md-icon-name "zmdi-close"
-                   :tooltip "Close"
+                   ;; :tooltip "Close"
                    :on-click closefn]]]]]])))
 
 

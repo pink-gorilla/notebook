@@ -7,8 +7,6 @@
    [pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
    [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment]]))
 
-
-
 (defn free-output
   [active seg-id content editor-options]
   (let [prev-uuid (uuid/uuid-string (uuid/make-random-uuid))
@@ -17,7 +15,7 @@
         is-active (subscribe [:is-active-query seg-id])]
     (reagent/create-class
      {:component-did-mount  (fn [this]
-                              (if active
+                              (when active
                                 (do
                                   ((partial init-cm!
                                             seg-id
@@ -41,7 +39,7 @@
 
        ;; if ("MathJax" in window) MathJax.Hub.Queue(["Typeset", MathJax.Hub, $(element).attr('id')]);
        ;; :reagent-render      nil
-      :reagent-render       (fn [active seg-id content]
+      :reagent-render       (fn [active _ content] ; seg-id
                               (if active
                                 [:div.segment-main
                                  [:div.free-markup

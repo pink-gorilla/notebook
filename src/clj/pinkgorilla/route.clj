@@ -1,14 +1,11 @@
 (ns pinkgorilla.route
-  (:use compojure.core)
   (:require
-   [clojure.tools.logging :refer (info)]
+   [taoensso.timbre :refer [info]]
    [clojure.java.io :as io]
    [compojure.route :as route]
-   [compojure.core :as compojure]
+   [compojure.core :as compojure :refer [GET POST]]
    [ring.middleware.session :refer [wrap-session]]
    [pinkgorilla.middleware.cider :as mw-cider]
-     ;; [gorilla-middleware.cljs :as cljs]
-   [pinkgorilla.jetty9-ws-relay :as ws-relay]
    [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
    [pinkgorilla.handle :as handle]
    [pinkgorilla.storage.storage-handler :refer [save-notebook load-notebook]]
@@ -17,18 +14,16 @@
 ;; TODO Somebody clean up the routes!
 (defn create-api-handlers
   [prefix]
-  (info "creating api handlers with prefix: " prefix)
+  (info "Creating api handlers with prefix: " prefix)
   [(GET (str prefix "load") [] ((comp handle/wrap-cors-handler handle/wrap-api-handler) load-notebook))
    (POST (str prefix "save") [] (handle/wrap-api-handler save-notebook))
    (GET (str prefix "gorilla-files") [] (handle/wrap-api-handler gorilla-files))
    (GET (str prefix "explore") [] (handle/wrap-api-handler req-explore-directories))
-
    (GET (str prefix "config") [] (handle/wrap-api-handler handle/config))])
 
 #_(defn create-repl-handlers
     [prefix receive-fn]
     [(GET (str prefix "repl") [] (ws-relay/jetty-repl-ring-handler receive-fn))])
-
 
 (defn document-utf8
   [filename req]
@@ -40,7 +35,6 @@
    :headers {"Content-Type" "text/html; charset=utf-8"}
    :body    (slurp (io/resource
                     (str "gorilla-repl-client/" filename)))})
-
 
 (defn create-resource-handlers
   [prefix]
@@ -66,15 +60,18 @@
 (def default-resource-handlers (create-resource-handlers "/"))
 
 
-;; Only wrap session once - Figwheel does that already, so this handler should not be used with Figwheel
+;; Only wrap session once - Figwheel (no longer used) did that already, so this handler should not be used with figwheel
+
+
 (def default-handler (wrap-session
                       (apply compojure/routes (concat default-api-handlers
                                                        ;; default-repl-handlers
                                                       default-resource-handlers))))
+;; TODO: Implement this - but beware that (web) resources from extension jars don't work with a remote repl
 (def remote-repl-handler (apply compojure/routes (concat default-api-handlers
                                                          ;; remote-repl-handlers
                                                          default-resource-handlers)))
-;; Used by uberwar
+;; Used by uberwar (Not sure whether it works as of Jan 2020)
 (def redirect-handler (GET "/" [] handle/redirect-app))
 
 (defn war-handler [prefix]

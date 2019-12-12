@@ -1,10 +1,10 @@
 (ns pinkgorilla.dev-handle
   (:require
-    [pinkgorilla.route :as r]
-    [compojure.core :as compojure]
+   [pinkgorilla.route :as r]
+   [compojure.core :as compojure]
     ;; [ring.middleware.defaults :refer [api-defaults wrap-defaults]]
-    [prone.middleware :refer [wrap-exceptions]]
-    [ring.middleware.reload :refer [wrap-reload]]))
+   [prone.middleware :refer [wrap-exceptions]]
+   [ring.middleware.reload :refer [wrap-reload]]))
 
 (defn wrap-dev [handler]
   (-> handler
@@ -12,16 +12,16 @@
       wrap-exceptions
       wrap-reload))
 
-(def ^:private dynamic-handlers
-  (apply compojure/routes
-         (concat r/default-api-handlers
-                 #_r/default-repl-handlers)))
+#_(def ^:private dynamic-handlers
+    (apply compojure/routes
+           (concat r/default-api-handlers
+                   #_r/default-repl-handlers)))
 
 (def dev-handler (wrap-dev
-                   (apply compojure/routes
-                          (concat r/default-api-handlers
-                                  #_r/default-repl-handlers
-                                  r/default-resource-handlers))))
+                  (apply compojure/routes
+                         (concat r/default-api-handlers
+                                 #_r/default-repl-handlers
+                                 r/default-resource-handlers))))
 
 #_(def dev-handler (apply compojure/routes
                           (concat r/default-api-handlers

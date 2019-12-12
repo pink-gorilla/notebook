@@ -14,8 +14,12 @@ pom.xml.asc
 .idea
 *.iml
 .DS_Store
-ws/
 /node_modules/
-/figwheel_server.log
 /gorilla-repl.log
 .shadow-cljs/
+.clj-kondo/
+.nrepl-history
+.nrepl-port
+junk/
+resources/gorilla-repl-client/css/tailwind.css
+resources/gorilla-repl-client/gorilla.min.css

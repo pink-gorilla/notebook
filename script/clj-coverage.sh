@@ -1,2 +1,2 @@
 #!/bin/sh
-lein with-profile +cljs,+cloverage cloverage
+lein with-profile +cljs cloverage
