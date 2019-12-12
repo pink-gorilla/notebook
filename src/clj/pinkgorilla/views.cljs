@@ -23,6 +23,7 @@
       ;[cljsjs.d3geo]  2019-10-20 awb99 removed as it fucks up the new vega
       ;[cljsjs.vega] 2019-10-20 awb99 removed as it fucks up the new vega
    
+  
    [pinkgorilla.subs :as s]
    [pinkgorilla.editor.core :as editor]
    [pinkgorilla.output.hack :refer [temp-comp-hack]]
@@ -35,7 +36,7 @@
    [pinkgorilla.worksheet.core :refer [worksheet]]
    [pinkgorilla.storage.core]
    [pinkgorilla.views.navbar :as navbar]
-   [pinkgorilla.notifications :as notifications]
+   [pinkgorilla.dialog.notifications :refer [notifications-container-component]]
    
       ;widgets are only included here so they get compiled to the bundle.js
    [widget.hello]
@@ -143,7 +144,7 @@
     [:<>
      (when @(rf/subscribe [::s/navbar-visible?])
        [navbar/navbar-component])
-     [notifications/notifications-container-component]
+     [notifications-container-component]
      
      [meta-dialog]
      [settings-dialog]

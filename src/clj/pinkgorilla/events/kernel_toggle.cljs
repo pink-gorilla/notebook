@@ -1,4 +1,4 @@
-(ns pinkgorilla.events.multikernel
+(ns pinkgorilla.events.kernel-toggle
   "events related to kernel switch"
   (:require
    [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]

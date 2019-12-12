@@ -1,18 +1,13 @@
 (ns pinkgorilla.notifications
   (:require 
    [re-frame.core :as rf :include-macros true]
-   [pinkgorilla.events.notifications :as events]
-   [pinkgorilla.subs :as s]))
+  ))
 
 ;; stolen from:
 ;; https://github.com/baskeboler/cljs-karaoke-client/blob/master/src/main/cljs_karaoke/notifications.cljs
 
 
 (def notification-types #{:info :warning :danger :primary :success})
-
-(defn type-css-class [notification-type]
-  (assert (notification-types notification-type))
-  (str "is-" (symbol notification-type)))
 
 (defn notification
   ([type text]
@@ -23,25 +18,8 @@
   ([text]
    (notification :primary text)))
 
-(defn notification-component [n]
-  [:div.notification
-   {:key (str "notification-" (:id n))
-    :class (type-css-class (:type n))}
-   [:button.delete
-    {:on-click #(rf/dispatch [::events/dismiss-notification (:id n)])}]
-   (:text n)])
 
 (defn ^export add-notification [n]
   (cond
-    (map? n) (rf/dispatch [::events/add-notification n])
-    (string? n) (rf/dispatch [::events/add-notification (notification n)])))
-
-
-(defn ^export notifications-container-component []
-  (let [nots-subs (rf/subscribe [::s/notifications])]
-    [:div.notifications-container
-     (when (not-empty @nots-subs)
-       (doall
-        (for [n @nots-subs]
-          ^{:key (str "notify-" (:id n))}
-          [notification-component n])))]))
+    (map? n) (rf/dispatch [:notification-add n])
+    (string? n) (rf/dispatch [:notification-add (notification n)])))

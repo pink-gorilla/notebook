@@ -10,8 +10,8 @@
 ;; https://github.com/baskeboler/cljs-karaoke-client/blob/master/src/main/cljs_karaoke/views/navbar.cljs
 
 (defn navbar-component []
-  (let [is-active? (rf/subscribe [::s/navbar-menu-active?])]
-    [:nav.navbar.is-fixed-top.is-transparent
+  (let [is-active? (rf/subscribe [:navbar-menu-is-active?])]
+    [:nav.navbar.is-fixed-top ; .is-transparent
      [:div.navbar-brand
       [:a.navbar-item
        {:href "#/"}

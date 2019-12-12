@@ -1,25 +1,30 @@
 (ns pinkgorilla.events.explore
   "load list of explored notebooks"
   (:require
-   [ajax.core :as ajax :refer [GET POST]]
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
+   [taoensso.timbre :as timbre
+    :refer-macros (info)]
+   [ajax.core :as ajax]
+   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx dispatch]]
+
+   [pinkgorilla.events.helper :refer [standard-interceptors]]
+   [pinkgorilla.notifications :as events :refer [add-notification notification]]
 
    ; dependencies needed to be in cljs bundle:
-   [pinkgorilla.storage.storage :as storage]
+   [pinkgorilla.storage.storage :as storage :refer [create-storage]]
    [pinkgorilla.storage.file]
    [pinkgorilla.storage.gist]
    [pinkgorilla.storage.repo]
-   [pinkgorilla.storage.bitbucket]
-   [pinkgorilla.storage.storage :refer [create-storage]]
+   [pinkgorilla.storage.bitbucket]))
 
-   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]))
+
 
 (reg-event-fx
- :explore-load
- (fn [{:keys [db]} _]
-   {:db         (merge db {:message "Exploring notebooks ..."})
+ :explore-load-repository
+ (fn [{:keys [db]} [_ repository]]
+   (add-notification (notification :info (str "Exploring " (:name repository))))
+   {:db        db ;  (merge db {:message "Exploring notebooks ..."})
     :http-xhrio {:method          :get
-                 :uri             "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"
+                 :uri             (:url repository)
                  :timeout         10000                     ;; optional
                  :response-format (ajax/json-response-format {:keywords? true}) ; (ajax/transit-response-format) ;; IMPORTANT!: You must provide this.
                  :on-success      [:explore-response]
@@ -35,29 +40,42 @@
   (assoc item :storage (create-storage item)))
 
 
-(defn preprocess-item [idx item]
+(defn preprocess-item [start-index idx item]
   (-> item
-      (assoc :type (keyword (:type item)) :index idx)
+      (assoc :type (keyword (:type item)) :index (+ start-index idx))
       (remove-repo-id)
       (add-storage)))
 
 
-(defn preprocess-list [response]
+(defn preprocess-list [start-index response]
   (let [list (:data response)]
-    (vec (map-indexed preprocess-item list))))
+    (vec (map-indexed (partial preprocess-item start-index) list))))
 
 
 (reg-event-db
  :explore-response
  [standard-interceptors]
  (fn [db [_ response]]
-   (-> (assoc-in db [:data :projects] (preprocess-list response))
-       (assoc :message nil))))
+   (let [existing-data (get-in db [:data :projects])
+         start-index (count existing-data)
+         new-data (preprocess-list start-index response)]
+     (-> (assoc-in db [:data :projects] (concat existing-data new-data))
+       ;(assoc :message nil)
+         ))))
 
 
 (reg-event-db
  :goto-main
  [standard-interceptors]
- (fn [db [_ response]]
-   (-> (assoc-in db [:main] :notebook
-       ))))
+ (fn [db _]
+   (assoc-in db [:main] :notebook)))
+
+
+(info "registering :explore-load ..")
+
+(reg-event-fx
+ :explore-load
+ (fn [{:keys [db]}]
+   (dispatch [:explore-load-repository {:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}])
+   (dispatch [:explore-load-repository {:name "files" :url "/explore"}])
+   {:db db}))

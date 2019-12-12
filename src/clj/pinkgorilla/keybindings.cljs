@@ -1,8 +1,9 @@
 (ns pinkgorilla.keybindings
   (:require
-    ;; ["mousetrap-global-bind"]
-   [pinkgorilla.routes :as routes]
-   [re-frame.core :refer [dispatch-sync]]))
+   [re-frame.core :refer [dispatch-sync]]
+ ;; ["mousetrap-global-bind"]
+ ;;  [pinkgorilla.routes :as routes]
+   ))
 
 ;; Experimental externs inference
 ;; https://gist.github.com/swannodette/4fc9ccc13f62c66456daf19c47692799

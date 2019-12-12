@@ -2,8 +2,8 @@
   (:require
    [clojure.string :as str]
    [clojure.spec.alpha :as s]
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-   [pinkgorilla.db :as db :refer [initial-db]]))
+   [re-frame.core :as re-frame :refer [ after debug dispatch]]
+   [pinkgorilla.db :as db]))
 
 
 (defn text-matches-re
@@ -36,7 +36,7 @@
 ;; helps us detect event handler bugs early.
 (def check-spec-interceptor (after (partial check-and-throw :pinkgorilla.db/db)))
 
-;; the chain of interceptors we use for all handlers that manipulate todos
+;; the chain of interceptors we use for all handlers that manipulate data
 (def standard-interceptors [(when db/debug? debug)          ;; look in your browser console for debug logs
                             check-spec-interceptor          ;; ensure the spec is still valid
                             #_trim-v])                      ;; removes first (event id) element from the event vec
