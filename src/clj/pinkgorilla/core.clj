@@ -1,27 +1,20 @@
 (ns pinkgorilla.core
   (:require
-   [clojure.set :as set]
-   [clojure.java.io :as io]
-   [pinkgorilla.handle :as handle]
-   [pinkgorilla.jetty9-ws-relay :as ws-relay]
-   [pinkgorilla.route :as route]
-   [pinkgorilla.ui.hiccup_renderer] ; this is needed to bring the render implementations into scope
-   [pinkgorilla.middleware.render-values]
-     ;[pinkgorilla.ui.gorilla-renderable]
-   [pinkgorilla.storage.explore-handler :refer [update-excludes]]
+    [clojure.set :as set]
+    [clojure.java.io :as io]
+    [pinkgorilla.handle :as handle]
+    [pinkgorilla.jetty9-ws-relay :as ws-relay]
+    [pinkgorilla.route :as route]
+    [pinkgorilla.ui.hiccup_renderer]                        ; this is needed to bring the render implementations into scope
+    [pinkgorilla.middleware.render-values]
+    ;[pinkgorilla.ui.gorilla-renderable]
+    [pinkgorilla.storage.explore-handler :refer [update-excludes]]
 
-   [pinkgorilla.system :as sys]
-   [pinkgorilla.cli :as cli])
+    [pinkgorilla.system :as sys]
+    [pinkgorilla.cli :as cli])
   (:gen-class))
 
 
-
-(def gorilla-system (atom nil))
-
-;; (keys @gorilla-system)
-;; (get-in-system [:config :config])
-(defn get-in-system [path]
-  (get-in @gorilla-system path))
 
 ;; TODO WIP, we can to better
 ;; lein plugin entry point
@@ -68,5 +61,4 @@
 (defn -main
   [& args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args)]
-    (reset! gorilla-system
-            (run-gorilla-server options))))
+    (run-gorilla-server options)))

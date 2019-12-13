@@ -3,7 +3,7 @@
   (:require
    [clojure.tools.logging :refer (info)]
    [ring.util.response :as res]
-   [pinkgorilla.system ]
+   [pinkgorilla.system :as sys]
 
    [pinkgorilla.storage.files :as files]
    [pinkgorilla.explore.file :refer [explore]]))
@@ -27,14 +27,9 @@
 ;; API endpoint for file-system exploration
 ;; This returns not only filenames, but full meta-data
 
-(def config {:explore-file-directories ["./notebooks"
-                                        "/home/andreas/Documents/clojure/clojureQuant/gorilla"]})
-
 (defn- explore-directories []
-  (let [;_  (info "config is:" (keys (get-in (pinkgorilla.system/gorilla-system {})[:config :runtime-config])))
-;config (gorilla-system {})
-        ;_ (info "config is: " config)
-        notebook-paths (:explore-file-directories config)
+  (let [notebook-paths (sys/get-in-system [:config :config :explore-file-directories])
+        _ (info "notebook-paths is: " notebook-paths)
         dirs (map explore notebook-paths)]
     (reduce concat [] dirs)))
 
