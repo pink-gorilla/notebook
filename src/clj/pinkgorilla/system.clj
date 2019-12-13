@@ -4,13 +4,18 @@
    [com.stuartsierra.component :as component]
    [de.otto.tesla.system :as system]
    [de.otto.tesla.serving-with-jetty :as tesla-jetty]
-   ;; [de.otto.tesla.serving-with-httpkit :as httpkit]   
+   ;; [de.otto.tesla.serving-with-httpkit :as httpkit]
    [pinkgorilla.dispatcher :as dispatcher]
    [pinkgorilla.nrepl :as nrepl]
    ;; [pinkgorilla.cli :as cli]
    [pinkgorilla.serving-with-jetty :as jetty])
   (:gen-class))
 
+(def system (atom nil))
+
+;; (keys @gorilla-system)
+(defn get-in-system [path]
+  (get-in @system path))
 
 (defn gorilla-system [runtime-config]
   (-> (system/base-system (merge {:name "gorilla-service"} runtime-config))
@@ -28,4 +33,7 @@
       ))
 
 (defn start [config]
-  (system/start (gorilla-system config)))
+  ;; We just support one system for the moment
+  (reset! system
+          (system/start
+            (gorilla-system config))))

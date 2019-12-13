@@ -1,8 +1,8 @@
 # Pink Gorilla Notebook
 
 [Pink Gorilla Notebook] (http://pink-gorilla.org) is a rich browser based notebook REPL for Clojure and ClojureScript,
-which aims at extensibility (development- and runtime) and user experience while being very lightweight. 
-Extensibility primarily revolves around UI widgets and data. 
+which aims at extensibility (development- and runtime) and user experience while being very lightweight.
+Extensibility primarily revolves around UI widgets and data.
 
 Use cases we are trying to cover are
 - Persistent experiments and demos (Clojure/ClojureScript libraries!)
@@ -52,9 +52,9 @@ The uberjar may also work by just dropping it into another webapp (in `WEB-INF/l
 lein do clean, ring uberwar
 ```
 should give you the standalone war file. Drop it into your servlet container and visit the root url of the webapp.
- 
+
 ```
-./run-repls-with-jpda.sh
+./script/run-repls-with-jpda.sh
 ```
 
 runs `lein repl`, with JPDA debugging, `rlwrap` for convenience and spins up the server. NREPL should be up at
@@ -102,7 +102,7 @@ and also on [Clojurians Zulip](https://clojurians.zulipchat.com/#narrow/stream/2
 In 2016, Andreas was working on the [first iteration of Gorilla REPL modernisation](https://www.contentreich.de/pimping-gorilla-repl-with-react-clojurescript-and-beyond). Amongst other
   things, [Reagent](http://reagent-project.github.io/) was introduced at that time. Unfortunately, it went silent again -
   for almost three years. [This issue](https://github.com/pink-gorilla/gorilla-notebook/issues/2) revived the project.
-  
+
 As of October 2019, we are primarily focused on cleaning up the house to build a solid foundation for future work. We'll
 try hard to keep master branches stable at all time and we will also publish releases to Clojars. We assume that this fork
 is at least as stable as the "original" and transition is painless. We also try to remain backwards compatible and preserve
