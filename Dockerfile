@@ -31,12 +31,11 @@ COPY . /tmp/gorilla-notebook
 #RUN git clone ${REPO} && \
 #    cd gorilla-notebook && \
 
-RUN . $NVM_DIR/nvm.sh && \
-    cd gorilla-notebook && \
-    npm install && \
-    lein deps && \
-    lein uberjar
-#    lein uberjar
+WORKDIR /tmp/gorilla-notebook
+RUN . $NVM_DIR/nvm.sh && npm install
+RUN lein deps
+# cat /etc/clojure-*.edn if lein threw up an it exists
+RUN lein uberjar
 # Uberjar blows up ... sometimes?
 #11 116.1 Syntax error macroexpanding at (dev_handle.clj:1:1).
 #11 116.3 Execution error (NullPointerException) at cider.nrepl.inlined-deps.orchard.v0v5v3.orchard.java/fn (java.clj:66).

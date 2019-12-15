@@ -58,7 +58,7 @@
                  [info.sunng/ring-jetty9-adapter "0.12.5"]
 
                  ; CLJ Kernel
-                 [org.pinkgorilla/gorilla-middleware "0.2.2"]
+                 [org.pinkgorilla/gorilla-middleware "0.2.4"]
                  [com.cemerick/pomegranate "1.1.0"]         ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
                  [org.clojure/tools.cli "0.4.2"]
                  [clojail "1.0.6"]                          ; sandboxing
