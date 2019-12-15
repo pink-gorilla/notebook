@@ -6,7 +6,7 @@
    [compojure.route :as route]
    [compojure.core :as compojure]
    [ring.middleware.session :refer [wrap-session]]
-   [pinkgorilla.middleware.cider :as cider]
+   [pinkgorilla.middleware.cider :as mw-cider]
      ;; [gorilla-middleware.cljs :as cljs]
    [pinkgorilla.jetty9-ws-relay :as ws-relay]
    [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
@@ -59,7 +59,7 @@
    (route/files (str prefix "project-files") {:root "."})
    (route/not-found "Bummer, not found")])
 
-(def nrepl-handler (atom cider/cider-handler #_cljs/cljs-handler))
+(def nrepl-handler (atom (mw-cider/cider-handler) #_(cljs/cljs-handler)))
 (def default-api-handlers (create-api-handlers "/"))
 #_(def default-repl-handlers (create-repl-handlers "/" (partial ws-relay/on-receive-mem nrepl-handler)))
 #_(def remote-repl-handlers (create-repl-handlers "/" ws-relay/on-receive-net))

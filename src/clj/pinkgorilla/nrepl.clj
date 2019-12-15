@@ -1,12 +1,11 @@
 (ns pinkgorilla.nrepl
   (:require
-   [clojure.tools.logging :as log]
-   [com.stuartsierra.component :as component]
+    [clojure.tools.logging :as log]
+    [com.stuartsierra.component :as component]
 
-   [nrepl.server :as srv]
-   [nrepl.core :as nrepl]
-   [cider.nrepl :as cider]
-   [pinkgorilla.middleware.cider :as ci]))
+    [nrepl.server :as srv]
+    [nrepl.core :as nrepl]
+    [pinkgorilla.middleware.cider :as mw-cider]))
 
 
 ;; We will open a single connection to the nREPL server for the life of the application. It will be stored here.
@@ -35,7 +34,7 @@
           (do
             (log/info "Starting nREPL server on port " nrepl-port)
             (spit (doto nrepl-port-file .deleteOnExit) nrepl-port)
-            (assoc self :server (srv/start-server :port nrepl-port :handler ci/cider-handler #_(gmw/nrepl-handler false cider/cider-middleware)))))
+            (assoc self :server (srv/start-server :port nrepl-port :handler (mw-cider/cider-handler) #_(gmw/nrepl-handler false cider/cider-middleware)))))
         self)))
   (stop [self]
     (when server
