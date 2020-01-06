@@ -1,6 +1,6 @@
 # Pink Gorilla Notebook
 
-[Pink Gorilla Notebook] (http://pink-gorilla.org) is a rich browser based notebook REPL for Clojure and ClojureScript,
+[Pink Gorilla Notebook](http://pink-gorilla.org) is a rich browser based notebook REPL for Clojure and ClojureScript,
 which aims at extensibility (development- and runtime) and user experience while being very lightweight.
 Extensibility primarily revolves around UI widgets and data.
 
@@ -13,7 +13,7 @@ Use cases we are trying to cover are
 We'll try to borrow from other ecosystems where bridging from Clojure/ClojureScript appears reasonable. Wrapping and
 leveraging R is one example that comes to mind.
 
-Try it out at [Online] (http://pink-gorilla.org)
+Try it out at [Online](http://pink-gorilla.org)
 
 We are a  is a decendant of [Gorilla REPL](http://gorilla-repl.org).
 
