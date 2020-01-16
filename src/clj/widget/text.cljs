@@ -1,10 +1,6 @@
 (ns widget.text
   (:require
-   [reagent.core :as reagent :refer [atom]]
-   [re-frame.core :refer [subscribe dispatch dispatch-sync]]
-   [taoensso.timbre :refer-macros (info)]
-   ))
-
+   [taoensso.timbre :refer-macros (info)]))
 
 (defn update-key [a k v]
   (info "updating atom key:" k " to val:" v)

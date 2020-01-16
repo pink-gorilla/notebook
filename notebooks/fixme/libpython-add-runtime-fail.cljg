@@ -1,0 +1,35 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # Pink Gorilla - Adding libpython-clj at runtime fails :/
+;;; 
+;;; Shift + enter evaluates code. Hit CTRL+g twice in quick succession or click the menu icon (upper-right corner) for more commands.
+;;; 
+;;; It's a good habit to run each worksheet in its own namespace. We created a random namespace for you; you can keep using it.
+;; **
+
+;; @@ [clj]
+; Automatically Download Dependencies (if they are not installed already) 
+(use '[pinkgorilla.helper]) 
+(pinkgorilla.helper/add-dependencies '[cnuernber/libpython-clj "1.30"])
+;; @@
+
+;; @@ [clj]
+;; Execution error (NullPointerException) at tech.jna.base/fn (base.clj:35). null
+(require '[libpython-clj.python
+                 :refer [as-python as-jvm
+                         ->python ->jvm
+                         get-attr call-attr call-attr-kw
+                         get-item att-type-map
+                         call call-kw initialize!
+                         as-numpy as-tensor ->numpy
+                         run-simple-string
+                         add-module module-dict
+                         import-module
+                         python-type]])
+;; @@

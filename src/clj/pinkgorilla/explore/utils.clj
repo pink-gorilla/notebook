@@ -1,7 +1,4 @@
-(ns pinkgorilla.explore.utils
-  (:require 
-   [clj-time.core :as t]
-   [clj-time.coerce :as tc]))
+(ns pinkgorilla.explore.utils)
 
 (defmacro tv
   [event-name]

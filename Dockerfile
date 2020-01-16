@@ -33,22 +33,21 @@ COPY . /tmp/gorilla-notebook
 
 WORKDIR /tmp/gorilla-notebook
 RUN . $NVM_DIR/nvm.sh && npm install
-RUN lein deps
+# RUN lein deps
 # cat /etc/clojure-*.edn if lein threw up an it exists
-RUN lein uberjar
-# Uberjar blows up ... sometimes?
-#11 116.1 Syntax error macroexpanding at (dev_handle.clj:1:1).
-#11 116.3 Execution error (NullPointerException) at cider.nrepl.inlined-deps.orchard.v0v5v3.orchard.java/fn (java.clj:66).
+RUN . $NVM_DIR/nvm.sh && lein with-profile +cljs uberjar
 
+#FROM openjdk:13-jre
 FROM openjdk:8-jre
-COPY --from=build /tmp/gorilla-notebook/target/gorilla-notebook-standalone.jar /gorilla-notebook-standalone.jar
-COPY --from=build /tmp/gorilla-notebook/docker/gorilla-notebook.sh /gorilla-notebook.sh
+COPY --from=build /tmp/gorilla-notebook/target/gorilla-notebook-*-standalone.jar /gorilla-notebook-standalone.jar
+COPY --from=build /tmp/gorilla-notebook/docker/gorilla-notebook.sh /usr/bin/gorilla-notebook.sh
 
+ENV GORILLA_HOME /
 RUN mkdir /work
 # RUN adduser --home /work --disabled-login --uid 2000 --gecos "" gorilla
 # USER gorilla
 
 WORKDIR /work
 
-CMD ["java", "-Dlog_level=info", "-jar", "../gorilla-notebook-standalone.jar"]
+CMD ["gorilla-notebook.sh"]
 

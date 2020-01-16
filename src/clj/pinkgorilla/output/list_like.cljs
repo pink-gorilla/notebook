@@ -5,6 +5,7 @@
 
 ;(declare output-fn)
 
+
 (defn output-list-like-other
   [output-fn output seg-id]
   (let [separator (temp-comp-hack (:separator output))

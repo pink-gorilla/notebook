@@ -1,9 +1,9 @@
 (ns pinkgorilla.dispatcher
   (:require
-    [com.stuartsierra.component :as c]
-    [de.otto.tesla.stateful.handler :as handlers]
-    [de.otto.status :as status]
-    [de.otto.tesla.stateful.app-status :as app-status]))
+   [com.stuartsierra.component :as c]
+   [de.otto.tesla.stateful.handler :as handlers]
+   [de.otto.status :as status]
+   [de.otto.tesla.stateful.app-status :as app-status]))
 
 (defrecord Dispatcher [routes]
   c/Lifecycle

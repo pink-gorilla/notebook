@@ -2,7 +2,6 @@
   (:require
    [re-frame.core :refer [reg-sub-raw subscribe]]
    [clojure.string :as str]
-   [clojure.set :as set]
    [pinkgorilla.explore.utils :as u])
   (:require-macros [reagent.ratom :refer [reaction]]))
 
@@ -69,7 +68,7 @@
 
 (reg-sub-raw
  :project-tags
- (fn [db _]
+ (fn [_ _]
    (let [listings (subscribe [:filtered-projects])]
      (reaction
       (->> @listings

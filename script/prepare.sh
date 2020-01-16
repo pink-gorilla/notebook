@@ -1,3 +1,3 @@
 #!/bin/sh
-nvm install node
+npm --version || nvm install node
 npm install

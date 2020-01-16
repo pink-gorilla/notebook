@@ -1,4 +1,4 @@
-(defproject org.pinkgorilla/gorilla-notebook "0.4.0"
+(defproject org.pinkgorilla/gorilla-notebook "0.4.1-SNAPSHOT"
   :description "A rich REPL for Clojure in the notebook style."
   :url "https://github.com/pink-gorilla/gorilla-notebook"
   :scm {:name "git" :url "https://github.com/pink-gorilla/gorilla-notebook"}
@@ -58,27 +58,27 @@
                  [info.sunng/ring-jetty9-adapter "0.12.5"]
 
                  ; CLJ Kernel
-                 [org.pinkgorilla/gorilla-middleware "0.2.4"]
-                 [com.cemerick/pomegranate "1.1.0"]         ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
+                 [org.pinkgorilla/gorilla-middleware "0.2.15"]
+                 [clj-commons/pomegranate "1.2.0"]          ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
                  [org.clojure/tools.cli "0.4.2"]
-                 [clojail "1.0.6"]                          ; sandboxing
+                 [clojail "1.0.6"]; Sandboxing - not sure whether we want to cope with this level of detail
 
                  ;pinkgorilla sub projects
-                 [org.pinkgorilla/gorilla-renderable "2.1.3"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
-                 [org.pinkgorilla/encoding "0.0.18"]        ; notebook encoding
-                 [org.pinkgorilla/explore "0.1.2"]          ; notebook exploration
-
-                 [irresponsible/tentacles "0.6.6"]          ; github api
-                 ; notebook exploration:
-                 [clj-time "0.15.2"]
-                 ]
+                 [org.pinkgorilla/gorilla-renderable-ui "0.1.0"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
+                 [org.pinkgorilla/kernel-cljs-shadowdeps "0.0.8"
+                  :exclusions [*/*]]
+                 [org.pinkgorilla/notebook-encoding "0.0.22"] ; notebook encoding
+                 [org.pinkgorilla/gorilla-explore "0.1.7"]  ; notebook exploration
+                 [irresponsible/tentacles "0.6.6"]          ; github api (needed by encoding and explore)
+                 [clj-time "0.15.2"]]                       ; needed for notebook exploration ui
 
 
   ;; REPLIKATIV
   ;  [io.replikativ/replikativ "0.2.4"]
   ;  [com.cognitect/transit-cljs "0.8.239" :scope "provided"]
 
-  :plugins [[lein-environ "1.1.0"]                          ;; TODO Will likely be axed soon
+  :plugins [[lein-shell "0.5.0"]
+            [lein-environ "1.1.0"]                          ;; TODO Will likely be axed soon
             ;; tools.namespace "Unparsable namespace form:" ["parinfer-codemirror"]
             ;; quick hack is to temporarily rm .cljs files
             ;; [lein-hiera "1.1.0"] ; tools.namespace "Unparsable namespace form:" ["parinfer-codemirror"]
@@ -88,7 +88,7 @@
             [lein-asset-minifier "0.4.6"
              :exclusions [org.clojure/clojure]]]
 
-  :uberjar-name "gorilla-notebook-standalone.jar"
+  ;; :uberjar-name "gorilla-notebook-standalone.jar"
 
   ;; Those websocket exclusions are ugly but needed since "ring uberwar" does
   ;; not honor :provided
@@ -128,10 +128,9 @@
 
   :prep-tasks ["javac"
                "compile"
-               "build-ci"
+               "build-tailwind-dev"
                "build-shadow-without-cljs-kernel"
-               "build-shadow-with-cljs-kernel"
-               ]
+               "build-shadow-with-cljs-kernel"]
 
   :release-tasks [["vcs" "assert-committed"]
                   ["bump-version" "release"]
@@ -141,167 +140,161 @@
                   ["vcs" "commit" "Begin %s"]]
 
   :deploy-repositories [["clojars" {:url           "https://clojars.org/repo"
-                                    :username      :env/clojars_username
-                                    :password      :env/clojars_password
+                                    :username      :env/release_username
+                                    :password      :env/release_password
                                     :sign-releases false}]]
 
 
+  ;; :classifiers
+  #_{:standalone :uberjar
+     :python     :python}
   :env {:production true}
 
   ;; We might chose to leverage the shell escape hatch to get out of dependency hell
-  :aliases {"build-ci"                         ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":ci"]
-            "watch-cards"                      ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "watch" ":cards"]
-            "browser-test"                     ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":browser-test"]
-            "build-shadow-with-cljs-kernel"    ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":app-with-cljs-kernel"]
-            "build-shadow-without-cljs-kernel" ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "release" ":app-without-cljs-kernel"]
-            "clj-kondo"                        ["run" "-m" "clj-kondo.main"]}
+  :aliases {"build-tailwind-dev"               ^{:doc "Build tailwind development."}
+                                               ["shell" "npm" "run" "tailwind-development"]
+            "build-shadow-ci"                  ^{:doc "Build shadow-cljs ci"}
+                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":ci"]
+            "build-shadow-with-cljs-kernel"    ^{:doc "Build shadow-cljs with cljs kernel"}
+                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":app-with-cljs-kernel"]
+            "build-shadow-without-cljs-kernel" ^{:doc "Build shadow-cljs without cljs kernel"}
+                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "release" ":app-without-cljs-kernel"]
+            "build-browser-test"               ^{:doc "Shadow-cljs browser test"}
+                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":browser-test"]
+            "watch-cards"                      ^{:doc "Shadow-cljs watch cards"}
+                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "watch" ":cards"]
+            "test-js"                          ^{:doc "Test compiled JavaScript."}
+                                               ["shell" "npm" "run" "test"]
+            "clj-kondo"                        ^{:doc "Lint with clj-kondo"}
+                                               ["run" "-m" "clj-kondo.main"]
+            "bump-version"                     ^{:doc "Roll versions artefact version"}
+                                               ["change" "version" "leiningen.release/bump-version"]}
 
-  :profiles {:dev       {:repl-options   {:init-ns          pinkgorilla.repl
-                                          :port             4001
-                                          :nrepl-middleware [;; cider.piggieback/wrap-cljs-repl
-                                                             shadow.cljs.devtools.server.nrepl/middleware]}
-                         :prep-tasks     ^:replace ["javac" "compile"]
-                         :dependencies   [;; [thheller/shadow-cljs "2.8.80"]  ;; Cannot overrides default deps here
-                                          ;; [com.google.javascript/closure-compiler-unshaded "v20191027"]
-                                          ;; Just moving shadow here blows up via :prep-tasks
-                                          ;; Syntax error (NoSuchMethodError) compiling at (shadow/cljs/devtools/api.clj:1:1).
-                                          ;; com.google.common.base.Preconditions.checkState
-                                          ;; (ZLjava / lang/String ;Ljava/lang/Object;)V
+  :profiles {:dev     {:repl-options   {:init-ns          pinkgorilla.repl
+                                        :port             4001
+                                        :nrepl-middleware [;; cider.piggieback/wrap-cljs-repl
+                                                           shadow.cljs.devtools.server.nrepl/middleware]}
+                       :prep-tasks     ^:replace ["javac" "compile"]
+                       :plugins        [;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
+                                        [lein-cljfmt "0.6.6"]
+                                        [lein-cloverage "1.1.2"]]
+                       :cloverage      {:codecov? true
+                                        ;; In case we want to exclude stuff
+                                        ;; :ns-exclude-regex [#".*util.instrument"]
+                                        ;; :test-ns-regex [#"^((?!debug-integration-test).)*$$"]
+                                        }
+                       ;; TODO : Make cljfmt really nice : https://devhub.io/repos/bbatsov-cljfmt
+                       :cljfmt         {:indents {as->                [[:inner 0]]
+                                                  with-debug-bindings [[:inner 0]]
+                                                  merge-meta          [[:inner 0]]
+                                                  try-if-let          [[:block 1]]}}
+                       :dependencies   [;; [thheller/shadow-cljs "2.8.80"]  ;; Cannot overrides default deps here
+                                        ;; [com.google.javascript/closure-compiler-unshaded "v20191027"]
+                                        ;; Just moving shadow here blows up via :prep-tasks
+                                        ;; Syntax error (NoSuchMethodError) compiling at (shadow/cljs/devtools/api.clj:1:1).
+                                        ;; com.google.common.base.Preconditions.checkState
+                                        ;; (ZLjava / lang/String ;Ljava/lang/Object;)V
 
-                                          ;; [com.google.javascript/closure-compiler-unshaded "v20190325"]
-                                          ;; [org.clojure/google-closure-library "0.0-20190213-2033d5d9"]
-                                          ;; [com.bhauman/figwheel-main "0.2.3"]
-                                          ;; [com.bhauman/rebel-readline-cljs "0.1.4"]
-                                          ;; [karma-reporter "3.1.0"]
-                                          ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
-                                          [clj-kondo "2019.11.23"]
-                                          [ring/ring-mock "0.4.0"]
-                                          [ring/ring-devel "1.7.1"]
-                                          [prone "2019-07-08"]
-                                          [pjstadig/humane-test-output "0.10.0"]
-                                          ;; Dirac or piggieback - there can only be one of them
-                                          ;; Gorilla server side stuff
-                                          ;; [hiccup "1.0.5"]
-                                          ;; https://github.com/clojure-numerics/expresso/issues/19
-                                          ;; [expresso "0.2.2"]
-                                          [instaparse "1.4.10"]
-                                          ;; [org.clojure/data.xml "0.0.8"]
-                                          [me.lomin/component-restart "0.1.2"]]
+                                        ;; [com.google.javascript/closure-compiler-unshaded "v20190325"]
+                                        ;; [org.clojure/google-closure-library "0.0-20190213-2033d5d9"]
+                                        ;; [com.bhauman/figwheel-main "0.2.3"]
+                                        ;; [com.bhauman/rebel-readline-cljs "0.1.4"]
+                                        ;; [karma-reporter "3.1.0"]
+                                        ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
+                                        [clj-kondo "2019.11.23"]
+                                        [ring/ring-mock "0.4.0"]
+                                        [ring/ring-devel "1.7.1"]
+                                        [prone "2019-07-08"]
+                                        [pjstadig/humane-test-output "0.10.0"]
+                                        ;; Dirac or piggieback - there can only be one of them
+                                        ;; Gorilla server side stuff
+                                        ;; [hiccup "1.0.5"]
+                                        ;; https://github.com/clojure-numerics/expresso/issues/19
+                                        ;; [expresso "0.2.2"]
+                                        [instaparse "1.4.10"]
+                                        ;; [org.clojure/data.xml "0.0.8"]
+                                        [me.lomin/component-restart "0.1.2"]]
 
-                         :source-paths   ^:replace ["src/clj" "test" "env/dev/clj"]
+                       :source-paths   ^:replace ["src/clj" "test" "env/dev/clj"]
 
-                         :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
+                       :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
 
-                         :plugins        [
-                                          ;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
-                                          ]
+                       :injections     [(require 'pjstadig.humane-test-output)
+                                        (pjstadig.humane-test-output/activate!)]
 
-                         :injections     [(require 'pjstadig.humane-test-output)
-                                          (pjstadig.humane-test-output/activate!)]
+                       :env            ^:replace {:dev true}}
 
-                         :env            ^:replace {:dev true}}
+             :cljs    {:dependencies [[thheller/shadow-cljs "2.8.80"]
 
-             :cljs      {:dependencies [[thheller/shadow-cljs "2.8.80"]
+                                      ; cljs-ajax requires [com.cognitect/transit-cljxxx]
+                                      ; awb99: if ajax is not here then chord will  require an older version and build will break
+                                      [cljs-ajax "0.8.0"]   ; needed by reagent http-fx ??
+                                      [prismatic/dommy "1.1.0"]
+                                      [com.cemerick/url "0.1.1"]
+                                      ;; CLOJURESCRIPT
+                                      [com.google.javascript/closure-compiler-unshaded "v20191027"]
+                                      [org.clojure/clojurescript "1.10.597"
+                                       :scope "provided"
+                                       :exclusions [com.google.javascript/closure-compiler-unshaded
+                                                    org.clojure/google-closure-library
+                                                    org.clojure/google-closure-library-third-party]]
+                                      ;; CLJS KERNEL
+                                      [org.pinkgorilla/kernel-cljs-shadow "0.0.20"]
+                                      [thheller/shadow-cljsjs "0.0.21"]
+                                      ;; [cljs-tooling "0.2.0"]
+                                      ;; https://github.com/bhauman/lein-figwheel/issues/612
+                                      ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
+                                      [secretary "1.2.3"]   ; client side routing - TODO: Should likely be replaced by jux/bidi
+                                      ;; [bidi "2.1.6"]
 
-                                        ; cljs-ajax requires [com.cognitect/transit-cljxxx]
-                                        ; awb99: if ajax is not here then chord will  require an older version and build will break
-                                        [cljs-ajax "0.8.0"] ; needed by reagent http-fx ??
-                                        [prismatic/dommy "1.1.0"]
-                                        [com.cemerick/url "0.1.1"]
-                                        ;; CLOJURESCRIPT
-                                        [com.google.javascript/closure-compiler-unshaded "v20191027"]
-                                        [org.clojure/clojurescript "1.10.597"
-                                         :scope "provided"
-                                         :exclusions [com.google.javascript/closure-compiler-unshaded
-                                                      org.clojure/google-closure-library
-                                                      org.clojure/google-closure-library-third-party]]
-                                        ;; CLJS KERNEL
-                                        [org.pinkgorilla/kernel-cljs-shadow "0.0.17"]
-                                        [thheller/shadow-cljsjs "0.0.21"]
-                                        ;; [cljs-tooling "0.2.0"]
-                                        ;; https://github.com/bhauman/lein-figwheel/issues/612
-                                        ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
-                                        [secretary "1.2.3"] ; client side routing
+                                      [com.lucasbradstreet/cljs-uuid-utils "1.0.2"] ;; awb99: in encoding, and clj/cljs proof
 
-                                        [com.lucasbradstreet/cljs-uuid-utils "1.0.2"] ;; awb99: in encoding, and clj/cljs proof
+                                      ;; REACT / REAGENT / REFRAME
+                                      [reagent "0.8.1"
+                                       :exclusions [org.clojure/tools.reader]]
+                                      [re-com "2.6.0"]      ; reagent reuseable ui components
+                                      [re-frame "0.10.9"]
+                                      [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests
+                                      [day8.re-frame/undo "0.3.3"]
+                                      [day8.re-frame/tracing "0.5.3"]
+                                      [re-catch "0.1.4"]    ; exception handling for reagent components
+                                      ;awb99: kee-frame seems to bring old dependencies?
+                                      ;[kee-frame "0.3.3"] ; reframe with batteries - scroll fix, chains
+                                      ;; TODO : Give fork (cssless) a spin!
+                                      ;; [fork "1.2.3"]
+                                      ;; [reagent-forms "0.5.27"] ;; Based on Bootstrap
+                                      ;; [reagent-utils "0.2.0"]
+                                      ;[district0x.re-frame/google-analytics-fx "1.0.0"
+                                      ; :exclusions [re-frame]]
+                                      ;; UI Components
+                                      ;; [cljsjs/parinfer "1.8.1-0"]
+                                      ;; Still helpful for externs!
+                                      [com.andrewmcveigh/cljs-time "0.5.2"]
 
-                                        ;; REACT / REAGENT / REFRAME
-                                        [reagent "0.8.1"
-                                         :exclusions [org.clojure/tools.reader]]
-                                        [re-com "2.6.0"]    ; reagent reuseable ui components
-                                        [re-frame "0.10.9"]
-                                        [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests
-                                        [day8.re-frame/undo "0.3.3"]
-                                        [day8.re-frame/tracing "0.5.3"]
-                                        [re-catch "0.1.4"]  ; exception handling for reagent components
-                                        ;awb99: kee-frame seems to bring old dependencies?
-                                        ;[kee-frame "0.3.3"] ; reframe with batteries - scroll fix, chains
-                                        ;; Reagent uses React and may rely on cljsjs externs. So better not use a webpack version of React.
-                                        ;; [reagent-forms "0.5.27"]
-                                        ;; [reagent-utils "0.2.0"]
+                                      ;; actually dev
+                                      [binaryage/dirac "RELEASE"] ;; 0.6.7
+                                      ;[cider/piggieback "0.4.2"
+                                      ; ;; :exclusions [org.clojure/clojurescript]
+                                      ; ]
+                                      [day8.re-frame/test "0.1.5"]
+                                      [nubank/workspaces "1.0.13"]
+                                      ;; devcards should be superceded by nubank, no?
+                                      ;; [devcards "0.2.6" :exclusions [org.clojure/tools.reader]]
+                                      ;; https://github.com/day8/re-frame-tracer
+                                      ;; [org.clojars.stumitchell/clairvoyant "0.2.1"]
+                                      [day8.re-frame/re-frame-10x "0.4.5"]
+                                      [binaryage/devtools "0.9.11"]
 
-                                        ;; UI Components
-                                        ;; [cljsjs/parinfer "1.8.1-0"]
-                                        ;; Still helpful for externs!
-                                        [com.andrewmcveigh/cljs-time "0.5.2"]
-                                        ;[cljsjs/marked "0.3.5-0"] ; awb99: already required above
-                                        ; ui plugins bundled with notebook
-                                        ;[awb99.fortune "0.0.1"]
-                                        ;[quil "3.1.0"]
-                                        ;[awb99/shapes "0.1.2"]
+                                      ]
 
-                                        ;; actually dev
-                                        [binaryage/dirac "RELEASE"] ;; 0.6.7
-                                        ;[cider/piggieback "0.4.2"
-                                        ; ;; :exclusions [org.clojure/clojurescript]
-                                        ; ]
-                                        ;; [doo "0.1.11"]
-                                        ;; [re-frisk "0.5.4.1"]
-                                        [day8.re-frame/test "0.1.5"]
-                                        [nubank/workspaces "1.0.13"]
-                                        #_[devcards "0.2.6"
-                                           :exclusions [org.clojure/tools.reader]]
-                                        ;; https://github.com/day8/re-frame-tracer
-                                        ;; [org.clojars.stumitchell/clairvoyant "0.2.1"]
-                                        [day8.re-frame/re-frame-10x "0.4.5"]
-                                        [binaryage/devtools "0.9.11"]
-
-                                        ]
-
-                         }
-             :cloverage [:test
-                         {:plugins   [[lein-cloverage "1.1.2"]]
-                          ;; :dependencies [[cloverage "1.1.2"]]
-                          :cloverage {:codecov? true
-                                      ;; In case we want to exclude stuff
-                                      ;; :ns-exclude-regex [#".*util.instrument"]
-                                      ;; :test-ns-regex [#"^((?!debug-integration-test).)*$$"]
-                                      }
-                          }]
-
-
-             ;; TODO : Make cljfmt really nice : https://devhub.io/repos/bbatsov-cljfmt
-             :cljfmt    [:test
-                         {:plugins [[lein-cljfmt "0.6.6"]]
-                          :cljfmt  {:indents {as->                [[:inner 0]]
-                                              with-debug-bindings [[:inner 0]]
-                                              merge-meta          [[:inner 0]]
-                                              try-if-let          [[:block 1]]}}}]
-
-             ;; Appears clj-kondo is the new eastwood
-             ;; :eastwood
-             #_[:test
-                {:plugins  [[jonase/eastwood "0.3.5"]]
-                 :eastwood {:config-files ["eastwood.clj"]
-                            ;; TODO: Add :test-paths once
-                            ;; https://github.com/jonase/eastwood/issues/298
-                            ;; is resolved
-                            :namespaces   [:source-paths]}}]
-             :uberjar   {:hooks       [minify-assets.plugin/hooks]
-                         :aot         :all
-                         :omit-source true}
-             :python    {:dependencies [[cnuernber/libpython-clj "1.13"]]
-                         :uberjar-name "gorilla-notebook-standalone-with-python.jar"}
+                       }
+             :uberjar {:hooks       [minify-assets.plugin/hooks]
+                       :aot         :all
+                       :omit-source true
+                       :classifier  "standalone"}
+             :python  {:dependencies [[cnuernber/libpython-clj "1.30"]]
+                       ;; :uberjar-name "gorilla-notebook-standalone-with-python.jar"
+                       }
              }
   :shell {:commands {"open" {:windows ["cmd" "/c" "start"]
                              :macosx  "open"

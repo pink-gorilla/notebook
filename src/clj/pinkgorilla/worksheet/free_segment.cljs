@@ -6,7 +6,6 @@
    [pinkgorilla.worksheet.free-output :refer [free-output]]
    [pinkgorilla.worksheet.helper :refer [focus-active-segment]]))
 
-
 (defn free-segment
   [seg-data editor-options]
   (let [seg-id (:id seg-data)
@@ -16,7 +15,7 @@
     (reagent/create-class
      {:display-name         "markup-segment"
       :component-did-update #(focus-active-segment %1 @is-active)
-      :reagent-render       (fn [seg-data]
+      :reagent-render       (fn [_] ; seg-data
                               (let [free-value (:content @segment)
                                     div-kw (keyword (str "div#" (name seg-id)))
                                     class (str "segment free"

@@ -3,7 +3,6 @@
    [reagent.core :as reagent]
    [pinkgorilla.worksheet.free-output-view :refer [free-output-view]]))
 
-
 (defn free-segment-view
   [seg-data]
   (let [seg-id (:id seg-data)

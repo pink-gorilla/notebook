@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ https://www.schemecolor.com/navy-and-hot-pink.php
+ https://www.schemecolor.com/green-and-pink-pendant-color-scheme.php
+ */
+
+/* https://tailwindcss.com/docs/functions-and-directives/ */
+/* Experimental samples */
+.pg-btn {
+    @apply font-bold py-2 px-4 rounded;
+}
+.pg-btn-blue {
+    @apply bg-blue-500 text-white;
+}
+.pg-btn-blue:hover {
+    @apply bg-blue-700;
+}
+
+.pg-cell-actions {
+    /* no pseudo selectors / media props in @apply */
+    @apply block mt-0 text-teal-200 mr-4 p-1;
+    /* @apply block lg:inline-block mt-0 text-teal-200 hover:bg-orange-500 mr-4 p-1; */
+}
+
+.pg-cell-move {
+   @apply block mt-4 text-teal-200; /*  blue-700 */
+}
+
+/*
+@variants focus, pg-hover {
+    .rotate-0 {
+        transform: rotate(0deg);
+    }
+    .rotate-90 {
+        transform: rotate(90deg);
+    }
+}
+@responsive {
+    .pg-bg-gradient-brand {
+        background-image: linear-gradient(blue, green);
+    }
+}
+
+/*
+@screen pg-sm {
+}
+ */
+/* green-800*/
+.pg-col-1 {
+  color: #155812;
+}
+/* green-600*/
+.pg-col-2 {
+    color: #5EA01A;
+}
+/* green-400*/
+.pg-col-3 {
+    color: #7BC063;
+}
+/* pink-800*/
+.pg-col-4 {
+    color: #A01361;
+}
+/* pink-500*/
+.pg-col-5 {
+    color: #EC3E9C;
+}
+
+
+.pg-content-area {
+    height: calc(100vh - theme('spacing.12'));
+}

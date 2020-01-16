@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: Cache Maven dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/project.clj') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Cache NPM dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Install dependencies
+      run: |
+        npm install
+        lein deps
+    - name: Check formatting
+      run: lein cljfmt check
+    - name: Run tests
+      run: |
+        lein with-profile +cljs test
+        lein build-shadow-ci
+        lein test-js
+    - name: Release
+      env:
+        RELEASE_USERNAME: ${{ secrets.ReleaseUsername }}
+        RELEASE_PASSWORD: ${{ secrets.ReleasePassword }}
+      run: |
+        git config --global user.email "ci@pinkgorilla.org"
+        git config --global user.name "CI/CD"
+        lein jar
+        lein release

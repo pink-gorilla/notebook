@@ -1,10 +1,15 @@
 ;; gorilla-repl.fileformat = 2
 
+;; @@ [meta]
+{:tagline "a lot of vega demos (latest version of vega) plus dynamic widgets", :tags "cljs, vega, ", :name ""}
+
+;; @@
+
 ;; **
 ;;; # Reagent Widgets with Dynamic State
 ;; **
 
-;; @@
+;; @@ [clj]
 ; Define Namespace for your notebook and require namespaces 
 (ns pacific-pond  
   (:require 
@@ -23,7 +28,7 @@
 ;;; vega charts rendered with **reagent**
 ;; **
 
-;; @@
+;; @@ [clj]
 (reagent!
  '[:div
    [:p "sample vega plot:"]
@@ -42,7 +47,7 @@
 ;;;  
 ;; **
 
-;; @@
+;; @@ [clj]
 (reagent!
  '[:div
    [:p "select the sample vega plot you want to see:"]
@@ -67,7 +72,7 @@
 ;;; ["^ ","~:type","reagent","~:content",["div",["p","select the sample vega plot you want to see:"],["combo","widget-state","charturl",[["^ ","~:label","bar-chart","~:id","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"],["^ ","^2","population-pyramid","^3","https://vega.github.io/vega/examples/population-pyramid.vg.json"],["^ ","^2","tree-layout","^3","https://vega.github.io/editor/spec/vega/tree-layout.vg.json"],["^ ","^2","tree-map","^3","https://vega.github.io/editor/spec/vega/treemap.vg.json"],["^ ","^2","force directed layout","^3","https://vega.github.io/editor/spec/vega/force-directed-layout.vg.json"],["^ ","^2","stock index","^3","https://vega.github.io/editor/spec/vega/stock-index-chart.vg.json"],["^ ","^2","overview-details","^3","https://vega.github.io/editor/spec/vega/overview-plus-detail.vg.json"],["^ ","^2","scatterplot interaction","^3","https://vega.github.io/editor/spec/vega/brushing-scatter-plots.vg.json"],["^ ","^2","unemployment map","^3","https://vega.github.io/editor/spec/vega/county-unemployment.vg.json"],["^ ","^2","box plot","^3","https://vega.github.io/editor/spec/vega/box-plot.vg.json"],["^ ","^2","contour","^3","https://vega.github.io/editor/spec/vega/contour-plot.vg.json"]]],["vegaa","widget-state","charturl"]],"~:value","[:div [:p \"select the sample vega plot you want to see:\"] [combo :widget-state :charturl [{:label \"bar-chart\", :id \"https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json\"} {:label \"population-pyramid\", :id \"https://vega.github.io/vega/examples/population-pyramid.vg.json\"} {:label \"tree-layout\", :id \"https://vega.github.io/editor/spec/vega/tree-layout.vg.json\"} {:label \"tree-map\", :id \"https://vega.github.io/editor/spec/vega/treemap.vg.json\"} {:label \"force directed layout\", :id \"https://vega.github.io/editor/spec/vega/force-directed-layout.vg.json\"} {:label \"stock index\", :id \"https://vega.github.io/editor/spec/vega/stock-index-chart.vg.json\"} {:label \"overview-details\", :id \"https://vega.github.io/editor/spec/vega/overview-plus-detail.vg.json\"} {:label \"scatterplot interaction\", :id \"https://vega.github.io/editor/spec/vega/brushing-scatter-plots.vg.json\"} {:label \"unemployment map\", :id \"https://vega.github.io/editor/spec/vega/county-unemployment.vg.json\"} {:label \"box plot\", :id \"https://vega.github.io/editor/spec/vega/box-plot.vg.json\"} {:label \"contour\", :id \"https://vega.github.io/editor/spec/vega/contour-plot.vg.json\"}]] [vegaa :widget-state :charturl]]"]
 ;; <=
 
-;; @@
+;; @@ [clj]
 ; this renders the above selected graph - widget state is notebook scoped. 
 (reagent!
  '[:div
@@ -81,7 +86,7 @@
 ;;; ["^ ","~:type","reagent","~:content",["div",["vegaa","widget-state","charturl"]],"~:value","[:div [vegaa :widget-state :charturl]]"]
 ;; <=
 
-;; @@
+;; @@ [clj]
 ; test for slider
 (reagent!
  '[:div
@@ -98,7 +103,7 @@
 ;;; ["^ ","~:type","reagent","~:content",["div",["slider","widget-state","x",0,100,5],["slider","widget-state","y",0,100,5],["slider","widget-state","z",0,100,5]],"~:value","[:div [slider :widget-state :x 0 100 5] [slider :widget-state :y 0 100 5] [slider :widget-state :z 0 100 5]]"]
 ;; <=
 
-;; @@
+;; @@ [clj]
 
 ;; @@
 ;; ->

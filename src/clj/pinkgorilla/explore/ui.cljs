@@ -1,11 +1,8 @@
 (ns pinkgorilla.explore.ui
-  (:require 
-   [reagent.core :refer [atom] :as r]
+  (:require
    [re-frame.core :refer [dispatch]]
    [clojure.string :as str]
-   [pinkgorilla.explore.utils :as u]
-   [cljsjs.marked]
-   [cljs-time.core :as time]))
+   [cljsjs.marked]))
 
 ;; 
 ;(def ctg (r/adapt-react-class (-> js/React (aget "addons") (aget "CSSTransitionGroup"))))

@@ -1,10 +1,10 @@
 (ns pinkgorilla.events.storage-file
   (:require
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-   [ajax.core :as ajax :refer [GET POST]]
-   [taoensso.timbre :refer-macros (info)]
-   [pinkgorilla.routes :as routes]
-   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]))
+   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx]]
+   [ajax.core :as ajax]
+   ;; [taoensso.timbre :refer-macros (info)]
+   [pinkgorilla.routes] ;; Needed for defroute?
+   [pinkgorilla.events.helper :refer [standard-interceptors]]))
 
 
 ;; load files from local-file-storage
@@ -21,8 +21,6 @@
                  :response-format (ajax/transit-response-format) ;; IMPORTANT!: You must provide this.
                  :on-success      [:process-files-response]
                  :on-failure      [:process-error-response "browse-file-local"]}}))
-
-
 
 (reg-event-db
  :process-files-response

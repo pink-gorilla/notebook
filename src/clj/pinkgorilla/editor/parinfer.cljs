@@ -1,8 +1,8 @@
 (ns pinkgorilla.editor.parinfer
   (:require
-    ["parinfer" :as parinfer]
+   ["parinfer" :as parinfer]
     ;; [cljsjs.parinfer]
-    ))
+   ))
 
 (defn- convert-changed-line [e]
   {:line-no (aget e "lineNo")

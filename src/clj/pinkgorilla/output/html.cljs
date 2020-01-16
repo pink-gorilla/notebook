@@ -1,6 +1,7 @@
 (ns pinkgorilla.output.html
   (:require
-    [pinkgorilla.output.hack :refer [temp-comp-hack]]))
+   [reagent.core :as reagent]
+   [pinkgorilla.output.hack :refer [temp-comp-hack]]))
 
 ;; Scripts in Injected html are not being evaluated.
 ;; This is what worked for GorillaRepl
@@ -23,18 +24,45 @@
 
 
 
-;; TODO: refactor UI library interface to use reagent and not html 
+;; TODO: refactor UI library interface to use reagent and not html
 ;; THEN we can use this nice just in time loader component:
 ;; https://www.martinklepsch.org/posts/just-in-time-script-loading-with-react-and-clojuresript.html
 
 
 ;; TODO Ugh, old stylesheets persist as html so we get a string
+
+
+(defn process-scripts!
+  "Setting innerHTML (dangerouslySetInnerHTML) or textContent does not
+ execute scripts! Thats why we clone and replace the elements."
+  [el]
+  (let [scripts (->> (.getElementsByTagName el "SCRIPT")
+                     (.from js/Array))]
+    (doall
+     (map (fn [script]
+            ;; WTF does this not work
+            ;; (.replaceWith script (.cloneNode script true))
+            ;; Ugly cloning hack
+            (let [newScript (doto (.createElement js/document "script")
+                              (aset "textContent" (.-textContent script)))]
+              (if-let [src (.getAttribute script "src")]
+                (.setAttribute newScript "src" src))
+              (.replaceWith script newScript)))
+          scripts))))
+
 (defn output-html
   [output _]
   (if-let [content (:content output)]
     (cond
       (string? content)
-      [:span.value {:data-value              (:value output)
-                    :dangerouslySetInnerHTML {:__html content}}]
+      (reagent/create-class
+       {:display-name        "output-html"                 ;; for more helpful warnings & errors
+         ;; :component-will-unmount (fn [this])
+        :component-did-mount (fn [this] (process-scripts! (reagent/dom-node this)))
+
+         ;; :component-did-update (fn [this old-argv])
+        :reagent-render      (fn []
+                               [:div {:dangerouslySetInnerHTML {:__html content}}])})
+
       :else
       [:span.value {:data-value (:value output)} (temp-comp-hack (:content output))])))

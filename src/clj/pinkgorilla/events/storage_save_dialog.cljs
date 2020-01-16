@@ -1,13 +1,14 @@
 (ns pinkgorilla.events.storage-save-dialog
   (:require
    [taoensso.timbre :refer-macros (info)]
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
+   [re-frame.core :refer [reg-event-db reg-event-fx]]
    [pinkgorilla.routes :as routes]
-   [pinkgorilla.storage.storage :refer [Storage storagetype query-params-to-storage gorilla-path]]
-   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]))
+   [pinkgorilla.storage.storage :refer [query-params-to-storage gorilla-path]]
+   [pinkgorilla.events.helper :refer [standard-interceptors]]))
 
 
 ;; Save-Dialog Open/Close
+
 
 (reg-event-db
  :app:saveas
@@ -37,19 +38,23 @@
 (reg-event-db
  :nav-to-storage
  [standard-interceptors]
- (fn [db [_ params]]
+ (fn [db [_ reset]] ;; params
    (let [storage (:storage db)]
-     (if (nil? storage)
-       (routes/nav! "/edit")
-       (routes/nav! (gorilla-path storage)))
+     (if reset
+       (routes/nav! "/new")
+       (if (nil? storage)
+         (routes/nav! "/edit")
+         (routes/nav! (gorilla-path storage))))
      db)))
 
 
 ; navigate to ...
+
+
 (reg-event-fx
  :nav
  [standard-interceptors]
- (fn [{:keys [db]} [_ url]]
+ (fn [{:keys [_]} [_ url]] ;; db
    (routes/nav! url)))
 
 

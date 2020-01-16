@@ -1,0 +1,201 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # PinkGorilla 
+;;; 
+;;; Shift + enter evaluates code. Hit CTRL+g twice in quick succession or click the menu icon (upper-right corner) for more commands.
+;;; 
+;;; It's a good habit to run each worksheet in its own namespace. We created a random namespace for you; you can keep using it.
+;; **
+
+;; @@ [clj]
+(defmulti foo class)
+(defmethod foo clojure.lang.Associative [c] :a-collection)
+(defmethod foo String [s] :a-string)
+
+;(foo [])
+;:a-collection
+
+;(foo (java.util.HashMap.))
+;:a-collection
+
+;(foo "bar")
+;:a-string
+;; @@
+;; =>
+;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-unkown"],"#multifn[foo 0x28fa472]"],"~:value","#multifn[foo 0x28fa472]"]
+;; <=
+
+;; @@ [clj]
+(methods foo)
+
+;; @@
+;; =>
+;;; ["^ ","~:type","list-like","~:open",["span",["^ ","~:class","clj-map"],"{"],"~:close",["span",["^ ","^2","clj-map"],"}"],"~:separator",["span",", "],"~:items",[["^ ","^0","list-like","^1",null,"^3",null,"^4",["span"," "],"^5",[["^ ","^0","html","~:content",["span",["^ ","^2","clj-class"],"clojure.lang.Associative"],"~:value","clojure.lang.Associative"],["^ ","^0","html","^6",["span",["^ ","^2","clj-unkown"],"#function[user/eval63869/fn--63870]"],"^7","#function[user/eval63869/fn--63870]"]],"^7","[clojure.lang.Associative #function[user/eval63869/fn--63870]]"],["^ ","^0","list-like","^1",null,"^3",null,"^4",["span"," "],"^5",[["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.lang.String"],"^7","java.lang.String"],["^ ","^0","html","^6",["span",["^ ","^2","clj-unkown"],"#function[user/eval63873/fn--63874]"],"^7","#function[user/eval63873/fn--63874]"]],"^7","[java.lang.String #function[user/eval63873/fn--63874]]"],["^ ","^0","list-like","^1",null,"^3",null,"^4",["span"," "],"^5",[["^ ","^0","html","^6",["span",["^ ","^2","clj-keyword"],":user/collection"],"^7",":user/collection"],["^ ","^0","html","^6",["span",["^ ","^2","clj-unkown"],"#function[user/eval63824/fn--63825]"],"^7","#function[user/eval63824/fn--63825]"]],"^7","[:user/collection #function[user/eval63824/fn--63825]]"]],"^7","{clojure.lang.Associative #function[user/eval63869/fn--63870], java.lang.String #function[user/eval63873/fn--63874], :user/collection #function[user/eval63824/fn--63825]}"]
+;; <=
+
+;; @@ [clj]
+(foo "bar")
+;; @@
+;; =>
+;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-keyword"],":a-string"],"~:value",":a-string"]
+;; <=
+
+;; @@ [clj]
+(foo [])
+;; @@
+;; =>
+;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-keyword"],":a-collection"],"~:value",":a-collection"]
+;; <=
+
+;; @@ [clj]
+(type [])
+;; @@
+;; =>
+;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-class"],"clojure.lang.PersistentVector"],"~:value","clojure.lang.PersistentVector"]
+;; <=
+
+;; @@ [clj]
+(foo {})
+;; @@
+;; =>
+;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-keyword"],":a-collection"],"~:value",":a-collection"]
+;; <=
+
+;; @@ [clj]
+(ancestors clojure.lang.PersistentVector)
+;; @@
+;; =>
+;;; ["^ ","~:type","list-like","~:open",["span",["^ ","~:class","clj-set"],"#{"],"~:close",["span",["^ ","^2","clj-set"],"}"],"~:separator",["span"," "],"~:items",[["^ ","^0","html","~:content",["span",["^ ","^2","clj-class"],"java.lang.Runnable"],"~:value","java.lang.Runnable"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.Associative"],"^7","clojure.lang.Associative"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IKVReduce"],"^7","clojure.lang.IKVReduce"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IReduceInit"],"^7","clojure.lang.IReduceInit"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.lang.Comparable"],"^7","java.lang.Comparable"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IPersistentCollection"],"^7","clojure.lang.IPersistentCollection"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IPersistentVector"],"^7","clojure.lang.IPersistentVector"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IHashEq"],"^7","clojure.lang.IHashEq"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.Seqable"],"^7","clojure.lang.Seqable"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IReduce"],"^7","clojure.lang.IReduce"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IObj"],"^7","clojure.lang.IObj"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.Reversible"],"^7","clojure.lang.Reversible"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IMeta"],"^7","clojure.lang.IMeta"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.util.List"],"^7","java.util.List"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IFn"],"^7","clojure.lang.IFn"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.Indexed"],"^7","clojure.lang.Indexed"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.ILookup"],"^7","clojure.lang.ILookup"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.AFn"],"^7","clojure.lang.AFn"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.Counted"],"^7","clojure.lang.Counted"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.Sequential"],"^7","clojure.lang.Sequential"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.util.Collection"],"^7","java.util.Collection"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.util.RandomAccess"],"^7","java.util.RandomAccess"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IPersistentStack"],"^7","clojure.lang.IPersistentStack"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.lang.Object"],"^7","java.lang.Object"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.lang.Iterable"],"^7","java.lang.Iterable"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.APersistentVector"],"^7","clojure.lang.APersistentVector"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.io.Serializable"],"^7","java.io.Serializable"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"clojure.lang.IEditableCollection"],"^7","clojure.lang.IEditableCollection"],["^ ","^0","html","^6",["span",["^ ","^2","clj-class"],"java.util.concurrent.Callable"],"^7","java.util.concurrent.Callable"]],"^7","#{java.lang.Runnable clojure.lang.Associative clojure.lang.IKVReduce clojure.lang.IReduceInit java.lang.Comparable clojure.lang.IPersistentCollection clojure.lang.IPersistentVector clojure.lang.IHashEq clojure.lang.Seqable clojure.lang.IReduce clojure.lang.IObj clojure.lang.Reversible clojure.lang.IMeta java.util.List clojure.lang.IFn clojure.lang.Indexed clojure.lang.ILookup clojure.lang.AFn clojure.lang.Counted clojure.lang.Sequential java.util.Collection java.util.RandomAccess clojure.lang.IPersistentStack java.lang.Object java.lang.Iterable clojure.lang.APersistentVector java.io.Serializable clojure.lang.IEditableCollection java.util.concurrent.Callable}"]
+;; <=
+
+;; @@ [clj]
+(ancestors java.util.HashMap)
+;; @@
+
+;; @@ [cljs]
+(ns demo-render
+  (:require 
+    [pinkgorilla.ui.pinkie :refer [register-tag custom-renderers]]
+   [reagent.core :as r]
+   [pinkgorilla.ui.helper :refer [text!]]
+   [pinkgorilla.ui.leaflet :refer [mymap]]
+   [pinkgorilla.ui.player :refer [player]]
+   [pinkgorilla.ui.sparklines :refer [sparkline sparkline-bar sparkline-spot]]
+   )) 
+
+;; @@
+;; ->
+;;;  type: data: nil
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [cljs]
+(defn bongo [] [:div [:h1 "bongo"] [:p "trott"]])
+;; @@
+;; ->
+;;;  type: data: #'demo-render/bongo
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-unknown"],"#'demo-render/bongo"],"~:value","#'demo-render/bongo"]
+;; <=
+
+;; @@ [cljs]
+(register-tag :bongo bongo)
+;; @@
+;; ->
+;;;  type: data: {:video #object[pinkgorilla$ui$player$player], :bongo #object[demo_render$bongo]}
+;; <-
+;; =>
+;;; ["^ ","~:type","~:list-like","~:open",["~:span",["^ ","~:class","clj-map"],"{"],"~:close",["^3",["^ ","^4","clj-map"],"}"],"~:separator",["^3",", "],"~:items",["~#list",[["^ ","^0","^1","^2",null,"^5",null,"^6",["^3"," "],"^7",["^8",[["^ ","^0","~:html","~:content",["^3",["^ ","^4","clj-keyword"],":video"],"~:value",":video"],["^ ","^0","^9","^:",["^3",["^ ","^4","clj-unknown"],"#object[pinkgorilla$ui$player$player]"],"^;","#object[pinkgorilla$ui$player$player]"]]],"^;","[:video #object[pinkgorilla$ui$player$player]]"],["^ ","^0","^1","^2",null,"^5",null,"^6",["^3"," "],"^7",["^8",[["^ ","^0","^9","^:",["^3",["^ ","^4","clj-keyword"],":bongo"],"^;",":bongo"],["^ ","^0","^9","^:",["^3",["^ ","^4","clj-unknown"],"#object[demo_render$bongo]"],"^;","#object[demo_render$bongo]"]]],"^;","[:bongo #object[demo_render$bongo]]"]]],"^;","{:video #object[pinkgorilla$ui$player$player], :bongo #object[demo_render$bongo]}"]
+;; <=
+
+;; @@ [cljs]
+^:R [:bongo]
+;; @@
+;; ->
+;;;  type: data: [:bongo]
+;; <-
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-kewords",true]
+;; <=
+
+;; @@ [cljs]
+(text! (with-out-str (cljs.pprint/print-table (map #(assoc {} :k (first %) :r (pr-str (last %))) (seq @custom-renderers)))))
+;; @@
+;; ->
+;;;  type: data: #object[pinkgorilla.ui.helper.t_pinkgorilla$ui$helper5957]
+;; <-
+;; =>
+;;; ["^ ","~:type","~:text","~:content",["^ ","^1","\n|     :k |                                    :r |\n|--------+---------------------------------------|\n| :video | #object[pinkgorilla$ui$player$player] |\n| :bongo |            #object[demo_render$bongo] |\n"]]
+;; <=
+
+;; @@ [cljs]
+(text! "hi\nhi")
+;; @@
+;; ->
+;;;  type: data: #object[pinkgorilla.ui.helper.t_pinkgorilla$ui$helper5957]
+;; <-
+;; =>
+;;; ["^ ","~:type","~:text","~:content",["^ ","^1","hi\nhi"]]
+;; <=
+
+;; @@ [clj]
+;; CLOJURE now
+(ns demo.rendertest
+  (:require
+            [pinkgorilla.ui.helper :refer [text!]]
+            [pinkgorilla.ui.table  :refer [table-view]]
+            [pinkgorilla.ui.hiccup  :refer [html!]]))
+;; @@
+;; =>
+;;; ["^ ","~:type","html","~:content",["span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+(text! "h2\nkllj\njj")
+;; @@
+;; =>
+;;; ["^ ","~:type","text","~:content",["^ ","~:text","h2\nkllj\njj"]]
+;; <=
+
+;; @@ [clj]
+^:R [:video "https://www.youtube.com/watch?v=-6BsiVyC1kM"]
+;; @@
+;; =>
+;;; ["^ ","~:type","reagent-cljs","~:map-kewords",true]
+;; <=
+
+;; @@ [cljs]
+^:R [:video "https://www.youtube.com/watch?v=-6BsiVyC1kM"]
+;; @@
+;; ->
+;;;  type: data: [:video "https://www.youtube.com/watch?v=-6BsiVyC1kM"]
+;; <-
+;; =>
+;;; ["^ ","~:type","~:reagent-cljs","~:map-kewords",true]
+;; <=
+
+;; @@ [clj]
+^:R [:bongo]
+;; @@
+;; =>
+;;; ["^ ","~:type","reagent-cljs","~:map-kewords",true]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=

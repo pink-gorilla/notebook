@@ -1,12 +1,12 @@
 (ns pinkgorilla.events.config
-  "events related to 
-   app-db init
-   configuration loading"
+  "Events related to app-db init configuration loading"
   (:require
    [taoensso.timbre :refer-macros (info)]
    [clojure.string :as str]
    [ajax.core :as ajax]
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx]]
+   [re-frame.core :refer [reg-event-db reg-event-fx]]
+   [day8.re-frame-10x]
+
    [pinkgorilla.notifications :as events :refer [add-notification notification]]
    [pinkgorilla.db :as db :refer [initial-db]]
    [pinkgorilla.keybindings :as keybindings]
@@ -20,7 +20,6 @@
   (let [base-path (str/replace (:path app-url) #"[^/]+$" "")
         db (merge initial-db {:base-path base-path})]
     db))
-
 
 (reg-event-db
  :initialize-app-db
@@ -45,21 +44,34 @@
 
 
 ; used by process config reponse below.
+
+
 (def install-commands
   (re-frame.core/->interceptor
    :id :install-commands
    :after (fn
             [context]
-            (keybindings/install-commands (get-in context [:coeffects :db :all-commands]))
+            (keybindings/install-commands (get-in context [:effects :db :config :cljs :key-bindings]))
             context)))
 
-
-(reg-event-db
+(reg-event-fx
  :process-config-response
  [install-commands]
- (fn [db [_ response]]
-   (-> (assoc-in db [:config] response)
-       ;(assoc :message nil)
-       )))
+ (fn [cofx [_ response]]
+   (let [all-bindings (get-in response [:cljs :key-bindings])
+         visible-commands (keybindings/visible-commands all-bindings)]
+     {:db         (-> (assoc-in (:db cofx) [:config] response)
+                      (assoc-in [:palette :all-visible-commands] visible-commands))
+      :dispatch-n (list [:init-cljs] [:explore-load])})))
+
+(reg-event-db
+ :toggle.reframe10x
+ (fn [db _]
+   (let [visible (not (get-in db [:dev :reframe10x-visible?]))
+         ;_ (.setItem js/localStorage "day8.re-frame-10x.show-panel" (str visible))
+         _ (info "reframe-10x visible: " visible)
+        ; _ (dispatch [:settings/user-toggle-panel])
+         _ (day8.re-frame-10x/show-panel! visible)] ; https://github.com/day8/re-frame-10x/pull/210s
+     (assoc-in db [:dev :reframe10x-visible?] visible))))
 
 

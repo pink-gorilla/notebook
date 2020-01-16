@@ -29,8 +29,7 @@
         data-js (clj->js data)
         ;_ (info "module:" module)
         render-fn (:render module)
-        version (:version module)
-        ]
+        version (:version module)]
     ;(info render-fn)
     (info "rendering version " version)
     (render-fn id-or-el data-js)
@@ -54,8 +53,6 @@
     nil ; suppress returning the requirejs module definition
     ))
 
-
-
 (defn output-jsscript
   [output _]
   (let [uuid (uuid/uuid-string (uuid/make-random-uuid))
@@ -64,26 +61,21 @@
         ;_ (info "content: " content)
         snippet (:module content)
         data (:data content)]
-        (reagent/create-class
-         {:display-name "output-jsscript"
-          :reagent-render (fn [] [:div {:id uuid}])
-          :component-did-mount (fn [this]
+    (reagent/create-class
+     {:display-name "output-jsscript"
+      :reagent-render (fn [] [:div {:id uuid}])
+      :component-did-mount (fn [this]
                                  ;(run-script uuid data snippet)
-                                 (run-script (reagent/dom-node this) data snippet)
-                                 )
+                             (run-script (reagent/dom-node this) data snippet))
           ;:component-did-update (fn [this]
           ;                        (run-script uuid data snippet))
 
  ;(let [[_ series-values] (reagent/argv this)]
 
-          :component-will-update (fn [this [_ new-params]]
+      :component-will-update (fn [this [_ new-params]]
               ; with changing of parameters, re-render the component. (important for vega charts)
                                   ;(info "new params: " new-params)
                                    ;(run-script uuid data snippet)
-                                   (run-script (reagent/dom-node this) (get-in new-params [:content :data]) snippet)
-                                   )
-
-
-          })))
+                               (run-script (reagent/dom-node this) (get-in new-params [:content :data]) snippet))})))
 
 

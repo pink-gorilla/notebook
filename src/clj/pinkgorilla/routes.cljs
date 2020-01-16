@@ -1,18 +1,20 @@
 (ns pinkgorilla.routes
   (:require-macros [secretary.core :refer [defroute]])
   (:import
-     [goog History]
-     ;; [goog.history Html5History]
-      )
+   [goog History]
+    ;; [goog.history Html5History]
+   )
   (:require
+   [taoensso.timbre :refer-macros (info)]
    [secretary.core :as secretary]
    [goog.events :as events]
    [goog.history.EventType :as EventType]
    [re-frame.core :as re-frame]
-   [pinkgorilla.explore.utils :as u]
-   ))
+   [pinkgorilla.explore.utils :as u]))
 
 ;; Fix browser/History URL http://www.lispcast.com/mastering-client-side-routing-with-secretary-and-goog-history
+
+
 #_(defn get-token []
     (str js/window.location.pathname js/window.location.search))
 
@@ -52,9 +54,9 @@
   []
   (doto (History.)
     (events/listen
-      EventType/NAVIGATE
-      (fn [event]
-        (secretary/dispatch! (.-token event))))
+     EventType/NAVIGATE
+     (fn [event]
+       (secretary/dispatch! (.-token event))))
     (.setEnabled true)))
 
 (defonce history (hook-browser-navigation!))
@@ -66,27 +68,24 @@
 (defn app-routes
   [& [{:keys [hook-navigation]
        :or   {hook-navigation false}}]]
+  (info "Hook navigation" hook-navigation)
   (secretary/set-config! :prefix "#")
   (defroute "/new" [query-params]
     (re-frame/dispatch [:initialize-new-worksheet]))
   (defroute "/edit" [query-params]
-    (re-frame/dispatch [:edit-file query-params]))
+    (when query-params
+      (re-frame/dispatch [:edit-file query-params])))
   (defroute "/view" [query-params]
     (re-frame/dispatch [:view-file query-params]))
   (defroute "/reset" []
-    (nav! "/new"))
-  
-  )
+    (nav! "/new")))
 
-  
-
-
-  (defroute projects-path "/explore" [query-params]
-    (println "navigated to /explore")
-    (re-frame/dispatch [:list-projects (set (u/split-tags (:tags query-params)) )]))
+(defroute projects-path "/explore" [query-params]
+  (info "navigated to /explore")
+  (re-frame/dispatch [:list-projects (set (u/split-tags (:tags query-params)))]))
 
 
 
-;; tODO; oauth callbacks
+;; TODO: oauth callbacks
 ;   {:route/url  "/foursquare-hello"
 ;    :route/page foursquare/hello-page}

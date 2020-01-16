@@ -1,13 +1,141 @@
 {
+ ;; TODO : Legacy around move this stuff else - or remove it
  ; this file is read by de.otto.tesla
+ :status-url    "/status"
+ :health-url    "/health"
+ ;; TODO: The following ends up (get-in @db [:config]). CANNOT be nested in settings bc the latter is backed by local-storage
+ :settings      {; TODO ClojureScript kernel settings may interfere with the build chosen
+                 :cljs                 {;; :path         "http://localhost:2705/out/gorilla" ; base url of dependency server / bundle that gets loaded
+                                        :path         "/cljs-runtime/gorilla" ; base url of dependency server / bundle that gets loaded
+                                        ; namespaces that will get loaded into the cljs kernel via our dependency server
+                                        :load-on-init #{fortune.core
+                                                        awb99.shapes.core
+                                                        quil.core
+                                                        quil.middleware
+                                                        ;quil.sketch
+                                                        ;quil.util
+                                                        reagent.core
+                                                        pinkgorilla.shadow
+                                                        pinkgorilla.ui.pinkie
+                                                        pinkgorilla.ui.helper
+                                                        pinkgorilla.kernel.pinkie
+                                                        module$node_modules$moment$moment ; namespace convention of shadow-cljs for npm modules
+                                                        ajax.core ; http requests
 
- :explore-file-directories ["./notebooks"
-                            ;; "../sample-notebooks/notebooks"
-                            ]
+                                                        pinkgorilla.ui.player ; video player
+                                                        pinkgorilla.ui.sparklines ; sparkline charts
+                                                        pinkgorilla.ui.aggrid ; aggrid grid
+                                                        pinkgorilla.ui.leaflet
 
- :status-url               "/status"
- :health-url               "/health"
-
+                                                        thi.ng.strf.core
+                                                        }
+                                        :key-bindings [{:name    "command:app:commands"
+                                                        :desc    "Show the command list."
+                                                        :kb      "alt+g alt+g"
+                                                        :handler [:app:commands]}
+                                                       #_{:name       "command:worksheet:leaveBack"
+                                                          :desc       "Move to the previous segment."
+                                                          :showInMenu false
+                                                          :handler    :worksheet:leaveBack}
+                                                       #_{:name       "command:worksheet:leaveForward"
+                                                          :desc       "Move to the next segment."
+                                                          :showInMenu false
+                                                          :handler    :worksheet:leaveForward}
+                                                       {:name    "command:evaluator:evaluate"
+                                                        :desc    "Evaluate the highlighted segment."
+                                                        :kb      "shift+enter"
+                                                        :handler [:worksheet:evaluate]}
+                                                       {:name    "command:evaluator:evaluate-all"
+                                                        :desc    "Evaluate all segments."
+                                                        :kb      "alt+shift+enter"
+                                                        :handler [:worksheet:evaluate-all]}
+                                                       {:name    "command:worksheet:clear-output"
+                                                        :desc    "Clear the output of the highlighted segment."
+                                                        :kb      "alt+g alt+o"
+                                                        :handler [:worksheet:clear-output]}
+                                                       {:name    "command:worksheet:clear-all"
+                                                        :desc    "Clear the output of all code segments."
+                                                        :kb      "alt+g alt+z"
+                                                        :handler [:worksheet:clear-all-output]}
+                                                       {:name    "command:worksheet:delete"
+                                                        :desc    "Delete the highlighted segment."
+                                                        :kb      "alt+g alt+x"
+                                                        :handler [:worksheet:delete]}
+                                                       {:name    "command:worksheet:undo"
+                                                        :desc    "Undo the last segment operation."
+                                                        :kb      "alt+g alt+\\"
+                                                        :handler [:undo] #_"worksheet:undelete"}
+                                                       {:name    "command:worksheet:changeToFree"
+                                                        :desc    "Convert the highlighted segment to a markdown segment."
+                                                        :kb      "alt+g alt+m"
+                                                        :handler [:worksheet:changeToFree]}
+                                                       {:name    "command:worksheet:changeToCode"
+                                                        :desc    "Convert the highlighted segment to a clojure segment."
+                                                        :kb      "alt+g alt+j"
+                                                        :handler [:worksheet:changeToCode]}
+                                                       {:name    "command:app:open"
+                                                        :desc    "Load a Notebook"
+                                                        :kb      "alt+g alt+l"
+                                                        :handler [:browse-files-local]}
+                                                       {:name    "command:app:save"
+                                                        :desc    "Save the notebook"
+                                                        :kb      "alt+g alt+s"
+                                                        :handler [:save-notebook]}
+                                                       {:name    "command:app:showsettings"
+                                                        :desc    "Settings Edit."
+                                                        :kb      ["ctrl+1" "alt+g alt+1"]
+                                                        :handler [:dialog-show :settings]}
+                                                       {:name    "command:app:kernel-toggle"
+                                                        :desc    "Kernel Toggle."
+                                                        :kb      ["ctrl+3" "alt+g alt+3"]
+                                                        :handler [:app:kernel-toggle]}
+                                                       {:name    "command:app:showmeta"
+                                                        :desc    "Meta Edit."
+                                                        :kb      ["ctrl+2" "alt+g alt+2"]
+                                                        :handler [:dialog-show :meta]}
+                                                       {:name    "command:nav:explore"
+                                                        :desc    "Explore Notebooks."
+                                                        :kb      ["ctrl+4" "alt+g alt+4"]
+                                                        :handler [:nav "/explore"]}
+                                                       {:name    "command:app:saveas"
+                                                        :desc    "Save the worksheet to a new filename."
+                                                        :kb      "alt+g alt+e"
+                                                        :handler [:app:saveas]}
+                                                       {:name    "command:worksheet:newBelow"
+                                                        :desc    "Create a new segment below the highlighted segment."
+                                                        :kb      "alt+g alt+n"
+                                                        :handler [:worksheet:newBelow]}
+                                                       {:name    "command:worksheet:newAbove"
+                                                        :desc    "Create a new segment above the highlighted segment."
+                                                        :kb      "alt+g alt+b"
+                                                        :handler [:worksheet:newAbove]}
+                                                       {:name    "command:worksheet:moveUp"
+                                                        :desc    "Move the highlighted segment up the worksheet."
+                                                        :kb      "alt+g alt+u"
+                                                        :handler [:worksheet:moveUp]}
+                                                       {:name    "command:worksheet:moveDown"
+                                                        :desc    "Move the highlighted segment down the worksheet."
+                                                        :kb      "alt+g alt+d"
+                                                        :handler [:worksheet:moveDown]}
+                                                       #_{:name    "command:docs:clojuredocs"
+                                                          :desc    "Look up the symbol under the cursor in ClojureDocs."
+                                                          :kb      "alt+g alt+c"
+                                                          :handler clojuredocs}
+                                                       {:name    "command:app:reset-worksheet"
+                                                        :desc    "Reset the worksheet - a fresh start."
+                                                        :handler [:nav "/reset"]}
+                                                       {:name    "command:worksheet:completions"
+                                                        :desc    "Show possible auto-completions."
+                                                        :kb      ["ctrl+space" "alt+g alt+a"]
+                                                        :handler [:worksheet:completions]}]
+                                        }
+                 :dev-aids             true
+                 :explore-repositories [{:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}]
+                 :explore-file-directories
+                                       {;; TODO: config map merge never removes keys!
+                                        ;; :gorilla-unittest "./notebooks"
+                                        }
+                 :load-scan-exclude    #{".git" ".svn"}}
  ; metering
  ;; :metering-reporter        "console"
  ;; :console-interval-seconds "100"
@@ -23,25 +151,22 @@
  ;: :gorilla-repl-credentials-json  "....json"
  ;: :gorilla-repl-max.results 3
 
-;; :server-port              "9090"
+ ;; :server-port              "9090"
  ;; :middleware ""
- :routes "gorilla-repl.route/default-handler"
+ :routes        "gorilla-repl.route/default-handler"
  ; use this if you need a grace-time during which
  ; the system reports unhealthy before shutting down.
  ;:wait-ms-on-stop "10000"
 
- :nrepl-port 7888
- :nrepl-host "localhost"
+ :nrepl-port    7888
+ :nrepl-host    "localhost"
 
+ :jetty-options {;; See https://github.com/sunng87/ring-jetty9-adapter/blob/master/src/ring/adapter/jetty9.clj
+                 :ws-max-idle-time 3600000}
  ;; Stuff as in leinigen project.clj
- :project {
-  ;; :port ~port
-  ;; :ip "0.0.0.0"
-  ;; :nrepl-port 7888
-  ;; :nrepl-host "localhost"
-  ;; :version ~gorilla-version
-  ;; :project ~project-name
-           #_:gorilla-options #_{:keymap {"command:worksheet:newBelow" "ctrl+b ctrl+t"
-                                          "command:worksheet:newAbove" "ctrl+b ctrl+q"}
-                                 :load-scan-exclude #{".git" ".svn"}}}
+ ;; :project
+ #_{
+    #_:gorilla-options #_{:keymap            {"command:worksheet:newBelow" "ctrl+b ctrl+t"
+                                              "command:worksheet:newAbove" "ctrl+b ctrl+q"}
+                          :load-scan-exclude #{".git" ".svn"}}}
  }

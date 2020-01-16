@@ -4,19 +4,17 @@
    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
 
    [dommy.core :as dom :refer-macros [sel1]]
-   [goog.dom :as gdom]
-
-   ))
+   [goog.dom :as gdom]))
 
 (defn palette-dialog
   []
   (let [palette (subscribe [:palette])]
     (reagent/create-class
      {:display-name         "palette-dialog"
-      :component-did-update (fn [this old-argv]
+      :component-did-update (fn [this _] ;; old-argv
                                ;; TODO: Focus or not?
                               (let [el (reagent/dom-node this)]
-                                (if (:show @palette)
+                                (when (:show @palette)
                                   (-> el
                                       (sel1 :input)
                                       .focus))

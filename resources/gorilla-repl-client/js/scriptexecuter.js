@@ -7,7 +7,7 @@ function insertAndExecute(id, text)
     executeScript (domelement);
 }
 
-function executeScript (domelement)
+function executeScript (domelement) {
     var scripts = [];
 
     ret = domelement.childNodes;

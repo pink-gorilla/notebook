@@ -1,19 +1,17 @@
 (ns pinkgorilla.events.notebook
   (:require
-   [taoensso.timbre :refer-macros (info)]
-   [re-frame.core :as re-frame :refer [reg-event-db reg-event-fx path trim-v after debug dispatch dispatch-sync]]
-   [day8.re-frame.undo :as undo :refer [undoable]]
-   [pinkgorilla.prefs :as prefs]
-   [pinkgorilla.notebook.newnb :refer [create-new-worksheet]]
+   ;; [taoensso.timbre :refer-macros (info)]
+   [re-frame.core :refer [reg-event-db]]
+   [day8.re-frame.undo :refer [undoable]]
+   ;; [pinkgorilla.prefs :as prefs]
+   [pinkgorilla.notebook.newnb :refer [create-new-worksheet]] ;; TODO - should probably not come from a dependency
    ;[pinkgorilla.db :as db :refer [initial-db]]
-   [pinkgorilla.notebook.core :refer [save-notebook-hydrated
-                                      to-code-segment to-free-segment
+   [pinkgorilla.notebook.core :refer [to-code-segment to-free-segment
                                       remove-segment insert-segment-at
                                       create-code-segment]]
    [pinkgorilla.editor.core :as editor]
    [pinkgorilla.kernel.core :as kernel]
-   [pinkgorilla.events.helper :refer [text-matches-re default-error-handler check-and-throw standard-interceptors]]))
-
+   [pinkgorilla.events.helper :refer [standard-interceptors]]))
 
 (defn change-to
   [db change-fn]
@@ -61,7 +59,7 @@
          active-segment (get-in db [:worksheet :segments active-id])
           ;;kernel (:kernel active-segment)
          ]
-     (if (= :code (:type active-segment))
+     (when (= :code (:type active-segment))
        (editor/complete active-id (get-in db [:worksheet :ns])))
      db)))
 
@@ -117,7 +115,7 @@
   (let [segment-order (get-in db [:worksheet :segment-order])
         active-id (get-in db [:worksheet :active-segment])
         next-active-idx (next-fn (.indexOf segment-order active-id))
-        next-active-id (if (> next-active-idx -1) (nth segment-order next-active-idx))]
+        next-active-id (when (> next-active-idx -1) (nth segment-order next-active-idx))]
     (if next-active-id
       (assoc-in db [:worksheet :active-segment] next-active-id)
       db)))
@@ -182,7 +180,6 @@
  [(conj standard-interceptors (undoable "Insert segment"))]
  (partial insert-segment inc))
 
-
 (reg-event-db
  :initialize-new-worksheet
  (fn [db _]
@@ -208,6 +205,8 @@
 
 
 ;; Using re-frame undo instead
+
+
 #_(reg-event-db
    :worksheet:undelete
    [standard-interceptors]

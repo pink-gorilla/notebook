@@ -1,8 +1,6 @@
 (ns pinkgorilla.explore.form-helpers
-  (:require 
+  (:require
    [re-frame.core :refer [dispatch-sync dispatch subscribe]]
-   [reagent.core :refer [atom] :as r]
-   [clojure.string :as s]
    [cljs-time.format :as tf]
    [cljs-time.core :as ct]
    [pinkgorilla.explore.utils :as u])
@@ -49,7 +47,7 @@
 ;; input
 ;;~~~~~~~~~~~~~~~~~~
 (defn input-opts
-  [{:keys [data form-id dk attr-name placeholder] :as opts}]
+  [{:keys [data form-id dk attr-name] :as opts}] ; placeholder
   (merge opts
          {:value (get-in @data [:data attr-name])
           :id (label-for form-id attr-name)
@@ -59,16 +57,16 @@
 (defmulti input (fn [type _] type))
 
 (defmethod input :textarea
-  [type opts]
+  [_ opts] ; type
   [:textarea (input-opts opts)])
 
 (defmethod input :select
-  [type {:keys [options] :as opts}]
+  [_ {:keys [options] :as opts}] ; type
   [:select (input-opts opts)
    (map (fn [x] ^{:key (gensym)} [:option x]) options)])
 
 (defmethod input :checkbox
-  [type {:keys [data form-id dk attr-name options] :as opts}]
+  [_ {:keys [data dk attr-name] :as opts}] _ type
   (let [value (get-in @data [:data attr-name])
         opts (input-opts opts)]
     [:input (merge opts
@@ -81,7 +79,7 @@
   ((if (s v) disj conj) s v))
 
 (defmethod input :checkbox-set
-  [type {:keys [data form-id dk attr-name options value] :as opts}]
+  [_ {:keys [data dk attr-name value] :as opts}]
   (let [checkbox-set (or (get-in @data [:data attr-name]) #{})
         opts (input-opts opts)]
     [:input (merge opts
@@ -91,13 +89,14 @@
 
 ;; date handling
 (defn unparse [fmt x]
-  (if x (tf/unparse fmt (js/goog.date.DateTime. x))))
+  (when x (tf/unparse fmt (js/goog.date.DateTime. x))))
 
 (def date-fmt (:date tf/formatters))
 
 (defn handle-date-change [e dk attr-name]
   (let [v (tv e)
-        handler (u/strk dk "-edit")]
+        ;; handler (u/strk dk "-edit")
+        ]
     (if (empty? v)
       (dispatch-change dk attr-name nil)
       (let [date (tf/parse date-fmt v)
@@ -105,14 +104,14 @@
         (dispatch-change dk attr-name date)))))
 
 (defmethod input :date
-  [type {:keys [data form-id dk attr-name]}]
+  [_ {:keys [data form-id dk attr-name]}] ; type
   [:input {:type "date"
            :value (unparse date-fmt (get-in @data [:data attr-name]))
            :id (label-for form-id attr-name)
            :on-change #(handle-date-change % dk attr-name)}])
 
 (defmethod input :default
-  [type {:keys [data form-id dk attr-name placeholder] :as opts}]
+  [type {:keys [data form-id dk attr-name] :as opts}]
   [:input (merge opts
                  {:type (name type)
                   :id (label-for form-id attr-name)
@@ -127,7 +126,7 @@
     [:tr {:class (when errors "error")}
      [:td [:label {:for (label-for form-id attr-name) :class "label"}
            (label-text attr-name)
-           (if required [:span {:class "required"} "*"])]]
+           (when required [:span {:class "required"} "*"])]]
      [:td [input type opts]
       (when errors
         [:ul {:class "error-messages"}

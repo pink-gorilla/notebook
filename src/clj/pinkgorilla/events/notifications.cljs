@@ -3,11 +3,11 @@
    [taoensso.timbre :refer-macros (info)]
    [re-frame.core :as rf :include-macros true :refer [dispatch]]
    ;[day8.re-frame.tracing :refer-macros [fn-traced]]
-   [pinkgorilla.notifications :refer [notification]]
-   ))
+   [pinkgorilla.notifications :refer [notification]]))
 
 ;; stolen from:
 ;; https://github.com/baskeboler/cljs-karaoke-client/blob/master/src/main/cljs_karaoke/events/notifications.cljs
+
 
 (rf/reg-event-fx
  :notification-add
@@ -27,13 +27,11 @@
                                  #(not= notification-id (:id %))
                                  notis))))))
 
-
 (rf/reg-event-db
  :process-error-response
  (fn [db [_ location response]]
    (info "ERROR RESPONSE: " response)
-   (dispatch [::add-notification 
-              (notification :warning 
+   (dispatch [:notification-add
+              (notification :warning
                             (str location " Error: " (:status-text response) " (" (:status response) ")"))])
-   db
- ))
+   db))

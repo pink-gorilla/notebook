@@ -6,8 +6,6 @@
    [pinkgorilla.output.core :refer [output-fn]]
    [pinkgorilla.worksheet.helper :refer [error-text console-text exception colorize-cm!]]))
 
-
-
 (defn code-segment-view
   [seg-data]
   ;; TODO: active <=> selected, executing <=> running
@@ -18,7 +16,7 @@
      {:component-did-mount (fn [this]
                              (colorize-cm! this))
       :display-name        "code-segment-view"
-      :reagent-render      (fn [seg-data]                  ;; repeat
+      :reagent-render      (fn [_]                  ;; repeat seg-data if we want to use it
                              (let [main-component
                                    ^{:key :segment-main} [:div.segment-main
                                                           [:pre {:class "static-code clojure"}

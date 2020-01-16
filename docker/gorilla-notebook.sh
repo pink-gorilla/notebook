@@ -13,16 +13,6 @@
 #   JAVA_OPTS       (Optional) Java runtime options used when any command
 #                   is executed.
 #
-#   JPDA_TRANSPORT  (Optional) JPDA transport used when the "jpda start"
-#                   command is executed. The default is "dt_socket".
-#
-#   JPDA_ADDRESS    (Optional) Java runtime options used when the "jpda start"
-#                   command is executed. The default is localhost:8000.
-#
-#   JPDA_SUSPEND    (Optional) Java runtime options used when the "jpda start"
-#                   command is executed. Specifies whether JVM should suspend
-#                   execution immediately after startup. Default is "n".
-#
 #   JPDA_OPTS       (Optional) Java runtime options used when the "jpda start"
 #                   command is executed. If used, JPDA_TRANSPORT, JPDA_ADDRESS,
 #                   and JPDA_SUSPEND are ignored. Thus, all required jpda
@@ -30,27 +20,91 @@
 #
 # -----------------------------------------------------------------------------
 
+# OS specific support.  $var _must_ be set to either true or false.
+cygwin=false
+darwin=false
+os400=false
+case "$(uname)" in
+CYGWIN*) cygwin=true ;;
+Darwin*) darwin=true ;;
+OS400*) os400=true ;;
+esac
+
 # resolve links - $0 may be a softlink
 PRG="$0"
 
 while [ -h "$PRG" ]; do
-  ls=`ls -ld "$PRG"`
-  link=`expr "$ls" : '.*-> \(.*\)$'`
-  if expr "$link" : '/.*' > /dev/null; then
+  ls=$(ls -ld "$PRG")
+  link=$(expr "$ls" : '.*-> \(.*\)$')
+  if expr "$link" : '/.*' >/dev/null; then
     PRG="$link"
   else
-    PRG=`dirname "$PRG"`/"$link"
+    PRG=$(dirname "$PRG")/"$link"
   fi
 done
 
 # Get standard environment variables
-PRGDIR=`dirname "$PRG"`
+PRGDIR=$(dirname "$PRG")
 
 # Only set GORILLA_HOME if not already set
-[ -z "$GORILLA_HOME" ] && GORILLA_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
+[ -z "$GORILLA_HOME" ] && GORILLA_HOME=$(
+  cd "$PRGDIR/.." >/dev/null
+  pwd
+)
 
 # Copy GORILLA_BASE from GORILLA_HOME if not already set
 [ -z "$GORILLA_BASE" ] && GORILLA_BASE="$GORILLA_HOME"
+
+# Get standard Java environment variables
+# Make sure prerequisite environment variables are set
+if [ -z "$JAVA_HOME" -a -z "$JRE_HOME" ]; then
+  if $darwin; then
+    # Bugzilla 54390
+    if [ -x '/usr/libexec/java_home' ]; then
+      export JAVA_HOME=$(/usr/libexec/java_home)
+    # Bugzilla 37284 (reviewed).
+    elif [ -d "/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home" ]; then
+      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
+    fi
+  else
+    JAVA_PATH=$(which java 2>/dev/null)
+    if [ "x$JAVA_PATH" != "x" ]; then
+      JAVA_PATH=$(dirname $JAVA_PATH 2>/dev/null)
+      JRE_HOME=$(dirname $JAVA_PATH 2>/dev/null)
+    fi
+    if [ "x$JRE_HOME" = "x" ]; then
+      # XXX: Should we try other locations?
+      if [ -x /usr/bin/java ]; then
+        JRE_HOME=/usr
+      fi
+    fi
+  fi
+  if [ -z "$JAVA_HOME" -a -z "$JRE_HOME" ]; then
+    echo "Neither the JAVA_HOME nor the JRE_HOME environment variable is defined"
+    echo "At least one of these environment variable is needed to run this program"
+    exit 1
+  fi
+fi
+
+if [ -z "$JRE_HOME" ]; then
+  JRE_HOME="$JAVA_HOME"
+fi
+
+# Don't override the endorsed dir if the user has set it previously
+#if [ -z "$JAVA_ENDORSED_DIRS" ]; then
+#  # Set the default -Djava.endorsed.dirs argument
+#  JAVA_ENDORSED_DIRS="$CATALINA_HOME"/endorsed
+#fi
+
+# Set standard commands for invoking Java, if not already set.
+if [ -z "$_RUNJAVA" ]; then
+  _RUNJAVA="$JRE_HOME"/bin/java
+fi
+if [ "$os400" != "true" ]; then
+  if [ -z "$_RUNJDB" ]; then
+    _RUNJDB="$JAVA_HOME"/bin/jdb
+  fi
+fi
 
 # Ensure that any user defined CLASSPATH variables are not used on startup,
 # but allow them to be specified in setenv.sh, in rare case when it is needed.
@@ -66,23 +120,25 @@ CLASSPATH=
 # as this is used as the separator in the classpath and Java provides no
 # mechanism for escaping if the same character appears in the path.
 case $GORILLA_HOME in
-  *:*) echo "Using GORILLA_HOME:   $GORILLA_HOME";
-       echo "Unable to start as GORILLA_HOME contains a colon (:) character";
-       exit 1;
+*:*)
+  echo "Using GORILLA_HOME:   $GORILLA_HOME"
+  echo "Unable to start as GORILLA_HOME contains a colon (:) character"
+  exit 1
+  ;;
 esac
 
 # Add on extra jar files to CLASSPATH
-if [ ! -z "$CLASSPATH" ] ; then
+if [ ! -z "$CLASSPATH" ]; then
   CLASSPATH="$CLASSPATH":
 fi
 
 # Bugzilla 37848: When no TTY is available, don't output to console
 have_tty=0
 if [ -t 0 ]; then
-    have_tty=1
+  have_tty=1
 fi
 
-if [ -z "$JSSE_OPTS" ] ; then
+if [ -z "$JSSE_OPTS" ]; then
   JSSE_OPTS="-Djdk.tls.ephemeralDHKeySize=2048"
 fi
 JAVA_OPTS="$JAVA_OPTS $JSSE_OPTS"
@@ -105,7 +161,7 @@ JAVA_OPTS="$JAVA_OPTS $JSSE_OPTS"
 #    ENDORSED_PROP=java.endorsed.dirs
 #fi
 
-# Add the JAVA 9 specific start-up parameters required by Tomcat
+# Add the JAVA 9 specific start-up parameters required
 #JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.lang=ALL-UNNAMED"
 #JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.io=ALL-UNNAMED"
 #JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED"
@@ -116,7 +172,7 @@ JAVA_OPTS="$JAVA_OPTS $JSSE_OPTS"
 # Bugzilla 37848: only output this if we have a TTY
 if [ $have_tty -eq 1 ]; then
   echo "Using GORILLA_HOME:   $GORILLA_HOME"
-  if [ "$1" = "debug" ] ; then
+  if [ "$1" = "debug" ]; then
     echo "Using JAVA_HOME:       $JAVA_HOME"
   else
     echo "Using JRE_HOME:        $JRE_HOME"
@@ -124,54 +180,23 @@ if [ $have_tty -eq 1 ]; then
   echo "Using CLASSPATH:       $CLASSPATH"
 fi
 
-if [ "$1" = "jpda" ] ; then
-  if [ -z "$JPDA_TRANSPORT" ]; then
-    JPDA_TRANSPORT="dt_socket"
-  fi
-  if [ -z "$JPDA_ADDRESS" ]; then
-    JPDA_ADDRESS="localhost:8000"
-  fi
-  if [ -z "$JPDA_SUSPEND" ]; then
-    JPDA_SUSPEND="n"
-  fi
-  if [ -z "$JPDA_OPTS" ]; then
-    JPDA_OPTS="-agentlib:jdwp=transport=$JPDA_TRANSPORT,address=$JPDA_ADDRESS,server=y,suspend=$JPDA_SUSPEND"
-  fi
-  GORILLA_OPTS="$JPDA_OPTS $GORILLA_OPTS"
-  shift
-fi
+#  if [ -z "$JPDA_TRANSPORT" ]; then
+#    JPDA_TRANSPORT="dt_socket"
+#  fi
+#  if [ -z "$JPDA_ADDRESS" ]; then
+#    JPDA_ADDRESS="localhost:8000"
+#  fi
+#  if [ -z "$JPDA_SUSPEND" ]; then
+#    JPDA_SUSPEND="n"
+#  fi
+#  if [ -z "$JPDA_OPTS" ]; then
+#    JPDA_OPTS="-agentlib:jdwp=transport=$JPDA_TRANSPORT,address=$JPDA_ADDRESS,server=y,suspend=$JPDA_SUSPEND"
+#  fi
+#  GORILLA_OPTS="$JPDA_OPTS $GORILLA_OPTS"
 
-if [ "$1" = "run" ]; then
-
-  shift
-  if [ "$1" = "-security" ] ; then
-    if [ $have_tty -eq 1 ]; then
-      echo "Using Security Manager"
-    fi
-    shift
-    eval exec "\"$_RUNJAVA\"" "$JAVA_OPTS" "$GORILLA_OPTS" \
-      -D$ENDORSED_PROP="\"$JAVA_ENDORSED_DIRS\"" \
-      -classpath "\"$CLASSPATH\"" \
-#      -Djava.security.manager \
-#      -Djava.security.policy=="\"$GORILLA_BASE/conf/catalina.policy\"" \
+#eval exec "\"$_RUNJAVA\"" "$JAVA_OPTS" "$GORILLA_OPTS" \
+eval exec "\"$_RUNJAVA\"" "$JAVA_OPTS" \
+  -classpath "\"$CLASSPATH\"" \
+  -jar "${GORILLA_HOME}/gorilla-notebook-standalone.jar" "$@"
+#      -D$ENDORSED_PROP="\"$JAVA_ENDORSED_DIRS\"" \
 #      -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" \
-      -jar gorilla-notebook-standalone.jar "$@"
-  else
-    eval exec "\"$_RUNJAVA\"" "$JAVA_OPTS" "$GORILLA_OPTS" \
-      -D$ENDORSED_PROP="\"$JAVA_ENDORSED_DIRS\"" \
-      -classpath "\"$CLASSPATH\"" \
-#      -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" \
-      -jar gorilla-notebook-standalone.jar "$@"
-  fi
-
-else
-
-  echo "Usage: gorilla-notebook.sh ( commands ... )"
-  echo "commands:"
-  echo "  jpda start        Start Gorilla Notebooke under JPDA debugger"
-  echo "  run               Start Gorilla Notebook in the current window"
-  echo "  run -security     Start in the current window with security manager"
-  echo "  version           What version of Gorilla Notebook are you running?"
-  exit 1
-
-fi

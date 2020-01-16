@@ -1,20 +1,12 @@
 (ns pinkgorilla.dialog.settings
   (:require
    [taoensso.timbre :as timbre
-    :refer-macros (log trace debug info warn error fatal report
-                       logf tracef debugf infof warnf errorf fatalf reportf
-                       spy get-env log-env)]
+    :refer-macros (info)]
    [re-frame.core :refer [subscribe dispatch]]
    [re-com.core
-    :as rcm
-    :refer [h-box v-box box border gap line h-split v-split scroller
-            button row-button md-icon-button md-circle-icon-button info-button
-            input-text input-password input-textarea
-            label title p
-            single-dropdown selection-list
-            checkbox radio-button slider progress-bar throbber
-            horizontal-bar-tabs vertical-bar-tabs
-            modal-panel popover-content-wrapper popover-anchor-wrapper]]
+    :refer [h-box v-box scroller md-circle-icon-button
+            input-text label radio-button
+            modal-panel gap]]
    [pinkgorilla.events.common :refer [reg-set-attr]]
    [pinkgorilla.subs]))
 
@@ -34,16 +26,15 @@
         reader (js/FileReader.)]
     (info "uploading " file-name " ssh key: " (pr-str file))
  ; (info "key is:" (map #(-> e .-target .-result )))
- ; 
+ ;
  ; (put! upload-queue (first (array-seq (.. e -target -files))))
     (set! (.-onload reader) #(save-uploaded-string %))
     (.readAsText reader file)))
 
-
 (defn settings-dialog []
   (let [dialog (subscribe [:dialog])
         settings (subscribe [:settings])
-        closefn (fn [event] (dispatch [:app:hide-settings]))]
+        closefn (fn [_] (dispatch [:app:hide-settings]))]
     (when (:settings @dialog)
       [modal-panel
        :backdrop-color   "grey"
@@ -78,7 +69,6 @@
                  :model       (:editor @settings)
                  :on-change   #(dispatch [:settings-set :editor %])]
 
-
                 [gap :size "20px"]
                 [label :label "github token"]
                 [gap :size "5px"]
@@ -90,10 +80,10 @@
                  :disabled?        false]
 
                 [gap :size "20px"]
-                [label :label "mongodb-ssh-key (for tunnel)"]
-                [gap :size "5px"]
-                [:input {:type "file" :name "mongodb ssh key"
-                         :on-change #(queue-file %)}]
+                ;; [label :label "mongodb-ssh-key (for tunnel)"]
+                ;; [gap :size "5px"]
+                #_[:input {:type "file" :name "mongodb ssh key"
+                           :on-change #(queue-file %)}]
 
                 [scroller
                  :max-height "400px"
@@ -101,11 +91,9 @@
                  :child [:p {:style {:fond-size "16px" :width "600px"}}
                          "BIG LONG HELP TEXT ON SETTINGS..."]]
 
-
-
                 [h-box :gap "5px" :justify :end
                  :children
                  [[md-circle-icon-button
                    :md-icon-name "zmdi-close"
-                   :tooltip "Close"
+                   ;;:tooltip "Close"
                    :on-click closefn]]]]]])))

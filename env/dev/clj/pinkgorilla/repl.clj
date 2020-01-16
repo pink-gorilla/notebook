@@ -1,46 +1,18 @@
 (ns pinkgorilla.repl
   (:require
-    ;; '[com.stuartsierra.component :as component]
-    ;; '[me.lomin.component-restart :as restart]
-    [nrepl.server :as nrepl :refer [start-server stop-server]]
-    [shadow.cljs.devtools.server :as shadow-server]
-    [cider.nrepl :as cider-nrepl]
-    ;; [cljs.build.api]
-    ;; [cljs.repl]
-    ;; [cljs.repl.node]
-    ;; [clojure.core.async :refer [go]]
-    [pinkgorilla.core :as core]
-    ;; [figwheel.main.api :refer [start start-join cljs-repl]]
-    [shadow.cljs.devtools.api :as shadow]
-    [shadow.cljs.devtools.server.nrepl :as shadow-nrepl]
+   [clojure.tools.logging :refer (info)]
+   ;; [clojure.pprint :refer [pprint]]
+   [shadow.cljs.devtools.api :as shadow]
+    ;; [shadow.cljs.devtools.server.nrepl :as shadow-nrepl]
+   [shadow.cljs.devtools.server :as shadow-server]
+    ;; [nrepl.server :as nrepl :refer [start-server stop-server]]
+    ;; [cider.nrepl :as cider-nrepl]
 
-    [clojure.pprint :refer [pprint]]
-    ;; [pinkgorilla.figwheel :as gfw :refer [main-config]]
+   [pinkgorilla.core :as core]
     ;; [pinkgorilla.system :as gsys]
-    ))
-
-;; (def system (atom (sys/create-figwheel-system cfg)))
-;; (def system (atom (sys/figwheel-system cfg)))
+   [pinkgorilla.cli :as cli]))
 
 #_(component/start @system)
-
-#_(component/start-system @system)
-
-;; (start-figwheel! cfg)
-;(pinkgorilla.replikativ/start-replikativ)
-
-#_(def figwheel-server
-    (:figwheel-server @(get-in figwheel-sidecar.repl-api/*repl-api-system* [:figwheel-system :system])))
-
-#_(defn start-figwheel-component []
-    ;; (component/start figwheel-server)
-    ;; (swap! system component/start)
-    )
-
-#_(defn stop-figwheel-component []
-    ;; (component/stop figwheel-server)
-    ;; (swap! system component/stop)
-    )
 
 #_(defn reload []
     (print "Reload all the things")
@@ -55,16 +27,6 @@
 ;; (ra/print-config)
 ;; (cljs-repl)
 
-#_(defn start-server
-    "used for starting the server in development mode from REPL"
-    [& [port]]
-    (let [port (if port (Integer/parseInt port) 3000)]
-      (reset! server
-              (serve (get-handler)
-                     {:port         port
-                      :auto-reload? true
-                      :join?        false}))
-      (println (str "You can view the site at http://localhost:" port))))
 
 #_(defn stop-server []
     (.stop @server)
@@ -81,7 +43,6 @@
                      :watch "in"
                      ;; :reader
                      :output-dir "out"))
-
 #_(defn run-cljs
     []
     (core/run-gorilla-server {})
@@ -92,8 +53,6 @@
                     ;; :watch "in"
                     :reader
                     :output-dir "out"))
-
-
 
 (def cljs-build :app-with-cljs-kernel-dev)
 (def gorilla-default-cli-config {:port 9000})
@@ -109,11 +68,16 @@
 (defn -main
   {:shadow/requires-server true}
   [& args]
-  (defonce nrepl-server (start-server :port 4001
-                                      :handler (apply nrepl/default-handler
-                                                      (map resolve (into cider-nrepl/cider-middleware
-                                                                         ['shadow.cljs.devtools.server.nrepl/middleware])))))
-  (start-system gorilla-default-cli-config)
+  (info "Starting with args: " args)
+  ;; TODO: Should probably use the one started by shadow-cljs - which works for clj and cljs (connecting with Calva)
+  #_(defonce nrepl-server (start-server :port 4001
+                                        :handler (apply nrepl/default-handler
+                                                        (map resolve (into cider-nrepl/cider-middleware
+                                                                           ['shadow.cljs.devtools.server.nrepl/middleware])))))
+
+  ;; options arguments errors summary
+  (let [{:keys [options]} (cli/parse-opts args)]
+    (start-system options))
   (shadow-server/start!)
   (shadow/watch cljs-build {:verbose true})
   ;; (start "dev")

@@ -13,10 +13,12 @@
 
 
 ;; the client can post a request to have the worksheet saved, handled by the following
+
+
 (defn save-notebook
   [req]
   (let [params (:params req)
-        _ (info "saving notebook with params: " params)
+        _ (info "saving notebook with params: " (dissoc params :notebook)) ; do not show full notebook in log.
         stype (keyword (:storagetype params))
         notebook (:notebook params)
         tokens (:tokens params)

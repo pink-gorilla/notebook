@@ -1,10 +1,7 @@
 (ns pinkgorilla.core-test
   (:require
     ;; this is needed to bring the render implementations into scope
-    [pinkgorilla.ui.hiccup_renderer :as renderer]
-    [pinkgorilla.middleware.render-values]
-   )
-  (:use clojure.test))
+   [clojure.test :refer [is deftest run-tests]]))
 
 (defn my-test-fixture [f]
   (f))
@@ -22,7 +19,7 @@
 (run-tests)
 
 #_(.addShutdownHook
-    (Runtime/getRuntime)
-    (proxy [Thread] []
-      (run []
-        (run-all-tests))))
+   (Runtime/getRuntime)
+   (proxy [Thread] []
+     (run []
+       (run-all-tests))))

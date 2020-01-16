@@ -1,8 +1,8 @@
 (ns pinkgorilla.handle-test
-  (:require [ring.mock.request :as mock]
-            [clojure.java.io :as io]
-            [pinkgorilla.route :refer :all])
-  (:use clojure.test))
+  (:require
+   [clojure.test :refer [is deftest run-tests]]
+   [ring.mock.request :as mock]
+   [pinkgorilla.route]))
 
 ;; TODO: How about the repl websocket handler?
 
@@ -30,7 +30,7 @@
 
 (deftest files-test
   (let [resp (#'pinkgorilla.route/default-handler
-               (mock/request :get "/gorilla-files"))
+              (mock/request :get "/gorilla-files"))
         status (:status resp)
         headers (:headers resp)
         content-type (get headers "Content-Type")]
@@ -57,7 +57,7 @@
 
 (deftest resource-test
   (let [resp (#'pinkgorilla.route/default-handler
-               (mock/request :get "/favicon.ico"))
+              (mock/request :get "/favicon.ico"))
         status (:status resp)
         headers (:headers resp)
         content-type (get headers "Content-Type")]
@@ -66,13 +66,13 @@
 
 (deftest default-handler-save-test
   (let [resp (#'pinkgorilla.route/default-handler
-               (mock/request :post "/save" {:notebook    ";; gorilla-repl.fileformat = 2\n"
-                                            :storagetype "file"
-                                            :filename    "target/test-save.cljg"
+              (mock/request :post "/save" {:notebook    ";; gorilla-repl.fileformat = 2\n"
+                                           :storagetype "file"
+                                           :filename    "target/test-save.cljg"
                                             ;; :tokens[default-kernel]: "clj"
                                             ;; :tokens[editor]: "text"
                                             ;; :tokens[github-token]: ""
-                                            }))
+                                           }))
         status (:status resp)
         headers (:headers resp)
         content-type (get headers "Content-Type")]
@@ -82,20 +82,18 @@
 (deftest default-handler-load-test
   ;;(with-redefs [storage-handle/load-notebook mock-load-notebook])
   (let [resp (#'pinkgorilla.route/default-handler
-               (mock/request :get "/load?filename=./notebooks/reagent-demo-err-renderex.cljg&storagetype=file&tokens[default-kernel]=clj&tokens[editor]=text&tokens[github-token]="))
+              (mock/request :get "/load?filename=./notebooks/fixme/reagent-demo-err-renderex.cljg&storagetype=file&tokens[default-kernel]=clj&tokens[editor]=text&tokens[github-token]="))
         status (:status resp)
         headers (:headers resp)
         content-type (get headers "Content-Type")]
     (is (= 200 status))
     (is (= "application/json; charset=utf-8" content-type))))
 
-
-
 #_(run-all-tests)
 (run-tests)
 
 #_(.addShutdownHook
-    (Runtime/getRuntime)
-    (proxy [Thread] []
-      (run []
-        (run-all-tests))))
+   (Runtime/getRuntime)
+   (proxy [Thread] []
+     (run []
+       (run-all-tests))))
