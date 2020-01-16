@@ -136,14 +136,16 @@
                   ["bump-version" "release"]
                   ["vcs" "commit" "Release %s"]
                   ["vcs" "tag" "v" "--no-sign"]
+                  ["deploy"]
                   ["bump-version"]
-                  ["vcs" "commit" "Begin %s"]]
+                  ["vcs" "commit" "Begin %s"]
+                  ["vcs" "push"]]
 
-  :deploy-repositories [["clojars" {:url           "https://clojars.org/repo"
-                                    :username      :env/release_username
-                                    :password      :env/release_password
-                                    :sign-releases false}]]
 
+  :deploy-repositories [["releases" {:url "https://clojars.org/repo"
+                                     :username :env/release_username
+                                     :password :env/release_password
+                                     :sign-releases false}]]
 
   ;; :classifiers
   #_{:standalone :uberjar
@@ -152,23 +154,23 @@
 
   ;; We might chose to leverage the shell escape hatch to get out of dependency hell
   :aliases {"build-tailwind-dev"               ^{:doc "Build tailwind development."}
-                                               ["shell" "npm" "run" "tailwind-development"]
+            ["shell" "npm" "run" "tailwind-development"]
             "build-shadow-ci"                  ^{:doc "Build shadow-cljs ci"}
-                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":ci"]
+            ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":ci"]
             "build-shadow-with-cljs-kernel"    ^{:doc "Build shadow-cljs with cljs kernel"}
-                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":app-with-cljs-kernel"]
+            ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":app-with-cljs-kernel"]
             "build-shadow-without-cljs-kernel" ^{:doc "Build shadow-cljs without cljs kernel"}
-                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "release" ":app-without-cljs-kernel"]
+            ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "release" ":app-without-cljs-kernel"]
             "build-browser-test"               ^{:doc "Shadow-cljs browser test"}
-                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":browser-test"]
+            ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "compile" ":browser-test"]
             "watch-cards"                      ^{:doc "Shadow-cljs watch cards"}
-                                               ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "watch" ":cards"]
+            ["with-profile" "+cljs" "run" "-m" "shadow.cljs.devtools.cli" "watch" ":cards"]
             "test-js"                          ^{:doc "Test compiled JavaScript."}
-                                               ["shell" "npm" "run" "test"]
+            ["shell" "npm" "run" "test"]
             "clj-kondo"                        ^{:doc "Lint with clj-kondo"}
-                                               ["run" "-m" "clj-kondo.main"]
+            ["run" "-m" "clj-kondo.main"]
             "bump-version"                     ^{:doc "Roll versions artefact version"}
-                                               ["change" "version" "leiningen.release/bump-version"]}
+            ["change" "version" "leiningen.release/bump-version"]}
 
   :profiles {:dev     {:repl-options   {:init-ns          pinkgorilla.repl
                                         :port             4001
