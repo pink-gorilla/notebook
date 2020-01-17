@@ -1,7 +1,9 @@
 {
  ; this file is read by de.otto.tesla
  :settings 
- {:explore-file-directories
+ {:explore-repositories [{:name "files" :url "/explore"}
+                         {:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"} ]  
+  :explore-file-directories
   {:gorilla-unittest "./notebooks"
    :gorilla-examples "../sample-notebooks/samples"
    :geschichte "../ui-geschichte/notebooks"

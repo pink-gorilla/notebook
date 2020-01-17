@@ -38,7 +38,6 @@
     ;; TODO config (+ settings-local-storage) init should kick off off after config is processed
     (dispatch-sync [:settings-localstorage-load])
     (dispatch-sync [:initialize-config])
-    (dispatch [:explore-load])
     (mount-root)
     (when read-write
       (nrepl-kernel/init! (ws-origin "repl/" app-url)))
