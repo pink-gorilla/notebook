@@ -4,7 +4,7 @@
    ;; [taoensso.timbre :refer-macros [info]]
    [secretary.core :as secretary]
    [reagent.core :as ra]
-   [re-frame.core :refer [dispatch-sync]]
+   [re-frame.core :refer [dispatch-sync dispatch]]
    ;; [pinkgorilla.events.usage-analytics]
    [pinkgorilla.subs] ; bring subs to scope
    [pinkgorilla.events] ; bring all events to scope
@@ -38,6 +38,7 @@
     ;; TODO config (+ settings-local-storage) init should kick off off after config is processed
     (dispatch-sync [:settings-localstorage-load])
     (dispatch-sync [:initialize-config])
+    (dispatch [:explore-load])
     (mount-root)
     (when read-write
       (nrepl-kernel/init! (ws-origin "repl/" app-url)))
