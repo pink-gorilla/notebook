@@ -55,7 +55,7 @@
                     :output-dir "out"))
 
 (def cljs-build :app-with-cljs-kernel-dev)
-(def gorilla-default-cli-config {:port 9000})
+(def gorilla-default-cli-config {:port 0})
 (def gorilla-system (atom nil))
 
 (defn start-system

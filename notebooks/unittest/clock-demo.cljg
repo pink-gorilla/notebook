@@ -6,7 +6,7 @@
 ;; @@
 
 ;; **
-;;; # PinkGorillaRepl Demo Gorilla-Plot SVG - CLOCKS
+;;; # Pink Gorilla SVG Clock
 ;;; 
 ;;; 2019-10-20 awb99: pink-gorilla-repl does not need clock to define define a renderable. How is this possible? Was my design so good, or did I fuck it up?
 ;; **

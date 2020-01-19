@@ -67,7 +67,7 @@
                  [org.pinkgorilla/gorilla-renderable-ui "0.1.0"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
                  [org.pinkgorilla/kernel-cljs-shadowdeps "0.0.8"
                   :exclusions [*/*]]
-                 [org.pinkgorilla/notebook-encoding "0.0.22"] ; notebook encoding
+                 [org.pinkgorilla/notebook-encoding "0.0.23"] ; notebook encoding
                  [org.pinkgorilla/gorilla-explore "0.1.7"]  ; notebook exploration
                  [irresponsible/tentacles "0.6.6"]          ; github api (needed by encoding and explore)
                  [clj-time "0.15.2"]]                       ; needed for notebook exploration ui

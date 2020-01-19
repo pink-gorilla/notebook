@@ -20,14 +20,48 @@
 }
 
 .pg-cell-actions {
-    /* no pseudo selectors / media props in @apply */
-    @apply block mt-0 text-teal-200 mr-4 p-1;
-    /* @apply block lg:inline-block mt-0 text-teal-200 hover:bg-orange-500 mr-4 p-1; */
+    @apply mt-2 text-green-600 mr-2 rounded p-1;
+}
+.pg-cell-actions:hover {
+    @apply bg-green-600 text-white cursor-pointer;
 }
 
 .pg-cell-move {
-   @apply block mt-4 text-teal-200; /*  blue-700 */
+   @apply block text-pink-800 rounded p-1;
 }
+
+.pg-cell-move:hover {
+    @apply bg-pink-800 text-white cursor-pointer;
+}
+
+.pg-top-nav-item {
+    @apply mt-2 text-pink-600 mr-2 rounded p-1;
+}
+
+.pg-top-nav-item:hover {
+    @apply bg-pink-600 text-white cursor-pointer;
+}
+
+.pg-top-action-item {
+    @apply mt-2 text-green-600 mr-2 rounded p-1;
+}
+
+.pg-top-action-item:hover {
+    @apply bg-green-600 text-white cursor-pointer;
+}
+
+.pg-kernel-toggle {
+    @apply mt-2 text-pink-600 mr-2 rounded p-1;
+}
+
+.pg-kernel-toggle:hover {
+    @apply bg-pink-600 text-white cursor-pointer;
+}
+
+.pg-storage-prop {
+    @apply inline-block bg-gray-200 px-1 py-1 text-sm font-semibold text-gray-700;
+}
+
 
 /*
 @variants focus, pg-hover {
@@ -69,7 +103,7 @@
     color: #EC3E9C;
 }
 
-
 .pg-content-area {
     height: calc(100vh - theme('spacing.12'));
 }
+

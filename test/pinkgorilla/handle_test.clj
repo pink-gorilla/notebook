@@ -57,12 +57,12 @@
 
 (deftest resource-test
   (let [resp (#'pinkgorilla.route/default-handler
-              (mock/request :get "/favicon.ico"))
+              (mock/request :get "/pink-gorilla-32.png"))
         status (:status resp)
         headers (:headers resp)
         content-type (get headers "Content-Type")]
     (is (= 200 status))
-    (is (= "image/x-icon" content-type))))
+    (is (= "image/png" content-type))))
 
 (deftest default-handler-save-test
   (let [resp (#'pinkgorilla.route/default-handler

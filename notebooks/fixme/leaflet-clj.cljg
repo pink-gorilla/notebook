@@ -8,7 +8,7 @@
 ;; **
 ;;; # leaflet-gorilla
 ;;; 
-;;; 2019-10-17 awb99: Ported from Gorilla REPL to PinkGorillaRepl.
+;;; 2019-10-17 awb99: Ported from Gorilla REPL to Pink GorillaRepl.
 ;;; 
 ;;; leaflet-gorilla is a renderer for Gorilla REPL that lets you put data on maps using the [Leaflet](http://leafletjs.com/) javascript library.
 ;;; 

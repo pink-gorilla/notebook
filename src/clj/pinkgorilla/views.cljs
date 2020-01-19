@@ -110,14 +110,14 @@
       :reagent-render (fn []
                         (let [container [:div.Gorilla {}]
                               rw (not (:read-only @config))
-                              hamburger-comp (when rw ^{:key :hamburger} [hamburger])
+                              ;; hamburger-comp (when rw ^{:key :hamburger} [hamburger])
                               palette-comp (when rw ^{:key :palette-dialog} [palette-dialog])
                               ;save-comp (when rw ^{:key :save-dialog} [save-dialog])
                               ;settings-comp (when rw ^{:key :settings-dialog} [settings-dialog])
                               ;meta-comp (when rw ^{:key :meta-dialog} [meta-dialog])
                               doc-comp (when rw ^{:key :doc-viewer} [doc-viewer])
                               other-children [^{:key :status} [app-status]
-                                              hamburger-comp
+                                              ;; hamburger-comp
                                               palette-comp
                                               ;save-comp
                                               ;settings-comp

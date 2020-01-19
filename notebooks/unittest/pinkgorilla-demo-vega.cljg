@@ -6,7 +6,7 @@
 ;; @@
 
 ;; **
-;;; # PinkGorilla Demo - VEGA rendering
+;;; # Pink Gorilla Demo - VEGA rendering
 ;;; This demo explores how VEGA charts can be rendered in pinkgorilla
 ;;; 
 ;;; Stolen from: https://github.com/metasoarous/oz/blob/master/src/clj/oz/notebook/clojupyter.clj

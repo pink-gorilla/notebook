@@ -2,7 +2,7 @@
 http://open-source.braveclojure.com/stylesheets/main.css?at=1562864438
  */
 
- 
+
 .clear {
     clear: both;
 }
@@ -90,11 +90,15 @@ http://open-source.braveclojure.com/stylesheets/main.css?at=1562864438
 
 .tag:hover {
     cursor: pointer;
-    background: #77c4d3;
+    /* background: #77c4d3;*/
+    background: #97266D;
+    color: #ffffff;
 }
 
 .tag.active {
-    background: #ff7f66;
+    /*background: #ff7f66;*/
+    /* pink-500 */
+    background: #ED64A6;
 }
 
 .list .tag:hover {

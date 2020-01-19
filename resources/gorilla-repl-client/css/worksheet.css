@@ -40,8 +40,9 @@ div.free {
 }
 
 div.free h1,h2,h3,h4,h5 {
-    font-family: 'Arvo', serif;
-    color: #4682b4;
+    /* font-family: 'Arvo', serif;*/
+    /* green-800 */
+    color: #276749;/*#4682b4;*/
 }
 
 div.free p {
@@ -172,8 +173,9 @@ table {
     border-collapse: collapse;
 }
 th {
-    font-family: 'Arvo', serif;
-    color: #4682b4;
+    /* font-family: 'Arvo', serif;*/
+    /* green-800 */
+    color: #276749;/*#4682b4;*/
     padding: 0.5em;
     border: 1px solid #666;
     background-color: #ddd;
