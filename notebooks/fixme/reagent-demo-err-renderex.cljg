@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; **
-;;; # PinkGorilla 
+;;; # Pink Gorilla 
 ;;; 
 ;;; Shift + enter evaluates code. Hit alt+g twice in quick succession or click the menu icon (upper-right corner) for more commands.
 ;;; 

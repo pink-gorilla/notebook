@@ -52,11 +52,13 @@ a:active,
 a:hover {
   outline: 0;
 }
+/*
 abbr[title] {
   border-bottom: none;
   text-decoration: underline;
   text-decoration: underline dotted;
 }
+*/
 b,
 strong {
   font-weight: bold;
@@ -68,10 +70,12 @@ h1 {
   font-size: 2em;
   margin: 0.67em 0;
 }
+/*
 mark {
   background: #ff0;
   color: #000;
 }
+*/
 small {
   font-size: 80%;
 }
@@ -222,6 +226,7 @@ textarea {
   font-size: inherit;
   line-height: inherit;
 }
+/*
 a {
   color: #337ab7;
   text-decoration: none;
@@ -231,6 +236,7 @@ a:focus {
   color: #23527c;
   text-decoration: underline;
 }
+ */
 a:focus {
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
@@ -326,15 +332,17 @@ hr {
 .btn:hover,
 .btn:focus,
 .btn.focus {
-  color: #333333;
+  /* color: #333333;*/
   text-decoration: none;
 }
 .btn:active,
 .btn.active {
   background-image: none;
   outline: 0;
+  /*
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  */
 }
 .btn.disabled,
 .btn[disabled],
@@ -802,9 +810,11 @@ button.close {
   background-clip: padding-box;
   border: 1px solid #999999;
   border: 1px solid rgba(0, 0, 0, 0.2);
+  /*
   border-radius: 6px;
   -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  */
   outline: 0;
 }
 .modal-backdrop {
@@ -866,10 +876,12 @@ button.close {
     width: 600px;
     margin: 30px auto;
   }
+  /*
   .modal-content {
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   }
+  */
   .modal-sm {
     width: 300px;
   }

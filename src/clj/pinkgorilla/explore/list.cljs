@@ -121,28 +121,28 @@
 
 
 (defn project [selected-tags l]
-  [:div {:class "border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400  rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"}
+  [:div {:class "h-48 bg-green-400 w-1/2 border-r border-b border-l border-gray-400 lg:border-l-0 lg:border-t lg:border-gray-400  rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal"}
 
    [:div.mb-8
 
     ;; project storage location - click opens github web page or the file browser
     [:a {:href (project-storage-link l) :target "_blank" :rel "noopener noreferrer"}
-     [:div.px-0.py-0.bg-blue-100
-      [:span {:class "inline-block bg-gray-200 px-1 py-1 text-sm font-semibold text-gray-700 mr-1"}  (:type l)]
-      [:span {:class "inline-block bg-gray-200 px-1 py-1 text-sm font-semibold text-gray-700 mr-1"} (:repo l)]
-      [:span {:class "inline-block bg-gray-200 px-1 py-1 text-sm font-semibold text-gray-700"} (project-path l)]]]
+     [:div.px-0.py-0.bg-White
+      [:span {:class "pg-storage-prop mr-1"}  (:type l)]
+      [:span {:class "pg-storage-prop mr-1"} (:repo l)]
+      [:span {:class "pg-storage-prop"} (project-path l)]]]
 
     ;; project name - click opens the notebook in pink-gorilla
     [:a {:on-click #(routes/nav! (project-link l))}
-     [:div {:class "text-gray-900 font-bold text-xl mb-2"} (project-name l)]]
+     [:div {:class "text-white font-bold text-xl mb-2"} (project-name l)]]
 
-    [:p {:class "text-gray-700 text-base h-8 overflow-hidden"}
+    [:p {:class "text-white text-base h-8 overflow-hidden"}
      (tagline l)]]
 
    [:div.flex.items-center
-    [:img {:class "w-10 h-10 rounded-full mr-4" :src "./favicon.ico" :alt "Avatar"}]
+    [:img {:class "w-10 h-10 bg-white rounded-full mr-4" :src "./pink-gorilla-32.png" :alt "Avatar"}]
     [:div.text-sm.mr-4
-     [:p.text-gray-900.leading-none (:user l)]
+     [:p.text-white.leading-none (:user l)]
      [:p.text-gray-600 (:edit-date l)]]
     [:div.text-sm.mr-4
      [:div.px-6.py-4
@@ -178,8 +178,10 @@
          ; [ui/ctg {:transitionName "filter-survivor" :class "listing-list"}
           (for [l listings]
             ^{:key (str "os-project-" (:index l))}
-            [:div.h-48.bg-yellow-300.hover:bg-yellow-400 {:class "w-1/2"}
-             [project selected-tags l]])]
+            ;; [:div.h-48.bg-green-400 {:class "w-1/2"}
+            [project selected-tags l]
+             ;; ]
+            )]
           ;]
-         [:div.bg-gray-400  {:class "w-1/4"} ; sidebar right 1/4 of width
+         [:div  {:class "p-2 w-1/4"} ; sidebar right 1/4 of width
           [sidebar search-input tags]]]))))

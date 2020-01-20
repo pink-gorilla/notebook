@@ -31,12 +31,12 @@
       (do (println "Not found: " res)
           false))))
 
-(deftest test-component
-  (with-mounted-component (gv/hamburger)
-    (fn [_ div] ; c
-      (is div)
+#_(deftest test-component
+    (with-mounted-component (gv/hamburger)
+      (fn [_ div] ; c
+        (is div)
       ;; (is (found-in #"Welcome to" div))
-      )))
+        )))
 
 (deftest codemirror
   (let [cm (.-CodeMirror js/window)]

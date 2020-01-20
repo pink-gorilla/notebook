@@ -32,7 +32,8 @@ div.free-markup div.CodeMirror {
 div.selected {
     outline-style: solid;
     outline-width: 1px;
-    outline-color: #FF29D2;
+    /* pink-600 */
+    outline-color: #D53F8C;/* #FF29D2*/;
 }
 
 
@@ -121,7 +122,8 @@ div.palette-item {
 }
 
 div.palette-item.highlight {
-    background: #FF29D2;
+    /* pink-600 */
+    background: #D53F8C;/* #FF29D2*/;
 }
 
 div.command-shortcut {
@@ -143,7 +145,8 @@ div.modal-button {
 }
 
 div.modal-button.highlight {
-    background: #FF29D2;
+    /* pink-600 */
+    background: #D53F8C;/* #FF29D2*/;
 }
 
 div.doc-viewer {

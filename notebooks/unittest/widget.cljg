@@ -6,7 +6,7 @@
 ;; @@
 
 ;; **
-;;; # PinkGorilla WIDGETS
+;;; # Pink Gorilla WIDGETS
 ;;; 
 ;;; Widgets are Browser-Side components to interact easier with data.
 ;;; They are implemented with Reagent.
