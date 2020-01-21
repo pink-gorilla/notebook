@@ -54,13 +54,7 @@
 (defn run-gorilla-server
   [conf]
   (info "Got conf " conf)
-  ; get configuration information from parameters
-  (let [default-config  (load-edn (io/resource "pink-gorilla.edn"))
-        custom-config (if-let [rt-config-file (:runtime-config conf)]
-                        (load-edn (io/file rt-config-file))
-                        {})
-        runtime-config (deep-merge default-config custom-config)
-        version (or (:version conf) "develop")
+  (let [version (or (:version conf) "develop")
         webapp-requested-port (or (:port conf) 0)
         ip (or (:ip conf) "127.0.0.1")
         nrepl-requested-port (or (:nrepl-port conf) 0)      ;; auto-select port if none requested
@@ -68,6 +62,21 @@
         routes (if nrepl-host
                  "pinkgorilla.route/remote-repl-handler"
                  "pinkgorilla.route/default-handler")
+        default-config  (load-edn (io/resource "pink-gorilla.edn"))
+        custom-config (if-let [rt-config-file (:runtime-config conf)]
+                        (load-edn (io/file rt-config-file))
+                        {})
+        other-config {:routes          routes
+                      :nrepl-port      nrepl-requested-port
+                      :nrepl-host      (:nrepl-host conf)
+                      :nrepl-port-file (io/file (or (:nrepl-port-file conf) ".nrepl-port"))
+                      :server-port     webapp-requested-port
+                      ;; TODO bringing the websockets in is a little dirty for now
+                      :jetty-options   {:websockets {"/repl" (ws-relay/ws-processor route/nrepl-handler)}}
+                      :ip              ip}
+        merged-config (deep-merge default-config
+                                  custom-config
+                                  other-config)
         gorilla-port-file (io/file (or (:gorilla-port-file conf) ".gorilla-port"))
         ;; project (or (:project conf) {})
         ;; keymap (or (:keymap (:gorilla-options conf)) {})
@@ -77,15 +86,7 @@
     ;; (println "Using project" project)
     ;; asynchronously check for updates
     ;; (version/check-for-update version)
-    (let [s (sys/start (merge runtime-config
-                              {:routes          routes
-                               :nrepl-port      nrepl-requested-port
-                               :nrepl-host      (:nrepl-host conf)
-                               :nrepl-port-file (io/file (or (:nrepl-port-file conf) ".nrepl-port"))
-                               :server-port     webapp-requested-port
-                               ;; TODO bringing the websockets in is a little dirty for now
-                               :jetty-options   {:websockets {"/repl" (ws-relay/ws-processor route/nrepl-handler)}}
-                               :ip              ip}))
+    (let [s (sys/start merged-config)
           server (-> s (get-in [:server :jetty]))
           webapp-port (-> server .getConnectors (get 0) .getLocalPort)
           ;; webapp-port (-> s (get-in [:server :httpkit]) .getPort)
