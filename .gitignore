@@ -21,5 +21,4 @@ pom.xml.asc
 .nrepl-history
 .nrepl-port
 junk/
-resources/gorilla-repl-client/css/tailwind.css
 resources/gorilla-repl-client/gorilla.min.css

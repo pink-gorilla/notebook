@@ -1,4 +1,4 @@
-# docker build --rm -f docker/jdk-13-python/Dockerfile -t pinkgorillawb/gorilla-notebook:jdk-13-python .
+# docker build --rm -f docker/jdk-13-python/Dockerfile -t pinkgorillawb/gorilla-notebook:jdk-python .
 FROM openjdk:13-buster
 # FROM openjdk:8-jre
 MAINTAINER Andreas Steffan <a.steffan@contentreich.de>

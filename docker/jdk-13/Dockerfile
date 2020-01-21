@@ -1,9 +1,9 @@
-# docker build --rm -f docker/jre-8/Dockerfile -t pinkgorillawb/gorilla-notebook:jre-8 .
-FROM openjdk:8-jre
+# docker build --rm -f docker/jdk-13/Dockerfile -t pinkgorillawb/gorilla-notebook:jdk .
+FROM openjdk:13-buster
 MAINTAINER Andreas Steffan <a.steffan@contentreich.de>
 LABEL vendor="Pink Gorilla" \
       maintainer="a.steffan@contentreich.de" \
-      description="Pink Gorilla Notebook - JRE 8 version" \
+      description="Pink Gorilla Notebook - JDK 13 version" \
       version="1.0"
 
 EXPOSE 9000

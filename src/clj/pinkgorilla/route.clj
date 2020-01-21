@@ -4,6 +4,7 @@
    [clojure.java.io :as io]
    [compojure.route :as route]
    [compojure.core :as compojure :refer [GET POST]]
+   [selmer.parser :as sel]
    [ring.middleware.session :refer [wrap-session]]
    [pinkgorilla.middleware.cider :as mw-cider]
    [pinkgorilla.ui.hiccup_renderer :as renderer]   ; this is needed to bring the render implementations into scope
@@ -33,8 +34,9 @@
    ;; Session key is required to force setting the cookie
    :session (:session req)
    :headers {"Content-Type" "text/html; charset=utf-8"}
-   :body    (slurp (io/resource
-                    (str "gorilla-repl-client/" filename)))})
+   :body    (sel/render-file (str "gorilla-repl-client/" filename)
+                             {:name "Pink Gorilla"})
+   #_(slurp (io/resource (str "gorilla-repl-client/" filename)))})
 
 (defn create-resource-handlers
   [prefix]

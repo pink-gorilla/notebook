@@ -54,6 +54,7 @@
                                org.eclipse.jetty/jetty-servlet]]
                  ;; [de.otto/tesla-httpkit "1.0.1"]
                  [compojure "1.6.1"]                        ; Routing
+                 [selmer "1.12.18"]
                  ;; Bringing it in here bc that is where the websocket "processors" come in
                  [info.sunng/ring-jetty9-adapter "0.12.5"]
 
@@ -116,7 +117,7 @@
   :javac-options ["-target" "1.8" "-source" "1.8"]
   :source-paths ["src/clj" "env/prod/clj"]
   :test-paths ["test"]
-  :resource-paths ["resources" "target/cljsbuild"]
+  :resource-paths ["resources" "target/cljsbuild" "target/gen-resources"]
 
   ;; ["resources/public/js/compiled" "target"]
   :clean-targets ^{:protect false} [:target-path
@@ -219,7 +220,7 @@
 
                        :source-paths   ^:replace ["src/clj" "test" "env/dev/clj"]
 
-                       :resource-paths ^:replace ["resources" "target/cljsbuild" "env/dev/resources"]
+                       :resource-paths ^:replace ["resources" "target/cljsbuild" "target/gen-resources" "env/dev/resources"]
 
                        :injections     [(require 'pjstadig.humane-test-output)
                                         (pjstadig.humane-test-output/activate!)]

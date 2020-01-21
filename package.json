@@ -5,8 +5,8 @@
   "author": "a.steffan@contentreich.de",
   "scripts": {
     "tailwind-serve": "cross-env NODE_ENV=development concurrently \"postcss src/tailwind.css -o ./resources/gorilla-repl-client/css/tailwind.css --watch\"  \"live-server ./public\"",
-    "tailwind-development": "cross-env NODE_ENV=development postcss src/tailwind.css -o ./resources/gorilla-repl-client/css/tailwind.css",
-    "tailwind-production": "cross-env NODE_ENV=production postcss src/tailwind.css -o ./resources/gorilla-repl-client/css/public/build/tailwind.css",
+    "tailwind-development": "cross-env NODE_ENV=development postcss src/tailwind.css -o ./target/gen-resources/gorilla-repl-client/css/pink-gorilla.css",
+    "tailwind-production": "cross-env NODE_ENV=production postcss src/tailwind.css -o ./target/gen-resources/gorilla-repl-client/css/public/build/pink-gorilla.css",
     "test": "cross-env NODE_ENV=development karma start --single-run",
     "_start": "npm run serve",
     "_dev": "shadow-cljs watch app",
