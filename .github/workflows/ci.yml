@@ -49,4 +49,9 @@ jobs:
         git config --global user.email "ci@pinkgorilla.org"
         git config --global user.name "CI/CD"
         lein jar
+        #
+        # Could not transfer metadata foo:bar/maven-metadata.xml from/to releases (https://clojars.org/repo): Read timed out
+        # Default 10000 not enough for us
+        #
+        export LEIN_JVM_OPTS="-Dmaven.wagon.rto=90000"
         lein release
