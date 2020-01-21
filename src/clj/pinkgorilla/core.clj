@@ -18,25 +18,48 @@
     (when-let [resource (resolve-file name type)]
       (load-properties-from-resource resource)))
 
-(defn load-edn [name]
-  (when-let [resource (io/file name)]
+(defn load-edn [resource]
+  (when resource
     (-> resource
         (io/reader)
         (PushbackReader.)
         (read))))
 
 
-;; TODO WIP, we can to better
-;; lein plugin entry point
+;;found here: https://github.com/metosin/ring-swagger/blob/1c5b8ab7ad7a5735624986bbb6b288aaf168d407/src/ring/swagger/common.clj#L53-L73
 
+
+(defn deep-merge
+  "Recursively merges maps.
+   If the first parameter is a keyword it tells the strategy to
+   use when merging non-map collections. Options are
+   - :replace, the default, the last value is used
+   - :into, if the value in every map is a collection they are concatenated
+     using into. Thus the type of (first) value is maintained."
+  {:arglists '([strategy & values] [values])}
+  [& values]
+  (let [[values strategy] (if (keyword? (first values))
+                            [(rest values) (first values)]
+                            [values :replace])]
+    (cond
+      (every? map? values)
+      (apply merge-with (partial deep-merge strategy) values)
+
+      (and (= strategy :into) (every? coll? values))
+      (reduce into values)
+
+      :else
+      (last values))))
 
 (defn run-gorilla-server
   [conf]
   (info "Got conf " conf)
   ; get configuration information from parameters
-  (let [runtime-config (if-let [rt-config-file (:runtime-config conf)]
-                         (load-edn rt-config-file)
-                         {})
+  (let [default-config  (load-edn (io/resource "pink-gorilla.edn"))
+        custom-config (if-let [rt-config-file (:runtime-config conf)]
+                        (load-edn (io/file rt-config-file))
+                        {})
+        runtime-config (deep-merge default-config custom-config)
         version (or (:version conf) "develop")
         webapp-requested-port (or (:port conf) 0)
         ip (or (:ip conf) "127.0.0.1")
