@@ -1,6 +1,24 @@
+@import "../resources/gorilla-repl-client/css/codemirror";
+@import "../resources/gorilla-repl-client/css/codemirror-hint";
+@import "../resources/gorilla-repl-client/css/worksheet";
+@import "../resources/gorilla-repl-client/css/gorilla";
+@import "../resources/gorilla-repl-client/css/output";
+@import "../resources/gorilla-repl-client/css/notifications";
+
+
+/* @import "../resources/gorilla-repl-client/css/bootstrap"; */
+
+/*
+If you're using postcss-import ... use import instead of @tailwind directive
+*/
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+/*
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+*/
 
 /*
  https://www.schemecolor.com/navy-and-hot-pink.php

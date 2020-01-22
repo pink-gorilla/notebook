@@ -10,7 +10,10 @@
    [pinkgorilla.storage.explore-handler :refer [update-excludes]]
 
    [pinkgorilla.system :as sys]
-   [pinkgorilla.cli :as cli])
+   [pinkgorilla.cli :as cli]
+    ;; TODO For notebook compat - fails when called on startup : Could not find a suitable classloader to modify from clojure.lang.LazySeq@532d8051
+    ;; #'nrepl.middleware.session/session
+   )
   (:import (java.io PushbackReader))
   (:gen-class))
 
@@ -82,7 +85,7 @@
         ;; keymap (or (:keymap (:gorilla-options conf)) {})
         _ (update-excludes (fn [x] (set/union x (:load-scan-exclude (:gorilla-options conf)))))]
     ;; app startup
-    (info "Gorilla-REPL:" version)
+    (info "Gorilla Notebook Version" version)
     ;; (println "Using project" project)
     ;; asynchronously check for updates
     ;; (version/check-for-update version)

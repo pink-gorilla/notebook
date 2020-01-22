@@ -1,6 +1,6 @@
 # https://ctr.run/documentation
 # docker run ctr.run/github.com/pink-gorilla/gorilla-notebook[:commit-hash, branch-name, tag-name]
-FROM clojure:openjdk-8 as build
+FROM clojure:openjdk-13-buster as build
 MAINTAINER Andreas Steffan <a.steffan@contentreich.de>
 LABEL vendor="Pink Gorilla" \
       maintainer="a.steffan@contentreich.de" \
