@@ -27,8 +27,7 @@
                                                            pinkgorilla.ui.aggrid ; aggrid grid
                                                            pinkgorilla.ui.leaflet
 
-                                                           thi.ng.strf.core
-                                                           }
+                                                           thi.ng.strf.core}
                                            :key-bindings [{:name    "command:app:commands"
                                                            :desc    "Show the command list."
                                                            :kb      "alt+g alt+g"
@@ -127,17 +126,19 @@
                                                           {:name    "command:worksheet:completions"
                                                            :desc    "Show possible auto-completions."
                                                            :kb      ["ctrl+space" "alt+g alt+a"]
-                                                           :handler [:worksheet:completions]}]
-                                           }
+                                                           :handler [:worksheet:completions]}]}
                  :dev-aids                true
                  :explore-repositories    [{:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}]
                  :explore-file-directories
-                                          {;; TODO: config map merge never removes keys!
+                 {;; TODO: config map merge never removes keys!
                                            ;; :gorilla-unittest "./notebooks"
-                                           }
-                 ;; TODO For notebook compat pomegranate needs clojure.lang.DynamicClassLoader
-                 ;; #'nrepl.middleware.session/session
-                 ;; :additional-runtime-deps [org.pinkgorilla/gorilla-plot "0.8.9"]
+                  }
+                 ;; Can be used for notebook compat - no need to call
+                 ;; (helper/add-dependency x)
+                 ;; in notebook
+                 ;;:additional-runtime-deps
+                 #_[[org.pinkgorilla/gorilla-plot "0.8.9"]
+                    [org.pinkgorilla/gorilla-leaflet "0.2.7"]]
                  :load-scan-exclude       #{".git" ".svn"}}
  ; metering
  ;; :metering-reporter        "console"
