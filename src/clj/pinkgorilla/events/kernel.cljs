@@ -5,7 +5,7 @@
    [re-frame.core :refer [reg-event-db dispatch]]
    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
    [pinkgorilla.util :refer [application-url ws-origin]]
-   [pinkgorilla.kernel.nrepl :refer [init!]]))
+   [pinkgorilla.kernel.nrepl :refer [start-repl!]]))
 
 (reg-event-db
  :evaluator:value-response
@@ -62,5 +62,5 @@
 (reg-event-db
  :kernel-clj-connect
  (fn [db [_]]
-   (init! (ws-origin "repl/" (application-url)))
+   (start-repl! (ws-origin "repl/" (application-url)))
    db))

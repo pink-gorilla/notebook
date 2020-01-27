@@ -6,7 +6,7 @@
    [cljs-uuid-utils.core :as uuid]
    [clojure.walk :as w]
    [clojure.string :as str]
-   [cljs.core.async :as async :refer (<! >! put! chan)];; timeout
+   [cljs.core.async :as async :refer (<! >! put! chan timeout close!)];; timeout
    [cljs.reader :as rd]
    ;; [cljs.core.match :refer-macros [match]]
    ;; [com.stuartsierra.component :as component]
@@ -177,53 +177,79 @@
   (dispatch [:kernel-clj-status-set connected session-id]))
 
 (defn- receive-msgs!
-  [server-ch]
+  [ws-chan msg-chan]
   (go
-    (let [{:keys [message error]} (<! server-ch)]
-      (info "Got initial message " message)
-      (if-let [new-session (get message "new-session")]
+    (let [{:keys [message error]} (<! ws-chan)
+          fail-fn (fn [error]
+                    (close! ws-chan)
+                    (close! msg-chan)
+                    (add-notification (notification :danger (str "clj-kernel Fatal Error: " error)))
+                    (set-clj-kernel-status false nil))]
+      (if message
         (do
-          (swap! ws-repl assoc :session-id new-session)
-          (set-clj-kernel-status true new-session)
+          (info "Got initial message " message)
+          (if-let [new-session (get message "new-session")]
+            (do
+              (swap! ws-repl assoc :session-id new-session)
+              (set-clj-kernel-status true new-session)))
           (go-loop []
-            (let [{:keys [message error]} (<! server-ch)]
+            (let [{:keys [message error]} (<! ws-chan)]
               (if message
                 (do
                   (process-msg message)
                   (recur))
-                (do
-                  (add-notification (notification :danger (str "clj-kernel Fatal Error: " error " - Game over")))
-                  (set-clj-kernel-status false nil))))))
-        (do
-          (add-notification (notification :danger (str "clj-kernel Fatal Error : " error " - Unable to create session. Game over")))
-          (set-clj-kernel-status false nil))))))
+                (fail-fn error)))))
+        (fail-fn error)))))
 
-(defn- send-msgs! [new-msg-ch server-ch]
-  (go-loop []
-    (when-let [msg (<! new-msg-ch)]
-      (>! server-ch msg)
-      (recur))))
+#_(defn- send-msgs!
+    "Read messages and send them to server until the channel breaks"
+    [msg-chan ws-chan]
+    (go-loop []
+      (when-let [msg (<! msg-chan)]
+        (>! ws-chan msg)
+        (recur))))
 
-(defn init!
-  [ws-url]
-  (info "clj kernel starting at" ws-url)
-  (go
-    (let [{:keys [ws-channel error]} (<! (ws-ch ws-url {:format :json}))]
-      (when error
-        (add-notification (notification :danger (str "clj-kernel " error)))
-        #_(do
-            (print msg "to " ws-channel)
-            (>! ws-channel msg))
-        #_(js/alert (str "Error" error)))
-      (let [new-msg-ch (doto (chan)
-                         (send-msgs! ws-channel))]
-        (swap! ws-repl assoc :channel new-msg-ch)
-        (receive-msgs! ws-channel)
-        (>! new-msg-ch #js {:op "clone"})))))
+#_(defn init!
+    [ws-url]
+    (info "clj kernel starting at" ws-url)
+    (go
+      (let [{:keys [ws-channel error]} (<! (ws-ch ws-url {:format :json}))]
+        (if error
+          (add-notification (notification :danger (str "clj-kernel " error)))
+          (let [new-msg-ch (doto (chan)
+                             (send-msgs! ws-channel))]
+            (swap! ws-repl assoc :channel new-msg-ch)
+            (receive-msgs! ws-channel nil)
+            (>! new-msg-ch #js {:op "clone"}))))))
 
+#_(defn- init-repl!
+    [ws-url]
+    (let [feed (<! (ws-ch ws-url {:format :json}))]
+      feed))
+
+(defn start-repl! [ws-url]
+  (go-loop [{:keys [ws-channel error]} (<! (ws-ch ws-url {:format :json}))
+            new-session true]
+    (if-not error
+      (let [msg-ch (chan)]
+        (swap! ws-repl assoc :channel msg-ch)
+        (when new-session
+          (go (>! msg-ch #js {:op "clone"})))
+        (receive-msgs! ws-channel msg-ch)
+        (loop []
+          (when-let [msg (<! msg-ch)]
+            (>! ws-channel msg)
+            (recur)))
+        (<! (timeout 3000))
+        (recur (<! (ws-ch ws-url {:format :json}))
+               false))
+      (let [session-id (:session-id @ws-repl)]
+        (add-notification (notification :danger (str "clj-kernel error: " error " - trying to recover with session " session-id)))
+        (<! (timeout 3000))
+        (recur (<! (ws-ch ws-url {:format :json}))
+               (nil? session-id))))))
 
 ;; CLJ eval
-
 ;;
 ;; pinkgorilla.kernel.nrepl.clj_eval("(+ 7 9 )", (function (r) {console.log ("result!!: " +r);}))
 
@@ -245,7 +271,8 @@
                                       (info "clj-eval result: " v2 " type: " (type v2))
                                       (callback v2)))))))
 
-(defn ^:export clj-eval-sync [result-atom snippet]
+(defn ^:export clj-eval-sync
+  [result-atom snippet]
   (let [result-chan (chan)]
     (go
       (clj-eval snippet (fn [result]
@@ -254,7 +281,8 @@
     (go (reset! result-atom (<! result-chan)))
     result-atom))
 
-(defn ^:export clj [result-atom function-as-string & params]
+(defn ^:export clj
+  [result-atom function-as-string & params]
   (let [_ (info "params: " params)
         expr (concat ["(" function-as-string] params [")"]) ; params)
         str_eval (clojure.string/join " " expr)
