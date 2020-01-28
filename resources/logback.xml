@@ -8,8 +8,8 @@
         </encoder>
     </appender>
 
-    <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log_location:-./}gorilla-repl.log</file>
+    <!--appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_location:-./}gorilla-notebook.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>gorilla-repl.%d{yyyy-MM-dd-HH-mm}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -18,7 +18,7 @@
         <encoder>
             <pattern>%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
-    </appender>
+    </appender-->
 
     <root level="${log_level:-info}">
         <appender-ref ref="${log_appender:-consoleAppender}"/>
