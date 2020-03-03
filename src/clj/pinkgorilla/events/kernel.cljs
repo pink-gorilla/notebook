@@ -1,7 +1,7 @@
 (ns pinkgorilla.events.kernel
   "Process results from the kernel and update notebook segments in app-db"
   (:require
-   [taoensso.timbre :refer-macros (info)]
+   ;[taoensso.timbre :refer-macros (info)]
    [re-frame.core :refer [reg-event-db dispatch]]
    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
    [pinkgorilla.util :refer [application-url ws-origin]]
@@ -18,9 +18,9 @@
 (reg-event-db
  :evaluator:console-response
  (fn [db [_ seg-id response]]
-   (let [;; segment (get-in db [:worksheet :segments seg-id])
-         _ (info "console response received: " response)]
-     ;(assoc-in db [:worksheet :segments seg-id] (merge segment response))
+   (let [_ nil
+         ; _ (info "console response received: " response)
+         ]
      (update-in db [:worksheet :segments seg-id :console-response] str (:console-response response)))))
 
 (reg-event-db
@@ -42,8 +42,9 @@
        (if (= (- seg-count 1) (.indexOf segment-order active-id))
          (dispatch [:worksheet:newBelow])
          (dispatch [:worksheet:leaveForward])))
-     (assoc-in db [:worksheet :queued-code-segments] (-> (remove #(= seg-id %) queued-segs)
-                                                         set)))))
+     (dispatch [:worksheet:evaluate-next-queued])
+     (assoc-in db [:worksheet :queued-code-segments]
+               (-> (remove #(= seg-id %) queued-segs) set)))))
 
 (reg-event-db
  :output-error

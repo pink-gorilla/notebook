@@ -1,19 +1,23 @@
-{
- ; this file is read by de.otto.tesla
- :settings 
+{; this file is read by de.otto.tesla
+ :settings
  {:explore-repositories [{:name "files" :url "/explore"}
-                         {:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"} ]  
+                         #_{:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}]
   :explore-file-directories
-  {:gorilla-unittest "./notebooks"
-   :gorilla-examples "../sample-notebooks/samples"
-   :geschichte "../ui-geschichte/notebooks"
-   :backtest "/home/andreas/Documents/quant/backtest/gorilla"
-   :fquant "../../quant/clojureQuant/notebooks"
+  {:gorilla-notebook "./notebooks"
+   ;:gorilla-examples "../sample-notebooks/samples" ; they are empty now.
+   ;:gorilla-ui "../gorilla-ui/notebooks"
+   ;:gorilla-plot "../gorilla-plot/notebooks"
+   ;:gorilla-cljs "../kernel-cljs-shadow/notebooks"
+   ; libraries in progress
+   ;:geschichte "../ui-geschichte/notebooks"
+   ; quant project
+   :backtest "../../quant/backtest/notebooks"
+   ;:fquant "../../quant/clojureQuant/notebooks"
+   :trateg "../../quant/trateg/notebooks"
    }
-  :cljs 
-  {:path "http://localhost:2705/out/public/cljs-runtime/gorilla" ; base url of dependency server / bundle that gets loaded
-   ;:path "/cljs-runtime/gorilla" ; base url of dependency server / bundle that gets loaded
-   }}}
+  :cljs
+  {:kernel {:path "http://localhost:2705/bundles/gorilla" ; base url of dependency server / bundle that gets loaded
+   ;:path "/bundles/gorilla" ; base url of dependency server / bundle that gets loaded
+            }}}}
 
 
-  

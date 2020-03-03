@@ -1,8 +1,5 @@
 (ns pinkgorilla.app
   (:require
-   [pinkgorilla.core :as core]))
+   [pinkgorilla.app-notebook :refer [init-notebook!]]))
 
-;;ignore println statements in prod
-(set! *print-fn* (fn [& _]))
-
-(core/init!)
+(init-notebook!)

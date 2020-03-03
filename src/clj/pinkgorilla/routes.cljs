@@ -5,12 +5,12 @@
     ;; [goog.history Html5History]
    )
   (:require
-   [taoensso.timbre :refer-macros (info)]
+   [taoensso.timbre :refer-macros (info debug)]
    [secretary.core :as secretary]
    [goog.events :as events]
    [goog.history.EventType :as EventType]
    [re-frame.core :as re-frame]
-   [pinkgorilla.explore.utils :as u]))
+   [pinkgorilla.explore.tags :refer [tags-csv->list]]))
 
 ;; Fix browser/History URL http://www.lispcast.com/mastering-client-side-routing-with-secretary-and-goog-history
 
@@ -61,16 +61,36 @@
 
 (defonce history (hook-browser-navigation!))
 
-(defn nav!
-  [token]
-  (.setToken history token))
+(defn   nav!
+  "navigates the broser to the url. 
+   Triggers secretary route events"
+  [url]
+  (.setToken history url))
+
+(defn set-hash!
+  "changes the displayed URL in the browser, but does not cause the browser 
+   to navigate to this url. This does not trigger secretary events."
+  [hash]
+  (let [location (.-location js/window)
+        ;protocol (.-protocol location) ; "http:"
+        ;hostname (.-hostname location) ;  localhost
+        ;port (.-port location) ; 9000
+        ;host (.-host location) ; "localhost:9000"
+        origin (.-origin location) ; "http://localhost:9000"
+        pathname (.-pathname location) ;  "/worksheet.html"
+        ;hash (.-hash location) ; "#/edit?source=file&filename=../../quant/backtest/notebooks/bongo-test.cljg"
+        ;href (.-href location) ;  "http://localhost:9000/worksheet.html#/edit?source=file&filename=../../quant/backtest/notebooks/bongo-test.cljg"
+        url-new (str origin pathname "#" hash)]
+    ;(println "set-hash! url:" url-new)
+    (debug "set-hash! url:" url-new)
+    (set! (.-location js/window) url-new)))
 
 (defn app-routes
   [& [{:keys [hook-navigation]
        :or   {hook-navigation false}}]]
   (info "Hook navigation" hook-navigation)
   (secretary/set-config! :prefix "#")
-  (defroute "/new" [query-params]
+  (defroute "/new" []
     (re-frame/dispatch [:initialize-new-worksheet]))
   (defroute "/edit" [query-params]
     (when query-params
@@ -82,7 +102,11 @@
 
 (defroute projects-path "/explore" [query-params]
   (info "navigated to /explore")
-  (re-frame/dispatch [:list-projects (set (u/split-tags (:tags query-params)))]))
+  (re-frame/dispatch [:explorer-show (set (tags-csv->list (:tags query-params)))]))
+
+(defroute renderer-path "/renderer" [query-params]
+  (info "navigated to /renderer")
+  (re-frame/dispatch [:renderer-show]))
 
 
 

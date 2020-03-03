@@ -3,7 +3,7 @@
 .notifications-container {
     position: fixed;
     width: calc(100vw - 3em);
-    top: 1em;
+    top: 6em;
     right: 1em;
     z-index: 300;
     overflow:hidden;

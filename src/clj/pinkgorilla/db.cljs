@@ -52,12 +52,10 @@
     "alt"
     "ctrl"))
 
-; explore:
-(def form-default {:data    {}
-                   :errors  {}
-                   :state   :sleeping})
 
 ;; -- Initial app-db Value  ---------------------------------------------------
+
+
 (def initial-db
   {:config       {:read-only true}
    :base-path    nil
@@ -69,7 +67,6 @@
    :navbar-menu-active? true
    :current-view :home
    :main :notebook ; integrate this to the way navbar works.
-   :nav {}  ; todo: remove this - came form notebook explorer from open source clojure
 
    ; old command palette
    :all-commands []
@@ -85,7 +82,6 @@
 
    ; notifications
    :notifications []
-   :message      nil  ; TODO: remove message, after notification system works 100% ok
 
    ; dialogs
    :dialog {:settings false
@@ -93,7 +89,9 @@
             :meta false}
 
    ; notebook editor
-   :worksheet    {:meta {}}
+   :worksheet    {:meta {}
+                  :queued-next []}
+
    :settings     {:default-kernel :clj
                   :editor :text
                   :github-token ""}
@@ -104,12 +102,10 @@
    :kernel-clj {:connected false
                 :session-id nil}
 
-   ; explore:
-   :projects     {:selected nil}
-   :forms        {:projects {:create form-default
-                             :update form-default
-                             :search form-default}}
-   :data         {:projects []}
+   :explorer {:notebooks []
+              :search {:tags #{}
+                       :text ""}}
+
    :initialized true
 
    :dev {:reframe10x-visible? false}})

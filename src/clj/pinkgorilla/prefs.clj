@@ -12,13 +12,23 @@
 (defmacro emit-gorilla-cljs-compiler-config []
   `'~(or (gorilla-cljs-compiler-config) {}))
 
+(defmacro if-10x [with without]
+  (list 'do
+        (if (:10x (gorilla-cljs-compiler-config))
+          with
+          without)))
+
 (defmacro if-cljs-kernel [with without]
   (list 'do
         (if (:with-cljs-kernel (gorilla-cljs-compiler-config))
           with
           without)))
 
+
+
+
 ; -- environmental config ---------------------------------------------------------------------------------------------------
+
 
 #_(def ^:dynamic env-config-prefix "gorilla")
 

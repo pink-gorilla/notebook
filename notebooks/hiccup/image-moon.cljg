@@ -1,0 +1,41 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;;  # html image
+;; **
+
+;; @@ [clj]
+(defn image 
+  [url]
+  ^:R [:img {:src url :height 100 :width 100 :alt "it's an image"}])
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'user/image"],"~:value","#'user/image"]
+;; <=
+
+;; @@ [clj]
+(image "https://cdn.mos.cms.futurecdn.net/yyvvM9kwaVGySFE6aXXoJL-320-80.jpg")
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:img",["^ ","~:src","https://cdn.mos.cms.futurecdn.net/yyvvM9kwaVGySFE6aXXoJL-320-80.jpg","~:height",100,"~:width",100,"~:alt","it's an image"]],"~:map-keywords",true,"~:widget",true]]
+;; <=
+
+;; @@ [clj]
+; debug reagent hiccup syntax
+(println (image "https://pbs.twimg.com/profile_images/641353910561566720/VSxsyxs7.jpg"))
+;; @@
+;; ->
+;;; [:img {:src https://pbs.twimg.com/profile_images/641353910561566720/VSxsyxs7.jpg, :height 100, :width 100, :alt it's an image}]
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+
+;; @@

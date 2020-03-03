@@ -22,7 +22,6 @@
    [pinkgorilla.events.storage]
    [pinkgorilla.events.storage-save-dialog]
    [pinkgorilla.events.storage-file]
-   [pinkgorilla.events.explore]
 
    [pinkgorilla.events.kernel]
    [pinkgorilla.events.kernel-toggle]
@@ -30,10 +29,8 @@
 
    ; pinkgorilla ui
 
-   [pinkgorilla.explore.subs]
-   [pinkgorilla.explore.handlers]
-   ;[pinkgorilla.explore.list]
-   ))
+   [pinkgorilla.explore.subscriptions]
+   [pinkgorilla.explore.events]))
 
 (reg-set-attr ::set-navbar-menu-active? :navbar-menu-active?)
 

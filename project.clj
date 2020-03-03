@@ -3,13 +3,64 @@
   :url "https://github.com/pink-gorilla/gorilla-notebook"
   :scm {:name "git" :url "https://github.com/pink-gorilla/gorilla-notebook"}
   :license {:name "MIT"}
-  ;; Deps: clj, cljs or cljc - that is the question!
+  :min-lein-version "2.9.1"
+  :min-java-version "1.11"
+  :deploy-repositories [["releases" {:url "https://clojars.org/repo"
+                                     :username :env/release_username
+                                     :password :env/release_password
+                                     :sign-releases false}]]
+;; Deps: clj, cljs or cljc - that is the question!
+
+;; Use this to check depencencies:
+;; lein deps :tree    shows if old versions are used (output in beginning)
+;; lein ancient       shows outdated dependncies (more recent version available on clojars)
+
+;; The first dependency determines the dependency version:
+;; see: https://github.com/technomancy/leiningen/blob/stable/doc/FAQ.md
+;; :exclusions can be used to fix this issue
+;; [Z "1.0.9"]
+;; [X "1.3.2"]
+;;   [Z "2.0.1"]
+;; ==> the direct dependency ([Z "1.0.9"]) is picked, as it is closest to the root.
+;; [X "1.3.2"]
+;;   [Z "2.0.1"]
+;; [Y "1.0.5"]
+;; [Z "2.1.3"]
+;; ==> the dependency X comes first, and therefore [Z "2.0.1"] is picked
+
+;; managed deendencies only define the version of a dependency,
+;; if no dependeny needs them, then they are not included
+  :managed-dependencies [; to avoid a :exclusion mess, we define certain versions numbers centrally
+                         ; serialization libraries are dependencies o many libraries,
+                         [org.clojure/core.memoize "0.8.2"]
+                         [org.clojure/data.json "1.0.0"]
+                         [org.clojure/data.fressian "1.0.0"]
+                         [org.clojure/core.match "1.0.0"]
+                         [com.cognitect/transit-clj "1.0.324"]
+                         [com.cognitect/transit-cljs "0.8.256"]
+                         [com.fasterxml.jackson.core/jackson-core "2.11.0.rc1"]
+                         [cheshire "5.10.0"]
+                         [com.taoensso/encore "2.119.0"]
+                         ; patches to get most uptodate version for certain conflicts:
+                         [commons-codec "1.12"] ; selmer and clj-http (via gorilla-explore)
+                         [ring/ring-codec "1.1.1"] ; ring and compojure
+                         [org.flatland/useful "0.11.6"] ; clojail and ring-middleware-format
+                         ; pinkgorilla (enforce to use latest version of all projects)
+                         [org.pinkgorilla/gorilla-middleware "0.2.21"]
+                         [org.pinkgorilla/gorilla-renderable-ui "0.1.29"]
+                         [org.pinkgorilla/gorilla-ui "0.1.27"]
+                         [org.pinkgorilla/notebook-encoding "0.0.28"]
+                         [org.pinkgorilla/gorilla-explore "0.1.19"]
+                         [org.pinkgorilla/kernel-cljs-shadowdeps "0.0.12"]
+                         [org.pinkgorilla/kernel-cljs-shadow "0.0.25"]
+                         ; shadow-cljs
+                         [thheller/shadow-cljs "2.8.94"]]
+
   :dependencies [;; CLOJURE ESSENTIAL
                  [org.clojure/clojure "1.10.1"]
-                 [org.clojure/core.async "0.5.527"]
+                 [org.clojure/core.async "1.1.582"]
                  [org.clojure/tools.reader "1.3.2"]
-                 ;; [com.rpl/specter "0.13.2"]
-                 [org.clojure/core.match "0.3.0"]
+                 [org.clojure/core.match "1.0.0"]
 
                  ;; CONFIGURATION / LOGGING / SYSTEM MANAGEMENT
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
@@ -20,57 +71,67 @@
                  [com.taoensso/timbre "4.10.0"]             ; clojurescript logging
                  ;; Things get very noise with slf4j-timbre - needs configuration
                  ;; [com.fzakaria/slf4j-timbre "0.3.2"]
-                 [environ "1.1.0"]
+                 [environ "1.1.0"]  ; Environment variables
                  [com.stuartsierra/component "0.4.0"]
-                 [org.danielsz/system "0.4.3"]
+                 [org.danielsz/system "0.4.3"
+                  :exclusions [io.aviso/pretty]] ; newer version in com.taoensso/timbre
                  [de.otto/tesla-microservice "0.13.1"]
 
                  ;; ENCODING / SERIALIZATION
-                 ;; [com.taoensso/sente "1.15.0"]
-                 ;; Sente appears better maintained but we don't get a lot from it.
-                 ;; It also has the server part - but not for jetty.
+                 [com.taoensso/sente "1.15.0"]
+                 ;; Chord needed for clojure?
                  [jarohen/chord "0.8.1"
                   :exclusions [com.cognitect/transit-clj
                                com.cognitect/transit-cljs]] ; websockets with core.async
+                 [org.clojure/data.json] ; managed-version
 
-                 [org.clojure/data.json "0.2.7"]
-                 ;;  ring-json introduces jackson along with its tail - but so does cljs-ajax :/
-                 ;; [ring/ring-json "0.4.0"]
 
                  ;; WEB SERVER
-                 [ring "1.7.1"
-                  ;; :exclusions [ring/ring-jetty-adapter]
-                  ]
+                 [ring "1.7.1"]
                  [ring-cors "0.1.13"]
                  [ring/ring-defaults "0.3.2"
                   :exclusions [javax.servlet/servlet-api]]
                  ;; [ring.middleware.logger "0.5.0"]
-                 ;; [ring-webjars "0.1.1"]                     ;; Although not matching servlet3 paths
+                 ;; [ring-webjars "0.1.1"]  ;; Although not matching servlet3 paths
                  [ring-middleware-format "0.7.4"]
+                 ;;  ring-json introduces jackson along with its tail - but so does cljs-ajax :/
+                 ;; [ring/ring-json "0.4.0"]
                  [javax.websocket/javax.websocket-api "1.1"]
                  [javax.servlet/javax.servlet-api "4.0.1"]
+                 ;; [org.eclipse.jetty.websocket/websocket-server "9.4.12.v20180830"]
                  [de.otto/tesla-jetty "0.2.6"
                   :exclusions [org.eclipse.jetty/jetty-server
                                org.eclipse.jetty/jetty-servlet]]
-                 [compojure "1.6.1"]                        ; Routing
+                 ;; [de.otto/tesla-httpkit "1.0.1"]
+                 [compojure "1.6.1"] ; Routing
                  [selmer "1.12.18"]
                  ;; Bringing it in here bc that is where the websocket "processors" come in
                  [info.sunng/ring-jetty9-adapter "0.12.5"]
 
-                 ; CLJ Kernel
-                 [org.pinkgorilla/gorilla-middleware "0.2.15"]
-                 [clj-commons/pomegranate "1.2.0"]          ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
-                 [org.clojure/tools.cli "0.4.2"]
-                 [clojail "1.0.6"]; Sandboxing - not sure whether we want to cope with this level of detail
+                 ; Notebook Encoding / Exploration
+                 [org.pinkgorilla/notebook-encoding] ; notebook encoding
+                 [org.pinkgorilla/gorilla-explore] ; notebook exploration
+                 [irresponsible/tentacles "0.6.6"] ; github api (needed by encoding and explore)
+                 ;[clj-time "0.15.2"] ; needed for notebook exploration ui
+                 [com.andrewmcveigh/cljs-time "0.5.2"] ;  notebook exploration ui
 
-                 ;pinkgorilla sub projects
-                 [org.pinkgorilla/gorilla-renderable-ui "0.1.0"] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
-                 [org.pinkgorilla/kernel-cljs-shadowdeps "0.0.8"
-                  :exclusions [*/*]]
-                 [org.pinkgorilla/notebook-encoding "0.0.23"] ; notebook encoding
-                 [org.pinkgorilla/gorilla-explore "0.1.7"]  ; notebook exploration
-                 [irresponsible/tentacles "0.6.6"]          ; github api (needed by encoding and explore)
-                 [clj-time "0.15.2"]]                       ; needed for notebook exploration ui
+                 ; CLJ Kernel
+                 [org.pinkgorilla/gorilla-middleware]
+                 [clj-commons/pomegranate "1.2.0"] ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
+                 [org.clojure/tools.cli "1.0.194"]
+                 ;[clojail "1.0.6"] ; Sandboxing - not sure whether we want to cope with this level of detail
+
+                 ; PINKIE
+                 [org.pinkgorilla/gorilla-renderable-ui] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
+                 [org.pinkgorilla/gorilla-ui] ; ui renderer impls
+
+                 ; CLJS Kernel
+                 [org.pinkgorilla/kernel-cljs-shadowdeps]
+                 ;[org.pinkgorilla/kernel-cljs-shadowdeps
+                 ; :exclusions [*/*]] ; add precompiled bundles via jar resources
+
+                 ;; [com.rpl/specter "0.13.2"]
+                 ]
 
 
   ;; REPLIKATIV
@@ -78,15 +139,17 @@
   ;  [com.cognitect/transit-cljs "0.8.239" :scope "provided"]
 
   :plugins [[lein-shell "0.5.0"]
-            [lein-environ "1.1.0"]                          ;; TODO Will likely be axed soon
+            [lein-environ "1.1.0"] ;; TODO Will likely be axed soon
             ;; tools.namespace "Unparsable namespace form:" ["parinfer-codemirror"]
             ;; quick hack is to temporarily rm .cljs files
             ;; [lein-hiera "1.1.0"] ; tools.namespace "Unparsable namespace form:" ["parinfer-codemirror"]
             ;; See: https://clojure.atlassian.net/browse/TNS-51
             ;; [walmartlabs/vizdeps "0.1.6"]
-            [lein-ring "0.12.5"]
+            [lein-ancient "0.6.15"]
+            ;[lein-ring "0.12.5"]
             [lein-asset-minifier "0.4.6"
-             :exclusions [org.clojure/clojure]]]
+             :exclusions [org.clojure/clojure]]
+            [min-java-version "0.1.0"]]
 
   ;; :uberjar-name "gorilla-notebook-standalone.jar"
 
@@ -105,9 +168,7 @@
          :servlet-name   redirect-servlet
          :uberwar-name   "gorilla-notebook.war"}
 
-  :min-lein-version "2.5.0"
-
-  :main ^:skip-aot pinkgorilla.core
+  :main ^:skip-aot pinkgorilla.notebook-app.core
 
   ;; :aot [gorilla-repl.servlet]
 
@@ -130,7 +191,9 @@
                "compile"
                "build-tailwind-dev"
                "build-shadow-without-cljs-kernel"
-               "build-shadow-with-cljs-kernel"]
+               "build-shadow-with-cljs-kernel"
+               ;; "build-shadow-pinkie"
+               ]
 
   :release-tasks [["vcs" "assert-committed"]
                   ["bump-version" "release"]
@@ -140,12 +203,6 @@
                   ["bump-version"]
                   ["vcs" "commit" "Begin %s"]
                   ["vcs" "push"]]
-
-
-  :deploy-repositories [["releases" {:url "https://clojars.org/repo"
-                                     :username :env/release_username
-                                     :password :env/release_password
-                                     :sign-releases false}]]
 
   ;; :classifiers
   #_{:standalone :uberjar
@@ -169,13 +226,32 @@
             ["shell" "npm" "run" "test"]
             "clj-kondo"                        ^{:doc "Lint with clj-kondo"}
             ["run" "-m" "clj-kondo.main"]
+            "lint"                             ^{:doc "Lint for dummies"}
+            ["clj-kondo" "--lint" "src/clj/pinkgorilla"]
+            "coverage"                             ^{:doc "Code coverage for dummies"}
+            ["with-profile" "+cljs" "cloverage"]
             "bump-version"                     ^{:doc "Roll versions artefact version"}
-            ["change" "version" "leiningen.release/bump-version"]}
+            ["change" "version" "leiningen.release/bump-version"]
+            "build-shadow-pinkie"
+            ["with-profile" "+pinkie,+cljs" "run" "-m" "shadow.cljs.devtools.cli"  "compile" ":pinkie"]
+            "watch-shadow-pinkie"
+            ["with-profile" "+pinkie" "run" "-m" "shadow.cljs.devtools.cli"  "watch" ":pinkie"]
+            "run-pinkie"
+            ["with-profile" "+pinkie" "run" "-m" "pinkie.app"]
+            "test-js-compile"                          ^{:doc "compile and Test JavaScript."}
+            ["do" ["build-shadow-ci"] "test-js"]}
 
-  :profiles {:dev     {:repl-options   {:init-ns          pinkgorilla.repl
+
+  :profiles {:devcljs {:source-paths   ^:replace ["src/clj" "env/dev/clj"]
+                       :resource-paths ^:replace ["resources"
+                                                  "target/cljsbuild"
+                                                  "target/gen-resources"
+                                                  "env/dev/resources"]
+                       :env            ^:replace {:dev true}}
+
+             :dev     {:repl-options   {:init-ns          pinkgorilla.repl
                                         :port             4001
-                                        :nrepl-middleware [;; cider.piggieback/wrap-cljs-repl
-                                                           shadow.cljs.devtools.server.nrepl/middleware]}
+                                        :nrepl-middleware [shadow.cljs.devtools.server.nrepl/middleware]}
                        :prep-tasks     ^:replace ["javac" "compile"]
                        :plugins        [;; [refactor-nrepl "2.2.0" :exclusions [org.clojure/clojure]]
                                         [lein-cljfmt "0.6.6"]
@@ -199,35 +275,57 @@
 
                                         ;; [com.google.javascript/closure-compiler-unshaded "v20190325"]
                                         ;; [org.clojure/google-closure-library "0.0-20190213-2033d5d9"]
-                                        ;; [com.bhauman/figwheel-main "0.2.3"]
                                         ;; [com.bhauman/rebel-readline-cljs "0.1.4"]
                                         ;; [karma-reporter "3.1.0"]
-                                        ;; [leiningen-core "2.6.1"] ;; project/read breaks clsjbuild
+                                        [day8.re-frame/test "0.1.5"] ; awb99 added this, so lein test would get re-frame/test dependencies
                                         [clj-kondo "2019.11.23"]
                                         [ring/ring-mock "0.4.0"]
                                         [ring/ring-devel "1.7.1"]
                                         [prone "2019-07-08"]
                                         [pjstadig/humane-test-output "0.10.0"]
-                                        ;; Dirac or piggieback - there can only be one of them
-                                        ;; Gorilla server side stuff
-                                        ;; [hiccup "1.0.5"]
-                                        ;; https://github.com/clojure-numerics/expresso/issues/19
-                                        ;; [expresso "0.2.2"]
                                         [instaparse "1.4.10"]
-                                        ;; [org.clojure/data.xml "0.0.8"]
                                         [me.lomin/component-restart "0.1.2"]]
 
                        :source-paths   ^:replace ["src/clj" "test" "env/dev/clj"]
 
-                       :resource-paths ^:replace ["resources" "target/cljsbuild" "target/gen-resources" "env/dev/resources"]
+                       :resource-paths ^:replace ["resources"
+                                                  "target/cljsbuild"
+                                                  "target/gen-resources"
+                                                  "env/dev/resources"]
 
                        :injections     [(require 'pjstadig.humane-test-output)
                                         (pjstadig.humane-test-output/activate!)]
 
                        :env            ^:replace {:dev true}}
 
-             :cljs    {:dependencies [[thheller/shadow-cljs "2.8.80"]
+             :pinkie    {:source-paths ["src/pinkie"]
+                         :main ^:skip-aot pinkie.app
+                         :dependencies [[thheller/shadow-cljs "2.8.80"]
+                                        [thheller/shadow-cljsjs "0.0.21"]
+                                        [bk/ring-gzip "0.3.0"] ; from oz
+                                        [com.taoensso/encore "2.119.0"] ; needed by sente
+                                        ;[com.taoensso/sente "1.13.1"] ; from oz
+                                        [com.taoensso/sente "1.15.0"] ; already included above
+                                        [aleph "0.4.6"] ; from oz
+                                        ; gorilla:cljs profile
+                                        [reagent "0.10.0"  ; was 0.8.1
+                                         :exclusions [org.clojure/tools.reader
+                                                      cljsjs/react
+                                                      cljsjs/react-dom]]
+                                        [re-frame "0.10.9"]
+                                        [re-catch "0.1.4"]
+                                        [prismatic/dommy "1.1.0"]
+                                        [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests
+                                        [day8.re-frame/undo "0.3.3"]
+                                        [day8.re-frame/re-frame-10x "0.6.2"]
+                                        [secretary "1.2.3"]
+                                        [re-com "2.8.0"]
+                                        [org.pinkgorilla/kernel-cljs-shadow]]
+                         :repl-options {:init-ns        pinkie.app
+                                        :port             4003
+                                        :nrepl-middleware [shadow.cljs.devtools.server.nrepl/middleware]}}
 
+             :cljs    {:dependencies [[thheller/shadow-cljs "2.8.80"]
                                       ; cljs-ajax requires [com.cognitect/transit-cljxxx]
                                       ; awb99: if ajax is not here then chord will  require an older version and build will break
                                       [cljs-ajax "0.8.0"]   ; needed by reagent http-fx ??
@@ -241,8 +339,9 @@
                                                     org.clojure/google-closure-library
                                                     org.clojure/google-closure-library-third-party]]
                                       ;; CLJS KERNEL
-                                      [org.pinkgorilla/kernel-cljs-shadow "0.0.20"]
+                                      [org.pinkgorilla/kernel-cljs-shadow]
                                       [thheller/shadow-cljsjs "0.0.21"]
+
                                       ;; [cljs-tooling "0.2.0"]
                                       ;; https://github.com/bhauman/lein-figwheel/issues/612
                                       ;; [javax.xml.bind/jaxb-api "2.4.0-b180830.0359" :scope "provided"]
@@ -252,9 +351,11 @@
                                       [com.lucasbradstreet/cljs-uuid-utils "1.0.2"] ;; awb99: in encoding, and clj/cljs proof
 
                                       ;; REACT / REAGENT / REFRAME
-                                      [reagent "0.8.1"
-                                       :exclusions [org.clojure/tools.reader]]
-                                      [re-com "2.6.0"]      ; reagent reuseable ui components
+                                      [reagent "0.10.0" ; was 0.8.1
+                                       :exclusions [org.clojure/tools.reader
+                                                    cljsjs/react
+                                                    cljsjs/react-dom]]
+                                      [re-com "2.8.0"]      ; reagent reuseable ui components
                                       [re-frame "0.10.9"]
                                       [day8.re-frame/http-fx "0.1.6"] ; reframe based http requests
                                       [day8.re-frame/undo "0.3.3"]
@@ -268,9 +369,6 @@
                                       ;; [reagent-utils "0.2.0"]
                                       ;[district0x.re-frame/google-analytics-fx "1.0.0"
                                       ; :exclusions [re-frame]]
-                                      ;; UI Components
-                                      ;; [cljsjs/parinfer "1.8.1-0"]
-                                      ;; Still helpful for externs!
                                       [com.andrewmcveigh/cljs-time "0.5.2"]
 
                                       ;; actually dev
@@ -284,20 +382,15 @@
                                       ;; [devcards "0.2.6" :exclusions [org.clojure/tools.reader]]
                                       ;; https://github.com/day8/re-frame-tracer
                                       ;; [org.clojars.stumitchell/clairvoyant "0.2.1"]
-                                      [day8.re-frame/re-frame-10x "0.4.5"]
-                                      [binaryage/devtools "0.9.11"]
-
-                                      ]
-
-                       }
+                                      [day8.re-frame/re-frame-10x "0.6.2"]
+                                      [binaryage/devtools "1.0.0"]]}
              :uberjar {:hooks       [minify-assets.plugin/hooks]
                        :aot         :all
                        :omit-source true
                        :classifier  "standalone"}
              :python  {:dependencies [[cnuernber/libpython-clj "1.30"]]
                        ;; :uberjar-name "gorilla-notebook-standalone-with-python.jar"
-                       }
-             }
+                       }}
   :shell {:commands {"open" {:windows ["cmd" "/c" "start"]
                              :macosx  "open"
                              :linux   "xdg-open"}}})

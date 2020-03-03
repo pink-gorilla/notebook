@@ -1,6 +1,7 @@
 (ns pinkgorilla.dialog.palette
   (:require
    [reagent.core :as reagent]
+   [reagent.dom]
    [re-frame.core :refer [subscribe dispatch dispatch-sync]]
 
    [dommy.core :as dom :refer-macros [sel1]]
@@ -13,7 +14,7 @@
      {:display-name         "palette-dialog"
       :component-did-update (fn [this _] ;; old-argv
                                ;; TODO: Focus or not?
-                              (let [el (reagent/dom-node this)]
+                              (let [el (reagent.dom/dom-node this)]
                                 (when (:show @palette)
                                   (-> el
                                       (sel1 :input)

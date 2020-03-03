@@ -2,7 +2,6 @@
   (:require
    [re-frame.core :refer [subscribe dispatch]]
    [re-com.core
-    ;; :as rcm
     :refer [h-box v-box gap md-circle-icon-button input-text label modal-panel]]
 
    ;; [pinkgorilla.explore.meta :refer [form]]
@@ -21,22 +20,12 @@
                [[:h1 "Notebook Meta Data"]
 
                 [gap :size "20px"]
-                [label :label "project name"]
-                [gap :size "5px"]
-                [input-text
-                 :model           (:name @meta)
-                 :width            "300px"
-                 :placeholder      "notebook name"
-                 :on-change        #(dispatch [:meta-set :name %])
-                 :disabled?        false]
-
-                [gap :size "20px"]
-                [label :label "brief descripton"]
+                [label :label "tagline (brief description)"]
                 [gap :size "5px"]
                 [input-text
                  :model           (:tagline @meta)
                  :width            "300px"
-                 :placeholder      "brief description"
+                 :placeholder      "tagline"
                  :on-change        #(dispatch [:meta-set :tagline %])
                  :disabled?        false]
 

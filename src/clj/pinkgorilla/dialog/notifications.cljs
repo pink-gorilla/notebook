@@ -1,17 +1,22 @@
 (ns pinkgorilla.dialog.notifications
   (:require
+   [clojure.string :as str]
    [re-frame.core :as rf :include-macros true]
    [pinkgorilla.subs]
    [pinkgorilla.notifications :refer [notification-types]]))
 
+; old message container 
+(defn message-container
+  []
+  (let [message (rf/subscribe [:message])]
+    (fn []
+      [:div.status {:style (if (str/blank? @message) {:display "none"} {})}
+       [:h3 @message]])))
+
+
+
 ;; stolen from:
 ;; https://github.com/baskeboler/cljs-karaoke-client/blob/master/src/main/cljs_karaoke/notifications.cljs
-
-
-;<div class= "bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role= "alert" >
-;<p class= "font-bold" >Be Warned</p>
-;<p>Something not ideal might be happening.</p>
-;</div>
 
 
 (defn type-css-class [notification-type]

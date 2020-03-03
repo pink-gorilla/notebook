@@ -38,13 +38,13 @@
 (reg-event-db
  :nav-to-storage
  [standard-interceptors]
- (fn [db [_ reset]] ;; params
+ (fn [db [_ new-worksheet?]]
    (let [storage (:storage db)]
-     (if reset
+     (if new-worksheet?
        (routes/nav! "/new")
        (if (nil? storage)
          (routes/nav! "/edit")
-         (routes/nav! (gorilla-path storage))))
+         (routes/set-hash! (gorilla-path storage)))) ; 
      db)))
 
 

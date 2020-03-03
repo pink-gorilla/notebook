@@ -103,33 +103,7 @@ div.stack-trace {
     background-color: white;
 }
 
-div.stack-trace ul {
-    margin-top: 0.25em;
-}
 
-li.clj-stackframe {
-    color: lightseagreen;
-}
-
-li.java-stackframe {
-    color: steelblue;
-}
-
-li.tooling-stackframe {
-    opacity: 0.25;
-}
-
-span.stackframe-ns {
-    color: #666666;
-}
-
-span.stackframe-fileloc {
-    color: #444444;
-}
-
-span.exception-header {
-    color: #444444;
-}
 
 
 div.console-text {

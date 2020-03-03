@@ -18,11 +18,11 @@
 (defn save-notebook
   [req]
   (let [params (:params req)
-        _ (info "saving notebook with params: " (dissoc params :notebook)) ; do not show full notebook in log.
+        _ (info "saving notebook with params: " (dissoc params :notebook :tokens)) ; do not show full notebook in log.
         stype (keyword (:storagetype params))
         notebook (:notebook params)
         tokens (:tokens params)
-        _ (info "saving notebook with tokens: " tokens)
+        _ (info "saving notebook with tokens: " (keys tokens)) ; make sure we dont log secrets
         storage-params (dissoc params :notebook :storagetype :tokens) ; notebook-content is too big for logging.
         ;_ (info "Saving type: " stype " params: " storage-params)
         storage (query-params-to-storage stype storage-params)

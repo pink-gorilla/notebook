@@ -1,16 +1,15 @@
 (ns pinkgorilla.repl
   (:require
    [clojure.tools.logging :refer (info)]
-   ;; [clojure.pprint :refer [pprint]]
    [shadow.cljs.devtools.api :as shadow]
     ;; [shadow.cljs.devtools.server.nrepl :as shadow-nrepl]
    [shadow.cljs.devtools.server :as shadow-server]
     ;; [nrepl.server :as nrepl :refer [start-server stop-server]]
     ;; [cider.nrepl :as cider-nrepl]
 
-   [pinkgorilla.core :as core]
-    ;; [pinkgorilla.system :as gsys]
-   [pinkgorilla.cli :as cli]))
+   [pinkgorilla.notebook-app.core :as core]
+    ;; [pinkgorilla.notebook-app.system :as gsys]
+   [pinkgorilla.notebook-app.cli :as cli]))
 
 #_(component/start @system)
 
@@ -21,11 +20,6 @@
     )
 
 ;; (defonce server (atom nil))
-
-;; (start-figwheel! (config))
-
-;; (ra/print-config)
-;; (cljs-repl)
 
 
 #_(defn stop-server []

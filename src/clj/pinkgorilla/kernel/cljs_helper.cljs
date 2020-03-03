@@ -4,8 +4,7 @@
   (:require
    [taoensso.timbre :refer-macros (info)]
    [re-frame.core :refer [dispatch]]
-   ;; [pinkgorilla.kernel.cljs-tools :refer [r!]]
-   [pinkgorilla.ui.gorilla-renderable :refer [render]]
+   [pinkgorilla.ui.gorilla-renderable :refer [#_render render-renderable-meta]]
    [pinkgorilla.ui.rendererCLJS]))
 
 
@@ -35,37 +34,17 @@
     {:error-text error-text
      :segment-id segment-id}]))
 
-; render result from repl to intermediary format used in notebook uiºº
+; render result from repl to intermediary format used in notebook ui
 
 (defn render-embedded
-  "a simple render implementation for testing"
+  "a simple render implementation for testing
+   this is a quick replacement for either: render render-renderable-meta"
   [result]
   (let [s (pr-str result)]
     {:value-response
      {:type "html"
       :content ["span" s]
       :value s}}))
-
-(defn render-renderable
-  "rendering via the Renderable protocol (needs renderable project)
-   (users can define their own render implementations)"
-  [result]
-  (let [response   {:value-response (render result)}
-        ;_ (println "response: " response)
-        ]
-    response))
-
-(defn render-renderable-meta
-  "rendering via the Renderable protocol (needs renderable project)
-   (users can define their own render implementations)"
-  [result]
-  (let [m (meta result)]
-    {:value-response
-     (cond
-       (contains? m :r) {:type :reagent-cljs :reagent result :map-keywords false}
-       (contains? m :R) {:type :reagent-cljs :reagent result :map-keywords true}
-       :else (render result))}))
-
 
 
 ;; result:
@@ -76,8 +55,8 @@
 (defn send-result-eval [segment-id result]
   (let [[type data] result]
     (info "cljs eval result:" result)
-    (info "cljs eval result meta:" (meta data))
-    (send-console segment-id (str " type: " (type data) "data: " (pr-str data)))
+    ;(info "cljs eval result meta:" (meta data))
+    ;(send-console segment-id (str " type: " (type data) "data: " (pr-str data)))
     (case type
       :ok  (send-value segment-id (render-renderable-meta data))
       :error (send-error segment-id (pr-str data))

@@ -1,10 +1,11 @@
 {
-  "name": "Gorilla REPL",
-  "short_name": "Gorilla REPL",
+  "name": "PinkGorilla Notebook",
+  "id" :"pinkgorillanb",
+  "short_name": "PinkGorilla NotebookL",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#fff",
-  "description": "A simply REPL.",
+  "description": "Clojure/Clojurescript Notebook.",
   "icons": [{
     "src": "images/touch/gorilla-ng-48.png",
     "sizes": "48x48",
