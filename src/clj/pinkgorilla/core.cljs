@@ -40,7 +40,7 @@
     (dispatch-sync [:initialize-config])
     (mount-root)
     (when read-write
-      (nrepl-kernel/init! (ws-origin "repl/" app-url)))
+      (nrepl-kernel/start-repl! (ws-origin "repl/" app-url)))
     (if (not route)
       (routes/nav! "/new")
       (secretary/dispatch! route))))

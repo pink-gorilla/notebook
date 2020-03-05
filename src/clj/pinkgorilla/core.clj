@@ -11,6 +11,7 @@
 
    [pinkgorilla.system :as sys]
    [pinkgorilla.cli :as cli]
+   [pinkgorilla.helper :as helper]
     ;; TODO For notebook compat - fails when called on startup : Could not find a suitable classloader to modify from clojure.lang.LazySeq@532d8051
     ;; #'nrepl.middleware.session/session
    )
@@ -83,9 +84,15 @@
         gorilla-port-file (io/file (or (:gorilla-port-file conf) ".gorilla-port"))
         ;; project (or (:project conf) {})
         ;; keymap (or (:keymap (:gorilla-options conf)) {})
-        _ (update-excludes (fn [x] (set/union x (:load-scan-exclude (:gorilla-options conf)))))]
-    ;; app startup
+        _ (update-excludes (fn [x] (set/union x (:load-scan-exclude (:gorilla-options conf)))))
+        add-deps (get-in merged-config [:settings :additional-runtime-deps])
+        _ (info "Got additional deps " add-deps)
+        thread (Thread/currentThread)]
     (info "Gorilla Notebook Version" version)
+    (->> (clojure.lang.DynamicClassLoader. (.getContextClassLoader thread))
+         (.setContextClassLoader thread))
+    (when-not (empty? add-deps)
+      (info "Added additional deps with deps" (helper/add-dependencies add-deps)))
     ;; (println "Using project" project)
     ;; asynchronously check for updates
     ;; (version/check-for-update version)

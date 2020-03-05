@@ -12,27 +12,26 @@
   (let [prev-uuid (uuid/uuid-string (uuid/make-random-uuid))
         prev-div-kw (keyword (str "div#" prev-uuid))
         segment (subscribe [:segment-query seg-id])
-        is-active (subscribe [:is-active-query seg-id])]
+        is-active (subscribe [:is-active-query seg-id])
+        init-fn (partial init-cm!
+                         seg-id
+                         (get-in content [:type])
+                         editor-options)]
     (reagent/create-class
-     {:component-did-mount  (fn [this]
-                              (when active
+     {:display-name         "free-output"
+      :component-did-mount  (fn [this]
+                              (if active
                                 (do
-                                  ((partial init-cm!
-                                            seg-id
-                                            (get-in content [:type])
-                                            editor-options) this)
-                                  (focus-active-segment this true))))
-      :display-name         "free-output"
+                                  (init-fn this)
+                                  (focus-active-segment this true))
+                                (queue-mathjax-rendering (name seg-id))))
       :component-did-update (fn [this]
                               (if @is-active
                                 (do
                                   (let [text-area (-> (reagent/dom-node this)
                                                       (sel1 :textarea))]
                                     (when-not (= "none" (.. text-area -style -display))
-                                      ((partial init-cm!
-                                                seg-id
-                                                (get-in content [:type])
-                                                editor-options) this)))
+                                      (init-fn this)))
                                   (focus-active-segment this true))
                                 (queue-mathjax-rendering prev-uuid)
                                 #_(let [el (gdom/getElement prev-uuid)])))

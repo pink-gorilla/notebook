@@ -26,8 +26,9 @@
                  [de.otto/tesla-microservice "0.13.1"]
 
                  ;; ENCODING / SERIALIZATION
-                 [com.taoensso/sente "1.15.0"]
-                 ;; Chord needed for clojure?
+                 ;; [com.taoensso/sente "1.15.0"]
+                 ;; Sente appears better maintained but we don't get a lot from it.
+                 ;; It also has the server part - but not for jetty.
                  [jarohen/chord "0.8.1"
                   :exclusions [com.cognitect/transit-clj
                                com.cognitect/transit-cljs]] ; websockets with core.async
@@ -48,11 +49,9 @@
                  [ring-middleware-format "0.7.4"]
                  [javax.websocket/javax.websocket-api "1.1"]
                  [javax.servlet/javax.servlet-api "4.0.1"]
-                 ;; [org.eclipse.jetty.websocket/websocket-server "9.4.12.v20180830"]
                  [de.otto/tesla-jetty "0.2.6"
                   :exclusions [org.eclipse.jetty/jetty-server
                                org.eclipse.jetty/jetty-servlet]]
-                 ;; [de.otto/tesla-httpkit "1.0.1"]
                  [compojure "1.6.1"]                        ; Routing
                  [selmer "1.12.18"]
                  ;; Bringing it in here bc that is where the websocket "processors" come in
