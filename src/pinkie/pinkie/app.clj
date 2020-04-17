@@ -62,11 +62,11 @@
      :encoding {:x {:field "a" :type "ordinal"}
                 :y {:field "b" :type "quantitative"}}})
 
-  (code-add 3 (pr-str ^:R [:vega data]))
-  (result-set 3 ^:R [:vega data])
+  (code-add 3 (pr-str ^:R [:p/vega data]))
+  (result-set 3 ^:R [:p/vega data])
 
-  (code-add 4 (pr-str ^:R  [:player "https://www.youtube.com/watch?v=Bs44qdAX5yo"]))
-  (result-set 4 ^:R [:player "https://www.youtube.com/watch?v=Bs44qdAX5yo"])
+  (code-add 4 (pr-str ^:R  [:p/player "https://www.youtube.com/watch?v=Bs44qdAX5yo"]))
+  (result-set 4 ^:R [:p/player "https://www.youtube.com/watch?v=Bs44qdAX5yo"])
 
   ; comment end
   )
