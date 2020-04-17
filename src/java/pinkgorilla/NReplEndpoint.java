@@ -1,4 +1,4 @@
-package gorilla_repl;
+package pinkgorilla;
 
 import clojure.java.api.Clojure;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class NReplEndpoint {
     public void incoming(String message, Session session) {
         String key = session.getId();
         log.info("Received " + message + " for session " + key);
-        String ns = "gorilla-repl.jee-interop";
+        String ns = "gorilla-repl.kernel.jee-interop";
         String fn = "process-json-message";
         log.info("Preparing to invoke {}/{}", ns, fn);
         try {

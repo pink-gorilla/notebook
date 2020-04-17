@@ -2,65 +2,22 @@
   (:require
    [clojure.string :as str]
    [reagent.core :as reagent]
+   [reagent.dom]
    [re-frame.core :as rf :refer [subscribe dispatch]]
    [goog.dom :as gdom]
-   [dommy.core :as dom;; :refer-macros [sel1]
-    ]
-   ;; [taoensso.timbre :refer-macros (log info)]
-
-   ;; [cljs-uuid-utils.core :as uuid]
-   [cljsjs.marked]
-      ;; TODO : vega 2.6 does  not quite work yet - throw spec at http://vega.github.io/vega-editor/?mode=vega
-      ;; https://github.com/vega/vega/wiki/Upgrading-to-2.0
-      ;; data. prefix removed
-      ;[cljsjs.d3]    2019-10-20 awb99 removed as it fucks up the new vega
-      ;[cljsjs.d3geo]  2019-10-20 awb99 removed as it fucks up the new vega
-      ;[cljsjs.vega] 2019-10-20 awb99 removed as it fucks up the new vega
-
-
+   [dommy.core :as dom]
+   [pinkgorilla.components.markdown]
    [pinkgorilla.subs :as s]
-   ;; [pinkgorilla.editor.core :as editor] ;; [pinkgorilla.output.hack :refer [temp-comp-hack]]
-   ;; [pinkgorilla.output.mathjax :refer [queue-mathjax-rendering]]
-   ;; [pinkgorilla.output.core :refer [output-fn]]
    [pinkgorilla.dialog.save :refer [save-dialog]]
    [pinkgorilla.dialog.palette :refer [palette-dialog]]
    [pinkgorilla.dialog.settings :refer [settings-dialog]]
    [pinkgorilla.dialog.meta :refer [meta-dialog]]
    [pinkgorilla.worksheet.core :refer [worksheet]]
    [pinkgorilla.storage.core]
-   [pinkgorilla.views.navbar :as navbar]
-   [pinkgorilla.dialog.notifications :refer [notifications-container-component]]
-
-      ;widgets are only included here so they get compiled to the bundle.js
-   [widget.hello]
-
-   [pinkgorilla.explore.list]))
-
-;; <!--script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-;; <script type="text/x-mathjax-config">
-;; MathJax.Hub.Config({
-;;                    tex2jax: {
-;;                              inlineMath: [['$','$']],
-;;                              processClass: "mathjax",
-;;                              ignoreClass: "no-mathjax"
-;;                              }
-;;                    });
-;; </script-->
-
-
-;; TODO: MathJax does not kick in with advanced optimization
-(defn init-mathjax-globally!
-  "Initialize MathJax globally"
-  []
-  (if-let [mathjax (.-MathJax js/window)]
-    (doto (.-Hub mathjax)
-      (.Config (clj->js {:messageStyle           "none"
-                         :showProcessingMessages false
-                         :skipStartupTypeset     true
-                         :tex2jax                {:inlineMath (clj->js [["@@", "@@"]])}}))
-      (.Configured))
-    (print "MathJax unavailable")))
-
+   [pinkgorilla.views.navbar :refer [navbar-component]]
+   [pinkgorilla.dialog.notifications :refer [notifications-container-component message-container]]
+   [pinkgorilla.explore.core :refer [notebook-explorer]]
+   [pinkgorilla.views.renderer :refer [renderer]]))
 
 ;; Components
 
@@ -80,7 +37,7 @@
                                ;; TODO Ugly, but a bit more tricky to get right in reagent-render/render
                               (if-let [hint-el (gdom/getElementByClass "CodeMirror-hints")]
                                 (let [rect (.getBoundingClientRect hint-el)
-                                      el (reagent/dom-node this)
+                                      el (reagent.dom/dom-node this)
                                       top (.-top rect)
                                       right (.-right rect)]
                                   (dom/set-px! el :top top :left right)
@@ -94,13 +51,6 @@
                                              {:display "none"} {})}
          [:div.DocViewer.doc-viewer-content {}
           [:div {:dangerouslySetInnerHTML {:__html (:content @docs)}}]]])})))
-
-(defn app-status
-  []
-  (let [message (subscribe [:message])]
-    (fn []
-      [:div.status {:style (if (str/blank? @message) {:display "none"} {})}
-       [:h3 @message]])))
 
 (defn gorilla-app-doc
   []
@@ -116,7 +66,7 @@
                               ;settings-comp (when rw ^{:key :settings-dialog} [settings-dialog])
                               ;meta-comp (when rw ^{:key :meta-dialog} [meta-dialog])
                               doc-comp (when rw ^{:key :doc-viewer} [doc-viewer])
-                              other-children [^{:key :status} [app-status]
+                              other-children [^{:key :status} [message-container]
                                               ;; hamburger-comp
                                               palette-comp
                                               ;save-comp
@@ -133,14 +83,14 @@
   (let [main (subscribe [:main])]
     [:<>
      (when @(rf/subscribe [::s/navbar-visible?])
-       [navbar/navbar-component])
+       [navbar-component])
      [notifications-container-component]
-
      [meta-dialog]
      [settings-dialog]
      [save-dialog]
 
      (case @main
-       :explore [pinkgorilla.explore.list/view]
+       :explore [notebook-explorer]
        :notebook [gorilla-app-doc]
+       :renderer [renderer]
        [gorilla-app-doc])]))

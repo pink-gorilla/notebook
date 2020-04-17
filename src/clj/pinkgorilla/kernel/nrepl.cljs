@@ -2,9 +2,8 @@
   (:require-macros
    [cljs.core.async.macros :refer (go go-loop)])
   (:require
-   [taoensso.timbre :refer-macros (info)]
+   [taoensso.timbre :refer-macros (info warn)]
    [cljs-uuid-utils.core :as uuid]
-   [clojure.walk :as w]
    [clojure.string :as str]
    [cljs.core.async :as async :refer (<! >! put! chan timeout close!)];; timeout
    [cljs.reader :as rd]
@@ -14,32 +13,22 @@
    ;; [taoensso.sente :as sente :refer (cb-success?)]
    [chord.client :refer [ws-ch]] ; websockets with core.async
    [re-frame.core :refer [dispatch]]
+   [clojure.spec.alpha :as s]
+   ;PinkGorilla Notebook
    [pinkgorilla.notifications :refer [add-notification notification]]
-   [pinkgorilla.kernel.cljs-helper :refer [send-value]]))
+   [pinkgorilla.kernel.cljs-helper :refer [send-value]]
+   ; bring the specs into scope:
+   [pinkgorilla.kernel.nrepl-specs]))
 
-(defn render-renderable-meta
-  "rendering via the Renderable protocol (needs renderable project)
-   (users can define their own render implementations)
-   identical to cljs version, except for non meta rendering it will not
-   call render, as this already has been rendered in the clj kernel"
-  [result]
-  (let [m (meta result)
-        ;_ (info "clj meta: " m)
-        ]
-    {:value-response
-     (cond
-       (contains? m :r) {:type :reagent-cljs :reagent result :map-keywords false}
-       (contains? m :R) {:type :reagent-cljs :reagent result :map-keywords true}
-       :else result)}))
 
 
 ;; TODO : Fixme handle breaking websocket connections
 
 
 (defonce ws-repl
-  (atom {:channel     nil ; created by start-ws-repl!
-         :session-id  nil ; set by receive-msgs!
-         :evaluations {}
+  (atom {:channel     nil ; created by start-ws-state!
+         :session-id  nil ; sent from nrepl on connect, set by receive-msgs!
+         :evaluations {}; callbacks of evaluations
          :ciders      {}}))
 
 (defn- send-message!
@@ -49,26 +38,32 @@
    websocket connection, then the messages get sent. Or we just dump messages that happen
    before the socket gets opened. But in this case we have to LOG message dumping.
    I have seen situations where the first eval does not go through. Might be this issue.
+
+   - generates request id
+   - sends message to websocket (so nrepl/cider can process the request)
+   - saves the callback function into a lookup map to an atom
+   - returns the val id.
    "
-  [key message storeval]
+  [key message callback]
   (let [eval-id (uuid/uuid-string (uuid/make-random-uuid))
-        nrepl-msg (clj->js (merge message
-                                  {:id      eval-id
-                                   :session (:session-id @ws-repl)}))]
-    (swap! ws-repl assoc-in [key (keyword eval-id)] storeval)  ;; Store segment-id value
+        nrepl-msg  (merge message
+                          {:id      eval-id
+                           :session (:session-id @ws-repl)})]
+    (swap! ws-repl assoc-in [key (keyword eval-id)] callback)  ;; Store segment-id value
+    (info "ws sending ws message: " nrepl-msg)
     (put! (:channel @ws-repl) nrepl-msg)
     eval-id))
 
 (defn eval!
-  [segment-id content]
+  [segment-id code]
   (send-message! :evaluations
                  {:op   "eval"
-                  :code content}
+                  :code code}
                  segment-id))
 
 (defn send-cider-message!
-  [message storeval]
-  (send-message! :ciders message storeval))
+  [message callback]
+  (send-message! :ciders message callback))
 
 (defn get-completions
   "Query the REPL server for autocompletion suggestions. Relies on the cider-nrepl middleware.
@@ -76,8 +71,8 @@
   [symbol ns context callback]
   (send-cider-message! {:op "complete" :symbol symbol :ns ns :context context}
                        (fn [msg]
-                         (callback (->> (get msg "completions")
-                                        (map #(get % "candidate")))))))
+                         (callback (->> (:completions msg)
+                                        (map #(:candidate %)))))))
 
 (defn get-completion-doc
   "Queries the REPL server for docs for the given symbol. Relies on the cider-nrepl middleware.
@@ -85,7 +80,7 @@
   [symbol ns callback]
   (send-cider-message! {:op "complete-doc" :symbol symbol :ns ns}
                        (fn [msg]
-                         (callback (get msg "completion-doc")))))
+                         (callback (:completion-doc msg)))))
 
 (defn resolve-symbol
   "resolve a symbol to get its namespace takes the symbol and the namespace that should be used as context.
@@ -93,31 +88,39 @@
   [symbol ns callback]
   (send-cider-message! {:op "info" :symbol symbol :ns ns}
                        (fn [msg]
-                         (callback {:symbol (get msg "name")
-                                    :ns (get msg "ns")}))))
+                         (callback {:symbol (:name msg)
+                                    :ns (:ns msg)}))))
 
-(defn- parse-value [value]
-  (let [data (-> (.parse js/JSON (.parse js/JSON value))
-                 js->clj
-                 w/keywordize-keys)
-        _ (info "value " value " => " data)]
-    data))
+(defn- parse-value
+  "converts (:value message)
+   nrepl has to serialize the value before it hits clojure.
+   So this value gets formatted with edn.
+   Since the message is packaged as edn too, we have edn within edn.
+   "
+  [value]
+  (try
+    (let [data (cljs.reader/read-string value)
+          data2 (cljs.reader/read-string data)]
+    ;(info "value: " value "type " (type value))
+    ;(info "converted: " data "type " (type data))
+    ; (info "converted2: " data2 "type " (type data2))
+    ;(info "converted value-response" (:value-response data2))
+      data2)
+    (catch js/Error e (info "parse-value ex: " e " tried to parse: " value))))
+
+;
 
 (defn- process-msg
   "processes an incoming message from websocket that comes from nrepl (and has cider enhancements)
-   dispatches events to reagent to update notebook state ui.
-  "
+   dispatches events to reagent to update notebook state ui."
   [message]
-  (let [id (keyword (get message "id")) ; a good Json parser can keywordize. (see metosins parser)
-        out (get message "out")         ; cannot we do one assignment for all the parts?, a proper keyword destructuring
-        err (get message "err")
-        root-ex (get message "root-ex")
-        ns (get message "ns")
-        value (get message "value")
-        status (get message "status")
-        segment-id (get-in @ws-repl [:evaluations id]) ; awb99: should clj evals be separate or not?
-        cider-cb (get-in @ws-repl [:ciders id])]
-    (info "Got message" id "for segment" segment-id)
+  (let [; this logging needs to be off when working with notebooks (slows them down)
+        ; _ (info "ws rcvd message: " (pr-str message))
+        {:keys [id out err root-ex ns value status]} message
+        eval-id (keyword id)
+        segment-id (get-in @ws-repl [:evaluations eval-id]) ; awb99: should clj evals be separate or not?
+        cider-cb (get-in @ws-repl [:ciders eval-id])]
+    (info "ws rcvd message eval-id " id " for segment " segment-id)
     (cond
 
       ;; messages that have a segment-id
@@ -126,10 +129,11 @@
 
         ;; value response
         ns
-        (let [data (parse-value value)]
-          (send-value segment-id {:value-response data}  ns))
-         ; (send-value segment-id (render-renderable-meta data)  ns)) ;
-        ;(dispatch [:evaluator:value-response segment-id {:value-response data } ns])) ;; :ns ns
+        (let [data (parse-value value)
+              ;value-response (:value-response data)
+              ;_ (info "ws value response: " value-response)
+              ]
+          (send-value segment-id data ns))
 
         ;; console string
         out
@@ -143,35 +147,46 @@
         ;; it has finished sending stacktrace information, we fire an event which will cause the worksheet to
         ;; render the stacktrace data in the appropriate place.
         (let [error (atom {:error-text err
-                           :segment-id segment-id})]
-          (send-cider-message! {:op "stacktrace"}
-                               (fn [msg] (let [status (get msg "status")]
-                                           (if (and status (>= (.indexOf status "done") 0))
-                                             (dispatch [:evaluator:error-response @error])
-                                             (swap! error
-                                                    (fn [err ex]
-                                                      (if (get err :exception)
-                                                        (assoc-in err [:exception :cause] (:exception ex))
-                                                        (merge ex err)))
-                                                    {:exception msg}))))))
+                           :segment-id segment-id})] ; awb99: does this preserve state ???
+          (send-cider-message!
+           {:op "stacktrace"}
+           (fn [msg] ; CALLBACK THAT PROCESS CIDER MESSAGES
+             (let [status (:status msg)]
+               (info "err status: " status)
+               (if (contains? status :done)
+                 (dispatch [:evaluator:error-response @error])
+                 (swap! error
+                        (fn [err ex]
+                          (if (:exception err)
+                            (assoc-in err [:exception :cause] (:exception ex))
+                            (merge ex err)))
+                        {:exception msg}))))))
 
         ;; root exception ?? what is this ?? where does it come from ? cider? nrepl?
         root-ex
         (info "Got root-ex" root-ex "for" segment-id)
 
-        ;; evat status
-        (>= (.indexOf status "done") 0)
+        ;; eval status
+        (contains? status :done) ; (>= (.indexOf status "done") 0)
         (do
           (swap! ws-repl dissoc [:evaluations id])
-          (dispatch [:evaluator:done-response segment-id]))) ;; end of messages that have segment-id
+          (dispatch [:evaluator:done-response segment-id]))
+
+        :else
+        (info "rcvd unhandled segment message: " message)) ;; end of messages that have segment-id
 
       ;; part if the cond way above
       ;; messages that have cider-id (completions and docstring, and more ??)
       cider-cb
       (do
+        (when (s/valid? :nrepl-msg/stacktrace-msg message)
+          (info "rcvd valid stacktrace: " message))
         (cider-cb message)
-        (when (and status (>= (.indexOf status "done") 0))
-          (swap! ws-repl dissoc [:ciders id]))))))
+        (when (contains? status :done)
+          (swap! ws-repl dissoc [:ciders id])))
+
+      :else
+      (info "rcvd neither segment nor cider: " message))))
 
 (defn set-clj-kernel-status [connected session-id]
   (dispatch [:kernel-clj-status-set connected session-id]))
@@ -188,10 +203,11 @@
       (if message
         (do
           (info "Got initial message " message)
-          (if-let [new-session (get message "new-session")]
+          (if-let [new-session (:new-session message)]; (get message "new-session")]
             (do
               (swap! ws-repl assoc :session-id new-session)
-              (set-clj-kernel-status true new-session)))
+              (set-clj-kernel-status true new-session))
+            (warn "could not extract session id!!! "))
           (go-loop []
             (let [{:keys [message error]} (<! ws-chan)]
               (if message
@@ -221,57 +237,55 @@
             (swap! ws-repl assoc :channel new-msg-ch)
             (receive-msgs! ws-channel nil)
             (>! new-msg-ch #js {:op "clone"}))))))
-
 #_(defn- init-repl!
     [ws-url]
     (let [feed (<! (ws-ch ws-url {:format :json}))]
       feed))
 
 (defn start-repl! [ws-url]
-  (go-loop [{:keys [ws-channel error]} (<! (ws-ch ws-url {:format :json}))
+  (go-loop [{:keys [ws-channel error]} (<! (ws-ch ws-url {:format :edn}))
             new-session true]
     (if-not error
       (let [msg-ch (chan)]
         (swap! ws-repl assoc :channel msg-ch)
         (when new-session
-          (go (>! msg-ch #js {:op "clone"})))
+          (go (>! msg-ch {:op "clone"})))
         (receive-msgs! ws-channel msg-ch)
         (loop []
           (when-let [msg (<! msg-ch)]
             (>! ws-channel msg)
             (recur)))
         (<! (timeout 3000))
-        (recur (<! (ws-ch ws-url {:format :json}))
+        (recur (<! (ws-ch ws-url {:format :edn}))
                false))
       (let [session-id (:session-id @ws-repl)]
         (add-notification (notification :danger (str "clj-kernel error: " error " - trying to recover with session " session-id)))
         (<! (timeout 3000))
-        (recur (<! (ws-ch ws-url {:format :json}))
+        (recur (<! (ws-ch ws-url {:format :edn}))
                (nil? session-id))))))
 
-;; CLJ eval
-;;
+;; execute this in browser console:
 ;; pinkgorilla.kernel.nrepl.clj_eval("(+ 7 9 )", (function (r) {console.log ("result!!: " +r);}))
 
 
 (defn ^:export clj-eval
   ;"Eval CLJ snippet with callback"
   [snippet callback]
-  (println "clj-eval: " snippet)
   (info (str "clj-eval: " snippet))
   (send-cider-message! {:op "eval" :code snippet}
                        (fn [message]
-                         (let [ns    (get message "ns")
-                               ;_ (println "ns: " ns) ; this does not work
-                               _ (info (str "ns: " ns)) ; this works
-                               value (get message "value")
-                               data  (parse-value value)]
-                           (when ns (let [v2 (rd/read-string (:value data))]
-                                      (info "clj-eval response: " data " type: " (type value))
+                         (let [{:keys [ns value]} message
+                               data (parse-value value)
+                              ; data  (cljs.reader/read-string value)
+                               _ (info (str "clj-eval ns: " ns " data: " data))
+                               _ (info (str "data value:" (get-in data [:value-response :value])))]
+                           (when ns (let [v2 (cljs.reader/read-string (get-in data [:value-response :value]))]
                                       (info "clj-eval result: " v2 " type: " (type v2))
                                       (callback v2)))))))
 
 (defn ^:export clj-eval-sync
+  "executes a clojure expression
+   and returns the result to the ```result-atom```"
   [result-atom snippet]
   (let [result-chan (chan)]
     (go
@@ -282,6 +296,8 @@
     result-atom))
 
 (defn ^:export clj
+  "executes a clojure ```function-as-string``` (from clojurescript) 
+   and stores the result in ```result-atom```"
   [result-atom function-as-string & params]
   (let [_ (info "params: " params)
         expr (concat ["(" function-as-string] params [")"]) ; params)

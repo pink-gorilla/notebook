@@ -1,7 +1,10 @@
 (ns pinkgorilla.core-test
   (:require
-    ;; this is needed to bring the render implementations into scope
-   [clojure.test :refer [is deftest run-tests]]))
+   [clojure.test :refer [is deftest run-tests]]
+  ;; the following requires are needed to bring the tests into scope
+   [pinkgorilla.handle-test]
+   [pinkgorilla.nrepl-specs-test]
+   [pinkgorilla.reframe-test]))
 
 (defn my-test-fixture [f]
   (f))
@@ -16,6 +19,7 @@
   (is (= 5 (add 3 2))))
 
 ;; (run-all-tests)
+;; 
 (run-tests)
 
 #_(.addShutdownHook

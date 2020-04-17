@@ -22,4 +22,9 @@ pom.xml.asc
 .nrepl-port
 junk/
 resources/gorilla-repl-client/gorilla.min.css
-out/
+creds.edn
+cookies
+.classpath
+.project
+.settings/*
+Rplots.pdf

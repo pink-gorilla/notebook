@@ -46,26 +46,20 @@
 (reg-event-db
  :settings-localstorage-load
  (fn [db [_]]
-   (let [_ (info "Loading Settings from Localstorage..")
+   (let [_ (info "Notebook Settings: Loading from Localstorage ..")
          settings (ls-get :notebook-settings)]
      (if (nil? settings)
-       (do (info "localstorage does not contain settings.")
+       (do (info "Notebook Settings: localstorage empty!")
            db)
-       (do (info "loaded settings from localstorage: " settings)
+       (do (info "Notebook Settings: successfully loaded from localstorage: " (keys settings))
            (assoc-in db [:settings] settings))))))
 
 (reg-event-db
  :init-cljs
  (fn [db [_]]
-   (let [_ (info "Init ClojureScript")
-         settings (ls-get :notebook-settings)]
-     (if (nil? settings)
-       (do (info "localstorage does not contain settings.")
-           db)
-       (do (info "loaded settings from localstorage: " settings)
-           (assoc-in db [:settings] settings)))
-     (cljs-kernel/init! (get-in db [:config :cljs]))
-     db)))
+   (let [cljs-config (get-in db [:config :cljs :kernel])]
+     (cljs-kernel/init! cljs-config))
+   db))
 
 (reg-event-db
  :settings-localstorage-save

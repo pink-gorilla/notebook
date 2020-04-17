@@ -1,0 +1,138 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:tagline "a lot of vega demos (latest version of vega) plus dynamic widgets", :tags "cljs, vega, ", :name ""}
+
+;; @@
+
+;; **
+;;; # Reagent Widgets with Dynamic State
+;; **
+
+;; **
+;;; vega charts rendered with **reagent**
+;; **
+
+;; @@ [clj]
+^:R [:div
+      [:h1 "sample vega plot"]
+      [:p/vega "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"]]
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:div",["~:h1","sample vega plot"],["~:p/vega","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"]],"~:map-keywords",true,"~:widget",true]]
+;; <=
+
+;; **
+;;; manipulate {:samples [:name "bar-chart" :value "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"] }
+;;;  [:p "sample"]
+;;;  
+;; **
+
+;; @@ [clj]
+(def demo-charts 
+  [{:label "bar-chart" :id "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"}
+   {:label "population-pyramid" :id "https://vega.github.io/vega/examples/population-pyramid.vg.json"}
+   {:label "tree-layout" :id "https://vega.github.io/editor/spec/vega/tree-layout.vg.json"}
+   {:label "tree-map" :id "https://vega.github.io/editor/spec/vega/treemap.vg.json"}
+   {:label "force directed layout" :id "https://vega.github.io/editor/spec/vega/force-directed-layout.vg.json"}
+   {:label "stock index" :id "https://vega.github.io/editor/spec/vega/stock-index-chart.vg.json"}
+   {:label "overview-details" :id "https://vega.github.io/editor/spec/vega/overview-plus-detail.vg.json"}
+   {:label "scatterplot interaction" :id "https://vega.github.io/editor/spec/vega/brushing-scatter-plots.vg.json"}
+   {:label "unemployment map" :id "https://vega.github.io/editor/spec/vega/county-unemployment.vg.json"}
+   {:label "box plot" :id "https://vega.github.io/editor/spec/vega/box-plot.vg.json"}
+   {:label "contour" :id "https://vega.github.io/editor/spec/vega/contour-plot.vg.json"}])
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'user/demo-charts"],"~:value","#'user/demo-charts"]
+;; <=
+
+;; @@ [clj]
+^:R
+ [:div
+   [:h1 "select the sample vega plot you want to see"]
+   [:p/combo :widget :charturl demo-charts]
+   [:p "you selected: " :widget:charturl]
+   [:p/vegaa :widget :charturl]]
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:div",["~:h1","select the sample vega plot you want to see"],["~:p/combo","~:widget","~:charturl",[["^ ","~:label","bar-chart","~:id","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"],["^ ","^9","population-pyramid","^:","https://vega.github.io/vega/examples/population-pyramid.vg.json"],["^ ","^9","tree-layout","^:","https://vega.github.io/editor/spec/vega/tree-layout.vg.json"],["^ ","^9","tree-map","^:","https://vega.github.io/editor/spec/vega/treemap.vg.json"],["^ ","^9","force directed layout","^:","https://vega.github.io/editor/spec/vega/force-directed-layout.vg.json"],["^ ","^9","stock index","^:","https://vega.github.io/editor/spec/vega/stock-index-chart.vg.json"],["^ ","^9","overview-details","^:","https://vega.github.io/editor/spec/vega/overview-plus-detail.vg.json"],["^ ","^9","scatterplot interaction","^:","https://vega.github.io/editor/spec/vega/brushing-scatter-plots.vg.json"],["^ ","^9","unemployment map","^:","https://vega.github.io/editor/spec/vega/county-unemployment.vg.json"],["^ ","^9","box plot","^:","https://vega.github.io/editor/spec/vega/box-plot.vg.json"],["^ ","^9","contour","^:","https://vega.github.io/editor/spec/vega/contour-plot.vg.json"]]],["~:p","you selected: ","~:widget:charturl"],["~:p/vegaa","^7","^8"]],"~:map-keywords",true,"^7",true]]
+;; <=
+
+;; @@ [clj]
+; we show again the same chart - just to show that widget state gets updated dynamically
+^:R [:p/vegaa :widget :charturl]
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vegaa","~:widget","~:charturl"],"~:map-keywords",true,"^5",true]]
+;; <=
+
+;; @@ [clj]
+; thi widget state updates dynamically when sliders are moved for example!!
+^:R [:p/widget-state]
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/widget-state"],"~:map-keywords",true,"~:widget",true]]
+;; <=
+
+;; @@ [clj]
+; test for slider
+^:R
+ [:div
+   [:p/slider :widget :x 0 100 5]
+   [:p/slider :widget :y 0 100 5]
+   [:p/slider :widget :z 0 100 5]]
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:div",["~:p/slider","~:widget","~:x",0,100,5],["^5","^6","~:y",0,100,5],["^5","^6","~:z",0,100,5]],"~:map-keywords",true,"^6",true]]
+;; <=
+
+;; @@ [clj]
+^:R [:h1 :widget:test]
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:h1","~:widget:test"],"~:map-keywords",true,"~:widget",true]]
+;; <=
+
+;; @@ [cljs]
+; this gets run in clojurescript - to set widget state from server, we need more helper functions
+(swap! pinkgorilla.ui.widget/state-atom  assoc :test 6876)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:list-like","~:open",["~:span",["^ ","~:class","clj-map"],"{"],"~:close",["^3",["^ ","^4","clj-map"],"}"],"~:separator",["^3",", "],"~:items",["~#list",[["^ ","^0","^1","^2",null,"^5",null,"^6",["^3"," "],"^7",["^8",[["^ ","^0","~:html","~:content",["^3",["^ ","^4","clj-keyword"],":test"],"~:value",":test"],["^ ","^0","^9","^:",["^3",["^ ","^4","clj-long"],"6876"],"^;","6876"]]],"^;","[:test 6876]"],["^ ","^0","^1","^2",null,"^5",null,"^6",["^3"," "],"^7",["^8",[["^ ","^0","^9","^:",["^3",["^ ","^4","clj-keyword"],":charturl"],"^;",":charturl"],["^ ","^0","^9","^:",["^3",["^ ","^4","clj-string"],"\"https://vega.github.io/editor/spec/vega/treemap.vg.json\""],"^;","\"https://vega.github.io/editor/spec/vega/treemap.vg.json\""]]],"^;","[:charturl \"https://vega.github.io/editor/spec/vega/treemap.vg.json\"]"],["^ ","^0","^1","^2",null,"^5",null,"^6",["^3"," "],"^7",["^8",[["^ ","^0","^9","^:",["^3",["^ ","^4","clj-keyword"],":x"],"^;",":x"],["^ ","^0","^9","^:",["^3",["^ ","^4","clj-long"],"40"],"^;","40"]]],"^;","[:x 40]"],["^ ","^0","^1","^2",null,"^5",null,"^6",["^3"," "],"^7",["^8",[["^ ","^0","^9","^:",["^3",["^ ","^4","clj-keyword"],":y"],"^;",":y"],["^ ","^0","^9","^:",["^3",["^ ","^4","clj-long"],"50"],"^;","50"]]],"^;","[:y 50]"],["^ ","^0","^1","^2",null,"^5",null,"^6",["^3"," "],"^7",["^8",[["^ ","^0","^9","^:",["^3",["^ ","^4","clj-keyword"],":z"],"^;",":z"],["^ ","^0","^9","^:",["^3",["^ ","^4","clj-long"],"60"],"^;","60"]]],"^;","[:z 60]"]]],"^;","{:test 6876, :charturl \"https://vega.github.io/editor/spec/vega/treemap.vg.json\", :x 40, :y 50, :z 60}"]
+;; <=
+
+;; @@ [cljs]
+(defn s [k] (k @pinkgorilla.ui.widget/state-atom))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-unknown"],"#'cljs.user/s"],"~:value","#'cljs.user/s"]
+;; <=
+
+;; @@ [cljs]
+(defn t [] [:p (s :test)] )
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-unknown"],"#'cljs.user/t"],"~:value","#'cljs.user/t"]
+;; <=
+
+;; @@ [cljs]
+^:R [t]
+;; @@
+;; =>
+;;; {}
+;; <=
+
+;; @@ [cljs]
+s
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-unknown"],"#object[cljs$user$s]"],"~:value","#object[cljs$user$s]"]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+
+;; @@ [clj]
+
+;; @@

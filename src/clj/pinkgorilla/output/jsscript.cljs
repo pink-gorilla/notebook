@@ -1,8 +1,13 @@
 (ns pinkgorilla.output.jsscript
   (:require
    [reagent.core :as reagent]
+   [reagent.dom]
    [cljs-uuid-utils.core :as uuid]
    [taoensso.timbre :refer-macros (info)]))
+
+
+;; awb99: TODO: remove this completely; in renderable-ui we have new implementation
+;; however this will break clojure jar based ui components, so I have not yet removed it
 
 ;; SCRIPT INJECTION could be done by adding script-elements to the dom with addChild,
 ;; But we currently use RequireJS to load modules from third party components.
@@ -66,7 +71,7 @@
       :reagent-render (fn [] [:div {:id uuid}])
       :component-did-mount (fn [this]
                                  ;(run-script uuid data snippet)
-                             (run-script (reagent/dom-node this) data snippet))
+                             (run-script (reagent.dom/dom-node this) data snippet))
           ;:component-did-update (fn [this]
           ;                        (run-script uuid data snippet))
 
@@ -76,6 +81,6 @@
               ; with changing of parameters, re-render the component. (important for vega charts)
                                   ;(info "new params: " new-params)
                                    ;(run-script uuid data snippet)
-                               (run-script (reagent/dom-node this) (get-in new-params [:content :data]) snippet))})))
+                               (run-script (reagent.dom/dom-node this) (get-in new-params [:content :data]) snippet))})))
 
 

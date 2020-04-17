@@ -1,15 +1,13 @@
 (ns pinkgorilla.events.notebook
   (:require
-   ;; [taoensso.timbre :refer-macros (info)]
-   [re-frame.core :refer [reg-event-db]]
+   [taoensso.timbre :refer-macros (info)]
+   [re-frame.core :refer [reg-event-db dispatch]]
    [day8.re-frame.undo :refer [undoable]]
-   ;; [pinkgorilla.prefs :as prefs]
    [pinkgorilla.notebook.newnb :refer [create-new-worksheet]] ;; TODO - should probably not come from a dependency
-   ;[pinkgorilla.db :as db :refer [initial-db]]
    [pinkgorilla.notebook.core :refer [to-code-segment to-free-segment
                                       remove-segment insert-segment-at
                                       create-code-segment]]
-   [pinkgorilla.editor.core :as editor]
+   [pinkgorilla.codemirror.core :as editor]
    [pinkgorilla.kernel.core :as kernel]
    [pinkgorilla.events.helper :refer [standard-interceptors]]))
 
@@ -79,36 +77,59 @@
          active-id (get-in db [:worksheet :active-segment])]
      (assoc db :worksheet (remove-segment worksheet active-id)))))
 
+;; Evaluation
+
+(defn- eval-segment! [segment]
+  (let [{:keys [kernel id content]} segment
+        {:keys [value]} content]
+    (kernel/eval! kernel id value)))
+
 (reg-event-db
  :worksheet:evaluate
  [standard-interceptors]
  (fn [db _]
    (let [active-id (get-in db [:worksheet :active-segment])
          active-segment (get-in db [:worksheet :segments active-id])
+         queued-code-segments (get-in db [:worksheet :queued-code-segments])
          new-active-segment (merge active-segment {:console-response nil
                                                    :value-response nil
                                                    :error-text     nil
-                                                   :exception      nil})
-         kernel (:kernel active-segment)
-         queued-segs (get-in db [:worksheet :queued-code-segments])]
-     (kernel/eval! kernel active-id (get-in active-segment [:content :value]))
-     (-> (assoc-in db [:worksheet :segments active-id] new-active-segment)
-         (assoc-in [:worksheet :queued-code-segments] (conj queued-segs (:id new-active-segment)))))))
+                                                   :exception      nil})]
+     (eval-segment! active-segment)
+     (-> db
+         (assoc-in [:worksheet :segments active-id] new-active-segment)
+         (assoc-in [:worksheet :queued-code-segments] (conj queued-code-segments (:id new-active-segment)))))))
 
 (reg-event-db
  :worksheet:evaluate-all
  [standard-interceptors]
  (fn [db _]
+   (dispatch [:worksheet:clear-all-output])
    (let [segments (get-in db [:worksheet :segments])
          segment-order (get-in db [:worksheet :segment-order])
          sorted-code-segments (->> (map #(% segments) segment-order)
-                                   (filter (fn [segment] (= :code (:type segment)))))]
-     (doall (map #(kernel/eval!
-                   (get-in % [:kernel])
-                   (:id %)
-                   (get-in % [:content :value])) sorted-code-segments))
-     (assoc-in db [:worksheet :queued-code-segments] (-> (map #(:id %) sorted-code-segments)
-                                                         set)))))
+                                   (filter (fn [segment] (= :code (:type segment)))))
+         sorted-code-segments-ids (map #(:id %) sorted-code-segments)
+         queued-next (get-in db [:worksheet :queued-next])]
+     (dispatch [:worksheet:evaluate-next-queued])
+     (-> db
+         (assoc-in [:worksheet :queued-code-segments] (-> sorted-code-segments-ids set))
+         (assoc-in [:worksheet :queued-next] (concat queued-next sorted-code-segments-ids))))))
+
+;; TODO: Make queued-segment-list
+(reg-event-db
+ :worksheet:evaluate-next-queued
+ [standard-interceptors]
+ (fn [db _]
+   ; evals the next queued-next segment 
+   (let [queued-next (get-in db [:worksheet :queued-next])
+         next-queued-segment-id (first queued-next)]
+     (if (nil? next-queued-segment-id)
+       db
+       (let [_ (info "evaluating next queued segment " next-queued-segment-id)
+             next-queued-segment (get-in db [:worksheet :segments next-queued-segment-id])]
+         (eval-segment! next-queued-segment)
+         (assoc-in db [:worksheet :queued-next] (rest queued-next)))))))
 
 (defn leave-active
   [db next-fn]
@@ -196,12 +217,6 @@
  :segment-value-changed
  (fn [db [_ seg-id value]]
    (assoc-in db [:worksheet :segments seg-id :content :value] value)))
-
-
-
-
-
-
 
 
 ;; Using re-frame undo instead

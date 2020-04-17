@@ -1,15 +1,21 @@
 (ns pinkgorilla.views.navbar
   (:require
    ;;[taoensso.timbre :refer-macros (info)]
-   ;[reagent.core :as r :refer [atom]]
    [re-frame.core :as rf]
+   [pinkgorilla.prefs :refer-macros [if-10x]]
    [pinkgorilla.events.views] ;; register events
    [pinkgorilla.events] ;; register events
    [pinkgorilla.subs] ;; subs
-   [pinkgorilla.kernel.cljs-tools :refer [print-loaded-shadow-namespaces]]))
+   ))
+
+(if-10x
+ (def use-10x true)
+ (def use-10x false))
+
 
 ;; stolen from:
 ;; https://github.com/baskeboler/cljs-karaoke-client/blob/master/src/main/cljs_karaoke/views/navbar.cljs
+
 
 (def notebook-items
   [:span.pt-2.p-2
@@ -56,27 +62,22 @@
                      )}
     [:i.fas.fa-bars]]])
 
-#_(def developer-items
-    [:span.bg-red-700.pt-2.p-2
+(def developer-items
+  [:span.bg-red-700.pt-2.p-2
 
-     [:a {:class "block mt-4 lg:inline-block lg:mt-0 text-pink-600 hover:bg-orange-500 mr-4"
-          :on-click #(do
-                       (rf/dispatch [:toggle.reframe10x])
+   [:a {:class "block mt-4 lg:inline-block lg:mt-0 text-pink-600 hover:bg-orange-500 mr-4"
+        :on-click #(do
+                     (rf/dispatch [:toggle.reframe10x])
                       ;(rf/dispatch [::events/set-navbar-menu-active? false])
-                       )}
-      "Toggle reframe-10x"]
+                     )}
+    "Toggle reframe-10x"]
 
-     [:a {:class "block mt-4 lg:inline-block lg:mt-0 text-pink-600 hover:bg-orange-500 mr-4"
-          :on-click #(do
-                       (rf/dispatch [:open-oauth-window :github])
+   [:a {:class "block mt-4 lg:inline-block lg:mt-0 text-pink-600 hover:bg-orange-500 mr-4"
+        :on-click #(do
+                     (rf/dispatch [:open-oauth-window :github])
                       ;(rf/dispatch [::events/set-navbar-menu-active? false])
-                       )}
-      "Github login"]
-
-     [:a {:class "block mt-4 lg:inline-block lg:mt-0 text-pink-600 hover:bg-orange-500 mr-4"
-          :on-click #(do
-                       (print-loaded-shadow-namespaces))}
-      "p-lns"]])
+                     )}
+    "Github login"]])
 
 (defn navbar-component []
   (let [;; is-active? (rf/subscribe [:navbar-menu-is-active?])
@@ -123,6 +124,10 @@
         "Explorer"]
 
        [:a {:class "pg-top-nav-item"
+            :on-click #(rf/dispatch [:nav "/renderer"])}
+        "Renderer"]
+
+       [:a {:class "pg-top-nav-item"
             :on-click #(rf/dispatch [:dialog-show :settings])}
         "Settings"]
 
@@ -141,9 +146,8 @@
          notebook-items)
 
        ; developer menu - show only when in dev-mode
-       ;; TODO: Add some conditional
-       ;; developer-items
-       ]
+       (when use-10x
+         developer-items)]
 
       ;; Menu Items Right
       #_[:div

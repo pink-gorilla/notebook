@@ -3,9 +3,12 @@
    [re-frame.core :refer [reg-event-db reg-event-fx dispatch]]
    [ajax.core :as ajax]
    [taoensso.timbre :refer-macros (info)]
-   [pinkgorilla.routes :as routes]
+   ;PinkGorilla libraries
+   [pinkgorilla.storage.storage :refer [storagetype query-params-to-storage gorilla-path storageformat]]
    [pinkgorilla.notebook.core :refer [load-notebook-hydrated save-notebook-hydrated]]
-   [pinkgorilla.storage.storage :refer [storagetype query-params-to-storage gorilla-path]]
+   [pinkgorilla.encoding.jupyter] ; add jupyter encoding to bundle   
+  ;PinkGorilla Notebook
+   [pinkgorilla.routes :as routes]
    [pinkgorilla.events.helper :refer [standard-interceptors]]
    [pinkgorilla.notifications :as events :refer [add-notification notification]]))
 
@@ -80,7 +83,7 @@
          ; _ (info "Content Only:\n" content)
          notebook (if (nil? content)
                     nil
-                    (load-notebook-hydrated content))
+                    (load-notebook-hydrated (storageformat storage) content))
          ;_ (info "notebook: " notebook)
          ]
      (assoc db

@@ -1,4 +1,4 @@
-package gorilla_repl;
+package pinkgorilla;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

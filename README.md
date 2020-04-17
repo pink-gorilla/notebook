@@ -1,4 +1,26 @@
 # Pink Gorilla Notebook [![GitHub Actions status |pink-gorilla/gorilla-notebook](https://github.com/pink-gorilla/gorilla-notebook/workflows/CI/badge.svg)](https://github.com/pink-gorilla/gorilla-notebook/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-notebook.svg)](https://clojars.org/org.pinkgorilla/gorilla-notebook)
+
+## Projects
+
+<!-- projects -->
+| Project | deps |Release |
+|---------|---------|---------|
+| [notebook](https://github.com/pink-gorilla/gorilla-notebook)  | |[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-notebook.svg)](https://clojars.org/org.pinkgorilla/gorilla-notebook)
+| [renderable (clj)](https://github.com/pink-gorilla/gorilla-renderable) | | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-renderable.svg)](https://clojars.org/org.pinkgorilla/gorilla-renderable)
+| [renderable-ui (cljs)](https://github.com/pink-gorilla/gorilla-renderable-ui) | renderable | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-renderable-ui.svg)](https://clojars.org/org.pinkgorilla/gorilla-renderable-ui)
+| [gorilla-ui (cljs)](https://github.com/pink-gorilla/gorilla-ui) | renderable-ui | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-ui.svg)](https://clojars.org/org.pinkgorilla/gorilla-ui)
+| [kernel clj](https://github.com/pink-gorilla/gorilla-middleware) | renderable | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-middleware.svg)](https://clojars.org/org.pinkgorilla/gorilla-middleware)
+| [kernel-cljs (cljs)](https://github.com/pink-gorilla/kernel-cljs-shadow) | | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/kernel-cljs-shadow.svg)](https://clojars.org/org.pinkgorilla/kernel-cljs-shadow)
+| [kernel-cljs bundler (cljs)](https://github.com/pink-gorilla/kernel-cljs-shadowdeps) | ui | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/kernel-cljs-shadowdeps.svg)](https://clojars.org/org.pinkgorilla/kernel-cljs-shadowdeps)
+| [encoding ](https://github.com/pink-gorilla/notebook-encoding)|  | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/notebook-encoding.svg)](https://clojars.org/org.pinkgorilla/notebook-encoding)
+| [explorer](https://github.com/pink-gorilla/gorilla-explore) | encoding | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-explore.svg)](https://clojars.org/org.pinkgorilla/gorilla-explore)
+| [dsl plot](https://github.com/pink-gorilla/gorilla-plot) | | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gorilla-plot.svg)](https://clojars.org/org.pinkgorilla/gorilla-plot)
+| [example ta](https://github.com/pink-gorilla/trateg) | | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/ta.svg)](https://clojars.org/org.pinkgorilla/ta)
+| [dsl ggplot2](https://github.com/pink-gorilla/gg4clj) | | [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/gg4clj.svg)](https://clojars.org/org.pinkgorilla/gg4clj)
+
+
+<!-- /projects -->
+
 ## Docker Image
 <!-- [![dockeri.co](https://dockeri.co/image/pinkgorillawb/gorilla-notebook)](https://hub.docker.com/r/pinkgorillawb/gorilla-notebook) -->
 [![](https://images.microbadger.com/badges/version/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own version badge on microbadger.com")

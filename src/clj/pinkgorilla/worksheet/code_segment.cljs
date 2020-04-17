@@ -1,11 +1,11 @@
 (ns pinkgorilla.worksheet.code-segment
   (:require
-   [reagent.core :as reagent]
    [re-frame.core :refer [subscribe dispatch]]
-   [re-catch.core :as rc]
+   [pinkgorilla.components.error :refer [error-boundary]]
    [pinkgorilla.worksheet.code-cell-menu :refer [cell-menu]]
    [pinkgorilla.output.core :refer [output-fn]]
-   [pinkgorilla.worksheet.helper :refer [init-cm! focus-active-segment error-text console-text exception]]))
+   [pinkgorilla.codemirror.editor :refer [editor]]
+   [pinkgorilla.worksheet.code-stacktrace :refer [stacktrace-table error-text console-text]]))
 
 (defn output-view-unsafe [seg-id segment]
   (try
@@ -14,73 +14,67 @@
             component ^{:key :value-response} [:div.output>pre [output-value value-output seg-id]]]
         ;(println "returning reagent: " component)
         component))
-
     (catch js/Error e [:p (str "exception rendering cell output: " (. e -message))])))
 
 (defn output-view [seg-id segment]
-  [rc/catch
+  [error-boundary
    [output-view-unsafe seg-id segment]])
 
+(defn code-editor [read-only? seg-id segment editor-options]
+    ;; TODO: active <=> selected, executing <=> running
+  (let [active? (subscribe [:is-active-query seg-id])
+        queued? (subscribe [:is-queued-query seg-id])]
+    (fn []
+      [:<>
+       [:div {:id (name seg-id)
+              :class (str "segment code"
+                          (if @active? " selected" "")
+                          (if @queued? " running" ""))
+              :on-click #(dispatch [:worksheet:segment-clicked seg-id])}
+      ; editor
+        ^{:key :segment-main}
+        [:div.segment-main
+         [editor segment read-only? editor-options]]]
+      ; menu
+       (when @active? [cell-menu segment])])))
+
 (defn code-segment-unsafe
-  [seg-data editor-options]
-  ;; TODO: active <=> selected, executing <=> running
+  [read-only? seg-data editor-options]
   (let [seg-id (:id seg-data)
-        segment (subscribe [:segment-query seg-id])
-        is-active (subscribe [:is-active-query seg-id])
-        is-queued (subscribe [:is-queued-query seg-id])
-        footer-comp ^{:key :segment-footer} [:div.segment-footer]]
-    (reagent/create-class
-     {:component-did-mount  (fn [this]
-                              ((partial init-cm!
-                                        seg-id
-                                        (get-in seg-data [:content :type])
-                                        editor-options) this)
-                              (focus-active-segment this
-                                                    @is-active))
-       ;; :component-will-mount #()
-      :display-name         "code-segment"
-      :component-did-update #(focus-active-segment %1 @is-active)
-      :reagent-render       (fn [_] ;; repeat seg-data to use it
-                              (let [main-component
-                                    ^{:key :segment-main} [:div.segment-main
-                                                           [:textarea {:class     "codeTextArea mousetrap"
-                                                                       :value     (get-in @segment [:content :value])
-                                                                       :read-only true}]]
-                                    error-comp (if-let [err-text (:error-text @segment)]
-                                                 ^{:key :error-text} [error-text err-text])
-                                    ex-comp (if-let [ex (:exception @segment)]
-                                              ^{:key :exception} [exception ex])
-                                    console-comp (if-let [cons-text (not-empty (:console-response @segment))]
-                                                   ^{:key :console-response} [console-text cons-text])
-                                    output-comp (output-view seg-id segment)
-                                    div-kw (keyword (str "div#" (name seg-id))) ;; Aid with debugging
-                                    class (str "segment code"
-                                               (if @is-active
-                                                 " selected"
-                                                 "")
-                                               (if @is-queued
-                                                 " running"
-                                                 ""))
-                                    other-children [main-component
-                                                    error-comp
-                                                    ex-comp
-                                                    console-comp
-                                                    output-comp
-                                                    footer-comp]]
+        segment (subscribe [:segment-query seg-id])]
+    (fn []
+      [:<>
+       ; editor 
+       [code-editor read-only? seg-id segment editor-options]
+      ; error
+       (if-let [err-text (:error-text @segment)]
+         ^{:key :error-text}
+         [error-text err-text])
+      ; stacktrace
+       (if-let [ex (:exception @segment)]
+         ^{:key :exception}
+         [stacktrace-table ex])
+      ; console
+       (if-let [cons-text (not-empty (:console-response @segment))]
+         ^{:key :console-response}
+         [console-text cons-text])
+      ; output
+       (output-view seg-id segment)
+      ; footer      
+       ^{:key :segment-footer}
+       [:div.segment-footer]])))
 
-                                [:<>
-                                 (apply conj [div-kw
-                                              {:class    class
-                                               :on-click #(dispatch [:worksheet:segment-clicked seg-id])}]
-                                        (filter some? other-children))
-                                 ; menu is at bottom even though I want it n top, but codemirror is hard wired
-                                 ; and expects that code is first dom element
-                                 (when @is-active [cell-menu segment])]))})))
+(defn code-segment-edit
+  "code-segment - editable"
+  [seg-data editor-options]
+  [error-boundary
+   [code-segment-unsafe false seg-data editor-options]])
 
-(defn code-segment [seg-data editor-options]
-  [rc/catch
-   [code-segment-unsafe seg-data editor-options]])
-
+(defn code-segment-view
+  "code-segment - view-only"
+  [seg-data]
+  [error-boundary
+   [code-segment-unsafe true seg-data {}]])
 
 
 

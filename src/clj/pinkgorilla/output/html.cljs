@@ -1,6 +1,7 @@
 (ns pinkgorilla.output.html
   (:require
    [reagent.core :as reagent]
+   [reagent.dom]
    [pinkgorilla.output.hack :refer [temp-comp-hack]]))
 
 ;; Scripts in Injected html are not being evaluated.
@@ -58,7 +59,7 @@
       (reagent/create-class
        {:display-name        "output-html"                 ;; for more helpful warnings & errors
          ;; :component-will-unmount (fn [this])
-        :component-did-mount (fn [this] (process-scripts! (reagent/dom-node this)))
+        :component-did-mount (fn [this] (process-scripts! (reagent.dom/dom-node this)))
 
          ;; :component-did-update (fn [this old-argv])
         :reagent-render      (fn []

@@ -33,6 +33,6 @@
 
 (defn new-server [] (map->JettyServer {}))
 
-(defn add-server
+(defn add-jetty-server
   [base-system & server-dependencies]
   (assoc base-system :server (c/using (new-server) (reduce conj [:config :handler] server-dependencies))))

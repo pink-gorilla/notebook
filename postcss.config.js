@@ -3,6 +3,15 @@ module.exports = {
     plugins: [
         require('postcss-import'),
         require('tailwindcss'),
-        require('autoprefixer'),
+        require('autoprefixer')({
+            overrideBrowserslist: [
+                "last 1 chrome version",
+                "firefox > 73",
+                "last 1 safari version"
+                //, "ie > 10"
+            ]
+        })
     ]
-}
+};
+
+

@@ -1,14 +1,13 @@
 (ns pinkgorilla.worksheet.code-cell-menu
   (:require
-   [pinkgorilla.prefs :as prefs]
+   [pinkgorilla.prefs :refer [if-cljs-kernel]]
    [re-frame.core :refer [dispatch]]))
 
 (defn cell-menu [segment]
   [:div {:class [:font-sans :flex :flex-col :text-center :sm:flex-row :sm:text-left :sm:justify-between :px-6 :bg-white :sm:items-baseline :w-full]}
 
    ;; Kernel (clj/cljs)
-   ;; TODO: Not yet ready for master
-   (prefs/if-cljs-kernel
+   (if-cljs-kernel
     [:div.mb-1
      [:a {:class [:text-lg :p-1 :pg-kernel-toggle]
           :on-click #(dispatch [:app:kernel-toggle])}

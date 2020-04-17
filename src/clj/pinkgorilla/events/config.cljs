@@ -5,9 +5,7 @@
    [clojure.string :as str]
    [ajax.core :as ajax]
    [re-frame.core :refer [reg-event-db reg-event-fx]]
-   [day8.re-frame-10x]
-
-   [pinkgorilla.notifications :as events :refer [add-notification notification]]
+  ;PinkGorilla Notebook
    [pinkgorilla.db :as db :refer [initial-db]]
    [pinkgorilla.keybindings :as keybindings]
    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
@@ -31,10 +29,11 @@
 
 
 (reg-event-fx
- :initialize-config
+ :load-config
  (fn [{:keys [db]} _]
-   (add-notification (notification :info "Loading config.. "))
-   {:db       db ;  (merge db {:message "Loading configuration ..."})
+   ;(add-notification (notification :info "Loading config.. "))
+   (info "loading configuration from server ..")
+   {:db       db
     :http-xhrio {:method          :get
                  :uri             (str (:base-path db) "config")
                  :timeout         5000                     ;; optional see API docs
@@ -64,14 +63,5 @@
                       (assoc-in [:palette :all-visible-commands] visible-commands))
       :dispatch-n (list [:init-cljs] [:explore-load])})))
 
-(reg-event-db
- :toggle.reframe10x
- (fn [db _]
-   (let [visible (not (get-in db [:dev :reframe10x-visible?]))
-         ;_ (.setItem js/localStorage "day8.re-frame-10x.show-panel" (str visible))
-         _ (info "reframe-10x visible: " visible)
-        ; _ (dispatch [:settings/user-toggle-panel])
-         _ (day8.re-frame-10x/show-panel! visible)] ; https://github.com/day8/re-frame-10x/pull/210s
-     (assoc-in db [:dev :reframe10x-visible?] visible))))
 
 
