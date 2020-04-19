@@ -47,10 +47,10 @@
                          [org.flatland/useful "0.11.6"] ; clojail and ring-middleware-format
                          ; pinkgorilla (enforce to use latest version of all projects)
                          [org.pinkgorilla/gorilla-middleware "0.2.21"]
-                         [org.pinkgorilla/gorilla-renderable-ui "0.1.29"]
+                         [org.pinkgorilla/gorilla-renderable-ui "0.1.30"]
                          [org.pinkgorilla/gorilla-ui "0.1.27"]
                          [org.pinkgorilla/notebook-encoding "0.0.28"]
-                         [org.pinkgorilla/gorilla-explore "0.1.19"]
+                         [org.pinkgorilla/gorilla-explore "0.1.20"]
                          [org.pinkgorilla/kernel-cljs-shadowdeps "0.0.12"]
                          [org.pinkgorilla/kernel-cljs-shadow "0.0.25"]
                          ; shadow-cljs
