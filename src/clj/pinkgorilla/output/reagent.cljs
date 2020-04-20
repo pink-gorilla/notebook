@@ -2,11 +2,14 @@
   (:require
    ;[taoensso.timbre :refer-macros (info)]
    [pinkgorilla.components.error :refer [error-boundary]]
-   [pinkgorilla.ui.pinkie :refer [tag-inject convert-style-as-strings-to-map]]
+   [pinkgorilla.ui.pinkie :refer [tag-inject convert-style-as-strings-to-map convert-render-as]]
    [pinkgorilla.ui.widget :refer [resolve-widget]]))
 
 (defn reagent-inject [{:keys [map-keywords widget]} component]
   (let [;_ (info "map-keywords: " map-keywords "widget: " widget " reagent component: " component)
+        ;_ (info "meta data: " (meta component))
+        component (convert-render-as component)
+        ;_ (println "after convert-render-as " component)
         component (if map-keywords (tag-inject component) component)
         component (if widget (resolve-widget component) component)
         component (if map-keywords (convert-style-as-strings-to-map component) component)

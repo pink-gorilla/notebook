@@ -72,6 +72,7 @@
                       (apply compojure/routes (concat default-api-handlers
                                                        ;; default-repl-handlers
                                                       default-resource-handlers))))
+
 ;; TODO: Implement this - but beware that (web) resources from extension jars don't work with a remote repl
 (def remote-repl-handler (apply compojure/routes (concat default-api-handlers
                                                          ;; remote-repl-handlers

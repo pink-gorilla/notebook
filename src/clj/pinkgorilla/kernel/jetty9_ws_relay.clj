@@ -3,8 +3,6 @@
   (:require
    [taoensso.timbre :refer [debug info error]]
     ;; [clojure.tools.logging :refer (debug info warn error)]
-   ;[clojure.data.json :as json]
-   ;[clojure.walk :as w]
    [clojure.edn :as edn]
    [ring.adapter.jetty9 :as jetty]
    [nrepl.server :as nrepl-server]
@@ -40,16 +38,23 @@
                               (fn [v] (some #(= "done" %) v)))]
         (reply-fn replies-seq)))
 
+(defn pr-str-with-meta [data]
+  (binding [*print-meta* true]
+    (pr-str data)))
+
 (defn process-message-mem
   "Processes websocket messages"
   [nrepl-handler transport ws timeout data]
   (let [;_ (debug "ws Received: " data)
-        msg (assoc (edn/read-string data) :as-html 1)
+        data-edn (edn/read-string data)
+        ;_ (debug "data edn: " data-edn " meta: " (meta data-edn))
+        msg (assoc data-edn :as-html 1)
         [read write] transport
         client (nrepl/client read timeout)
         reply-fn (partial process-replies
                           (fn [msg]
-                            (let [payload (pr-str msg)]
+                            ;(println "msg: " msg)
+                            (let [payload (pr-str-with-meta msg)]
                               (info "ws Send " payload)
                               (jetty/send! ws payload)))
                           (fn [s] (contains? s :done)))]
@@ -97,5 +102,5 @@
                        transport (or (::transport session)
                                      (transport/piped-transports))]
                    (process-message-mem nrepl-handler transport ws Long/MAX_VALUE text-message)))
-   :on-bytes   (fn [_ _ _ _]                    ;; ws bytes offset len
+   :on-bytes   (fn [_ _ _ _] ;; ws bytes offset len
                  (info "ws Bytes"))})

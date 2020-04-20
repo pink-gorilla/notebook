@@ -8,7 +8,8 @@
    [pinkgorilla.middleware.cider :as mw-cider]))
 
 
-;; We will open a single connection to the nREPL server for the life of the application. It will be stored here.
+;; We will open a single connection to the nREPL server for the life of the application.
+;; It will be stored here.
 ;; TODO: Ugly loophole
 
 

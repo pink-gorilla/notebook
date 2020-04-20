@@ -46,8 +46,9 @@
                          [ring/ring-codec "1.1.1"] ; ring and compojure
                          [org.flatland/useful "0.11.6"] ; clojail and ring-middleware-format
                          ; pinkgorilla (enforce to use latest version of all projects)
-                         [org.pinkgorilla/gorilla-middleware "0.2.21"]
-                         [org.pinkgorilla/gorilla-renderable-ui "0.1.30"]
+                         [org.pinkgorilla/gorilla-renderable "3.0.7"]
+                         [org.pinkgorilla/gorilla-middleware "0.2.22"]
+                         [org.pinkgorilla/gorilla-renderable-ui "0.1.32"]
                          [org.pinkgorilla/gorilla-ui "0.1.27"]
                          [org.pinkgorilla/notebook-encoding "0.0.28"]
                          [org.pinkgorilla/gorilla-explore "0.1.20"]
