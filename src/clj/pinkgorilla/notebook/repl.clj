@@ -1,7 +1,6 @@
 (ns pinkgorilla.notebook.repl
   "important stuff that will be needed by notebook users.
-   it should be easy to find this functions, so they are centrally managed.
-  "
+   it should be easy to find this functions, so they in one namespace."
   (:require
    [cemerick.pomegranate :as pg]
    [clojure.java.io :as io])
@@ -49,21 +48,34 @@
       (load-edn- resource)
       (println "resource not found: " name))))
 
-(defn secret
-  "loads a secret (for example an api token or ssh key)
+(defn info []
+  {:java (-> (System/getProperties) (get "java.version"))
+   :clojure (clojure-version)})
+
+(defonce secrets-atom (atom {}))
+
+(defn secrets []
+  @secrets-atom)
+
+(defn secret [k]
+  (k @secrets-atom))
+
+#_(defn secret
+    "loads a secret (for example an api token or ssh key)
    currently expects ./test/creds.edn file
 
    In future will allow to access secrets that are in web browser 
    so that user can set his credentials securely.
 
    Note that this is a file, not a resource, as the user has to set it."
-  [k]
-  (let [resource (io/file "./test/creds.edn")
+    [k]
+    (let [resource (io/file "./test/creds.edn")
         ;resource (load-edn- (io/resource "creds.edn") 
-        ]
-    (if resource
-      (k (load-edn- resource))
-      (println "secret has not found creds.edn"))))
+          ]
+      (if resource
+        (k (load-edn- resource))
+        (println "secret has not found creds.edn"))))
+
 
 
 

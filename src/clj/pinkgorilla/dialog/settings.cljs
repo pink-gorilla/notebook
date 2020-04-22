@@ -64,8 +64,8 @@
                  :model       (:editor @settings)
                  :on-change   #(dispatch [:settings-set :editor %])]
                 [radio-button
-                 :label       "paredit"
-                 :value       :paredit
+                 :label       "parinfer"
+                 :value       :parinfer
                  :model       (:editor @settings)
                  :on-change   #(dispatch [:settings-set :editor %])]
 

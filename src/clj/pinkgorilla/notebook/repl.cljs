@@ -4,10 +4,11 @@
   "
   (:require
    [clojure.string :as str]
-   [pinkgorilla.ui.gorilla-renderable :refer [Renderable render]]
-   [pinkgorilla.ui.pinkie]
+   [re-frame.core :refer [subscribe]]
    ;[taoensso.timbre :refer-macros (info)]
-   [shadow.cljs.bootstrap.env]))
+   [shadow.cljs.bootstrap.env]
+   [pinkgorilla.ui.gorilla-renderable :refer [Renderable render]]
+   [pinkgorilla.ui.pinkie]))
 
 
 ; make register-tag available in the repl namespace
@@ -36,4 +37,9 @@
         lns (sort lns)]
     lns))
 
+(defn secrets []
+  (let [settings (subscribe [:settings])]
+    @settings))
 
+(defn secret [k]
+  (k (secrets)))

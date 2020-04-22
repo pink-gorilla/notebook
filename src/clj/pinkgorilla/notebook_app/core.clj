@@ -14,7 +14,8 @@
    [pinkgorilla.explore.explore-handler :refer [update-excludes explore-directories-start]]
    [pinkgorilla.notebook-app.system :as sys]
    [pinkgorilla.notebook-app.cli :as cli]
-    ;; [pinkgorilla.helper :as helper]
+   [pinkgorilla.notebook.secret] ; bring to scope
+   [pinkgorilla.notebook.repl] ; bring to scope
     ;; TODO For notebook compat - fails when called on startup : Could not find a suitable classloader to modify from clojure.lang.LazySeq@532d8051
     ;; #'nrepl.middleware.session/session
    )
@@ -96,8 +97,6 @@
     #_(when-not (empty? add-deps)
         (info "Added additional deps with deps" (helper/add-dependencies add-deps)))
     ;; (println "Using project" project)
-    ;; asynchronously check for updates
-    ;; (version/check-for-update version)
 
     (let [s (sys/start merged-config)
           server (-> s (get-in [:server :jetty]))

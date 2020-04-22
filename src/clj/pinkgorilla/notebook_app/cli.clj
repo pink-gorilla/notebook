@@ -1,4 +1,5 @@
 (ns pinkgorilla.notebook-app.cli
+  "commandline (cli) options to configure a standalone pinkgorilla notebook"
   (:require
    [clojure.tools.cli :as cli]
    [clojure.string :as string]))

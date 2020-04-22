@@ -196,7 +196,8 @@
   ([element & {:keys [opts content-type segment-id]}]
    (let [ctkw (keyword content-type)
          override-opts (ctkw opts)
-         merged-cm-opts (merge (:cm-opts (ctkw cm-default-opts)) (:cm-opts override-opts))
+         merged-cm-opts (merge (:cm-opts (ctkw cm-default-opts))
+                               (:cm-opts override-opts))
          ;; other-opts (:opts override-opts)
          cm (create-regular-editor!
              element

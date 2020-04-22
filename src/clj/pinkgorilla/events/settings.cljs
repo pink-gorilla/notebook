@@ -2,25 +2,13 @@
   "events related to the settings dialog"
   (:require
    [taoensso.timbre :refer-macros (info)]
-   [cljs.reader :as reader]                                ; local storage parsing
    [re-frame.core :refer [reg-event-db dispatch]]
-   [pinkgorilla.kernel.cljs :as cljs-kernel]
-    ;[pinkgorilla.events.helper :refer [text-matches-re default-error-handler  check-and-throw  standard-interceptors]]
-   ))
+   [pinkgorilla.components.localstorage :refer [ls-get ls-set!]]
+   [pinkgorilla.kernel.cljs :as cljs-kernel]))
 
-;; LocalStorage Helpers
-
-(defn ls-set! [k v]
-  (.setItem js/localStorage (pr-str k) (pr-str v)))
-
-(defn ls-get [k]
-  (when-let [s (.getItem js/localStorage (pr-str k))]
-    (reader/read-string s)))
-
-(defn ls-remove! [k]
-  (.removeItem js/localStorage k))
 
 ;; Dialog Visibility Management
+
 
 (reg-event-db
  :dialog-show
