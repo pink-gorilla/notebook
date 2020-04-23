@@ -59,7 +59,13 @@
 
   :dependencies [;; CLOJURE ESSENTIAL
                  [org.clojure/clojure "1.10.1"]
-                 [org.clojure/core.async "1.1.582"]
+                 [org.clojure/core.async "1.1.582"
+                  :exclusions [[org.ow2.asm/asm]]]
+                 ; libpython clj has conflict with core.async dependency:
+                 [org.ow2.asm/asm "7.0"] 
+                 ;[org.ow2.asm/asm-all "5.2"]
+                 ; tech.ml.dataset: [org.ow2.asm/asm-all "4.2"]
+                 ; core-async:  [org.ow2.asm/asm "5.2"]
                  [org.clojure/tools.reader "1.3.2"]
                  [org.clojure/core.match "1.0.0"]
 
@@ -85,7 +91,7 @@
                   :exclusions [com.cognitect/transit-clj
                                com.cognitect/transit-cljs]] ; websockets with core.async
                  [org.clojure/data.json] ; managed-version
-
+                 
 
                  ;; WEB SERVER
                  [ring "1.7.1"]
@@ -115,23 +121,24 @@
                  [irresponsible/tentacles "0.6.6"] ; github api (needed by encoding and explore)
                  ;[clj-time "0.15.2"] ; needed for notebook exploration ui
                  [com.andrewmcveigh/cljs-time "0.5.2"] ;  notebook exploration ui
-
+                 
                  ; CLJ Kernel
                  [org.pinkgorilla/gorilla-middleware]
                  [clj-commons/pomegranate "1.2.0"] ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
                  [org.clojure/tools.cli "1.0.194"]
                  ;[clojail "1.0.6"] ; Sandboxing - not sure whether we want to cope with this level of detail
-
+                 
                  ; PINKIE
                  [org.pinkgorilla/gorilla-renderable-ui] ; kernels (clj and cljs) needs renderable (cljs kernel is implemented in notebook)
                  [org.pinkgorilla/gorilla-ui] ; ui renderer impls
-
+                 
                  ; CLJS Kernel
                  [org.pinkgorilla/kernel-cljs-shadowdeps]
                  ;[org.pinkgorilla/kernel-cljs-shadowdeps
                  ; :exclusions [*/*]] ; add precompiled bundles via jar resources
-
+                 
                  ;; [com.rpl/specter "0.13.2"]
+                 
                  ]
 
 
@@ -377,7 +384,8 @@
                                       ;[cider/piggieback "0.4.2"
                                       ; ;; :exclusions [org.clojure/clojurescript]
                                       ; ]
-                                      [day8.re-frame/test "0.1.5"]
+                                      [day8.re-frame/test "0.1.5"
+                                       :exclusions [org.clojure/clojurescript]]
                                       [nubank/workspaces "1.0.13"]
                                       ;; devcards should be superceded by nubank, no?
                                       ;; [devcards "0.2.6" :exclusions [org.clojure/tools.reader]]
