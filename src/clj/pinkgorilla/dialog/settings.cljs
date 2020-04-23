@@ -6,8 +6,8 @@
    [re-frame.core :refer [subscribe dispatch]]
    [re-com.core
     :refer [h-box v-box #_scroller md-circle-icon-button
-            #_input-text label radio-button
-            modal-panel gap]]
+            #_input-text #_label radio-button
+            modal-panel #_gap]]
    ;[pinkgorilla.events.common :refer [reg-set-attr]]
    [pinkgorilla.subs]))
 

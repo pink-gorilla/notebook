@@ -83,7 +83,6 @@
           (get-in db [:settings :secrets]))
      {})))
 
-
 (reg-event-db
  :secret-add
  (fn [db [_ s]]
@@ -97,7 +96,6 @@
    (info "removing secret:" n)
    (dispatch [:set-clj-secrets]) ; push new secrets to clj
    (update-in db [:settings :secrets] dissoc n)))
-
 
 (reg-event-db
  :secrets-import
