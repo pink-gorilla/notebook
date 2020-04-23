@@ -2,9 +2,12 @@
   "events related to the settings dialog"
   (:require
    [taoensso.timbre :refer-macros (info)]
-   [re-frame.core :refer [reg-event-db dispatch]]
+   [cljs.reader :as rd]
+   [reagent.core :as r]
+   [re-frame.core :refer [reg-event-db reg-event-fx dispatch]]
    [pinkgorilla.components.localstorage :refer [ls-get ls-set!]]
-   [pinkgorilla.kernel.cljs :as cljs-kernel]))
+   [pinkgorilla.kernel.cljs :as cljs-kernel]
+   [pinkgorilla.kernel.nrepl :refer [clj]]))
 
 
 ;; Dialog Visibility Management
@@ -68,3 +71,38 @@
  (fn [db [_ k v]]
    (info "changing notebook meta " k " to: " v)
    (assoc-in db [:worksheet :meta k] v)))
+
+;; secrets
+
+(reg-event-fx
+ :set-clj-secrets
+ (fn [{:keys [db]}]
+   (let [secret-result (r/atom {})]
+     (info "setting clj repl secrets..")
+     (clj secret-result "pinkgorilla.notebook.secret/set-secrets!"
+          (get-in db [:settings :secrets]))
+     {})))
+
+
+(reg-event-db
+ :secret-add
+ (fn [db [_ s]]
+   (info "adding secret:" (:name s))
+   (dispatch [:set-clj-secrets]) ; push new secrets to clj
+   (assoc-in db [:settings :secrets (keyword (:name s))] (:secret s))))
+
+(reg-event-db
+ :secret-remove
+ (fn [db [_ n]]
+   (info "removing secret:" n)
+   (dispatch [:set-clj-secrets]) ; push new secrets to clj
+   (update-in db [:settings :secrets] dissoc n)))
+
+
+(reg-event-db
+ :secrets-import
+ (fn [db [_ s]]
+   (info "importing secrets:" s)
+   (dispatch [:set-clj-secrets]) ; push new secrets to clj
+   (assoc-in db [:settings :secrets] (cljs.reader/read-string s))))
+

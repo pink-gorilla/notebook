@@ -7,7 +7,6 @@
    [cljs.core.async :as async :refer (<! >! put! chan timeout close!)]
    [taoensso.timbre :refer-macros (info warn)]
    [cljs-uuid-utils.core :as uuid]
-   [reagent.core :as r]
    [re-frame.core :refer [dispatch]]
    [cljs.reader :as rd]
    ;; [system.components.sente :refer [new-channel-socket-client]]
@@ -16,10 +15,8 @@
    ;PinkGorilla Notebook
    [pinkgorilla.notifications :refer [add-notification notification]]
    [pinkgorilla.kernel.cljs-helper :refer [send-value]]
-   [pinkgorilla.notebook.repl :refer [secrets]]
    ; bring the specs into scope:
    [pinkgorilla.kernel.nrepl-specs]))
-
 
 
 ;; TODO : Fixme handle breaking websocket connections
@@ -238,11 +235,7 @@
     ;function-as-string^export
     ))
 
-(defn on-websocket-connect []
-  (let [secret-result (r/atom {})
-        s (secrets)]
-    (info "setting clj repl secrets..")
-    (clj secret-result "pinkgorilla.notebook.secret/set-secrets!" s)))
+
 
 (defn- receive-msgs!
   [ws-chan msg-chan]
@@ -260,7 +253,7 @@
             (do
               (swap! ws-repl assoc :session-id new-session)
               (set-clj-kernel-status true new-session)
-              (on-websocket-connect))
+              (dispatch [:set-clj-secrets]))
             (warn "could not extract session id!!! "))
           (go-loop []
             (let [{:keys [message error]} (<! ws-chan)]
