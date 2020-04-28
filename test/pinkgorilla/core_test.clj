@@ -6,7 +6,6 @@
    [pinkgorilla.nrepl-specs-test]
    [pinkgorilla.reframe-test]))
 
-
 (run-tests)
 
 #_(.addShutdownHook
