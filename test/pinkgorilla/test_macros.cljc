@@ -1,4 +1,5 @@
 (ns pinkgorilla.test-macros
+  ; #?(:clj (:require [clojure.test])) awb99: perhaps this is needed here?
   #?(:cljs (:require-macros pinkgorilla.test-macros))
   #?(:cljs (:require [cljs.test])))
 

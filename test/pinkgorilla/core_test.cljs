@@ -2,6 +2,7 @@
   (:require
    [cljs.test :refer-macros [is deftest]]
    [reagent.core :as reagent]
+   [reagent.dom]
    [pinkgorilla.views :as gv]))
 
 (def isClient (not (nil? (try (.-document js/window)
@@ -20,7 +21,7 @@
   (when isClient
     (let [div (add-test-div "_testreagent")]
       ;; (let [comp (reagent/render-component comp div #(f comp div))]
-      (reagent/unmount-component-at-node div)
+      (reagent.dom/unmount-component-at-node div)
       (reagent/flush)
       (.removeChild (.-body js/document) div))))
 

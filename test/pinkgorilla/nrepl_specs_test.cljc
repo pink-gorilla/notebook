@@ -2,8 +2,8 @@
   (:require
    #?(:cljs [cljs.test :refer-macros [deftest is]]
       :clj  [clojure.test :refer [deftest is]])
-   #?(:cljs [pinkgorilla.test-macros :refer-macros [assert-captured-test-results]]
-      :clj  [pinkgorilla.test-macros :refer [assert-captured-test-results]])
+;   #?(:cljs [pinkgorilla.test-macros :refer-macros [assert-captured-test-results]]
+;      :clj  [pinkgorilla.test-macros :refer [assert-captured-test-results]])
    [clojure.spec.alpha :as s]
    ; bring the specs into scope:
    [pinkgorilla.kernel.nrepl-specs]))
