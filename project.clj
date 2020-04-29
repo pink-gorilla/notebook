@@ -1,4 +1,4 @@
-(defproject org.pinkgorilla/gorilla-notebook "0.4.17"
+(defproject org.pinkgorilla/gorilla-notebook "0.4.18-SNAPSHOT"
   :description "A rich REPL for Clojure in the notebook style."
   :url "https://github.com/pink-gorilla/gorilla-notebook"
   :scm {:name "git" :url "https://github.com/pink-gorilla/gorilla-notebook"}
