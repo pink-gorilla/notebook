@@ -1,9 +1,12 @@
 (defproject org.pinkgorilla/gorilla-notebook "0.4.17-SNAPSHOT"
+  
+  ;; THIS PROJECT.CLJ WAS USED BEFORE SECRETS BRANCH STARTED.
+
   :description "A rich REPL for Clojure in the notebook style."
   :url "https://github.com/pink-gorilla/gorilla-notebook"
   :scm {:name "git" :url "https://github.com/pink-gorilla/gorilla-notebook"}
   :license {:name "MIT"}
-  :min-lein-version "2.9.3"
+  :min-lein-version "2.9.1"
   :min-java-version "1.11"
   :deploy-repositories [["releases" {:url "https://clojars.org/repo"
                                      :username :env/release_username
@@ -31,27 +34,10 @@
 ;; managed deendencies only define the version of a dependency,
 ;; if no dependeny needs them, then they are not included
   :managed-dependencies [; to avoid a :exclusion mess, we define certain versions numbers centrally
-                         
-                         ; clojure
-                         [org.clojure/clojure "1.10.1"]
-                         [org.clojure/core.async "1.1.587"]
-                         [org.clojure/clojurescript "1.10.741"]
-                         [org.clojure/tools.analyzer "1.0.0"]
-                         [com.google.javascript/closure-compiler-unshaded "v20200406"]
-                         [com.google.code.findbugs/jsr305 "3.0.2"]
-                         [org.clojure/tools.logging "1.0.0"]
-
-                         ; shadow-cljs
-                         [thheller/shadow-cljs "2.8.94"] ; 106
-                         [org.jboss.logging/jboss-logging "3.4.1.Final"]
-                         [nrepl "0.6.0"]
-
-                         ; serialization libraries are dependencies of many libraries,
+                         ; serialization libraries are dependencies o many libraries,
                          [org.clojure/core.memoize "0.8.2"]
                          [org.clojure/data.json "1.0.0"]
                          [org.clojure/data.fressian "1.0.0"]
-                         [org.clojure/data.xml "0.0.8"]
-                         [org.clojure/data.csv "1.0.0"]
                          [org.clojure/core.match "1.0.0"]
                          [com.cognitect/transit-clj "1.0.324"]
                          [com.cognitect/transit-cljs "0.8.256"]
@@ -62,32 +48,24 @@
                          [commons-codec "1.12"] ; selmer and clj-http (via gorilla-explore)
                          [ring/ring-codec "1.1.1"] ; ring and compojure
                          [org.flatland/useful "0.11.6"] ; clojail and ring-middleware-format
-
                          ; pinkgorilla (enforce to use latest version of all projects)
                          [org.pinkgorilla/gorilla-renderable "3.0.7"]
                          [org.pinkgorilla/gorilla-middleware "0.2.22"]
                          [org.pinkgorilla/gorilla-renderable-ui "0.1.32"]
                          [org.pinkgorilla/gorilla-ui "0.1.27"]
-                         [org.pinkgorilla/notebook-encoding "0.0.29"]
+                         [org.pinkgorilla/notebook-encoding "0.0.28"]
                          [org.pinkgorilla/gorilla-explore "0.1.20"]
                          [org.pinkgorilla/kernel-cljs-shadowdeps "0.0.12"]
                          [org.pinkgorilla/kernel-cljs-shadow "0.0.25"]
-                         
-                         ; webserver
-                         [http-kit "2.3.0"]
-
-                         ; web client
-                         [org.apache.httpcomponents/httpasyncclient "4.1.4"]
-
-                         ; libpythonclj fixes
-                         [net.java.dev.jna/jna "5.2.0"]
-                         [org.ow2.asm/asm "7.0"]]
+                         ; shadow-cljs
+                         [thheller/shadow-cljs "2.8.94"]]
 
   :dependencies [;; CLOJURE ESSENTIAL
-                 [org.clojure/clojure]
-                 [org.clojure/core.async]
+                 [org.clojure/clojure "1.10.1"]
+                 [org.clojure/core.async "1.1.582"]
                  [org.clojure/tools.reader "1.3.2"]
                  [org.clojure/core.match "1.0.0"]
+
                  ;; CONFIGURATION / LOGGING / SYSTEM MANAGEMENT
                  [grimradical/clj-semver "0.3.0" :exclusions [org.clojure/clojure]]
                  ;; TODO: What logging do we actually want/need behind the scenes and what are we using directly ?
@@ -110,6 +88,7 @@
                   :exclusions [com.cognitect/transit-clj
                                com.cognitect/transit-cljs]] ; websockets with core.async
                  [org.clojure/data.json] ; managed-version
+
 
                  ;; WEB SERVER
                  [ring "1.7.1"]
@@ -136,12 +115,11 @@
                  ; Notebook Encoding / Exploration
                  [org.pinkgorilla/notebook-encoding] ; notebook encoding
                  [org.pinkgorilla/gorilla-explore] ; notebook exploration
-                 ; [irresponsible/tentacles "0.6.6"] ; github api (needed by encoding and explore)
+                 [irresponsible/tentacles "0.6.6"] ; github api (needed by encoding and explore)
                  ;[clj-time "0.15.2"] ; needed for notebook exploration ui
                  [com.andrewmcveigh/cljs-time "0.5.2"] ;  notebook exploration ui
 
                  ; CLJ Kernel
-                 [nrepl]
                  [org.pinkgorilla/gorilla-middleware]
                  [clj-commons/pomegranate "1.2.0"] ; add-dependency in clj kernel TODO : Replace pomegranate with tools alpha
                  [org.clojure/tools.cli "1.0.194"]
@@ -291,7 +269,7 @@
                                                   with-debug-bindings [[:inner 0]]
                                                   merge-meta          [[:inner 0]]
                                                   try-if-let          [[:block 1]]}}
-                       :dependencies   [;; [thheller/shadow-cljs "2.8.106"]  ;; Cannot overrides default deps here
+                       :dependencies   [;; [thheller/shadow-cljs "2.8.80"]  ;; Cannot overrides default deps here
                                         ;; [com.google.javascript/closure-compiler-unshaded "v20191027"]
                                         ;; Just moving shadow here blows up via :prep-tasks
                                         ;; Syntax error (NoSuchMethodError) compiling at (shadow/cljs/devtools/api.clj:1:1).
@@ -302,6 +280,7 @@
                                         ;; [org.clojure/google-closure-library "0.0-20190213-2033d5d9"]
                                         ;; [com.bhauman/rebel-readline-cljs "0.1.4"]
                                         ;; [karma-reporter "3.1.0"]
+                                        ;[day8.re-frame/test "0.1.5"] ; awb99 added this, so lein test would get re-frame/test dependencies
                                         [clj-kondo "2019.11.23"]
                                         [ring/ring-mock "0.4.0"]
                                         [ring/ring-devel "1.7.1"]
@@ -324,8 +303,7 @@
 
              :pinkie    {:source-paths ["src/pinkie"]
                          :main ^:skip-aot pinkie.app
-                         :dependencies [[thheller/shadow-cljs "2.8.106"
-                                         :exclusions [hawk]]
+                         :dependencies [[thheller/shadow-cljs "2.8.80"]
                                         [thheller/shadow-cljsjs "0.0.21"]
                                         [bk/ring-gzip "0.3.0"] ; from oz
                                         [com.taoensso/encore "2.119.0"] ; needed by sente
@@ -350,24 +328,19 @@
                                         :port             4003
                                         :nrepl-middleware [shadow.cljs.devtools.server.nrepl/middleware]}}
 
-             :cljs    {:dependencies [;; CLOJURESCRIPT
-                                      [org.clojure/clojurescript
-                                      ; :scope "provided"
-                                       ;:exclusions [com.google.javascript/closure-compiler-unshaded
-                                       ;             org.clojure/google-closure-library
-                                       ;             org.clojure/google-closure-library-third-party]
-                                       ]
-
-
-                                      [thheller/shadow-cljs
-                                       ; :exclusions [hawk]
-                                       ]
+             :cljs    {:dependencies [[thheller/shadow-cljs "2.8.80"]
                                       ; cljs-ajax requires [com.cognitect/transit-cljxxx]
                                       ; awb99: if ajax is not here then chord will  require an older version and build will break
                                       [cljs-ajax "0.8.0"]   ; needed by reagent http-fx ??
                                       [prismatic/dommy "1.1.0"]
                                       [com.cemerick/url "0.1.1"]
-
+                                      ;; CLOJURESCRIPT
+                                      [com.google.javascript/closure-compiler-unshaded "v20191027"]
+                                      [org.clojure/clojurescript "1.10.597"
+                                       :scope "provided"
+                                       :exclusions [com.google.javascript/closure-compiler-unshaded
+                                                    org.clojure/google-closure-library
+                                                    org.clojure/google-closure-library-third-party]]
                                       ;; CLJS KERNEL
                                       [org.pinkgorilla/kernel-cljs-shadow]
                                       [thheller/shadow-cljsjs "0.0.21"]
@@ -406,10 +379,8 @@
                                       ;[cider/piggieback "0.4.2"
                                       ; ;; :exclusions [org.clojure/clojurescript]
                                       ; ]
-                                      [day8.re-frame/test "0.1.5"
-                                       :exclusions [org.clojure/clojurescript
-                                                    re-frame]]
-                                      ;[nubank/workspaces "1.0.13"]
+                                      [day8.re-frame/test "0.1.5"]
+                                      [nubank/workspaces "1.0.13"]
                                       ;; devcards should be superceded by nubank, no?
                                       ;; [devcards "0.2.6" :exclusions [org.clojure/tools.reader]]
                                       ;; https://github.com/day8/re-frame-tracer
@@ -417,7 +388,7 @@
                                       [day8.re-frame/re-frame-10x "0.6.2"]
                                       [binaryage/devtools "1.0.0"]]}
              :uberjar {:hooks       [minify-assets.plugin/hooks]
-                       :aot         :all
+                       ;:aot         :all
                        :omit-source true
                        :classifier  "standalone"}
              :python  {:dependencies [[cnuernber/libpython-clj "1.30"]]

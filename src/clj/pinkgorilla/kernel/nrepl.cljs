@@ -2,24 +2,21 @@
   (:require-macros
    [cljs.core.async.macros :refer (go go-loop)])
   (:require
+   [clojure.string :as str]
+   [clojure.spec.alpha :as s]
+   [cljs.core.async :as async :refer (<! >! put! chan timeout close!)]
    [taoensso.timbre :refer-macros (info warn)]
    [cljs-uuid-utils.core :as uuid]
-   [clojure.string :as str]
-   [cljs.core.async :as async :refer (<! >! put! chan timeout close!)];; timeout
+   [re-frame.core :refer [dispatch]]
    [cljs.reader :as rd]
-   ;; [cljs.core.match :refer-macros [match]]
-   ;; [com.stuartsierra.component :as component]
    ;; [system.components.sente :refer [new-channel-socket-client]]
    ;; [taoensso.sente :as sente :refer (cb-success?)]
    [chord.client :refer [ws-ch]] ; websockets with core.async
-   [re-frame.core :refer [dispatch]]
-   [clojure.spec.alpha :as s]
    ;PinkGorilla Notebook
    [pinkgorilla.notifications :refer [add-notification notification]]
    [pinkgorilla.kernel.cljs-helper :refer [send-value]]
    ; bring the specs into scope:
    [pinkgorilla.kernel.nrepl-specs]))
-
 
 
 ;; TODO : Fixme handle breaking websocket connections
@@ -191,6 +188,53 @@
 (defn set-clj-kernel-status [connected session-id]
   (dispatch [:kernel-clj-status-set connected session-id]))
 
+
+
+;; execute this in browser console:
+;; pinkgorilla.kernel.nrepl.clj_eval("(+ 7 9 )", (function (r) {console.log ("result!!: " +r);}))
+
+
+(defn ^:export clj-eval
+  ;"Eval CLJ snippet with callback"
+  [snippet callback]
+  (info (str "clj-eval: " snippet))
+  (send-cider-message! {:op "eval" :code snippet}
+                       (fn [message]
+                         (let [{:keys [ns value]} message
+                               data (parse-value value)
+                              ; data  (cljs.reader/read-string value)
+                               _ (info (str "clj-eval ns: " ns " data: " data))
+                               _ (info (str "data value:" (get-in data [:value-response :value])))]
+                           (when ns (let [v2 (cljs.reader/read-string (get-in data [:value-response :value]))]
+                                      (info "clj-eval result: " v2 " type: " (type v2))
+                                      (callback v2)))))))
+
+(defn ^:export clj-eval-sync
+  "executes a clojure expression
+   and returns the result to the ```result-atom```"
+  [result-atom snippet]
+  (let [result-chan (chan)]
+    (go
+      (clj-eval snippet (fn [result]
+                          (info (str "async evalued result: " result))
+                          (put! result-chan result))))
+    (go (reset! result-atom (<! result-chan)))
+    result-atom))
+
+(defn ^:export clj
+  "executes a clojure ```function-as-string``` (from clojurescript) 
+   and stores the result in ```result-atom```"
+  [result-atom function-as-string & params]
+  (let [_ (info "params: " params)
+        expr (concat ["(" function-as-string] params [")"]) ; params)
+        str_eval (clojure.string/join " " expr)
+        _ (info (str "Calling CLJ: " str_eval))]
+    ;expr
+    ;str_eval
+    (clj-eval-sync result-atom str_eval)
+    ;function-as-string^export
+    ))
+
 (defn- receive-msgs!
   [ws-chan msg-chan]
   (go
@@ -203,10 +247,11 @@
       (if message
         (do
           (info "Got initial message " message)
-          (if-let [new-session (:new-session message)]; (get message "new-session")]
+          (if-let [new-session (:new-session message)]
             (do
               (swap! ws-repl assoc :session-id new-session)
-              (set-clj-kernel-status true new-session))
+              (set-clj-kernel-status true new-session)
+              (dispatch [:set-clj-secrets]))
             (warn "could not extract session id!!! "))
           (go-loop []
             (let [{:keys [message error]} (<! ws-chan)]
@@ -264,47 +309,3 @@
         (recur (<! (ws-ch ws-url {:format :edn}))
                (nil? session-id))))))
 
-;; execute this in browser console:
-;; pinkgorilla.kernel.nrepl.clj_eval("(+ 7 9 )", (function (r) {console.log ("result!!: " +r);}))
-
-
-(defn ^:export clj-eval
-  ;"Eval CLJ snippet with callback"
-  [snippet callback]
-  (info (str "clj-eval: " snippet))
-  (send-cider-message! {:op "eval" :code snippet}
-                       (fn [message]
-                         (let [{:keys [ns value]} message
-                               data (parse-value value)
-                              ; data  (cljs.reader/read-string value)
-                               _ (info (str "clj-eval ns: " ns " data: " data))
-                               _ (info (str "data value:" (get-in data [:value-response :value])))]
-                           (when ns (let [v2 (cljs.reader/read-string (get-in data [:value-response :value]))]
-                                      (info "clj-eval result: " v2 " type: " (type v2))
-                                      (callback v2)))))))
-
-(defn ^:export clj-eval-sync
-  "executes a clojure expression
-   and returns the result to the ```result-atom```"
-  [result-atom snippet]
-  (let [result-chan (chan)]
-    (go
-      (clj-eval snippet (fn [result]
-                          (info (str "async evalued result: " result))
-                          (put! result-chan result))))
-    (go (reset! result-atom (<! result-chan)))
-    result-atom))
-
-(defn ^:export clj
-  "executes a clojure ```function-as-string``` (from clojurescript) 
-   and stores the result in ```result-atom```"
-  [result-atom function-as-string & params]
-  (let [_ (info "params: " params)
-        expr (concat ["(" function-as-string] params [")"]) ; params)
-        str_eval (clojure.string/join " " expr)
-        _ (info (str "Calling CLJ: " str_eval))]
-    ;expr
-    ;str_eval
-    (clj-eval-sync result-atom str_eval)
-    ;function-as-string^export
-    ))
