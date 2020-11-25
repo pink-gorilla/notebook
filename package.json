@@ -17,7 +17,7 @@
     "ag-grid-react": "^22.0.0",
     "codemirror": "^5.49.2",
     "create-react-class": "^15.6.3",
-    "highlight.js": "9.15.10",
+    "highlight.js": "10.1.2",
     "leaflet": "^1.6.0",
     "marked": "^0.7.0",
     "mousetrap": "^1.6.3",
