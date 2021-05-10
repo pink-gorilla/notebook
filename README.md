@@ -7,6 +7,43 @@ Pink Gorilla Notebook is a rich browser based notebook REPL for Clojure and Cloj
 Documentation has been moved [over here](https://pink-gorilla.github.io/)
 
 
+- a web based clojure notebook 
+- built with clojure and clojurescript (reagent / reframe) 
+- the bundeled version contains the pre built js bundle. see: notebook-bundeled
+
+## Notebook (Bundel version)
+
+The notebook-bundel contains:
+- gorilla ui
+- gorilla plot
+- goldly
+
+Run `lein notebook watch` to run the demo app. 
+
+This will run a web server at port 8000 with showcase of some notebook components, and notebook-explorer and notebook-viewer.
+
+You can also run:
+
+```
+lein notebook npm-install
+lein notebook release
+lein notebook
+```
+
+## Demo (for development)
+
+Run `lein demo` to run the demo app. 
+
+This is useful for development.
+
+
+## Use an external nrepl relay
+
+If you want to eval clj code, then to run a nrepl websocket relay:
+- run `lein relay-jetty` (in nrepl-middleware or 
+- run `lein relay` lein-pinkgorilla) 
+
+
 
 ## Docker Image
 <!-- [![dockeri.co](https://dockeri.co/image/pinkgorillawb/gorilla-notebook)](https://hub.docker.com/r/pinkgorillawb/gorilla-notebook) -->

@@ -1,0 +1,112 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{}
+
+;; @@
+
+;; **
+;;; # Clojure MultiMethods
+;; **
+
+;; @@ [clj]
+(defmulti foo class)
+(defmethod foo clojure.lang.Associative [c] :a-collection)
+(defmethod foo String [s] :a-string)
+
+;(foo [])
+;:a-collection
+
+;(foo (java.util.HashMap.))
+;:a-collection
+
+;(foo "bar")
+;:a-string
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]],["^ ","^0","^1","^2",["^3",["^ ","^4","clj-unknown"],"#multifn[foo 0x3c8ee48e]"]],["^ ","^0","^1","^2",["^3",["^ ","^4","clj-unknown"],"#multifn[foo 0x3c8ee48e]"]]]
+;; <=
+
+;; @@ [clj]
+(methods foo)
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:list-like","~:content",["^ ","~:class","clj-map","~:open","{","~:close","}","~:separator"," ","~:items",["~#list",[["^ ","^0","^1","^2",["^ ","^3","clj-vector","^4","[","^5","]","^6"," ","^7",["^8",[["^ ","^0","~:hiccup","^2",["~:span",["^ ","^3","clj-class"],"clojure.lang.Associative"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-unknown"],"#function[user/eval22348/fn--22349]"]]]]]],["^ ","^0","^1","^2",["^ ","^3","clj-vector","^4","[","^5","]","^6"," ","^7",["^8",[["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.lang.String"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-unknown"],"#function[user/eval22352/fn--22353]"]]]]]]]]]]]
+;; <=
+
+;; @@ [clj]
+(foo "bar")
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-keyword"],":a-string"]]]
+;; <=
+
+;; @@ [clj]
+(foo [])
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-keyword"],":a-collection"]]]
+;; <=
+
+;; @@ [clj]
+(type [])
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-class"],"clojure.lang.PersistentVector"]]]
+;; <=
+
+;; @@ [clj]
+(foo {})
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-keyword"],":a-collection"]]]
+;; <=
+
+;; @@ [clj]
+(ancestors clojure.lang.PersistentVector)
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:list-like","~:content",["^ ","~:class","clj-set","~:open","#{","~:close","}","~:separator"," ","~:items",["~#list",[["^ ","^0","~:hiccup","^2",["~:span",["^ ","^3","clj-class"],"clojure.lang.IHashEq"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.lang.Runnable"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.lang.Iterable"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.util.List"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.Sequential"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IReduce"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IReduceInit"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.Reversible"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.APersistentVector"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.io.Serializable"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.util.Collection"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IPersistentVector"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IEditableCollection"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.util.concurrent.Callable"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.AFn"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.ILookup"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IPersistentStack"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IObj"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.util.RandomAccess"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.Associative"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IPersistentCollection"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IKVReduce"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IMeta"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.lang.Object"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.Indexed"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.Seqable"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.lang.Comparable"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.Counted"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"clojure.lang.IFn"]]]]]]]
+;; <=
+
+;; @@ [clj]
+(ancestors java.util.HashMap)
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:list-like","~:content",["^ ","~:class","clj-set","~:open","#{","~:close","}","~:separator"," ","~:items",["~#list",[["^ ","^0","~:hiccup","^2",["~:span",["^ ","^3","clj-class"],"java.util.Map"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.io.Serializable"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.util.AbstractMap"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.lang.Object"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-class"],"java.lang.Cloneable"]]]]]]]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; []
+;; <=

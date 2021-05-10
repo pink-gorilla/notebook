@@ -1,0 +1,5 @@
+;; Copy to creds.edn and set your private values.
+{:oauth2 {:github {:client-id        ""
+                   :client-secret    ""}
+          :google {:client-id ""
+                   :client-secret ""}}}

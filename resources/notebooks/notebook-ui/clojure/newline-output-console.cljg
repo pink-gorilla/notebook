@@ -1,0 +1,158 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:tags "", :tagline "reproduce the error", :name ""}
+
+;; @@
+
+;; **
+;;; #  render string with newline character
+;; **
+
+;; @@ [clj]
+(ns render-newline
+  (:require 
+     [clojure.pprint]))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+(def data 
+  [{:name "william shakespeare" :speciality "novels"}
+   {:name "rich hickie" :speciality "clojure"}
+   {:name "christian" :speciality "replikativ"}])
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'render-newline/data"],"~:value","#'render-newline/data"]
+;; <=
+
+;; @@ [clj]
+(clojure.pprint/print-table data)
+;; @@
+;; ->
+;;; 
+;;; |               :name | :speciality |
+;;; |---------------------+-------------|
+;;; | william shakespeare |      novels |
+;;; |         rich hickie |     clojure |
+;;; |           christian |  replikativ |
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+; this should print multiple rows. but it only shows the last row.
+^:R [:p/text (clojure.pprint/print-table data)]
+;; @@
+;; ->
+;;; 
+;;; |               :name | :speciality |
+;;; |---------------------+-------------|
+;;; | william shakespeare |      novels |
+;;; |         rich hickie |     clojure |
+;;; |           christian |  replikativ |
+;; <-
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/text",null],"~:map-keywords",true,"~:widget",true]]
+;; <=
+
+;; @@ [clj]
+(println (with-out-str (clojure.pprint/print-table data)))
+;; @@
+;; ->
+;;; 
+;;; |               :name | :speciality |
+;;; |---------------------+-------------|
+;;; | william shakespeare |      novels |
+;;; |         rich hickie |     clojure |
+;;; |           christian |  replikativ |
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+; with-out-str redirects the stdout and returns stdout as a string
+; 
+(with-out-str (clojure.pprint/print-table data))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-string"],"\"\\n|               :name | :speciality |\\n|---------------------+-------------|\\n| william shakespeare |      novels |\\n|         rich hickie |     clojure |\\n|           christian |  replikativ |\\n\""],"~:value","\"\\n|               :name | :speciality |\\n|---------------------+-------------|\\n| william shakespeare |      novels |\\n|         rich hickie |     clojure |\\n|           christian |  replikativ |\\n\""]
+;; <=
+
+;; @@ [clj]
+(printf (with-out-str (clojure.pprint/print-table data)))
+;; @@
+;; ->
+;;; 
+;;; |               :name | :speciality |
+;;; |---------------------+-------------|
+;;; | william shakespeare |      novels |
+;;; |         rich hickie |     clojure |
+;;; |           christian |  replikativ |
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+(print (clojure.string/replace (with-out-str (clojure.pprint/print-table data)) #"\n" "\r\n"))
+;; @@
+;; ->
+;;; 
+;;; |               :name | :speciality |
+;;; |---------------------+-------------|
+;;; | william shakespeare |      novels |
+;;; |         rich hickie |     clojure |
+;;; |           christian |  replikativ |
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+(clojure.pprint/print-table [:name] data)
+;; @@
+;; ->
+;;; 
+;;; |               :name |
+;;; |---------------------|
+;;; | william shakespeare |
+;;; |         rich hickie |
+;;; |           christian |
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+(clojure.repl/doc clojure.pprint/print-table)
+;; @@
+;; ->
+;;; -------------------------
+;;; clojure.pprint/print-table
+;;; ([ks rows] [rows])
+;;;   Prints a collection of maps in a textual table. Prints table headings
+;;;    ks, and then a line of output for each row, corresponding to the keys
+;;;    in ks. If ks are not specified, use the keys of the first item in rows.
+;; <-
+;; =>
+;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; ["^ ","~:type","html","~:value",["~:span"]]
+;; <=

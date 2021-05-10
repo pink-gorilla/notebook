@@ -1,0 +1,59 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:name "images with gorilla-renderable", :tags "clj,renderable, image", :tagline ""}
+
+;; @@
+
+;; **
+;;; # Image rendering with ^:R meta tags
+;; **
+
+;; **
+;;; Load gorilla-renderable dependency and use it.
+;; **
+
+;; @@ [clj]
+(defn image [url]
+  ^:R [:img {:src url :height 100 :width 100 :alt "it's an image"}])
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'user/image"]]]
+;; <=
+
+;; @@ [clj]
+(image "https://cdn.mos.cms.futurecdn.net/yyvvM9kwaVGySFE6aXXoJL-320-80.jpg")
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:img",["^ ","~:src","https://cdn.mos.cms.futurecdn.net/yyvvM9kwaVGySFE6aXXoJL-320-80.jpg","~:height",100,"~:width",100,"~:alt","it's an image"]],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [clj]
+(image "https://pbs.twimg.com/profile_images/641353910561566720/VSxsyxs7.jpg")
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:img",["^ ","~:src","https://pbs.twimg.com/profile_images/641353910561566720/VSxsyxs7.jpg","~:height",100,"~:width",100,"~:alt","it's an image"]],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [clj]
+^:R [:p/gtable 
+  [["planet" "image"]
+   ["moon" (image "https://cdn.mos.cms.futurecdn.net/yyvvM9kwaVGySFE6aXXoJL-320-80.jpg")]
+   ["sun" (image "https://pbs.twimg.com/profile_images/641353910561566720/VSxsyxs7.jpg")]]]
+ 
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/gtable",[["planet","image"],["moon",["~:img",["^ ","~:src","https://cdn.mos.cms.futurecdn.net/yyvvM9kwaVGySFE6aXXoJL-320-80.jpg","~:height",100,"~:width",100,"~:alt","it's an image"]]],["sun",["^5",["^ ","^6","https://pbs.twimg.com/profile_images/641353910561566720/VSxsyxs7.jpg","^7",100,"^8",100,"^9","it's an image"]]]]],"~:map-keywords",true]]]
+;; <=
