@@ -6,10 +6,7 @@ Pink Gorilla Notebook is a rich browser based notebook REPL for Clojure and Cloj
 
 Documentation has been moved [over here](https://pink-gorilla.github.io/)
 
-
-- a web based clojure notebook 
-- built with clojure and clojurescript (reagent / reframe) 
-- the bundeled version contains the pre built js bundle. see: notebook-bundeled
+[Notebook Bundel](https://github.com/pink-gorilla/notebook-bundel)
 
 ## Notebook (Bundel version)
 
