@@ -1,9 +1,0 @@
-#  https://github.com/docker-library/tomcat/blob/master/.travis.yml
-language: clojure
-before_script:
-  - script/prepare.sh
-# install: lein deps
-script:
-  - script/test.sh
-jdk:
-  - openjdk8
