@@ -52,7 +52,7 @@
    [project "nrepl-middleware"]
    [project "notebook-encoding"]
    [project "gorilla-explore"]
-   [project "notebook-ui"]
+   [project "notebook"]
    [project "lein-pinkgorilla"]
    [project "pinkie"]
    [project "picasso"]

@@ -4,7 +4,7 @@ target
 .nrepl-port
 .lein-repl-history
 /.calva
-.lsp
+/.lsp
 shadow-cljs.edn
 package.json
 package-lock.json
