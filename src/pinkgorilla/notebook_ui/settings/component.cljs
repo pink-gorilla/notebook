@@ -3,10 +3,8 @@
    [clojure.string :refer [blank?]]
    [taoensso.timbre :as timbre :refer-macros [info]]
    [reagent.core :as r]
-   [re-frame.core :refer [subscribe dispatch]]
-   [re-com.core :refer [h-box v-box #_scroller md-circle-icon-button
-                        #_input-text #_label radio-button
-                        modal-panel #_gap single-dropdown]]
+   [re-frame.core :as rf]
+   [re-com.core :refer [radio-button md-circle-icon-button single-dropdown]]
    [pinkgorilla.notebook-ui.codemirror.theme :as codemirror]
    [pinkgorilla.notebook-ui.settings.default :refer [kernels layouts]]))
 
@@ -17,7 +15,7 @@
    :label       (name key)
    :value       key
    :model       (:default-kernel @settings)
-   :on-change   #(dispatch [:settings/set :default-kernel %])])
+   :on-change   #(rf/dispatch [:settings/set :default-kernel %])])
 
 (defn kernel [settings]
   (into [:div {:class "md:w-1/4 px-3 mb-6 md:mb-0"}
@@ -33,7 +31,7 @@
    :label       (name layout-name)
    :value       layout-name
    :model       (:layout @settings)
-   :on-change   #(dispatch [:settings/set :layout %])])
+   :on-change   #(rf/dispatch [:settings/set :layout %])])
 
 (defn layout [settings]
   (into [:div {:class "md:w-1/4 px-3"}
@@ -46,12 +44,12 @@
 ; Theme Codemirror
 
 
-(defn radio-theme-codemirror [settings theme-name]
-  [radio-button
-   :label       theme-name
-   :value       theme-name
-   :model       (:codemirror-theme @settings)
-   :on-change   #(dispatch [:settings/set :codemirror-theme %])])
+#_(defn radio-theme-codemirror [settings theme-name]
+    [radio-button
+     :label       theme-name
+     :value       theme-name
+     :model       (:codemirror-theme @settings)
+     :on-change   #(rf/dispatch [:settings/set :codemirror-theme %])])
 
 (def theme-names2
   (doall (map (fn [s] {:id s :label s}) codemirror/themes)))
@@ -64,26 +62,32 @@
     (info "codemirror theme: " t)
     t))
 
+(defn change-theme [t]
+  (rf/dispatch [:css/set-theme-component :codemirror t])
+  ;(rf/dispatch [:settings/set :codemirror-theme t]
+  )
+
 (defn codemirror-theme [settings]
-  [:div {:class "md:w-1/4 px-3"}
-   [:label {:class "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
-            :for "grid-last-name"}
-    "codemirror theme"]
-   [single-dropdown
-    :choices     theme-names2
-    :render-fn   (fn [choice] [:div [:span (:label choice)]])
-    :model       (codemirror-current-theme @settings)
-    :placeholder "codemirror-theme"
-    :width       "150px"
-    :max-height  "300px"
-    :filter-box? false
-    :on-change    #(dispatch [:settings/set :codemirror-theme %])]])
+  (let [theme (rf/subscribe [:css/theme-component :codemirror])]
+    [:div {:class "md:w-1/4 px-3"}
+     [:label {:class "block uppercase tracking-wide text-grey-darker text-xs font-bold mb-2"
+              :for "grid-last-name"}
+      "codemirror theme"]
+     [single-dropdown
+      :choices     theme-names2
+      :render-fn   (fn [choice] [:div [:span (:label choice)]])
+      :model       @theme ; (codemirror-current-theme @settings)
+      :placeholder "codemirror-theme"
+      :width       "150px"
+      :max-height  "300px"
+      :filter-box? false
+      :on-change    change-theme]]))
 
 (defn settings-edit [settings]
   [:div {:class "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2"}
    [:p.text-center.text-3xl.mb-4 "Notebook Settings"]
    [:div {:class "-mx-3 md:flex mb-6"}
-    [:div {:class "md:w-1/4"} ;.w-20
+    [:div {:class "md:w-1/2"} ;.w-20
      [kernel settings]
      [layout settings]]
     [:div
@@ -100,7 +104,7 @@
       [:p.text-red-300 "Click on Secret to remove it."]
       (for [s secrets]
         ^{:key (first s)} [:p.text-blue-600
-                           {:on-click #(dispatch [:secret/remove (first s)])}
+                           {:on-click #(rf/dispatch [:secret/remove (first s)])}
                            (first s)])])])
 
 (defn add-secret []
@@ -124,7 +128,7 @@
        [:div {:class "flex flex-row pt-4"}
         [:input {:type "submit"
                  :value "Add Secret"
-                 :on-click #(do (dispatch [:secret/add @new-secret])
+                 :on-click #(do (rf/dispatch [:secret/add @new-secret])
                                 (reset! new-secret {:name "" :secret ""}))
                  :class "bg-black text-white font-bold text-md hover:bg-gray-700 p-2 mt-8"}]]])))
 
@@ -133,7 +137,7 @@
         file-name (.-name file)
         reader (js/FileReader.)]
     (info "uploading secrets from file " file-name)
-    (set! (.-onload reader) #(dispatch [:secrets/import (-> % .-target .-result)]))
+    (set! (.-onload reader) #(rf/dispatch [:secrets/import (-> % .-target .-result)]))
     (.readAsText reader file)))
 
 (defn upload-secrets []
@@ -144,7 +148,7 @@
 ;; dialog
 
 (defn settings-dialog []
-  (let [settings (subscribe [:settings])]
+  (let [settings (rf/subscribe [:settings])]
     [:div.bg-white
      ; settings
      [settings-edit settings]
@@ -158,7 +162,7 @@
      [md-circle-icon-button
       :md-icon-name "zmdi-close"
                    ;;:tooltip "Close"
-        ;:on-click (dispatch [:settings/hide])
+        ;:on-click (rf/dispatch [:settings/hide])
       ]]))
 
 

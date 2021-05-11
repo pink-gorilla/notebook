@@ -20,9 +20,9 @@
 
 (def config
   {:codemirror "paraiso-dark" ;true
-   :punk true
-   :datatypes true
-   :recom false
+   :punk true ; rebl / datafy/nav browser
+   :datatypes true ; picasso clj/cljs datatypes 
    :prose-mirror true
+   :recom true
    ;:tailwind-prose true
    })
