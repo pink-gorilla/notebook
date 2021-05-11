@@ -49,7 +49,7 @@
              :bundel {:dependencies [[org.pinkgorilla/goldly "0.2.31"]
                                      [org.pinkgorilla/gorilla-ui "0.3.18" ; brings pinkie
                                       :exclusions [org.clojure/clojurescript]]
-                                     [org.pinkgorilla/gorilla-plot "1.2.6"]
+                                     [org.pinkgorilla/gorilla-plot "1.2.7"]
                                      ]
                       :resource-paths ["target/webly" ; bundel
                       ]
