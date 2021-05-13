@@ -20,21 +20,19 @@
       (warn "goldly is disabed!"))))
 
 (defn notebook-bundel-run!
-  ([]
-   (notebook-bundel-run! nil "jetty"))
-  ([user-config]
-   (notebook-bundel-run! user-config "jetty"))
-  ([user-config profile]
-   (let [config (add-config "notebook-bundel.edn" user-config)]
-     (if (server? profile)
-       (do (load-config! config)
-           (run-goldly!)
-           (run-notebook-services!))
-       (warn "no server mode. not running explorer/goldly/nrepl"))
-     (webly-run! profile config))))
+  [{:keys [config profile] ; a map so it can be consumed by tools deps -X
+    :or {profile "jetty"
+         config {}}}]
+  (let [config (add-config "notebook-bundel.edn" config)]
+    (if (server? profile)
+      (do (load-config! config)
+          (run-goldly!)
+          (run-notebook-services!))
+      (warn "no server mode. not running explorer/goldly/nrepl"))
+    (webly-run! profile config)))
 
 (defn -main
   ([]
-   (notebook-bundel-run!))
+   (notebook-bundel-run! {}))
   ([profile]
-   (notebook-bundel-run! nil profile)))
+   (notebook-bundel-run! {:profile profile})))
