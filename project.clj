@@ -1,4 +1,4 @@
-(defproject org.pinkgorilla/notebook "0.5.5"
+(defproject org.pinkgorilla/notebook "0.5.6-SNAPSHOT"
   :description "A clojure notebook web-app"
   :url "https://github.com/pink-gorilla/notebook"
   :license {:name "MIT"}
