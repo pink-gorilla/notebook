@@ -8,13 +8,11 @@
    ;notebook-bundel
    [pinkgorilla.notebook-ui.app-bundel.routes :refer [routes-api routes-app]]
    [pinkgorilla.notebook-ui.app-bundel.pages.about]
-   [pinkgorilla.notebook-ui.app-bundel.pages.gorilla-ui]
    ; goldly
    [goldly.app]
    ;gorilla-ui
    [pinkgorilla.ui.default-renderer]
    [pinkgorilla.ui.css :as gorilla-ui]
-   [example.example :refer [examples]]
    ;gorilla-plot
    ;[pinkgorilla.gorilla-plot.pinkie]
    ))
@@ -26,7 +24,7 @@
  :webly/before-load
  (fn [db [_]]
    (info "gorilla-notebook reload..")
-   (reset! examples {})
+
    db))
 
 (rf/reg-event-db

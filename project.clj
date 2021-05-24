@@ -26,7 +26,7 @@
                                     [:demo :builds :app :compiler :output-to]]
 
 
-  :dependencies [[org.pinkgorilla/webly "0.2.31"]
+  :dependencies [[org.pinkgorilla/webly "0.2.40"]
                  [org.clojure/clojure "1.10.3"]
                  [org.clojure/core.async "1.3.618"]
                   ; cljs
@@ -38,22 +38,22 @@
                  [day8.re-frame/undo "0.3.3"]
                  [re-com "2.13.2"]
                  ;pink-gorilla
-                 ;[org.pinkgorilla/picasso "3.1.20"] ; included in nrepl-middleware
+                 [org.pinkgorilla/picasso "3.1.25"] ; included in nrepl-middleware
                  [org.pinkgorilla/gorilla-explore "0.2.58"] ; brings notebook-encoding
                  [org.pinkgorilla/nrepl-middleware "0.3.35"] ; brings picasso
-                 [org.pinkgorilla/pinkie "0.3.3"]]
+                 [org.pinkgorilla/pinkie "0.3.3"]
+                 [org.pinkgorilla/ui-markdown "0.0.7"]
+                 [org.pinkgorilla/ui-code "0.0.6"]]
 
   :profiles {:test {:source-paths ["src" "test"]
                     :test-paths   ["test"]}
 
-             :bundel {:dependencies [[org.pinkgorilla/goldly "0.2.31"]
-                                     [org.pinkgorilla/gorilla-ui "0.3.18" ; brings pinkie
+             :bundel {:dependencies [[org.pinkgorilla/goldly "0.2.60"]
+                                     [org.pinkgorilla/gorilla-ui "0.3.27" ; brings pinkie
                                       :exclusions [org.clojure/clojurescript]]
-                                     [org.pinkgorilla/gorilla-plot "1.2.7"]
-                                     ]
+                                     [org.pinkgorilla/gorilla-plot "1.2.9"]]
                       :resource-paths ["target/webly" ; bundel
-                      ]
-                      }
+                                       ]}
 
              :demo {:dependencies []
                     :source-paths ["src"
@@ -71,7 +71,6 @@
                                    [lein-shell "0.5.0"]]
                     :aliases      {"clj-kondo"
                                    ["run" "-m" "clj-kondo.main"]
-
                                    "bump-version" ^{:doc "Increases project.clj version number (used by CI)."}
                                    ["change" "version" "leiningen.release/bump-version"]}
                     :cloverage    {:codecov? true ; https://github.com/codecov/example-clojure
@@ -111,15 +110,12 @@
             ;; Notebook Demo
 
             "demo"
-            ["with-profile" "+demo" 
+            ["with-profile" "+demo"
              "run" "-m" "demo.app" "watch"]
-            
+
             ;; Notebook Bundel
 
             "notebook"
-            ["with-profile" "+bundel" 
-             "run" "-m" 
-             "pinkgorilla.notebook-ui.app-bundel.app"]
-            
-            
-            })
+            ["with-profile" "+bundel"
+             "run" "-m"
+             "pinkgorilla.notebook-ui.app-bundel.app"]})

@@ -3,6 +3,8 @@
    [webly.user.app.app :refer [webly-run!]]
    ; picasso
    [picasso.default-config]
+   ; goldly
+   [goldly.app]
    ; explorer
    [pinkgorilla.explorer.default-config]
    ; notebook

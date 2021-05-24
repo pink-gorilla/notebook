@@ -2,7 +2,7 @@
   (:require
    [taoensso.timbre :as timbre :refer [info]]
    [re-frame.core :as rf]
-   [pinkgorilla.notebook-ui.hydration :refer [hydrate dehydrate]]
+   ;[pinkgorilla.notebook-ui.hydration :refer [hydrate dehydrate]]
    [pinkgorilla.notebook-ui.app.css :as notebook-css]))
 
 (rf/reg-event-db
@@ -13,8 +13,9 @@
      (info "notebook-ui/init")
 
      ; explorer
-     (rf/dispatch [:explorer/init  {:fn-hydrate hydrate
-                                    :fn-dehydrate dehydrate}])
+     (rf/dispatch [:explorer/init  {:fn-hydrate nil ; hydrate
+                                    :fn-dehydrate nil ; dehydrate
+                                    }])
 
      ; nrepl
      (rf/dispatch [:nrepl/init nrepl-endpoint])
@@ -25,7 +26,6 @@
      ;(dispatch [:sniffer/init]) ; hack so sniffer notebook route works at startup.
      (rf/dispatch [:punk/init])
      (rf/dispatch [:completion/init])
-     (rf/dispatch [:codemirror/init])
      (rf/dispatch [:schema/check-on])
      (when dispatch-init-done
        (rf/dispatch dispatch-init-done))

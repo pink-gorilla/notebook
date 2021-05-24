@@ -6,8 +6,7 @@
    [re-frame.core :refer [reg-event-db dispatch]]
    [pinkgorilla.storage.unsaved :refer [StorageUnsaved]]
    [pinkgorilla.notebook.template :refer [snippets->notebook]]
-   [pinkgorilla.notebook.hipster :refer [make-hip-nsname]]
-   [pinkgorilla.notebook-ui.hydration  :refer [hydrate]]))
+   [pinkgorilla.notebook.hipster :refer [make-hip-nsname]]))
 
 (reg-event-db
  :document/load-snippets
@@ -16,7 +15,7 @@
          _ (info "loading snippets to document:" id)
          storage (StorageUnsaved. id)
          document-dehydrated (snippets->notebook snippets)
-         document (hydrate document-dehydrated)
+         document  document-dehydrated
          db-new (assoc-in db [:document :documents storage] document)]
      (dispatch [:notebook/activate! storage])
      db-new)))

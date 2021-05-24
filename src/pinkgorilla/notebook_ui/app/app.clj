@@ -14,7 +14,9 @@
    [pinkgorilla.nrepl.server.nrepl-server :refer [run-nrepl-server]]
    ; notebook app
    [pinkgorilla.notebook-ui.app.keybindings] ; referred to in config.edn
-   [pinkgorilla.notebook-ui.app.routes]))
+   [pinkgorilla.notebook-ui.app.routes]
+   ; goldly
+   [goldly.app]))
 
 (defn nrepl-relay-start []
    ; relay: see resources/config.edn :jetty-ws

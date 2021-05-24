@@ -5,7 +5,7 @@
    [reagent.core :as r]
    [re-frame.core :as rf]
    [re-com.core :refer [radio-button md-circle-icon-button single-dropdown]]
-   [pinkgorilla.notebook-ui.codemirror.theme :as codemirror]
+   [ui.codemirror.theme :as codemirror]
    [pinkgorilla.notebook-ui.settings.default :refer [kernels layouts]]))
 
 ; Kernel

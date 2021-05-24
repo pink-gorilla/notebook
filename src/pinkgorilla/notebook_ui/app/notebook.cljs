@@ -6,12 +6,11 @@
    ;[pinkgorilla.notebook-ui.notebook.meta]
 
    ; eval-result
-   [pinkgorilla.notebook-ui.eval-result.stacktrace]
-   [pinkgorilla.notebook-ui.kernel.picasso]
+   [picasso.kernel.protocol]
+   [picasso.kernel.view.eval-result]
 
    ; kernel
    [pinkgorilla.notebook-ui.kernel.events]
-   [pinkgorilla.notebook-ui.kernel.events-mock]
    [pinkgorilla.notebook-ui.kernel.events-sniffer]
 
    ; nrepl kernel
@@ -26,23 +25,21 @@
 
    [pinkgorilla.notebook-ui.events.events-edit]
    [pinkgorilla.notebook-ui.events.events-move]
-   [pinkgorilla.notebook-ui.events.events-segment]
-   [pinkgorilla.notebook-ui.events.events-eval]
+  ; [pinkgorilla.notebook-ui.events.events-segment]
    [pinkgorilla.notebook-ui.events.events-snippets]
-
    [pinkgorilla.notebook-ui.schema.interceptor]
 
    ;[pinkgorilla.notebook-ui.notebook.notebook]
-   [pinkgorilla.notebook-ui.subscriptions]
+
 
     ;completion
    [pinkgorilla.notebook-ui.completion.component]
    [pinkgorilla.notebook-ui.completion.events]
 
    ;code-mirror
-   [pinkgorilla.notebook-ui.codemirror.codemirror]
-   [pinkgorilla.notebook-ui.codemirror.events.core]
-   [pinkgorilla.notebook-ui.codemirror.events.completion]
+   [ui.code.goldly.core]
+   ;[ui.codemirror.events.core]
+   ;[ui.codemirror.events.completion]
 
    ; datafy
    [pinkgorilla.notebook-ui.datafy.events-punk]

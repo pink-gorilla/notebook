@@ -7,8 +7,7 @@
    [webly.user.notifications.core :refer [add-notification]]
    [pinkgorilla.nrepl.client.op.eval :refer [process-fragment initial-value]]
    [pinkgorilla.storage.unsaved :refer [StorageUnsaved]]
-   [pinkgorilla.notebook.template :refer [snippets->notebook]]
-   [pinkgorilla.notebook-ui.hydration  :refer [hydrate create-code-segment insert-segment-bottom]]))
+   [pinkgorilla.notebook.template :refer [snippets->notebook]]))
 
 (def id-doc-sniffer "sniffer-notebook")
 
@@ -16,8 +15,7 @@
   ["; sniffed evals:"])
 
 (defn create-notebook []
-  (let [document-dehydrated (snippets->notebook sniffer-snippets)
-        document (hydrate document-dehydrated)]
+  (let [document (snippets->notebook sniffer-snippets)]
     document))
 
 (reg-event-db
@@ -39,10 +37,11 @@
   (let [{:keys [code id]} msg
         id-kw (keyword id)
         _ (debug "sniffed code id: " id-kw " code:" code)
-        segment-new (create-code-segment code)
+        segment-new {:type :code} ;(create-code-segment code)
         segment-new (assoc segment-new :id id-kw)
         segment-new (merge segment-new initial-value)]
-    (insert-segment-bottom notebook segment-new)))
+    ;(insert-segment-bottom notebook segment-new)
+    ))
 
 (defn- add-result
   "returns new notebook with eval-result from msg appended"
