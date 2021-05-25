@@ -1,4 +1,4 @@
-(ns pinkgorilla.notebook-ui.app-bundel.pages.about
+(ns pinkgorilla.notebook-ui.app.pages.about
   (:require
    [goog.string :as gstring]
    [goog.string.format]
@@ -31,12 +31,9 @@
     [action {:on-click #(rf/dispatch [:bidi/goto :ui/explorer])} "Explorer"]
     [action {:on-click #(rf/dispatch [:document/new])} "New Notebook"]
     [action {:on-click #(rf/dispatch [:bidi/goto :ui/nrepl])} "nrepl"]
-    [action {:on-click #(rf/dispatch [:bidi/goto :gorilla-ui/example :category "viz"])} "gorilla ui"]
-    [action {:on-click #(rf/dispatch [:bidi/goto :goldly/system-list])} "goldly"]
-    [action {:on-click #(rf/dispatch [:bidi/goto :ui/markdown :file "webly.md"])} "docs"]
+    [action {:on-click #(rf/dispatch [:bidi/goto :goldly/system-list])} "goldly systems"]
     [action {:href "https://clojurians.zulipchat.com/#narrow/stream/212578-pink-gorilla-dev"} "Zulip Chat"]
-    [action {:href "https://github.com/pink-gorilla/gorilla-notebook/issues"} "Ticket"]]
-   [action {:on-click #(rf/dispatch [:reframe10x-toggle])} "10x"]])
+    [action {:href "https://github.com/pink-gorilla/notebook/issues"} "Ticket"]]])
 
 (defn features-box []
   [:div.bg-yellow-300.mt-5.p-5

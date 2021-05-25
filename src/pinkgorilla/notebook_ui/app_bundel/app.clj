@@ -10,7 +10,7 @@
    ; goldly
    [goldly.app :refer [goldly-compile! goldly-run!]]
    ; bundel
-   [pinkgorilla.notebook-ui.app-bundel.routes])
+   [pinkgorilla.notebook-ui.app.routes])
   (:gen-class))
 
 (defn run-goldly! []

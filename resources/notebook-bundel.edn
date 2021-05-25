@@ -4,8 +4,8 @@
          :ns-cljs-app [pinkgorilla.notebook-ui.app-bundel.app]
          :bundle-entry  "pinkgorilla.notebook_ui.app_bundel.app.start ();"
          :start-user-app [:notebook/start]
-         :user-routes-app "pinkgorilla.notebook-ui.app-bundel.routes/routes-app"
-         :user-routes-api "pinkgorilla.notebook-ui.app-bundel.routes/routes-api"}
+         :user-routes-app "pinkgorilla.notebook-ui.app.routes/routes-app"
+         :user-routes-api "pinkgorilla.notebook-ui.app.routes/routes-api"}
 
  :google-analytics {:enabled true} ; set to false to disable google-analytics tracking.
 

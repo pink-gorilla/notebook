@@ -6,8 +6,8 @@
    ; notebook
    [pinkgorilla.notebook-ui.app.app]
    ;notebook-bundel
-   [pinkgorilla.notebook-ui.app-bundel.routes :refer [routes-api routes-app]]
-   [pinkgorilla.notebook-ui.app-bundel.pages.about]
+   [pinkgorilla.notebook-ui.app.routes :refer [routes-api routes-app]]
+
    ; goldly
    [goldly.app]
    ;gorilla-ui

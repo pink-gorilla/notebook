@@ -13,11 +13,13 @@
      (info "notebook-ui/init")
 
      ; explorer
-     (rf/dispatch [:explorer/init  {:fn-hydrate nil ; hydrate
-                                    :fn-dehydrate nil ; dehydrate
+     (rf/dispatch [:explorer/init  {;:fn-hydrate nil ; hydrate
+                                    ;:fn-dehydrate nil ; dehydrate
                                     }])
 
      ; nrepl
+
+
      (rf/dispatch [:nrepl/init nrepl-endpoint])
 
      ; from notebook-ui
