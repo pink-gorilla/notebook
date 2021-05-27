@@ -1,7 +1,7 @@
 (ns pinkgorilla.notebook-ui.app.menu
   (:require
    [re-frame.core :refer [dispatch]]
-   [pinkgorilla.notebook-ui.tooltip :refer [with-tooltip]]))
+   [ui.notebook.tooltip :refer [with-tooltip]]))
 
 (defn header-ico [fa-icon rf-dispatch]
   [:a {:on-click #(dispatch rf-dispatch)

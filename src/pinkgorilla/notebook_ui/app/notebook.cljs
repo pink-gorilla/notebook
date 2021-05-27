@@ -9,11 +9,9 @@
    [picasso.kernel.protocol]
    [picasso.kernel.view.eval-result]
 
-   ; kernel
-   [pinkgorilla.notebook-ui.kernel.events]
-   [pinkgorilla.notebook-ui.kernel.events-sniffer]
-
    ; nrepl kernel
+   [picasso.default-config]
+   [pinkgorilla.notebook-ui.nrepl.kernel]
    [pinkgorilla.notebook-ui.nrepl.events.connection]
    [pinkgorilla.notebook-ui.nrepl.events.op]
    [pinkgorilla.notebook-ui.nrepl.events.eval]
@@ -21,16 +19,15 @@
    [pinkgorilla.notebook-ui.nrepl.subscriptions]
    [pinkgorilla.notebook-ui.nrepl.views.info-page] ; reagent-page registration
 
+   ; sniffer 
+   [pinkgorilla.notebook-ui.sniffer.events]
+
    ; notebook
 
-   [pinkgorilla.notebook-ui.events.events-edit]
-   [pinkgorilla.notebook-ui.events.events-move]
-  ; [pinkgorilla.notebook-ui.events.events-segment]
+   [pinkgorilla.notebook-ui.events.events-storage]
+
    [pinkgorilla.notebook-ui.events.events-snippets]
    [pinkgorilla.notebook-ui.schema.interceptor]
-
-   ;[pinkgorilla.notebook-ui.notebook.notebook]
-
 
     ;completion
    [pinkgorilla.notebook-ui.completion.component]

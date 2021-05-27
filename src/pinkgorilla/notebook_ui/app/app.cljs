@@ -1,9 +1,7 @@
 (ns pinkgorilla.notebook-ui.app.app
   (:require
    [webly.user.app.app :refer [webly-run!]]
-   ; picasso
-   [picasso.default-config]
-   [pinkgorilla.notebook-ui.kernel.nrepl]
+   
    ; goldly
    [goldly.app]
    ; explorer

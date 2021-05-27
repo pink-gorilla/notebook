@@ -1,4 +1,4 @@
-(ns pinkgorilla.notebook-ui.kernel.events-sniffer
+(ns pinkgorilla.notebook-ui.sniffer.doc
   (:require
    [taoensso.timbre :as timbre :refer-macros [info errorf debug warn error]]
    [cljs.reader]
@@ -8,6 +8,7 @@
    [pinkgorilla.nrepl.client.op.eval :refer [process-fragment initial-value]]
    [pinkgorilla.storage.unsaved :refer [StorageUnsaved]]
    [pinkgorilla.notebook.template :refer [snippets->notebook]]))
+
 
 (def id-doc-sniffer "sniffer-notebook")
 
@@ -74,21 +75,3 @@
         (let [notebook-new (create-notebook)]
           (add-notification :danger (str "sniffer: adding evals to notebook: " id-doc-sniffer))
           [path-sniffer notebook-new])))))
-
-(reg-event-db
- :sniffer/rcvd
- (fn [db [_ msg]]
-   (info "sniffer rcvd: " msg)
-   (let [{:keys [session-id-sink session-id-source]} msg]
-     (if (or session-id-sink session-id-source)
-       ; admin message
-       db
-       ; eval or eval result
-       (let [[path notebook] (get-notebook db)]
-         (cond
-           (= "eval" (:op msg))
-           (assoc-in db path (add-code-segment notebook msg))
-           :else
-           (assoc-in db path (add-result notebook msg))))))))
-
-

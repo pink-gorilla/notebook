@@ -18,8 +18,6 @@
                                     }])
 
      ; nrepl
-
-
      (rf/dispatch [:nrepl/init nrepl-endpoint])
 
      ; from notebook-ui
@@ -32,7 +30,6 @@
      (when dispatch-init-done
        (rf/dispatch dispatch-init-done))
 
-     (-> db
-         (assoc-in [:notebook] nil)))))
+     db)))
 
 

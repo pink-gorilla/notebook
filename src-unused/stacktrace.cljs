@@ -4,24 +4,8 @@
    [re-frame.core :refer [reg-event-fx reg-event-db dispatch]]
    [pinkgorilla.nrepl.client.core :refer [op-stacktrace]]))
 
-; kernels:
-; keys: :clj :cljs 
-; values: :nrepl/eval :cljs-selfhosted/eval :shadow/eval
 
 
-(def kernels (atom {}))
-
-(defn kernel->msg-type [kernel]
-  (if-let [impl (get @kernels kernel)]
-    impl
-    :mock/eval))
-
-(reg-event-fx
- :kernel/register-kernel
- (fn [_ [_ kernel msg-type]]
-   (info "Registering Kernel " kernel " -> " msg-type)
-   (swap! kernels assoc kernel msg-type)
-   nil))
 
 (reg-event-fx
  :kernel/eval
@@ -32,7 +16,7 @@
      ;)
    ))
 
-(reg-event-db
+#_(reg-event-db
  :kernel/save-result
  (fn [db [_ db-path eval? data]]
    (if (nil? db-path)
@@ -57,9 +41,9 @@
          (dispatch [:notebook/evaluate-next-queued]))
        x))))
 
-:nrepl/stacktrace
+; :nrepl/stacktrace
 
-(reg-event-fx
+#_ (reg-event-fx
  :kernel/stacktrace
  (fn [cofx [_ path]]
    (info "getting stacktrace for path:" path)

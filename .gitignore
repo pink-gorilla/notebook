@@ -10,3 +10,4 @@ package.json
 package-lock.json
 creds.edn
 goldly_bindings_generated.cljs
+webly-routes.edn

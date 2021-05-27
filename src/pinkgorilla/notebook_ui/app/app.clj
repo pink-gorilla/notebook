@@ -15,8 +15,11 @@
    ; notebook app
    [pinkgorilla.notebook-ui.app.keybindings] ; referred to in config.edn
    [pinkgorilla.notebook-ui.app.routes]
+   [pinkgorilla.notebook-ui.sniffer.dump]
    ; goldly
-   [goldly.app]))
+   [goldly.app]
+   
+   ))
 
 (defn nrepl-relay-start []
    ; relay: see resources/config.edn :jetty-ws

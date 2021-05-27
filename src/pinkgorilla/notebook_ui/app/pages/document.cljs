@@ -7,7 +7,8 @@
    [webly.user.oauth2.view :refer [user-button]]
    [pinkgorilla.document.component :refer [document-page]]
    [ui.notebook.core :refer [notebook-view]]
-   [pinkgorilla.notebook-ui.tooltip :refer [with-tooltip]]
+   [ui.notebook.tooltip :refer [with-tooltip]]
+   [ui.notebook.menu]
    [pinkgorilla.notebook-ui.app.menu :refer [home-menu]]))
 
 (defn header-ico [fa-icon rf-dispatch]
@@ -31,12 +32,12 @@
   [:<>
    [header-icon "fa fa-question-circle" [:bidi/goto :notebook/about] "notebook/about main page"]
    [header-icon "fa fa-th-large" [:bidi/goto :ui/explorer] "notebook explorer"]
-   [header-icon "fa fa-plus" [:document/new] "new notebook"]
-   [header-icon "far fa-calendar" [:notebook/clear-all] "clear all output"]
-   [header-icon "fa fa-microchip" [:notebook/evaluate-all] "evaluate all code"]
+
+   [ui.notebook.menu/menu]
+
    [header-icon "fa fa-save" [:notebook/save (get-in doc [:meta :id]) storage] "save document"]
    [header-icon "fa fa-stream" [:palette/show] "shows keybindings and commands"]
-   [header-icon "fab fa-windows" [:notebook/layout-toggle] "layout toggle"]
+  
    [nrepl-icon]
    [user-button :github]])
 

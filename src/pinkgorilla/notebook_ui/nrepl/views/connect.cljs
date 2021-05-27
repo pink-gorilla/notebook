@@ -4,7 +4,7 @@
    [re-frame.core :refer [subscribe dispatch]]))
 
 (defn connect-ui []
-  (let [nrepl (subscribe [:nrepl])
+  (let [nrepl (subscribe [:nrepl/status])
         ws-url (r/atom (:ws-url @nrepl))] ;ws-url allows user o change url
     (fn []
       (let [{:keys [connected?]} @nrepl]

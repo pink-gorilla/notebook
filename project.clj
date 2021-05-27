@@ -25,7 +25,7 @@
                                     [:demo :builds :app :compiler :output-dir]
                                     [:demo :builds :app :compiler :output-to]]
 
-  :dependencies [[org.pinkgorilla/webly "0.2.40"]
+  :dependencies [[org.pinkgorilla/webly "0.2.41"]
                  [org.clojure/clojure "1.10.3"]
                  [org.clojure/core.async "1.3.618"]
                   ; cljs
@@ -37,20 +37,20 @@
                  [day8.re-frame/undo "0.3.3"]
                  [re-com "2.13.2"]
                  ;pink-gorilla
-                 [org.pinkgorilla/picasso "3.1.29"] ; included in nrepl-middleware
+                 [org.pinkgorilla/picasso "3.1.34"] ; included in nrepl-middleware
                  [org.pinkgorilla/gorilla-explore "0.2.59"] ; brings notebook-encoding
                  [org.pinkgorilla/nrepl-middleware "0.3.35"] ; brings picasso
                  [org.pinkgorilla/pinkie "0.3.3"]
-                 [org.pinkgorilla/ui-markdown "0.0.7"]
-                 [org.pinkgorilla/ui-code "0.0.6"]]
+                 [org.pinkgorilla/ui-markdown "0.0.8"]
+                 [org.pinkgorilla/ui-code "0.0.9"]]
 
   :profiles {:test {:source-paths ["src" "test"]
                     :test-paths   ["test"]}
 
-             :bundel {:dependencies [[org.pinkgorilla/goldly "0.2.60"]
+             :bundel {:dependencies [[org.pinkgorilla/goldly "0.2.73"]
                                      [org.pinkgorilla/gorilla-ui "0.3.27" ; brings pinkie
                                       :exclusions [org.clojure/clojurescript]]
-                                     [org.pinkgorilla/gorilla-plot "1.2.9"]]
+                                     [org.pinkgorilla/gorilla-plot "1.2.10"]]
                       :resource-paths ["target/webly" ; bundel
                                        ]}
 
