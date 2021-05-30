@@ -4,6 +4,7 @@
    
    ; goldly
    [goldly.app]
+   [goldly-server.app] ; pages
    ; explorer
    [pinkgorilla.explorer.default-config]
    ; notebook

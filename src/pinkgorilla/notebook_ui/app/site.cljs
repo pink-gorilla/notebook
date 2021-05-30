@@ -1,4 +1,4 @@
-(ns pinkgorilla.notebook-ui.app-bundel.site)
+(ns pinkgorilla.notebook-ui.app.site)
 
 (defn main-with-header [header main]
   [:div

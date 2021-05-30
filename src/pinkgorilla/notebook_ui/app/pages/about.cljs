@@ -28,7 +28,7 @@
 (defn action-box []
   [:div.mt-5
    [:div.flex.flex-column.justify-evenly
-    [action {:on-click #(rf/dispatch [:bidi/goto :ui/explorer])} "Explorer"]
+    [action {:on-click #(rf/dispatch [:bidi/goto :ui/explorer])} "Notebooks"]
     [action {:on-click #(rf/dispatch [:document/new])} "New Notebook"]
     [action {:on-click #(rf/dispatch [:bidi/goto :ui/nrepl])} "nrepl"]
     [action {:on-click #(rf/dispatch [:bidi/goto :goldly/system-list])} "goldly systems"]

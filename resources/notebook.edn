@@ -1,8 +1,8 @@
 {:webly {:title "PinkGorilla Notebook"
          :icon "/r/webly/pink-gorilla-32.png"
-         :lein-cljs-profile "bundel"
-         :ns-cljs-app [pinkgorilla.notebook-ui.app-bundel.app]
-         :bundle-entry  "pinkgorilla.notebook_ui.app_bundel.app.start ();"
+         :lein-cljs-profile ""
+         :ns-cljs-app [pinkgorilla.notebook-ui.app.app]
+         :bundle-entry  "pinkgorilla.notebook_ui.app.app.start ();"
          :start-user-app [:notebook/start]
          :user-routes-app "pinkgorilla.notebook-ui.app.routes/routes-app"
          :user-routes-api "pinkgorilla.notebook-ui.app.routes/routes-api"}
@@ -22,8 +22,8 @@
                    [#{"pinkgorilla.document.*"} :info]
                    [#{"pinkgorilla.storage.*"} :info]
                    [#{"pinkgorilla.explore.*"} :info]
-                   [#{"pinkgorilla.notebook.*"} :info]
-                   [#{"pinkgorilla.notebook-ui.*"} :info]
+                   [#{"notebook.*"} :info]
+                   [#{"notebook.ui.*"} :info]
                    ;[#{"pinkgorilla.notebook-ui.codemirror.*"} :info]
                    ; goldly
                    [#{"goldly.runner.clj-fn"} :warn]
@@ -67,8 +67,10 @@
             }
 
  :goldly {:enabled true
-          :systems-ns [systems.click-counter
-                       systems.greeter
-                       systems.fortune
-                       systems.time
-                       systems.error]}}
+          :systems-ns [systems.fortune]
+          :extensions [[pinkgorilla.ui.goldly]
+                       [ui.quil.goldly]
+                       [pinkgorilla.gorilla-plot.goldly]]
+          
+          }}
+

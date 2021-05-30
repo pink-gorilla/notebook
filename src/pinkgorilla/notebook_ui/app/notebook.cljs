@@ -24,9 +24,8 @@
 
    ; notebook
 
-   [pinkgorilla.notebook-ui.events.events-storage]
-
-   [pinkgorilla.notebook-ui.events.events-snippets]
+   ;[pinkgorilla.notebook-ui.events.events-snippets]
+   
    [pinkgorilla.notebook-ui.schema.interceptor]
 
     ;completion
@@ -35,8 +34,6 @@
 
    ;code-mirror
    [ui.code.goldly.core]
-   ;[ui.codemirror.events.core]
-   ;[ui.codemirror.events.completion]
 
    ; datafy
    [pinkgorilla.notebook-ui.datafy.events-punk]

@@ -37,20 +37,20 @@
                  [day8.re-frame/undo "0.3.3"]
                  [re-com "2.13.2"]
                  ;pink-gorilla
-                 [org.pinkgorilla/picasso "3.1.34"] ; included in nrepl-middleware
-                 [org.pinkgorilla/gorilla-explore "0.2.59"] ; brings notebook-encoding
+                 [org.pinkgorilla/picasso "3.1.35"] ; included in nrepl-middleware
+                 [org.pinkgorilla/gorilla-explore "0.2.61"] ; brings notebook-encoding
                  [org.pinkgorilla/nrepl-middleware "0.3.35"] ; brings picasso
                  [org.pinkgorilla/pinkie "0.3.3"]
                  [org.pinkgorilla/ui-markdown "0.0.8"]
-                 [org.pinkgorilla/ui-code "0.0.9"]]
+                 [org.pinkgorilla/ui-code "0.0.9"]
+                 [org.pinkgorilla/goldly "0.2.74"]]
 
   :profiles {:test {:source-paths ["src" "test"]
                     :test-paths   ["test"]}
 
-             :bundel {:dependencies [[org.pinkgorilla/goldly "0.2.73"]
-                                     [org.pinkgorilla/gorilla-ui "0.3.27" ; brings pinkie
-                                      :exclusions [org.clojure/clojurescript]]
-                                     [org.pinkgorilla/gorilla-plot "1.2.10"]]
+             :bundel {:dependencies [[org.pinkgorilla/gorilla-ui "0.3.27"]
+                                     [org.pinkgorilla/gorilla-plot "1.2.10"]
+                                     [org.pinkgorilla/ui-quil "0.1.5"]]
                       :resource-paths ["target/webly" ; bundel
                                        ]}
 
@@ -117,4 +117,4 @@
             "notebook"
             ["with-profile" "+bundel"
              "run" "-m"
-             "pinkgorilla.notebook-ui.app-bundel.app"]})
+             "pinkgorilla.notebook-ui.app.app"]})

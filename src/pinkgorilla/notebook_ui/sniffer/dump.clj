@@ -1,6 +1,6 @@
 (ns pinkgorilla.notebook-ui.sniffer.dump
   (:require
-   [taoensso.timbre :as timbre :refer-macros [info errorf debug warn error]]
+   [taoensso.timbre :as timbre :refer [info errorf debug warn error]]
 
    [webly.ws.core :refer [send-all! send! send-response on-conn-chg]]
    [webly.ws.msg-handler :refer [-event-msg-handler]]))

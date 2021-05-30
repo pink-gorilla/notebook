@@ -8,6 +8,7 @@
    explorer/routes-app
    goldly/routes-app
    {"" :notebook/about
+    "x"  :ui/notebook-welcome
     "nrepl" :ui/nrepl}))
 
 (def routes-api
