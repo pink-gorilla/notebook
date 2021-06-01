@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{:tagline "alphavantaget", :tags "trateg,clj,quant"}
+{:tagline "core async demo", :tags "trateg,clj,quant", :id :eb1480cd-310e-40f8-ad6e-187a5460eac2}
 
 ;; @@
 
@@ -17,8 +17,11 @@
    ;:reload-all
    ))
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -45,13 +48,36 @@
 
 
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'example.pingpong/runner"],"~:value","#'example.pingpong/runner"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'example.pingpong/player"]],["^ ","^0","^1","^2",["^3",["^ ","^4","clj-var"],"#'example.pingpong/runner"]]]
 ;; <=
 
 ;; @@ [clj]
 (runner)
-nil
+;; @@
+;; ->
+;;; "O ping 1"
+;;; "X pong 2"
+;;; "O ping 3"
+;;; "X pong 4"
+;;; "O ping 5"
+;;; "X pong 6"
+;;; "O ping 7"
+;;; "X pong 8"
+;;; "O ping 9"
+;;; "X pong 10"
+;;; "O ping 11"
+;;; "Done."
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
+;; <=
+
+;; @@ [clj]
+(runner)
 ;; @@
 ;; ->
 ;;; "X pong 1"
@@ -68,34 +94,5 @@ nil
 ;;; "Done."
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
-
-;; @@ [clj]
-(runner)
-;; @@
-;; ->
-;;; "X pong 1"
-;;; "O ping 2"
-;;; "X pong 3"
-;;; "O ping 4"
-;;; "X pong 5"
-;;; "O ping 6"
-;;; "X pong 7"
-;;; "O ping 8"
-;;; "X pong 9"
-;;; "O ping 10"
-;;; "X pong 11"
-;;; "Done."
-;; <-
-;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
-;; <=
-
-;; @@ [clj]
-
-;; @@
-
-;; @@ [clj]
-
-;; @@

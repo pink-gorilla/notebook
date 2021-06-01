@@ -37,12 +37,12 @@
                  [day8.re-frame/undo "0.3.3"]
                  [re-com "2.13.2"]
                  ;pink-gorilla
-                 [org.pinkgorilla/picasso "3.1.36"] ; included in nrepl-middleware
+                 [org.pinkgorilla/picasso "3.1.39"] ; included in nrepl-middleware
                  [org.pinkgorilla/gorilla-explore "0.2.61"] ; brings notebook-encoding
                  [org.pinkgorilla/nrepl-middleware "0.3.35"] ; brings picasso
                  [org.pinkgorilla/pinkie "0.3.3"]
                  [org.pinkgorilla/ui-markdown "0.0.8"]
-                 [org.pinkgorilla/ui-code "0.0.9"]
+                 [org.pinkgorilla/ui-code "0.0.11"]
                  [org.pinkgorilla/ui-site "0.0.3"]
                  [org.pinkgorilla/goldly "0.2.76"]]
 

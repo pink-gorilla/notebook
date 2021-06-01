@@ -14,7 +14,7 @@
    [pinkgorilla.notebook-ui.nrepl.kernel]
    [pinkgorilla.notebook-ui.nrepl.events.connection]
    [pinkgorilla.notebook-ui.nrepl.events.op]
-   [pinkgorilla.notebook-ui.nrepl.events.eval]
+   ;[pinkgorilla.notebook-ui.nrepl.events.eval]
    [pinkgorilla.notebook-ui.nrepl.events.info]
    [pinkgorilla.notebook-ui.nrepl.subscriptions]
    [pinkgorilla.notebook-ui.nrepl.views.info-page] ; reagent-page registration

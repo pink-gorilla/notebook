@@ -50,27 +50,6 @@
      ;[:p "alt-g n - notebook window"]
    [:p "alt-g r - repl info window"]])
 
-(defn nrepl-ip-port []
-  (let [config (rf/subscribe [:webly/config])]
-    (fn []
-      (let [{:keys [bind port]} (get-in @config [:nrepl :server])
-            enabled (get-in @config [:nrepl :enabled])]
-        (if enabled
-          [:span "ip:" bind " : " port]
-          [:span "nrepl disabled"])))))
-
-(defn sniffer-box []
-  [:div.bg-yellow-300.mt-5.p-5
-   [:h1.text-2xl "Eval Sniffer"]
-   [:div.prose
-    [:ul.list-discs
-     [:li "Work in your favorite ide, and build a notebook with gorilla visualisations."]
-     [:li "connect your ide to: " [nrepl-ip-port]]
-     [:li "Eval :gorilla/on in the repl"]
-     [:li "A new notebook appears in /explorer (in unsaved)"]
-     [:li "In /nrepl/info you can see the sessions that are currently being sniffed."]
-     [:li "To stop sniffing eval :gorilla/off in the repl"]]]])
-
 (defn credits-box []
   [:div.bg-green-300.mt-5.p-5
    [:h1.text-2xl "Credits"]
@@ -89,7 +68,6 @@
    [:div.flex.flex-wrap
     [features-box]
     [keybindings-box]
-    [sniffer-box]
     [credits-box]]])
 
 (defmethod reagent-page :notebook/about [{:keys [route-params query-params handler] :as route}]

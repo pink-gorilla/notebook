@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{:tags "", :tagline "reproduce the error", :name ""}
+{:tags "", :tagline "print-table", :name "", :id :30c9aeb8-7bed-440f-852c-b178ed8d9837}
 
 ;; @@
 
@@ -14,8 +14,11 @@
   (:require 
      [clojure.pprint]))
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -24,8 +27,11 @@
    {:name "rich hickie" :speciality "clojure"}
    {:name "christian" :speciality "replikativ"}])
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-var"],"#'render-newline/data"],"~:value","#'render-newline/data"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'render-newline/data"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -40,11 +46,10 @@
 ;;; |           christian |  replikativ |
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
 
 ;; @@ [clj]
-; this should print multiple rows. but it only shows the last row.
 ^:R [:p/text (clojure.pprint/print-table data)]
 ;; @@
 ;; ->
@@ -56,7 +61,7 @@
 ;;; |           christian |  replikativ |
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/text",null],"~:map-keywords",true,"~:widget",true]]
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/text",null],"~:map-keywords",true]]]
 ;; <=
 
 ;; @@ [clj]
@@ -71,7 +76,7 @@
 ;;; |           christian |  replikativ |
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -79,8 +84,11 @@
 ; 
 (with-out-str (clojure.pprint/print-table data))
 ;; @@
+;; ->
+;;; 
+;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-string"],"\"\\n|               :name | :speciality |\\n|---------------------+-------------|\\n| william shakespeare |      novels |\\n|         rich hickie |     clojure |\\n|           christian |  replikativ |\\n\""],"~:value","\"\\n|               :name | :speciality |\\n|---------------------+-------------|\\n| william shakespeare |      novels |\\n|         rich hickie |     clojure |\\n|           christian |  replikativ |\\n\""]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-string"],"\"\\n|               :name | :speciality |\\n|---------------------+-------------|\\n| william shakespeare |      novels |\\n|         rich hickie |     clojure |\\n|           christian |  replikativ |\\n\""]]]
 ;; <=
 
 ;; @@ [clj]
@@ -95,7 +103,7 @@
 ;;; |           christian |  replikativ |
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -110,7 +118,7 @@
 ;;; |           christian |  replikativ |
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -125,7 +133,7 @@
 ;;; |           christian |
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -140,19 +148,5 @@
 ;;;    in ks. If ks are not specified, use the keys of the first item in rows.
 ;; <-
 ;; =>
-;;; ["^ ","~:type","~:html","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"],"~:value","nil"]
-;; <=
-
-;; @@ [clj]
-
-;; @@
-
-;; @@ [clj]
-
-;; @@
-;; ->
-;;; 
-;; <-
-;; =>
-;;; ["^ ","~:type","html","~:value",["~:span"]]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
 ;; <=

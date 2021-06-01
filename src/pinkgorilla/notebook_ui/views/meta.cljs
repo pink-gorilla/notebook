@@ -34,16 +34,6 @@
         :on-change        #(dispatch [:notebook/meta-set :tags %])
         :disabled?        false]
 
-       #_[gap :size "20px"]
-       #_[label :label "long descripton"]
-       #_[gap :size "5px"]
-       #_[input-text
-          :model           (:description meta)
-          :width            "300px"
-          :placeholder      "long description"
-          :on-change        #(dispatch [:notebook/meta-set :description %])
-          :disabled?        false]
-
        [h-box :gap "5px" :justify :end
         :children
         [[md-circle-icon-button

@@ -1,0 +1,88 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:id :f0f1ff32-c48e-4cb4-908a-eb5645bb61d8, :tagline "welcome to pink gorilla notebook"}
+
+;; @@
+
+;; **
+;;; # Welcome to PinkGorilla Notebook
+;;; 
+;;; ## Features
+;;; 
+;;; 1. clojure evals (via nrepl)
+;;; 2. clojurescript evals (via goldly and sci)
+;;; 3. ui visualizations
+;;; 4. dynamically add new custom ui vizualisations
+;;; 5. save notebooks to file /github gist or github repo
+;; **
+
+;; @@ [clj]
+; this cell uses clojure 
+; you can eval one segment with ctrl + enter
+(+ 7 7)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-long"],"14"]]
+;; <=
+
+;; @@ [cljs]
+; this cell uses clojurescript
+; you can eval one segment with ctrl + enter
+(+ 7 7)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-long"],"14"]]
+;; <=
+
+;; @@ [clj]
+^:R 
+  [:div.prose 
+    [:h2 "Hello, World!"] 
+    [:div {:style {:display :flex :flex-direction :row
+                   :color :green :font-weight :bold :background-color :pink 
+                   :margin-left 20 :padding 10 :border :solid :width 500}} 
+      [:ol 
+        [:li "The Pinkie"] 
+        [:li "The Pinkie and the Brain"]  
+        [:li "What will we be doing today?"]]  
+      [:img {:height 100 :width 100 
+             :src "https://images-na.ssl-images-amazon.com/images/I/61LeuO%2Bj0xL._SL1500_.jpg"}]]]
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:div.prose",["~:h2","Hello, World!"],["~:div",["^ ","~:style",["^ ","~:color","~:green","~:font-weight","~:bold","~:margin-left",20,"~:background-color","~:pink","~:width",500,"~:padding",10,"~:display","~:flex","~:border","~:solid","~:flex-direction","~:row"]],["~:ol",["~:li","The Pinkie"],["^H","The Pinkie and the Brain"],["^H","What will we be doing today?"]],["~:img",["^ ","~:height",100,"^?",100,"~:src","https://images-na.ssl-images-amazon.com/images/I/61LeuO%2Bj0xL._SL1500_.jpg"]]]],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [clj]
+ ^:R [:p/vega "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json" ]
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [clj]
+(require '[pinkgorilla.ui.gorilla-plot.core :refer [list-plot bar-chart compose histogram plot]])
+(list-plot (concat (range 10) (reverse (range 10))))
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]],["^ ","^0","^1","^2",["^3",["^ ","^4","clj-unknown"],"#object[pinkgorilla.ui.vega$vega_BANG_$reify__84034 0x5e2fe0eb \"pinkgorilla.ui.vega$vega_BANG_$reify__84034@5e2fe0eb\"]"]]]
+;; <=
+
+;; @@ [clj]
+(list-plot (range 10))
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-unknown"],"#object[pinkgorilla.ui.vega$vega_BANG_$reify__84034 0x5c23300a \"pinkgorilla.ui.vega$vega_BANG_$reify__84034@5c23300a\"]"]]]
+;; <=
