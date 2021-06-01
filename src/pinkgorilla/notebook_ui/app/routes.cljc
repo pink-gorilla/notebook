@@ -7,9 +7,11 @@
   (merge
    explorer/routes-app
    goldly/routes-app
-   {"" :notebook/about
-    "x"  :ui/notebook-welcome
-    "nrepl" :ui/nrepl}))
+   {""  :ui/notebook-welcome
+    "about" :notebook/about
+    "nrepl" :ui/nrepl
+    "goldly" :notebook/system-list ; notebook theme
+    }))
 
 (def routes-api
   (merge

@@ -4,11 +4,9 @@
    [webly.web.handler :refer [reagent-page]]
    [pinkgorilla.document.collection.component :refer [notebook-explorer]]
    [pinkgorilla.explorer.bidi :refer [goto-notebook!]]
-   [pinkgorilla.notebook-ui.app.menu :refer [home-menu]]))
-
+   [pinkgorilla.notebook-ui.app.site :as site]))
 
 ;; EXPLORER
-
 
 (defn open-notebook [nb]
   (info "load-notebook-click" nb)
@@ -16,5 +14,5 @@
 
 (defmethod reagent-page :ui/explorer [{:keys [route-params query-params handler] :as route}]
   [:<>
-   [home-menu]
+   [site/header]
    [notebook-explorer open-notebook]])

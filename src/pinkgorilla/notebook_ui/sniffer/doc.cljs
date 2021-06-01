@@ -9,7 +9,6 @@
    [pinkgorilla.storage.unsaved :refer [StorageUnsaved]]
    [pinkgorilla.notebook.template :refer [snippets->notebook]]))
 
-
 (def id-doc-sniffer "sniffer-notebook")
 
 (def sniffer-snippets

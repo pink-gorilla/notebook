@@ -9,7 +9,7 @@
    [ui.notebook.core :refer [notebook-view]]
    [ui.notebook.tooltip :refer [with-tooltip]]
    [ui.notebook.menu]
-   [pinkgorilla.notebook-ui.app.menu :refer [home-menu]]))
+   [pinkgorilla.notebook-ui.app.site :as site]))
 
 (defn header-ico [fa-icon rf-dispatch]
   [:a {:on-click #(dispatch rf-dispatch)
@@ -32,12 +32,9 @@
   [:<>
    [header-icon "fa fa-question-circle" [:bidi/goto :notebook/about] "notebook/about main page"]
    [header-icon "fa fa-th-large" [:bidi/goto :ui/explorer] "notebook explorer"]
-
    [ui.notebook.menu/menu]
-
    [header-icon "fa fa-save" [:notebook/save (get-in doc [:meta :id]) storage] "save document"]
    [header-icon "fa fa-stream" [:palette/show] "shows keybindings and commands"]
-  
    [nrepl-icon]
    [user-button :github]])
 
@@ -60,8 +57,7 @@
 (defmethod reagent-page :ui/notebook [{:keys [route-params query-params handler] :as route}]
   [document-page document-viewer header-menu-left query-params])
 
-
 (defmethod reagent-page :ui/notebook-welcome [{:keys [route-params query-params handler] :as route}]
   (let [query-params {:type :res
                       :filename "notebook/clojure/multimethods.cljg"}]
-  [document-page document-viewer header-menu-left query-params]))
+    [document-page document-viewer header-menu-left query-params]))

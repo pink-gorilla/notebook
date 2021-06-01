@@ -1,7 +1,7 @@
 (ns pinkgorilla.notebook-ui.app.app
   (:require
    [webly.user.app.app :refer [webly-run!]]
-   
+
    ; goldly
    [goldly.app]
    [goldly-server.app] ; pages
@@ -15,7 +15,8 @@
    [pinkgorilla.notebook-ui.app.pages.explorer]
    [pinkgorilla.notebook-ui.app.pages.document]
    [pinkgorilla.notebook-ui.app.pages.nrepl]
-   [pinkgorilla.notebook-ui.app.pages.about]))
+   [pinkgorilla.notebook-ui.app.pages.about]
+   [pinkgorilla.notebook-ui.app.pages.goldly]))
 
 (defn ^:export start []
   (webly-run! routes-api routes-app))

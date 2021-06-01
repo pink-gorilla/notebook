@@ -68,7 +68,8 @@
 
  :goldly {:enabled true
           :systems-ns [systems.fortune]
-          :extensions [[pinkgorilla.ui.goldly]
+          :extensions [[ui.site.goldly.core]
+                       [pinkgorilla.ui.goldly]
                        [ui.quil.goldly]
                        [pinkgorilla.gorilla-plot.goldly]]
           

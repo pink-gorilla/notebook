@@ -3,7 +3,8 @@
    [goog.string :as gstring]
    [goog.string.format]
    [re-frame.core :as rf]
-   [webly.web.handler :refer [reagent-page]]))
+   [webly.web.handler :refer [reagent-page]]
+   [pinkgorilla.notebook-ui.app.site :as site]))
 
 (defn credit [user txt]
   [:li
@@ -28,12 +29,7 @@
 (defn action-box []
   [:div.mt-5
    [:div.flex.flex-column.justify-evenly
-    [action {:on-click #(rf/dispatch [:bidi/goto :ui/explorer])} "Notebooks"]
-    [action {:on-click #(rf/dispatch [:document/new])} "New Notebook"]
-    [action {:on-click #(rf/dispatch [:bidi/goto :ui/nrepl])} "nrepl"]
-    [action {:on-click #(rf/dispatch [:bidi/goto :goldly/system-list])} "goldly systems"]
-    [action {:href "https://clojurians.zulipchat.com/#narrow/stream/212578-pink-gorilla-dev"} "Zulip Chat"]
-    [action {:href "https://github.com/pink-gorilla/notebook/issues"} "Ticket"]]])
+    [action {:on-click #(rf/dispatch [:document/new])} "New Notebook"]]])
 
 (defn features-box []
   [:div.bg-yellow-300.mt-5.p-5
@@ -97,4 +93,6 @@
     [credits-box]]])
 
 (defmethod reagent-page :notebook/about [{:keys [route-params query-params handler] :as route}]
-  [notebook-about])
+  [:div
+   [site/header]
+   [notebook-about]])

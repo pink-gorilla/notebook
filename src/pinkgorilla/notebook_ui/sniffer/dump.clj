@@ -5,7 +5,6 @@
    [webly.ws.core :refer [send-all! send! send-response on-conn-chg]]
    [webly.ws.msg-handler :refer [-event-msg-handler]]))
 
-
 (defmethod -event-msg-handler :sniffer/dump
   [{:as ev-msg :keys [event]}]
   (let [[event-name data] event]

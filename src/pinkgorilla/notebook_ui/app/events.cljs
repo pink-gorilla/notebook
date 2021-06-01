@@ -9,7 +9,7 @@
 
 (rf/reg-event-db
  :notebook/start
- (fn [db [_ ]]
+ (fn [db [_]]
    (let [db (or db {})
          {:keys [nrepl-endpoint]} (:config db)]
      (info "notebook/start")
@@ -45,7 +45,6 @@
    (let [storage (:notebook db)]
      (rf/dispatch [:document/save storage])
      db)))
-
 
 (rf/reg-event-db
  :notebook/activate!

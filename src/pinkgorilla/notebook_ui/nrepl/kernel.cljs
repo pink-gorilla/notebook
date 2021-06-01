@@ -11,7 +11,6 @@
 
 (def nrepl (rf/subscribe [:nrepl/status]))
 
-
 (defn stacktrace? [eval-result]
   (when (:err eval-result)
     (when (first (:err eval-result))

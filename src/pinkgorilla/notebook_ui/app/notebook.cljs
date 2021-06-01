@@ -25,7 +25,7 @@
    ; notebook
 
    ;[pinkgorilla.notebook-ui.events.events-snippets]
-   
+
    [pinkgorilla.notebook-ui.schema.interceptor]
 
     ;completion
