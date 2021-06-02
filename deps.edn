@@ -1,6 +1,6 @@
 {:paths ["src"
          "resources" ; snippets + notebooka
-         "target/node_modules" ; css png resources from npm modules (codemirror themes)
+         ;"target/node_modules" ; css png resources from npm modules (codemirror themes)
          ]
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}
         org.clojure/core.async {:mvn/version "1.3.618"}
