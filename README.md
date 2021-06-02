@@ -1,5 +1,5 @@
-# Pink Gorilla Notebook [![GitHub Actions status |pink-gorilla/notebook](https://github.com/pink-gorilla/notebook/workflows/CI/badge.svg)](https://github.com/pink-gorilla/notebook/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/notebook.svg)](https://clojars.org/org.pinkgorilla/notebook)
-
+# Pink Gorilla Notebook [![GitHub Actions status |pink-gorilla/notebook](https://github.com/pink-gorilla/notebook/workflows/CI/badge.svg)](https://github.com/pink-gorilla/notebook/actions?workflow=CI)
+[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/notebook.svg)](https://clojars.org/org.pinkgorilla/notebook)
 [![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/notebook-bundel.svg)](https://clojars.org/org.pinkgorilla/notebook-bundel)
 
 Pink Gorilla Notebook is a rich browser based notebook REPL for Clojure and ClojureScript, which aims at extensibility
