@@ -1,5 +1,5 @@
 {:paths ["src"
-         "resources" ; snippets + notebooka
+         "resources" ; snippets + notebooks
          ;"target/node_modules" ; css png resources from npm modules (codemirror themes)
          ]
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}
@@ -78,7 +78,8 @@
                               :config nil}}
 
   :notebook
-  {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
+  {:extra-paths ["target/webly"]
+   :extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
                 org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
                 org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
    :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
@@ -95,7 +96,7 @@
         :main-opts ["-m" "pinkgorilla.notebook-bundel"]}
 
 
-  :jar-bundel {;:extra-paths ["target/webly"]
+  :jar-bundel {:extra-paths ["target/webly"]
         :extra-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
         :exec-fn hf.depstar/jar
         :exec-args {:jar "target/notebook-bundel.jar"

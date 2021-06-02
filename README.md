@@ -45,7 +45,7 @@ Run `clojure -X:notebook` to run the notebook.
 This runs the notebook with ui libraries bundled:
 - gorilla ui
 - gorilla plot
-- goldly
+
 
 This option is mainly there for development of notebook. 
 For regular use, the long compile-times are not really sensible.
@@ -62,14 +62,6 @@ Documentation has been moved [over here](https://pink-gorilla.github.io/)
 ## Development UI 
 
 Run `clojure -X:develop` to run the develop ui. 
-
-
-
-## Use an external nrepl relay
-
-If you want to eval clj code, then to run a nrepl websocket relay:
-- run `lein relay-jetty` (in nrepl-middleware or 
-- run `lein relay` lein-pinkgorilla) 
 
 
 ## Licence
