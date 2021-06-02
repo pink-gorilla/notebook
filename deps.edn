@@ -89,11 +89,20 @@
                                               [ui.quil.goldly]
                                               [pinkgorilla.gorilla-plot.goldly]]}}}}
 
-  
+
   :run {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
                      org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
                      org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
         :main-opts ["-m" "pinkgorilla.notebook-bundel"]}
+
+  :release-bundel
+  {:extra-paths ["target/webly"]
+   :extra-deps {applied-science/deps-library {:mvn/version "0.4.0"}
+                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
+                org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
+                org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
+   :main-opts ["-m" "applied-science.deps-library"
+               "--config" "release-bundel.edn"]}
 
 ;
   }}

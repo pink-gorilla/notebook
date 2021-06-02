@@ -1,0 +1,4 @@
+{:group-id "org.pinkgorilla"
+ :artifact-id "notebook-bundel"
+ :scm-url "https://github.com/pink-gorilla/notebook/"
+ }
