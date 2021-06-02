@@ -34,7 +34,7 @@
 (defn header-menu-left [storage doc]
   [:<>
    (warn "storage: " storage "doc id:" (get-in doc [:meta :id]))
-   [header-icon "fa fa-question-circle" [:bidi/goto :notebook/about] "notebook/about main page"]
+   ;[header-icon "fa fa-question-circle" [:bidi/goto :notebook/about] "notebook/about main page"]
    [header-icon "fa fa-th-large" [:bidi/goto :ui/explorer] "notebook explorer"]
    [ui.notebook.menu/menu]
    [header-icon "fa fa-save" [:document/save (get-in doc [:meta :id]) storage]  "save document"]

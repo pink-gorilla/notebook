@@ -29,9 +29,10 @@
                    conn (:conn @nrepl)
                    eval-result (<! (send-request! conn (op-eval code)))
                    _ (info "nrepl eval result: " eval-result)
-                   eval-result (if (stacktrace? eval-result)
-                                 (get-stacktrace conn eval-result)
-                                 eval-result)]
+                   ;eval-result (if (stacktrace? eval-result)
+                   ;              (get-stacktrace conn eval-result)
+                   ;              eval-result)
+                   ]
                (>! c (merge eval-result {:id id})))
              (catch js/Error e
                (error "nrepl eval ex: " e)

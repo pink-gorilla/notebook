@@ -8,7 +8,7 @@
    explorer/routes-app
    goldly/routes-app
    {""  :ui/notebook-welcome
-    "about" :notebook/about
+    "about" :notebook/about ; stays here for testing.
     "nrepl" :ui/nrepl
     "goldly" :notebook/system-list ; notebook theme
     }))

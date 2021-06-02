@@ -23,8 +23,8 @@
                    [#{"pinkgorilla.storage.*"} :info]
                    [#{"pinkgorilla.explore.*"} :info]
                    [#{"notebook.*"} :info]
-                   [#{"notebook.ui.*"} :info]
-                   ;[#{"pinkgorilla.notebook-ui.codemirror.*"} :info]
+                   [#{"ui.notebook.*"} :info]
+                   [#{"ui.codemirror.*"} :info]
                    ; goldly
                    [#{"goldly.runner.clj-fn"} :warn]
                    [#{"goldly.*"} :info]

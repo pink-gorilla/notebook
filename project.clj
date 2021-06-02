@@ -37,20 +37,20 @@
                  [day8.re-frame/undo "0.3.3"]
                  [re-com "2.13.2"]
                  ;pink-gorilla
-                 [org.pinkgorilla/picasso "3.1.39"] ; included in nrepl-middleware
-                 [org.pinkgorilla/gorilla-explore "0.2.61"] ; brings notebook-encoding
+                 [org.pinkgorilla/picasso "3.1.40"] ; used by nrepl-middleware + goldly cljs kernel
+                 [org.pinkgorilla/gorilla-explore "0.2.62"] ; brings notebook-encoding
                  [org.pinkgorilla/nrepl-middleware "0.3.35"] ; brings picasso
                  [org.pinkgorilla/pinkie "0.3.3"]
                  [org.pinkgorilla/ui-markdown "0.0.8"]
-                 [org.pinkgorilla/ui-code "0.0.11"]
-                 [org.pinkgorilla/ui-site "0.0.3"]
-                 [org.pinkgorilla/goldly "0.2.76"]]
+                 [org.pinkgorilla/ui-code "0.0.12"]
+                 [org.pinkgorilla/ui-site "0.0.4"]
+                 [org.pinkgorilla/goldly "0.2.77"]]
 
   :profiles {:test {:source-paths ["src" "test"]
                     :test-paths   ["test"]}
 
              :bundel {:dependencies [[org.pinkgorilla/gorilla-ui "0.3.27"]
-                                     [org.pinkgorilla/gorilla-plot "1.2.10"]
+                                     [org.pinkgorilla/gorilla-plot "1.2.11"]
                                      [org.pinkgorilla/ui-quil "0.1.5"]]
                       :resource-paths ["target/webly" ; bundel
                                        ]}

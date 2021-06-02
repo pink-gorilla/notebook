@@ -15,10 +15,10 @@
   [template/header-menu
    {:brand "PinkGorilla Notebook"
     :brand-link "/"
-    :items [{:text "about" :link "/about"}
+    :items [;{:text "about" :link "/about"}
             {:text "explorer" :link "/explorer"}
             {:text "nrepl" :link "/nrepl"}
             {:text "goldly systems" :link "/goldly"}
-                 ;{:text "notebook" :link "/notebook"}
+            {:text "current notebook" :dispatch [:document/new]}; "/notebook"}
             {:text "zulip" :link "https://clojurians.zulipchat.com/#narrow/stream/212578-pink-gorilla-dev" :special? true}
             {:text "feedback" :link "https://github.com/pink-gorilla/notebook/issues" :special? true}]}])
