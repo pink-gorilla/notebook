@@ -23,21 +23,10 @@ The easiest way to run releases locally is leveraging the `clojure` cli
 clojure -Sdeps '{:deps {org.pinkgorilla/notebook-bundel {:mvn/version "RELEASE"}}}' -m pinkgorilla.notebook-bundel
 ```
 
-## Run - cloned git repo
-
-Run `clojure -X:notebook` to run the notebook. 
-This will run a web server at port 8000 with showcase of some notebook components, 
-and notebook-explorer and notebook-viewer.
-
-Thos runs the notebook with ui libraries bundled:
-- gorilla ui
-- gorilla plot
-- goldly
-
 ## Run - in your deps.edn project
 
 One way to configure the notebook is to pass it a edn configuration file. An example is
-[test config](https://github.com/pink-gorilla/notebook/blob/master/resources/notebook-bundel.edn)
+[notebook edn config](https://github.com/pink-gorilla/notebook/blob/master/resources/notebook.edn)
 
 In your deps.edn add this alias:
 ```
@@ -47,6 +36,19 @@ In your deps.edn add this alias:
 ```
 then run it with `clojure -M:notebook`.
 
+An example of in-project use of notebook is: [trateg](https://github.com/clojure-quant/trateg)
+
+## Run - cloned git repo
+
+Run `clojure -X:notebook` to run the notebook. 
+
+This runs the notebook with ui libraries bundled:
+- gorilla ui
+- gorilla plot
+- goldly
+
+This option is mainly there for development of notebook. 
+For regular use, the long compile-times are not really sensible.
 
 ## Docker Image
 

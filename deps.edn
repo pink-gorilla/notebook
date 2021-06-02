@@ -94,5 +94,19 @@
                      org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
         :main-opts ["-m" "pinkgorilla.notebook-bundel"]}
 
+
+  :jar-bundel {;:extra-paths ["target/webly"]
+        :extra-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
+        :exec-fn hf.depstar/jar
+        :exec-args {:jar "target/notebook-bundel.jar"
+                    :group-id "org.pinkgorilla"
+                    :artifact-id "notebook-bundel"
+                    :aliases [:notebook]
+                    :sync-pom true}}
+  
+  :deploy-bundel {:replace-deps {slipset/deps-deploy {:mvn/version "0.1.5"}}
+           :exec-fn deps-deploy.deps-deploy/deploy
+           :exec-args {:installer :remote
+                       :artifact "target/notebook-bundel.jar"}}
 ;
   }}
