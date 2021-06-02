@@ -1,0 +1,100 @@
+{:paths ["src"
+         "resources" ; snippets + notebooka
+         "target/node_modules" ; css png resources from npm modules (codemirror themes)
+         ]
+ :deps {org.clojure/clojure {:mvn/version "1.10.3"}
+        org.clojure/core.async {:mvn/version "1.3.618"}
+        ; cljs
+        thi.ng/strf {:mvn/version "0.2.2"}
+        com.taoensso/timbre {:mvn/version "5.1.2"} ; clj/cljs logging. awb99: this fucks up kernel-cljs-shadowdeps
+        com.lucasbradstreet/cljs-uuid-utils {:mvn/version "1.0.2"} ;; awb99: in encoding, and clj/cljs proof
+        day8.re-frame/http-fx {:mvn/version "0.2.3"  ; reframe based http requests
+                               :exclusions [[re-frame]]} ; a more modern reframe comes from webly
+        day8.re-frame/undo {:mvn/version "0.3.3"}
+        re-com/re-com {:mvn/version "2.13.2"}
+        ;pink-gorilla
+        org.pinkgorilla/picasso {:mvn/version "3.1.40"} ; used by nrepl-middleware + goldly cljs kernel
+        org.pinkgorilla/gorilla-explore {:mvn/version "0.2.62"} ; brings notebook-encoding
+        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.35"} ; brings picasso
+        org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
+        org.pinkgorilla/ui-markdown {:mvn/version "0.0.8"}
+        org.pinkgorilla/ui-code {:mvn/version "0.0.12"}
+        org.pinkgorilla/ui-site {:mvn/version "0.0.4"}
+        org.pinkgorilla/goldly {:mvn/version "0.2.77"}
+        org.pinkgorilla/webly {:mvn/version "0.2.43"}}
+ :aliases
+ {;https://github.com/applied-science/deps-library
+  :release
+  {:extra-deps {applied-science/deps-library {:mvn/version "0.4.0"}}
+   :main-opts ["-m" "applied-science.deps-library"]}
+
+  ; https://github.com/weavejester/cljfmt
+  :cljfmt
+  {:extra-deps {cljfmt/cljfmt {:mvn/version "0.7.0"}}
+   :main-opts ["-m" "cljfmt.main" "check" "--indents" "cljfmt.edn"]}
+  :cljfmt-fix
+  {:extra-deps {cljfmt/cljfmt {:mvn/version "0.7.0"}}
+   :main-opts ["-m" "cljfmt.main" "fix" "--indents" "cljfmt.edn"]}
+
+ ; https://github.com/clj-kondo/clj-kondo/blob/master/doc/jvm.md
+  :lint
+  {:extra-deps {clj-kondo/clj-kondo {:mvn/version "RELEASE"}}
+   :main-opts ["-m" "clj-kondo.main" "--lint" "src"]}
+
+  :outdated
+  {:extra-deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
+   :main-opts ["-m" "antq.core"]}
+
+  :check
+  {:extra-deps {athos/clj-check {:git/url "https://github.com/athos/clj-check.git"
+                                 :sha "0ca84df1357d71429243b99908303f45a934654c"}}
+   :main-opts ["-m" "clj-check.check"]}
+
+  :test {:extra-paths ["test"]
+         :extra-deps {io.github.cognitect-labs/test-runner
+                      {:git/url "https://github.com/cognitect-labs/test-runner.git"
+                       :sha "9e35c979860c75555adaff7600070c60004a0f44"}}
+         :main-opts ["-m" "cognitect.test-runner"]
+         :exec-fn cognitect.test-runner.api/test}
+
+  :garamond
+  {:extra-deps {com.workframe/garamond {:mvn/version "0.4.0"}}
+   :main-opts ["-m" "garamond.main"]}
+
+   ; notebook
+
+  :develop {:extra-paths ["profiles/webly/src"
+                          "profiles/webly/resources"]
+            :exec-fn demo.app/demo!
+            :exec-args {:profile "watch"
+                        :config "demo.edn"}}
+
+  :ci {:extra-paths ["test"]
+       :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
+       :exec-args {:profile "ci"
+                   :config nil}}
+
+  :notebook-bare {:exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
+                  :exec-args {:profile "watch"
+                              :config nil}}
+
+  :notebook
+  {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
+                org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
+                org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
+   :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
+   :exec-args {:profile "watch"
+               :config {:goldly {:systems-ns [systems.fortune]
+                                 :extensions [[ui.site.goldly.core]
+                                              [pinkgorilla.ui.goldly]
+                                              [ui.quil.goldly]
+                                              [pinkgorilla.gorilla-plot.goldly]]}}}}
+
+  
+  :run {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
+                     org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
+                     org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
+        :main-opts ["-m" "pinkgorilla.notebook-bundel"]}
+
+;
+  }}

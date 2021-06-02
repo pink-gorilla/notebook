@@ -66,12 +66,5 @@
             :codemirror-theme "paraiso-dark" ; "default"
             }
 
- :goldly {:enabled true
-          :systems-ns [systems.fortune]
-          :extensions [[ui.site.goldly.core]
-                       [pinkgorilla.ui.goldly]
-                       [ui.quil.goldly]
-                       [pinkgorilla.gorilla-plot.goldly]]
-          
-          }}
+ :goldly {:enabled true}}
 
