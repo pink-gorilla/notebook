@@ -9,7 +9,7 @@
         com.taoensso/timbre {:mvn/version "5.1.2"} ; clj/cljs logging. awb99: this fucks up kernel-cljs-shadowdeps
         com.lucasbradstreet/cljs-uuid-utils {:mvn/version "1.0.2"} ;; awb99: in encoding, and clj/cljs proof
         day8.re-frame/http-fx {:mvn/version "0.2.3"  ; reframe based http requests
-                               :exclusions [[re-frame]]} ; a more modern reframe comes from webly
+                               :exclusions [[re-frame/re-frame]]} ; a more modern reframe comes from webly
         day8.re-frame/undo {:mvn/version "0.3.3"}
         re-com/re-com {:mvn/version "2.13.2"}
         ;pink-gorilla
