@@ -1,0 +1,98 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:tagline "core async demo", :tags "trateg,clj,quant", :id :eb1480cd-310e-40f8-ad6e-187a5460eac2}
+
+;; @@
+
+;; **
+;;; # Core.async test
+;; **
+
+;; @@ [clj]
+(ns example.pingpong
+  (:require 
+   [clojure.pprint :refer :all]
+   [clojure.core.async :as async :refer [>! <! <!! >!! go chan]]
+   ;:reload-all
+   ))
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
+;; <=
+
+;; @@ [clj]
+;; From Advanced Go Concurrency Patterns
+;; http://talks.golang.org/2013/advconc.slide#6
+
+(defn player [name table]
+  (go (while true
+        (let [ball (<! table)
+              ball (inc ball)]
+          (prn (str name " " ball))
+          (Thread/sleep 100)
+          (>! table ball)))))
+
+(defn runner []
+  (let [table (chan)
+        ball 0
+        player-1 (player "O ping" table)
+        player-2 (player "X pong" table)]
+    (>!! table ball)
+    (Thread/sleep 1000)
+    (<!! table)
+    (prn "Done.")))
+
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'example.pingpong/player"]],["^ ","^0","^1","^2",["^3",["^ ","^4","clj-var"],"#'example.pingpong/runner"]]]
+;; <=
+
+;; @@ [clj]
+(runner)
+;; @@
+;; ->
+;;; "O ping 1"
+;;; "X pong 2"
+;;; "O ping 3"
+;;; "X pong 4"
+;;; "O ping 5"
+;;; "X pong 6"
+;;; "O ping 7"
+;;; "X pong 8"
+;;; "O ping 9"
+;;; "X pong 10"
+;;; "O ping 11"
+;;; "Done."
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
+;; <=
+
+;; @@ [clj]
+(runner)
+;; @@
+;; ->
+;;; "X pong 1"
+;;; "O ping 2"
+;;; "X pong 3"
+;;; "O ping 4"
+;;; "X pong 5"
+;;; "O ping 6"
+;;; "X pong 7"
+;;; "O ping 8"
+;;; "X pong 9"
+;;; "O ping 10"
+;;; "X pong 11"
+;;; "Done."
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
+;; <=

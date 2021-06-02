@@ -1,0 +1,77 @@
+{:webly {:title "PinkGorilla Notebook"
+         :icon "/r/webly/pink-gorilla-32.png"
+         :lein-cljs-profile ""
+         :ns-cljs-app [pinkgorilla.notebook-ui.app.app]
+         :bundle-entry  "pinkgorilla.notebook_ui.app.app.start ();"
+         :start-user-app [:notebook/start]
+         :user-routes-app "pinkgorilla.notebook-ui.app.routes/routes-app"
+         :user-routes-api "pinkgorilla.notebook-ui.app.routes/routes-api"}
+
+ :google-analytics {:enabled true} ; set to false to disable google-analytics tracking.
+
+ :timbre-loglevel [[#{"org.eclipse.jetty.*"} :info]
+                   [#{"org.apache.http.*"} :info] ; shadow-cljs
+                   [#{"org.eclipse.aether.*"} :info]
+                   ; webly
+                   [#{"webly.ws.msg-handler"} :warn]
+                   [#{"webly.ws.*"} :info]
+                   [#{"webly.user.*"} :info]
+                   ; notebook
+                   [#{"pinkgorilla.nrepl.client.*"} :info]
+                   [#{"pinkgorilla.nrepl.relay.*"} :warn] ; gets sent to notebook/console otherwise
+                   [#{"pinkgorilla.document.*"} :info]
+                   [#{"pinkgorilla.storage.*"} :info]
+                   [#{"pinkgorilla.explore.*"} :info]
+                   [#{"notebook.*"} :info]
+                   [#{"ui.notebook.*"} :info]
+                   [#{"ui.codemirror.*"} :info]
+                   ; goldly
+                   [#{"goldly.runner.clj-fn"} :warn]
+                   [#{"goldly.*"} :info]
+                   [#{"systems.*"} :warn] ; otherwise we see timestamp sender
+                   ; catch all
+                    [#{"*"} :debug]
+                   ]
+
+ :explorer {:client {:repositories [{:name "local"  :url "/api/explorer" :save true}
+                                    #_{:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}]}
+            :server {:resource-root-path "notebooks"
+                     :exclude #{".git" ".svn"}
+                     :roots   {:app "./resources/notebooks"
+                               ;:gorilla-ui "../gorilla-ui/resources/notebooks"
+                               }}}
+
+ :nrepl {;:ws-endpoint "ws://localhost:9000/api/nrepl"
+         :connect?  true ; false  ; should browser auto connect?
+         :enabled true  ; run nrepl relay in this app
+         :server {:bind "127.0.0.1"
+                  :port 9100}
+         :relay {:host "127.0.0.1"
+                 ;:transport-fn                         
+                 :port 9100}}
+
+ :jetty-ws {"/api/chsk"  :ws/chsk-get
+            "/api/nrepl" :ws/nrepl}
+
+ ; notebook
+
+ :keybindings "pinkgorilla.notebook-ui.app.keybindings/keybindings-default"
+
+ :settings {; settings can be changed by user (via dialog)
+            ; :use-localstorage is true: load settings from localstorage, and only use
+            ; config-settings to initialize the app when localstorage is empty
+            :use-localstorage  false
+            :default-kernel    :clj
+            :layout            :vertical ; :horizontal :single :flow
+            :codemirror-theme "paraiso-dark" ; "default"
+            }
+
+ :goldly {:enabled true
+          :systems-ns [systems.fortune]
+          :extensions [[ui.site.goldly.core]
+                       [pinkgorilla.ui.goldly]
+                       [ui.quil.goldly]
+                       [pinkgorilla.gorilla-plot.goldly]]
+          
+          }}
+

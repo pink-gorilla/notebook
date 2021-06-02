@@ -20,6 +20,6 @@
        @conn-a))))
 
 (rf/reg-sub
- :nrepl
+ :nrepl/status
  (fn [db [_]]
    (:nrepl db)))

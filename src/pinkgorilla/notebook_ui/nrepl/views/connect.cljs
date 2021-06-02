@@ -4,12 +4,15 @@
    [re-frame.core :refer [subscribe dispatch]]))
 
 (defn connect-ui []
-  (let [nrepl (subscribe [:nrepl])
+  (let [nrepl (subscribe [:nrepl/status])
         ws-url (r/atom (:ws-url @nrepl))] ;ws-url allows user o change url
     (fn []
       (let [{:keys [connected?]} @nrepl]
         (if connected?
-          [:p.text-green-800 "Connected to: " @ws-url]
+          [:div.border.border-red-500
+           [:p.text-green-800 "Connected to: " @ws-url]
+           [:button.bg-green-400 {;:type "button"
+                                  :on-click #(dispatch [:nrepl/connect])} "connect again"]]
           [:div.border.border-red-500
            [:h1.text-xl "connect to nrepl relay"]
            [:span "NRepl Relay url:"]

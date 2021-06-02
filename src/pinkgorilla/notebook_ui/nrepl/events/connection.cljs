@@ -8,7 +8,6 @@
    ;[reagent.ratom :refer [make-reaction]]
    [re-frame.core :refer [reg-event-fx reg-event-db dispatch]]
    [pinkgorilla.nrepl.client.core :refer [connect send-request! request-rolling!]]))
-
 (defn application-url []
   (url/url (-> js/window .-location .-href)))
 
@@ -33,29 +32,16 @@
          config (get-in db [:config :nrepl])
          {:keys [ws-endpoint connect?]} config
          ws-endpoint (or ws-endpoint (ws-path port "/api/nrepl"))]
-     (dispatch [:kernel/register-kernel :clj :nrepl/eval])
-
      (if connect?
        (do
          (warn "auto-connect nrepl: " ws-endpoint)
          (dispatch [:nrepl/connect]))
        (warn "NOT connecting automatically to nrepl"))
-
      (assoc db :nrepl {:ws-url ws-endpoint
                        :connected? false
                        :conn nil
                        :info {:sessions nil  ; this needs to be here, otherwise ops fail
                               :describe nil}}))))
-
-(reg-event-fx
- :nrepl/sniffer-sink
- (fn [{:keys [db] :as cofx}  [_]]
-   (let [{:keys [nrepl]} db
-         {:keys [conn]} nrepl]
-     (info "registering sniffer-sink")
-     ;(dispatch [:nrepl/op-dispatch-rolling {:op "eval" :code "(+ 7 7)"} [:sniffer/rcvd]])
-     (dispatch [:nrepl/op-dispatch-rolling {:op "sniffer-sink"} [:sniffer/rcvd]])
-     nil)))
 
 (reg-event-db
  :nrepl/set-connection-status
@@ -68,7 +54,7 @@
          (if connected?
            (do
              (info "nrepl connected!")
-             (dispatch [:nrepl/sniffer-sink]))
+             (dispatch [:nrepl/register-sniffer-sink]))
            (info "nrepl disconnected!"))
          (assoc-in db [:nrepl :connected?] connected?))))))
 

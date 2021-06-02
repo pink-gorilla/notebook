@@ -1,0 +1,59 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:id :f8d848fd-3f08-4f2a-8f1c-26593c1c48cb}
+
+;; @@
+
+;; **
+;;; # Goldly - Click Counter
+;;; 
+;;; Goldly systems are not persisted in the notebook. But it might be easier to develop them using the notebook.
+;;; 
+;;; Please run evaluate all!
+;; **
+
+;; @@ [clj]
+(require 
+  '[goldly.runner :refer [system-start!]]
+  '[goldly.system :as goldly :refer [def-ui]])
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
+;; <=
+
+;; @@ [clj]
+(def-ui pink-panther
+  [:p "Pink panther is here (demonstates ui components via def-ui)!"])
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'user/pink-panther"]]]
+;; <=
+
+;; @@ [clj]
+(system-start!
+ (goldly/system
+  {:id :notebook-click-counter
+   :state 42
+   :html  [:div.border-blue-300.border.m-8.p-2
+           pink-panther
+           [:div 
+            "Clicked "
+            [:button {:class "border m-2 p-3 border-pink-500"
+                     :on-click ?incr} @state]
+           " times"]]
+   :fns {:incr (fn [_ s] (inc s))}}
+  {:fns {}}))
+;; @@
+;; ->
+;;; [32m2021-06-01T22:10:05.199Z UnknownHost INFO [goldly.runner:15] - starting system  :notebook-click-counter[0m
+;; <-
+;; =>
+;;; [["^ ","~:type","~:pinkie","~:content",["~:p/goldly","~:notebook-click-counter"]]]
+;; <=

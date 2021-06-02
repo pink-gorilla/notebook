@@ -1,0 +1,195 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:id :f0f1ff32-c48e-4cb4-908a-eb5645bb61d8, :tagline "welcome to pink gorilla notebook"}
+
+;; @@
+
+;; **
+;;; # Welcome to PinkGorilla Notebook
+;;; 
+;;; ## Features
+;;; 
+;;; 1. clojure evals (via nrepl)
+;;; 2. clojurescript evals (via goldly and sci)
+;;; 3. ui visualizations
+;;; 4. dynamically add new custom ui vizualisations
+;;; 5. save notebooks to file /github gist or github repo
+;; **
+
+;; @@ [clj]
+; this cell uses clojure 
+; you can eval one segment with ctrl + enter
+(+ 7 7)
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-long"],"14"]]]
+;; <=
+
+;; @@ [cljs]
+; this cell uses clojurescript
+; you can eval one segment with ctrl + enter
+(+ 7 7)
+;; @@
+;; =>
+;;; ["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-long"],"14"]]
+;; <=
+
+;; @@ [clj]
+^:R 
+  [:div.prose 
+    [:h2 "Hello, World!"] 
+    [:div {:style {:display :flex :flex-direction :row
+                   :color :green :font-weight :bold :background-color :pink 
+                   :margin-left 20 :padding 10 :border :solid :width 500}} 
+      [:ol 
+        [:li "The Pinkie"] 
+        [:li "The Pinkie and the Brain"]  
+        [:li "What will we be doing today?"]]  
+      [:img {:height 100 :width 100 
+             :src "https://images-na.ssl-images-amazon.com/images/I/61LeuO%2Bj0xL._SL1500_.jpg"}]]]
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:div.prose",["~:h2","Hello, World!"],["~:div",["^ ","~:style",["^ ","~:color","~:green","~:font-weight","~:bold","~:margin-left",20,"~:background-color","~:pink","~:width",500,"~:padding",10,"~:display","~:flex","~:border","~:solid","~:flex-direction","~:row"]],["~:ol",["~:li","The Pinkie"],["^H","The Pinkie and the Brain"],["^H","What will we be doing today?"]],["~:img",["^ ","~:height",100,"^?",100,"~:src","https://images-na.ssl-images-amazon.com/images/I/61LeuO%2Bj0xL._SL1500_.jpg"]]]],"~:map-keywords",true]]]
+;; <=
+
+;; **
+;;; # Keybindings 
+;;; 
+;;; ctrl enter - eval current cell
+;;; 
+;;; alt-g k - keybinding dialog
+;;; 
+;;; alt-g e - explorer window
+;;; 
+;;; alt-g r - repl info window
+;; **
+
+;; @@ [clj]
+ ^:R [:p/vega "https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json" ]
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega","https://raw.githubusercontent.com/vega/vega/master/docs/examples/bar-chart.vg.json"],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; []
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; []
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; []
+;; <=
+
+;; @@ [clj]
+(require '[pinkgorilla.gorilla-plot.core :as plot])
+(plot/list-plot (concat (range 10) (reverse (range 10))))
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]],["^ ","^0","~:reagent","^2",["^ ","^1",["~:p/vega",["^ ","~:$schema","https://vega.github.io/schema/vega/v5.json","~:width",400,"~:height",247.2188,"~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:data",[["^ ","~:name","53c1dd96-34c6-45ad-9d23-6f592fb02764","~:values",[["^ ","~:x",0,"~:y",0],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",4],["^ ","~:x",5,"~:y",5],["^ ","~:x",6,"~:y",6],["^ ","~:x",7,"~:y",7],["^ ","~:x",8,"~:y",8],["^ ","~:x",9,"~:y",9],["^ ","~:x",10,"~:y",9],["^ ","~:x",11,"~:y",8],["^ ","~:x",12,"~:y",7],["^ ","~:x",13,"~:y",6],["^ ","~:x",14,"~:y",5],["^ ","~:x",15,"~:y",4],["^ ","~:x",16,"~:y",3],["^ ","~:x",17,"~:y",2],["^ ","~:x",18,"~:y",1],["^ ","~:x",19,"~:y",0]]]],"~:marks",[["^ ","^0","symbol","~:from",["^ ","^?","53c1dd96-34c6-45ad-9d23-6f592fb02764"],"~:encode",["^ ","~:enter",["^ ","~:x",["^ ","~:scale","x","~:field","x"],"~:y",["^ ","^F","y","^G","y"],"~:fill",["^ ","~:value","steelblue"],"~:fillOpacity",["^ ","^I",1]],"~:update",["^ ","~:shape","circle","~:size",["^ ","^I",70],"~:stroke",["^ ","^I","transparent"]],"~:hover",["^ ","^M",["^ ","^I",210],"^N",["^ ","^I","white"]]]]],"~:scales",[["^ ","^@","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","^?","53c1dd96-34c6-45ad-9d23-6f592fb02764","^G","x"]],["^ ","^@","y","^0","linear","^Q","height","~:nice",true,"^R",false,"^S",["^ ","^?","53c1dd96-34c6-45ad-9d23-6f592fb02764","^G","y"]]],"~:axes",[["^ ","~:orient","bottom","^F","x"],["^ ","^V","left","^F","y"]]]],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [clj]
+(plot/list-plot (range 20))
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega",["^ ","~:$schema","https://vega.github.io/schema/vega/v5.json","~:width",400,"~:height",247.2188,"~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:data",[["^ ","~:name","b7cbcd92-1669-49ab-9e0e-2ddea4291864","~:values",[["^ ","~:x",0,"~:y",0],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",4],["^ ","~:x",5,"~:y",5],["^ ","~:x",6,"~:y",6],["^ ","~:x",7,"~:y",7],["^ ","~:x",8,"~:y",8],["^ ","~:x",9,"~:y",9],["^ ","~:x",10,"~:y",10],["^ ","~:x",11,"~:y",11],["^ ","~:x",12,"~:y",12],["^ ","~:x",13,"~:y",13],["^ ","~:x",14,"~:y",14],["^ ","~:x",15,"~:y",15],["^ ","~:x",16,"~:y",16],["^ ","~:x",17,"~:y",17],["^ ","~:x",18,"~:y",18],["^ ","~:x",19,"~:y",19]]]],"~:marks",[["^ ","^0","symbol","~:from",["^ ","^=","b7cbcd92-1669-49ab-9e0e-2ddea4291864"],"~:encode",["^ ","~:enter",["^ ","~:x",["^ ","~:scale","x","~:field","x"],"~:y",["^ ","^D","y","^E","y"],"~:fill",["^ ","~:value","steelblue"],"~:fillOpacity",["^ ","^G",1]],"~:update",["^ ","~:shape","circle","~:size",["^ ","^G",70],"~:stroke",["^ ","^G","transparent"]],"~:hover",["^ ","^K",["^ ","^G",210],"^L",["^ ","^G","white"]]]]],"~:scales",[["^ ","^>","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","^=","b7cbcd92-1669-49ab-9e0e-2ddea4291864","^E","x"]],["^ ","^>","y","^0","linear","^O","height","~:nice",true,"^P",false,"^Q",["^ ","^=","b7cbcd92-1669-49ab-9e0e-2ddea4291864","^E","y"]]],"~:axes",[["^ ","~:orient","bottom","^D","x"],["^ ","^T","left","^D","y"]]]],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [cljs]
+(meta (listplot (range 10)))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:list-like","~:content",["^ ","~:class","clj-map","~:open","{","~:close","}","~:separator"," ","~:items",["~#list",[["^ ","^0","~:hiccup","^2",["~:span",["^ ","^3","clj-keyword"],":R"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-boolean"],"true"]]]],"~:value","{:R true}"]]
+;; <=
+
+;; @@ [cljs]
+^:R [:p/vega {:$schema "https://vega.github.io/schema/vega/v5.json", :width 400, :height 247.2187886279357, 
+          :padding {:top 10, :left 55, :bottom 40, :right 10}, 
+          :data [{:name "eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1", 
+                  :values [{:x 0, :y 0} {:x 1, :y 1} {:x 2, :y 2} {:x 3, :y 3} {:x 4, :y 4} {:x 5, :y 5} {:x 6, :y 6} {:x 7, :y 7} {:x 8, :y 8} {:x 9, :y 9}]}], 
+          :marks [{:type "symbol", :from {:data "eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1"}, 
+                   :encode {:enter {:x {:scale "x", :field "x"}, :y {:scale "y", :field "y"}, 
+                                    :fill {:value "steelblue"}, :fillOpacity {:value 1}}, 
+                            :update {:shape "circle", :size {:value 70}, :stroke {:value "transparent"}}, 
+                            :hover {:size {:value 210}, :stroke {:value "white"}}}}], 
+          :scales [{:name "x", :type "linear", :range "width", :zero false, 
+                    :domain {:data "eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1", :field "x"}} 
+                   {:name "y", :type "linear", :range "height", :nice true, :zero false, 
+                    :domain {:data "eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1", :field "y"}}], 
+          :axes [{:orient "bottom", :scale "x"} {:orient "left", :scale "y"}]}]
+
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega",["^ ","~:$schema","https://vega.github.io/schema/vega/v5.json","~:width",400,"~:height",247.2187886279357,"~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:data",[["^ ","~:name","eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1","~:values",[["^ ","~:x",0,"~:y",0],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",4],["^ ","~:x",5,"~:y",5],["^ ","~:x",6,"~:y",6],["^ ","~:x",7,"~:y",7],["^ ","~:x",8,"~:y",8],["^ ","~:x",9,"~:y",9]]]],"~:marks",[["^ ","^0","symbol","~:from",["^ ","^=","eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1"],"~:encode",["^ ","~:enter",["^ ","~:x",["^ ","~:scale","x","~:field","x"],"~:y",["^ ","^D","y","^E","y"],"~:fill",["^ ","~:value","steelblue"],"~:fillOpacity",["^ ","^G",1]],"~:update",["^ ","~:shape","circle","~:size",["^ ","^G",70],"~:stroke",["^ ","^G","transparent"]],"~:hover",["^ ","^K",["^ ","^G",210],"^L",["^ ","^G","white"]]]]],"~:scales",[["^ ","^>","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","^=","eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1","^E","x"]],["^ ","^>","y","^0","linear","^O","height","~:nice",true,"^P",false,"^Q",["^ ","^=","eb4beaa7-3e73-4cbe-99f8-8cfc2e5b64f1","^E","y"]]],"~:axes",[["^ ","~:orient","bottom","^D","x"],["^ ","^T","left","^D","y"]]]],"~:map-keywords",true]]
+;; <=
+
+;; @@ [clj]
+(defn credit [user txt]
+  [:li
+   [:span
+    [:a.w-16 {:href (str "https://github.com/" user)} user]
+    [:span.ml-5 txt]]])
+
+(defn credits-box []
+  ^:R [:div.bg-green-300.mt-5.p-5
+   [:h1.text-2xl "Credits"]
+   [:div.prose
+    [:ul.list-disc
+     (credit "JonyEpsilon" "legacy gorilla-repl (with js frontend)")
+     (credit "deas" "port to re-frame, nrepl-relay, build-automation, unit-tests")
+     (credit "awb99" "gorilla-ui, goldly")
+     (credit "mauricioszabo" "goldly sci compiler, nrepl-tooling")
+     (credit "daslu" "notworking and testing, clojisr")]]])
+(credits-box)
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'user/credit"]],["^ ","^0","^1","^2",["^3",["^ ","^4","clj-var"],"#'user/credits-box"]],["^ ","^0","~:reagent","^2",["^ ","^1",["~:div.bg-green-300.mt-5.p-5",["~:h1.text-2xl","Credits"],["~:div.prose",["~:ul.list-disc",["~:li",["^3",["~:a.w-16",["^ ","~:href","https://github.com/JonyEpsilon"],"JonyEpsilon"],["~:span.ml-5","legacy gorilla-repl (with js frontend)"]]],["^:",["^3",["^;",["^ ","^<","https://github.com/deas"],"deas"],["^=","port to re-frame, nrepl-relay, build-automation, unit-tests"]]],["^:",["^3",["^;",["^ ","^<","https://github.com/awb99"],"awb99"],["^=","gorilla-ui, goldly"]]],["^:",["^3",["^;",["^ ","^<","https://github.com/mauricioszabo"],"mauricioszabo"],["^=","goldly sci compiler, nrepl-tooling"]]],["^:",["^3",["^;",["^ ","^<","https://github.com/daslu"],"daslu"],["^=","notworking and testing, clojisr"]]]]]],"~:map-keywords",true]]]
+;; <=
+
+;; @@ [cljs]
+; clojurescript
+(listplot (range 10))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega",["^ ","~:$schema","https://vega.github.io/schema/vega/v5.json","~:width",400,"~:height",247.2187886279357,"~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:data",[["^ ","~:name","044fa5d7-395a-4c37-a495-106d5ab876f2","~:values",[["^ ","~:x",0,"~:y",0],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",4],["^ ","~:x",5,"~:y",5],["^ ","~:x",6,"~:y",6],["^ ","~:x",7,"~:y",7],["^ ","~:x",8,"~:y",8],["^ ","~:x",9,"~:y",9]]]],"~:marks",[["^ ","^0","symbol","~:from",["^ ","^=","044fa5d7-395a-4c37-a495-106d5ab876f2"],"~:encode",["^ ","~:enter",["^ ","~:x",["^ ","~:scale","x","~:field","x"],"~:y",["^ ","^D","y","^E","y"],"~:fill",["^ ","~:value","steelblue"],"~:fillOpacity",["^ ","^G",1]],"~:update",["^ ","~:shape","circle","~:size",["^ ","^G",70],"~:stroke",["^ ","^G","transparent"]],"~:hover",["^ ","^K",["^ ","^G",210],"^L",["^ ","^G","white"]]]]],"~:scales",[["^ ","^>","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","^=","044fa5d7-395a-4c37-a495-106d5ab876f2","^E","x"]],["^ ","^>","y","^0","linear","^O","height","~:nice",true,"^P",false,"^Q",["^ ","^=","044fa5d7-395a-4c37-a495-106d5ab876f2","^E","y"]]],"~:axes",[["^ ","~:orient","bottom","^D","x"],["^ ","^T","left","^D","y"]]]],"~:map-keywords",true]]
+;; <=

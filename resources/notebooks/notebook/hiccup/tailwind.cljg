@@ -1,0 +1,45 @@
+;; gorilla-repl.fileformat = 2
+
+;; @@ [meta]
+{:id :6f3615c0-a3f2-4d2e-b018-082df2157ad6}
+
+;; @@
+
+;; @@ [clj]
+;stolen from: https://tailwindcomponents.com/component/card-for-listing
+; thanks for the awesome html -> hiccup converter at: http://html2hiccup.buttercloud.com/
+; note that reagent does not support styles viastring - only hiccup syntax!
+^:r [:div {:class "w-full max-w-sm overflow-hidden rounded border bg-white shadow"} 
+ [:div {:class "relative"}
+  [:div {:class "h-48 bg-cover bg-no-repeat bg-center" :style {:background-image "url(https://picsum.photos/245/245"}} ]
+  [:div {:style {:background-color "rgba(0,0,0,0.6)"} :class "absolute bottom-0 mb-2 ml-3 px-2 py-1 rounded text-sm text-white"} "$ 16.80"]
+  [:div {:style {:bottom "-20px"} :class "absolute right-0 w-10 mr-2"}
+   [:a {:href "#"}
+    [:img {:class "rounded-full border-2 border-white" :src "https://randomuser.me/api/portraits/women/17.jpg"}]]]]
+ [:div {:class "p-3"}
+  [:h3 {:class "mr-10 text-sm truncate-2nd"}
+   [:a {:class "hover:text-blue-500" :href "/huawwei-p20-pro-complete-set-with-box-a.7186128376"} "Some Title Here"]]
+  [:div {:class "flex items-start justify-between"}
+   [:p {:class "text-xs text-gray-500"} "Quezon City, Metro Manila"]
+   [:button {:class "outline text-xs text-gray-500 hover:text-blue-500" :title "Bookmark this ad"}
+    [:i {:class "fa fa-bookmark"}]
+    ]]
+  [:p {:class "text-xs text-gray-500"}
+   [:a {:href "#":class "hover:underline hover:text-blue-500" } "username2019"]" • 2 days ago"]]] 
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; [["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:div",["^ ","~:class","w-full max-w-sm overflow-hidden rounded border bg-white shadow"],["^4",["^ ","^5","relative"],["^4",["^ ","^5","h-48 bg-cover bg-no-repeat bg-center","~:style",["^ ","~:background-image","url(https://picsum.photos/245/245"]]],["^4",["^ ","^6",["^ ","~:background-color","rgba(0,0,0,0.6)"],"^5","absolute bottom-0 mb-2 ml-3 px-2 py-1 rounded text-sm text-white"],"$ 16.80"],["^4",["^ ","^6",["^ ","~:bottom","-20px"],"^5","absolute right-0 w-10 mr-2"],["~:a",["^ ","~:href","#"],["~:img",["^ ","^5","rounded-full border-2 border-white","~:src","https://randomuser.me/api/portraits/women/17.jpg"]]]]],["^4",["^ ","^5","p-3"],["~:h3",["^ ","^5","mr-10 text-sm truncate-2nd"],["~:a",["^ ","^5","hover:text-blue-500","^:","/huawwei-p20-pro-complete-set-with-box-a.7186128376"],"Some Title Here"]],["^4",["^ ","^5","flex items-start justify-between"],["~:p",["^ ","^5","text-xs text-gray-500"],"Quezon City, Metro Manila"],["~:button",["^ ","^5","outline text-xs text-gray-500 hover:text-blue-500","~:title","Bookmark this ad"],["~:i",["^ ","^5","fa fa-bookmark"]]]],["~:p",["^ ","^5","text-xs text-gray-500"],["~:a",["^ ","^:","#","^5","hover:underline hover:text-blue-500"],"username2019"]," • 2 days ago"]]],"~:map-keywords",false]]]
+;; <=
+
+;; @@ [clj]
+
+;; @@
+;; ->
+;;; 
+;; <-
+;; =>
+;;; []
+;; <=
