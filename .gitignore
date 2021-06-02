@@ -12,3 +12,4 @@ creds.edn
 goldly_bindings_generated.cljs
 webly-routes.edn
 .cpcache
+pom.xml
