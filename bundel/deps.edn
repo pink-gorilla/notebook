@@ -1,0 +1,39 @@
+{:paths ["src"
+         ;"resources" ; snippets
+         "target/webly" ; webly bundel
+         ]
+ :deps
+ {org.pinkgorilla/notebook {:local/root ".."}
+  ; bundel
+  org.pinkgorilla/gorilla-ui  {:mvn/version "0.3.27"}
+  org.pinkgorilla/gorilla-plot  {:mvn/version "1.2.9"}
+  org.pinkgorilla/ui-quil  {:mvn/version "0.1.5"}}
+ :aliases
+ {:outdated ; name equals npm outdated
+  {:extra-deps {com.github.liquidz/antq {:mvn/version "RELEASE"}}
+   :main-opts ["-m" "antq.core"]}
+
+  :notebook {:exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
+             :exec-args {:profile "watch"
+                         :config {:goldly {:systems-ns [systems.fortune]
+                                           :extensions [[ui.site.goldly.core]
+                                                        [pinkgorilla.ui.goldly]
+                                                        [ui.quil.goldly]
+                                                        [pinkgorilla.gorilla-plot.goldly]]}}}}
+
+  :jar {:extra-paths ["target/webly"]
+        :extra-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
+        :exec-fn hf.depstar/jar
+        :exec-args {:jar "target/notebook-bundel.jar" 
+                    :group-id "org.pinkgorilla"
+                    :artifact-id "notebook-bundel"
+                    :sync-pom true}}
+
+  :deploy {:replace-deps {slipset/deps-deploy {:mvn/version "0.1.5"}}
+            :exec-fn deps-deploy.deps-deploy/deploy
+            :exec-args {:installer :remote 
+                        :artifact "target/notebook-bundel.jar"}}
+
+
+;
+  }}

@@ -66,7 +66,6 @@ jobs:
       #  clojure -M:release pom
       #  clojure -M:release jar
       # clojure -M:release deploy
-      # lein release
       # bash <(curl -s https://codecov.io/bash)
     - name: Release-Bundel
       env:
@@ -75,6 +74,6 @@ jobs:
       run: |
         git config --global user.email "ci@pinkgorilla.org"
         git config --global user.name "CI/CD"
-        clojure -X:notebook :profile '"npm-install"'
-        clojure -X:notebook :profile '"release"'
-        clojure -M:release-bundel
+        cd bundel
+        ./bundel-create.sh
+        ./bundel-publish.sh
