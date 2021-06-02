@@ -36,8 +36,8 @@ jobs:
         lein notebook npm-install
     # npm install
        
-    - name: Check formatting
-      run: lein cljfmt check
+    #- name: Check formatting
+    #  run: lein cljfmt check
     - name: Run tests
       run: |
         lein test
