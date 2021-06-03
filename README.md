@@ -17,7 +17,7 @@ Whichever method you use to start the notebook, you should reach it at [`http://
 
 ## Run - standalone 
 
-The easiest way to run releases locally is leveraging the `clojure` cli
+The easiest way to run the notebook locally is leveraging the `clojure` cli
 
 ```
 clojure -Sdeps '{:deps {org.pinkgorilla/notebook-bundel {:mvn/version "RELEASE"}}}' -m pinkgorilla.notebook-bundel
@@ -30,7 +30,7 @@ One way to configure the notebook is to pass it a edn configuration file. An exa
 
 In your deps.edn add this alias:
 ```
-:notebook {:extra-deps {org.pinkgorilla/notebook-bundel {:mvn/version "0.5.5"}}
+:notebook {:extra-deps {org.pinkgorilla/notebook-bundel {:mvn/version "RELEASE"}}
            :exec-fn pinkgorilla.notebook-bundel/run!
            :exec-args {:config "notebook-config.edn"}}
 ```
@@ -40,15 +40,14 @@ An example of in-project use of notebook is: [trateg](https://github.com/clojure
 
 ## Run - cloned git repo
 
+This option is mainly there for development of notebook. 
+For regular use, the long compile-times are not really sensible.
+
 Run `clojure -X:notebook` to run the notebook. 
 
 This runs the notebook with ui libraries bundled:
 - gorilla ui
 - gorilla plot
-
-
-This option is mainly there for development of notebook. 
-For regular use, the long compile-times are not really sensible.
 
 ## Docker Image
 
@@ -58,11 +57,9 @@ Documentation has been moved [over here](https://pink-gorilla.github.io/)
 [![](https://images.microbadger.com/badges/version/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own version badge on microbadger.com")
 [![](https://images.microbadger.com/badges/image/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own image badge on microbadger.com")
 
-
 ## Development UI 
 
 Run `clojure -X:develop` to run the develop ui. 
-
 
 ## Licence
 
