@@ -38,7 +38,6 @@
             :server {:resource-root-path "notebooks"
                      :exclude #{".git" ".svn"}
                      :roots   {:project "./notebooks"
-                               ;:gorilla-ui "../gorilla-ui/resources/notebooks"
                                }}}
 
  :nrepl {;:ws-endpoint "ws://localhost:9000/api/nrepl"

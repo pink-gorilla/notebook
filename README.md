@@ -31,12 +31,18 @@ One way to configure the notebook is to pass it a edn configuration file. An exa
 In your deps.edn add this alias:
 ```
 :notebook {:extra-deps {org.pinkgorilla/notebook-bundel {:mvn/version "RELEASE"}}
-           :exec-fn pinkgorilla.notebook-bundel/run!
+           :exec-fn pinkgorilla.notebook-bundel/run
            :exec-args {:config "notebook-config.edn"}}
 ```
 then run it with `clojure -M:notebook`.
 
-An example of in-project use of notebook is: [trateg](https://github.com/clojure-quant/trateg)
+An example of in-project use of notebook with deps.edn is: [trateg](https://github.com/clojure-quant/trateg)
+Clone trateg and run `clojure -X:notebook`
+
+## Run - in your leiningen project
+
+An example of in-project use of notebook with leiningen is: [gorilla-ui](https://github.com/pink-gorilla/gorilla-ui)
+Clone gorilla-ui and run `lein notebook`
 
 ## Docker Image
 

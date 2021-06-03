@@ -1,7 +1,5 @@
-{:goldly {;:systems-ns [systems.fortune]
-           :extensions [;[ui.site.goldly.core]
-                        [pinkgorilla.ui.goldly]  ;gorilla-ui
-                        [pinkgorilla.gorilla-plot.goldly] ;gorilla-plot
-                        [ui.quil.goldly] ; quil
-                        ]}}
- 
+{:goldly {:enabled true
+          :extensions [[pinkgorilla.ui.goldly] ; gorilla-ui
+                       [pinkgorilla.gorilla-plot.goldly] ; gorilla-plot
+                       [ui.quil.goldly]]}}
+

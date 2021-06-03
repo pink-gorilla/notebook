@@ -89,18 +89,16 @@
                 org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
    :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
    :exec-args {:profile "watch"
-               :config {; config is similar in resources/notebook-bundel.edn
-                        :goldly {:systems-ns [systems.fortune]
-                                 :extensions [[ui.site.goldly.core]
-                                              [pinkgorilla.ui.goldly] ; gorilla-ui
-                                              [pinkgorilla.gorilla-plot.goldly] ;gorilla-plot
-                                              [ui.quil.goldly]
-                                              ]}}}}
+               ; we use edn config, because deps.edn alias settings cannot be saved as resource
+               ; and we wat to avoid duplication of the config.
+               :config "notebook-bundel.edn" ; in resources/notebook-bundel.edn
+              }}
   ;; 
 
   :bundel-config {:exec-fn pinkgorilla.bconfig/generate-bundle-config}
 
-  ;; different ways to start the bundel
+  ;; different ways to start the bundel - for testing
+  ; need to be run in the bundel folder.
 
   :run {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.28"}
                      org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
@@ -110,12 +108,12 @@
   :runxna {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.28"}
                         org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
                         org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
-           :exec-fn pinkgorilla.notebook-bundel/run!}
+           :exec-fn pinkgorilla.notebook-bundel/run}
 
   :runx {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.28"}
                       org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
                       org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
-         :exec-fn pinkgorilla.notebook-bundel/run!
+         :exec-fn pinkgorilla.notebook-bundel/run
          :exec-args {:config "notebook-config.edn"}}
 
 
