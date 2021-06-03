@@ -3,12 +3,17 @@
    [pinkgorilla.notebook-ui.app.app :refer [notebook-run!]])
   (:gen-class))
 
-(defn run! []
+(defn run! [{:keys [profile config]
+             :or {profile "jetty"
+                  config "notebook-bundel.edn"}}]
   (notebook-run!
-   {:profile "jetty"
-    :config "notebook-bundel.edn"}))
+   {:profile profile
+    :config config}))
 
 (defn -main ; for lein alias
-  []
-  (run!))
+  ([]
+   (run! {}))
+  ([config]
+   (run! {:config config})))
+
 
