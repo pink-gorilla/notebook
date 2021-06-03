@@ -63,10 +63,11 @@
   [document-page document-viewer header-menu-left query-params])
 
 (defmethod reagent-page :ui/notebook-welcome [{:keys [route-params query-params handler] :as route}]
-  (let [query-params {:type :file
-                      ;:type :res
-                      ;:filename "notebook/clojure/multimethods.cljg"
-                      :filename "resources/notebooks/notebook/notebook-welcome.cljg"}]
+  (let [query-params {:type :res
+                      :filename "notebook/notebook-welcome.cljg"
+                      ;:type :file
+                      ;:filename "resources/notebooks/notebook/notebook-welcome.cljg"
+                      }]
     [document-page document-viewer header-menu-left query-params]))
 
 (defmethod reagent-page :ui/notebook-current [{:keys [route-params query-params handler] :as route}]

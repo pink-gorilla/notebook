@@ -19,11 +19,13 @@
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
         org.pinkgorilla/ui-markdown {:mvn/version "0.0.8"}
         org.pinkgorilla/ui-code {:mvn/version "0.0.12"}
-        org.pinkgorilla/ui-site {:mvn/version "0.0.4"}
+        org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
         org.pinkgorilla/goldly {:mvn/version "0.2.77"}
         org.pinkgorilla/webly {:mvn/version "0.2.43"}}
  :aliases
- {;https://github.com/applied-science/deps-library
+ {;; Developer tooling
+  
+  ;https://github.com/applied-science/deps-library
   :release
   {:extra-deps {applied-science/deps-library {:mvn/version "0.4.0"}}
    :main-opts ["-m" "applied-science.deps-library"]}
@@ -63,53 +65,57 @@
 
    ; notebook
 
+  :ci {:extra-paths ["test"]
+       :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
+       :exec-args {:profile "ci"
+                   :config nil}}
+
   :develop {:extra-paths ["profiles/webly/src"
                           "profiles/webly/resources"]
             :exec-fn demo.app/demo!
             :exec-args {:profile "watch"
                         :config "demo.edn"}}
 
-  :ci {:extra-paths ["test"]
-       :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
-       :exec-args {:profile "ci"
-                   :config nil}}
-
   :notebook-bare {:exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
                   :exec-args {:profile "watch"
                               :config nil}}
 
-  :notebook
+  :notebook ; notebook with bundeled dependencies
   {:extra-paths ["target/webly"]
-   :extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
+   :extra-deps {; extra-deps get added to bundel/deps.edn for artefact notebook-bundel
+                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.28"}
                 org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
                 org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
    :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
    :exec-args {:profile "watch"
-               :config {:goldly {:systems-ns [systems.fortune]
+               :config {; config is similar in resources/notebook-bundel.edn
+                        :goldly {:systems-ns [systems.fortune]
                                  :extensions [[ui.site.goldly.core]
                                               [pinkgorilla.ui.goldly]
                                               [ui.quil.goldly]
                                               [pinkgorilla.gorilla-plot.goldly]]}}}}
+  ;; 
 
-  :run {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.27"}
+  :bundel-config {:exec-fn pinkgorilla.bconfig/generate-bundle-config}
+
+  ;; different ways to start the bundel
+
+  :run {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.28"}
                      org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
                      org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
         :main-opts ["-m" "pinkgorilla.notebook-bundel"]}
 
-  :bundel-config {:exec-fn pinkgorilla.bconfig/generate-bundle-config}
+  :runxna {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.28"}
+                        org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
+                        org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
+           :exec-fn pinkgorilla.notebook-bundel/run!}
 
-  :jar-bundel {:extra-paths ["target/webly"]
-               :extra-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
-               :exec-fn hf.depstar/jar
-               :exec-args {:jar "target/notebook-bundel.jar"
-                           :group-id "org.pinkgorilla"
-                           :artifact-id "notebook-bundel"
-                    ;:aliases [:notebook]
-                           :sync-pom true}}
+  :runx {:extra-deps {org.pinkgorilla/gorilla-ui {:mvn/version "0.3.28"}
+                      org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
+                      org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
+         :exec-fn pinkgorilla.notebook-bundel/run!
+         :exec-args {:config "notebook-config.edn"}}
 
-  :deploy-bundel {:replace-deps {slipset/deps-deploy {:mvn/version "0.1.5"}}
-                  :exec-fn deps-deploy.deps-deploy/deploy
-                  :exec-args {:installer :remote
-                              :artifact "target/notebook-bundel.jar"}}
+
 ;
   }}

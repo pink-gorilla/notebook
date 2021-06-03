@@ -15,5 +15,3 @@
    (run! {}))
   ([config]
    (run! {:config config})))
-
-
