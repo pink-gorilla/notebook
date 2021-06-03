@@ -38,6 +38,14 @@ then run it with `clojure -M:notebook`.
 
 An example of in-project use of notebook is: [trateg](https://github.com/clojure-quant/trateg)
 
+## Docker Image
+
+Documentation has been moved [over here](https://pink-gorilla.github.io/)
+
+<!-- [![dockeri.co](https://dockeri.co/image/pinkgorillawb/gorilla-notebook)](https://hub.docker.com/r/pinkgorillawb/gorilla-notebook) -->
+[![](https://images.microbadger.com/badges/version/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own version badge on microbadger.com")
+[![](https://images.microbadger.com/badges/image/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own image badge on microbadger.com")
+
 ## Run - cloned git repo
 
 This option is mainly there for development of notebook. 
@@ -48,14 +56,6 @@ Run `clojure -X:notebook` to run the notebook.
 This runs the notebook with ui libraries bundled:
 - gorilla ui
 - gorilla plot
-
-## Docker Image
-
-Documentation has been moved [over here](https://pink-gorilla.github.io/)
-
-<!-- [![dockeri.co](https://dockeri.co/image/pinkgorillawb/gorilla-notebook)](https://hub.docker.com/r/pinkgorillawb/gorilla-notebook) -->
-[![](https://images.microbadger.com/badges/version/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own version badge on microbadger.com")
-[![](https://images.microbadger.com/badges/image/pinkgorillawb/gorilla-notebook.svg)](https://microbadger.com/images/pinkgorillawb/gorilla-notebook "Get your own image badge on microbadger.com")
 
 ## Development UI 
 

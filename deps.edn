@@ -20,7 +20,7 @@
         org.pinkgorilla/ui-markdown {:mvn/version "0.0.8"}
         org.pinkgorilla/ui-code {:mvn/version "0.0.12"}
         org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
-        org.pinkgorilla/goldly {:mvn/version "0.2.77"}
+        org.pinkgorilla/goldly {:mvn/version "0.2.80"}
         org.pinkgorilla/webly {:mvn/version "0.2.43"}}
  :aliases
  {;; Developer tooling
@@ -76,7 +76,8 @@
             :exec-args {:profile "watch"
                         :config "demo.edn"}}
 
-  :notebook-bare {:exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
+  ; used by github-ci
+  :notebook-core {:exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
                   :exec-args {:profile "watch"
                               :config nil}}
 
@@ -91,9 +92,10 @@
                :config {; config is similar in resources/notebook-bundel.edn
                         :goldly {:systems-ns [systems.fortune]
                                  :extensions [[ui.site.goldly.core]
-                                              [pinkgorilla.ui.goldly]
+                                              [pinkgorilla.ui.goldly] ; gorilla-ui
+                                              [pinkgorilla.gorilla-plot.goldly] ;gorilla-plot
                                               [ui.quil.goldly]
-                                              [pinkgorilla.gorilla-plot.goldly]]}}}}
+                                              ]}}}}
   ;; 
 
   :bundel-config {:exec-fn pinkgorilla.bconfig/generate-bundle-config}
