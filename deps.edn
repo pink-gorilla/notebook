@@ -1,5 +1,6 @@
 {:paths ["src"
          "resources" ; snippets + notebooks
+         "target/webly" ; compiled bundel (if any)
          ;"target/node_modules" ; css png resources from npm modules (codemirror themes)
          ]
  :deps {org.clojure/clojure {:mvn/version "1.10.3"}
@@ -95,19 +96,20 @@
                      org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
         :main-opts ["-m" "pinkgorilla.notebook-bundel"]}
 
+  :bundel-config {:exec-fn pinkgorilla.bconfig/generate-bundle-config}
 
   :jar-bundel {:extra-paths ["target/webly"]
-        :extra-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
-        :exec-fn hf.depstar/jar
-        :exec-args {:jar "target/notebook-bundel.jar"
-                    :group-id "org.pinkgorilla"
-                    :artifact-id "notebook-bundel"
-                    :aliases [:notebook]
-                    :sync-pom true}}
-  
+               :extra-deps {com.github.seancorfield/depstar {:mvn/version "2.0.216"}}
+               :exec-fn hf.depstar/jar
+               :exec-args {:jar "target/notebook-bundel.jar"
+                           :group-id "org.pinkgorilla"
+                           :artifact-id "notebook-bundel"
+                    ;:aliases [:notebook]
+                           :sync-pom true}}
+
   :deploy-bundel {:replace-deps {slipset/deps-deploy {:mvn/version "0.1.5"}}
-           :exec-fn deps-deploy.deps-deploy/deploy
-           :exec-args {:installer :remote
-                       :artifact "target/notebook-bundel.jar"}}
+                  :exec-fn deps-deploy.deps-deploy/deploy
+                  :exec-args {:installer :remote
+                              :artifact "target/notebook-bundel.jar"}}
 ;
   }}

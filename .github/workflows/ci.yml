@@ -74,5 +74,7 @@ jobs:
       run: |
         git config --global user.email "ci@pinkgorilla.org"
         git config --global user.name "CI/CD"
-        ./scripts/bundel-compile.sh
-        ./scripts/bundel-deploy.sh
+        clojure -X:bundel-config
+        cd bundel
+        ./bundel-compile.sh
+        clojure -M:release
