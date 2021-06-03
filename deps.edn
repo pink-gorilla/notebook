@@ -14,7 +14,7 @@
         re-com/re-com {:mvn/version "2.13.2"}
         ;pink-gorilla
         org.pinkgorilla/picasso {:mvn/version "3.1.40"} ; used by nrepl-middleware + goldly cljs kernel
-        org.pinkgorilla/gorilla-explore {:mvn/version "0.2.62"} ; brings notebook-encoding
+        org.pinkgorilla/gorilla-explore {:mvn/version "0.2.63"} ; brings notebook-encoding
         org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.35"} ; brings picasso
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
         org.pinkgorilla/ui-markdown {:mvn/version "0.0.8"}

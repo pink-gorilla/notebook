@@ -37,7 +37,7 @@
                                     #_{:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}]}
             :server {:resource-root-path "notebooks"
                      :exclude #{".git" ".svn"}
-                     :roots   {:app "./resources/notebooks"
+                     :roots   {:project "./notebooks"
                                ;:gorilla-ui "../gorilla-ui/resources/notebooks"
                                }}}
 
