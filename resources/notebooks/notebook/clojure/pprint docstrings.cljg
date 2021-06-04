@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{:tags "", :tagline "print-table", :name "", :id :30c9aeb8-7bed-440f-852c-b178ed8d9837}
+{:tags "", :tagline "pprint repl/doc", :name "", :id :30c9aeb8-7bed-440f-852c-b178ed8d9837}
 
 ;; @@
 
@@ -149,4 +149,12 @@
 ;; <-
 ;; =>
 ;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
+;; <=
+
+;; @@ [cljs]
+;clojurescript:
+(with-out-str (clojure.repl/doc inc))
+;; @@
+;; =>
+;;; ["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-string"],"\"-------------------------\\nclojure.core/inc\\n([x])\\n  Returns a number one greater than num.\\n\""]]
 ;; <=

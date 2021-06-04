@@ -59,27 +59,6 @@
 (runner)
 ;; @@
 ;; ->
-;;; "O ping 1"
-;;; "X pong 2"
-;;; "O ping 3"
-;;; "X pong 4"
-;;; "O ping 5"
-;;; "X pong 6"
-;;; "O ping 7"
-;;; "X pong 8"
-;;; "O ping 9"
-;;; "X pong 10"
-;;; "O ping 11"
-;;; "Done."
-;; <-
-;; =>
-;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
-;; <=
-
-;; @@ [clj]
-(runner)
-;; @@
-;; ->
 ;;; "X pong 1"
 ;;; "O ping 2"
 ;;; "X pong 3"
@@ -91,6 +70,27 @@
 ;;; "X pong 9"
 ;;; "O ping 10"
 ;;; "X pong 11"
+;;; "Done."
+;; <-
+;; =>
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-nil"],"nil"]]]
+;; <=
+
+;; @@ [clj]
+(runner)
+;; @@
+;; ->
+;;; "O ping 1"
+;;; "X pong 2"
+;;; "O ping 3"
+;;; "X pong 4"
+;;; "O ping 5"
+;;; "X pong 6"
+;;; "O ping 7"
+;;; "X pong 8"
+;;; "O ping 9"
+;;; "X pong 10"
+;;; "O ping 11"
 ;;; "Done."
 ;; <-
 ;; =>

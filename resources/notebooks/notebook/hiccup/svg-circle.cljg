@@ -1,7 +1,7 @@
 ;; gorilla-repl.fileformat = 2
 
 ;; @@ [meta]
-{:tags "svg, renderer, sample", :tagline "svg via hiccup", :name ""}
+{:tags "svg, renderer, sample", :tagline "svg via hiccup", :name "", :id :cca5cb0e-38e9-44ac-907c-b134bf6221d3}
 
 ;; @@
 

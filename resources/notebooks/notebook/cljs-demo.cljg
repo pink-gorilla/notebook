@@ -5,9 +5,13 @@
 
 ;; @@
 
+;; **
+;;; # clojurescript 
+;; **
+
 ;; @@ [cljs]
 (listplot  (range 10) )
 ;; @@
 ;; =>
-;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega",["^ ","~:$schema","https://vega.github.io/schema/vega/v5.json","~:width",400,"~:height",247.2187886279357,"~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:data",[["^ ","~:name","98adbd4b-dfad-4bb3-b8e9-1a1d1b242bf9","~:values",[["^ ","~:x",0,"~:y",0],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",4],["^ ","~:x",5,"~:y",5],["^ ","~:x",6,"~:y",6],["^ ","~:x",7,"~:y",7],["^ ","~:x",8,"~:y",8],["^ ","~:x",9,"~:y",9]]]],"~:marks",[["^ ","^0","symbol","~:from",["^ ","^=","98adbd4b-dfad-4bb3-b8e9-1a1d1b242bf9"],"~:encode",["^ ","~:enter",["^ ","~:x",["^ ","~:scale","x","~:field","x"],"~:y",["^ ","^D","y","^E","y"],"~:fill",["^ ","~:value","steelblue"],"~:fillOpacity",["^ ","^G",1]],"~:update",["^ ","~:shape","circle","~:size",["^ ","^G",70],"~:stroke",["^ ","^G","transparent"]],"~:hover",["^ ","^K",["^ ","^G",210],"^L",["^ ","^G","white"]]]]],"~:scales",[["^ ","^>","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","^=","98adbd4b-dfad-4bb3-b8e9-1a1d1b242bf9","^E","x"]],["^ ","^>","y","^0","linear","^O","height","~:nice",true,"^P",false,"^Q",["^ ","^=","98adbd4b-dfad-4bb3-b8e9-1a1d1b242bf9","^E","y"]]],"~:axes",[["^ ","~:orient","bottom","^D","x"],["^ ","^T","left","^D","y"]]]],"~:map-keywords",true]]
+;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega",["^ ","~:$schema","https://vega.github.io/schema/vega/v5.json","~:width",400,"~:height",247.2187886279357,"~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:data",[["^ ","~:name","1b2a6935-8b30-4e68-b836-b8040445c837","~:values",[["^ ","~:x",0,"~:y",0],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",4],["^ ","~:x",5,"~:y",5],["^ ","~:x",6,"~:y",6],["^ ","~:x",7,"~:y",7],["^ ","~:x",8,"~:y",8],["^ ","~:x",9,"~:y",9]]]],"~:marks",[["^ ","^0","symbol","~:from",["^ ","^=","1b2a6935-8b30-4e68-b836-b8040445c837"],"~:encode",["^ ","~:enter",["^ ","~:x",["^ ","~:scale","x","~:field","x"],"~:y",["^ ","^D","y","^E","y"],"~:fill",["^ ","~:value","steelblue"],"~:fillOpacity",["^ ","^G",1]],"~:update",["^ ","~:shape","circle","~:size",["^ ","^G",70],"~:stroke",["^ ","^G","transparent"]],"~:hover",["^ ","^K",["^ ","^G",210],"^L",["^ ","^G","white"]]]]],"~:scales",[["^ ","^>","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","^=","1b2a6935-8b30-4e68-b836-b8040445c837","^E","x"]],["^ ","^>","y","^0","linear","^O","height","~:nice",true,"^P",false,"^Q",["^ ","^=","1b2a6935-8b30-4e68-b836-b8040445c837","^E","y"]]],"~:axes",[["^ ","~:orient","bottom","^D","x"],["^ ","^T","left","^D","y"]]]],"~:map-keywords",true]]
 ;; <=

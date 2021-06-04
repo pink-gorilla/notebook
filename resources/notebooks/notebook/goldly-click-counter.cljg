@@ -33,7 +33,7 @@
 ;;; 
 ;; <-
 ;; =>
-;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'user/pink-panther"]]]
+;;; [["^ ","~:type","~:hiccup","~:content",["~:span",["^ ","~:class","clj-var"],"#'solitary-autumn/pink-panther"]]]
 ;; <=
 
 ;; @@ [clj]
@@ -52,7 +52,7 @@
   {:fns {}}))
 ;; @@
 ;; ->
-;;; [32m2021-06-01T22:10:05.199Z UnknownHost INFO [goldly.runner:15] - starting system  :notebook-click-counter[0m
+;;; [32m2021-06-04T04:39:50.948Z UnknownHost INFO [goldly.runner:15] - starting system  :notebook-click-counter[0m
 ;; <-
 ;; =>
 ;;; [["^ ","~:type","~:pinkie","~:content",["~:p/goldly","~:notebook-click-counter"]]]
