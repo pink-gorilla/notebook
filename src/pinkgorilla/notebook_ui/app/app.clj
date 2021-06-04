@@ -33,17 +33,11 @@
       (warn "no server mode. not running explorer/goldly/nrepl"))
     (webly-run! profile config)))
 
-(defn -main
-  ([]
-   (notebook-run! {}))
-  ([profile]
-   (notebook-run! {:profile profile})))
-
 (defn -main ; for lein alias
   ([]
    (notebook-run! {}))
   ([profile]
    (notebook-run! {:profile profile}))
-  ([profile config]
+  ([config profile]
    (notebook-run! {:profile profile
                    :config config})))
