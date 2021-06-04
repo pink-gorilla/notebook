@@ -10,7 +10,7 @@ package.json
 package-lock.json
 creds.edn
 goldly_bindings_generated.cljs
-webly-routes.edn
+.webly
 .cpcache
 pom.xml
 karma.conf.js

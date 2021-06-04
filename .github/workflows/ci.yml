@@ -76,5 +76,5 @@ jobs:
         git config --global user.name "CI/CD"
         clojure -X:bundel-config
         cd bundel
-        ./bundel-compile.sh
+        ./bundel-compile-adv.sh
         clojure -M:release
