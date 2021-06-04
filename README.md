@@ -56,7 +56,7 @@ This requires some extra initial compilation time.
 
 ### in your deps.edn project
 
-## in your leiningen project
+### in your leiningen project
 
 UI Extension [gorilla-plot](https://github.com/pink-gorilla/gorilla-plot) uses leiningen to run
 notebooks with a custom build bundel, and with custom notebook folder.
@@ -81,7 +81,7 @@ This runs the notebook with ui libraries bundled:
 - gorilla ui
 - gorilla plot
 
-## Development UI 
+## Run Development UI 
 
 Run `clojure -X:develop` to run the develop ui. 
 

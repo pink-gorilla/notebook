@@ -72,6 +72,12 @@
    :exec-args     {:output "target/dependencies-graph.png"
                    :size   true}}
 
+  :spit {:extra-deps {metav/metav {:mvn/version "1.6.7"}}
+         :main-opts ["-m" "metav.spit"
+                     "--output-dir" "src"
+                     "--namespace" "pinkgorilla.git"
+                     "--formats" "clj"]}
+
    ; notebook
 
   :ci {:extra-paths ["test"]

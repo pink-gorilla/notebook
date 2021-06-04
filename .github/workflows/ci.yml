@@ -61,6 +61,7 @@ jobs:
         git config --global user.email "ci@pinkgorilla.org"
         git config --global user.name "CI/CD"
         clojure -M:release --patch
+        clojure -M:spit
         git push --tags
       #  clojure -M:release tag --minor
       #  clojure -M:release pom

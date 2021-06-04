@@ -16,19 +16,21 @@
                    [#{"webly.ws.msg-handler"} :warn]
                    [#{"webly.ws.*"} :info]
                    [#{"webly.user.*"} :info]
+                   [#{"webly.*"} :info]
+                   ; goldly
+                   [#{"goldly.runner.clj-fn"} :warn]
+                   [#{"goldly.*"} :info]
+                   [#{"systems.*"} :warn] ; otherwise we see timestamp sender
                    ; notebook
                    [#{"pinkgorilla.nrepl.client.*"} :info]
                    [#{"pinkgorilla.nrepl.relay.*"} :warn] ; gets sent to notebook/console otherwise
+                   [#{"pinkgorilla.notebook.*"} :info]
                    [#{"pinkgorilla.document.*"} :info]
                    [#{"pinkgorilla.storage.*"} :info]
                    [#{"pinkgorilla.explore.*"} :info]
                    [#{"notebook.*"} :info]
                    [#{"ui.notebook.*"} :info]
                    [#{"ui.codemirror.*"} :info]
-                   ; goldly
-                   [#{"goldly.runner.clj-fn"} :warn]
-                   [#{"goldly.*"} :info]
-                   [#{"systems.*"} :warn] ; otherwise we see timestamp sender
                    ; catch all
                     [#{"*"} :debug]
                    ]
