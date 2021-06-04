@@ -26,7 +26,7 @@ clojure -Sdeps '{:deps {org.pinkgorilla/notebook-bundel {:mvn/version "RELEASE"}
 ## Run - in your deps.edn project
 
 One way to configure the notebook is to pass it a edn configuration file. An example is
-[notebook edn config](https://github.com/pink-gorilla/notebook/blob/master/resources/notebook.edn)
+[notebook edn config](https://github.com/pink-gorilla/notebook/blob/master/resources/notebook-core.edn)
 
 In your deps.edn add this alias:
 ```

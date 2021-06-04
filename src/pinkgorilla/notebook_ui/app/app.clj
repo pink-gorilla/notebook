@@ -23,7 +23,7 @@
   [{:keys [config profile] ; a map so it can be consumed by tools deps -X
     :or {profile "jetty"
          config {}}}]
-  (let [config (add-config "notebook.edn" config)]
+  (let [config (add-config "notebook-core.edn" config)]
     (load-config! config)
     (when (compile? profile)
       (goldly-compile!))
@@ -38,3 +38,12 @@
    (notebook-run! {}))
   ([profile]
    (notebook-run! {:profile profile})))
+
+(defn -main ; for lein alias
+  ([]
+   (notebook-run! {}))
+  ([profile]
+   (notebook-run! {:profile profile}))
+  ([profile config]
+   (notebook-run! {:profile profile
+                   :config config})))
