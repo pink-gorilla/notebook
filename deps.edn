@@ -21,7 +21,7 @@
         org.pinkgorilla/ui-code {:mvn/version "0.0.12"}
         org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
         org.pinkgorilla/ui-repl {:mvn/version "0.0.5"}
-        org.pinkgorilla/goldly {:mvn/version "0.2.81"}
+        org.pinkgorilla/goldly {:mvn/version "0.2.83"}
         org.pinkgorilla/webly {:mvn/version "0.2.46"}}
  :aliases
  {;; Developer tooling
