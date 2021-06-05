@@ -13,15 +13,16 @@
         day8.re-frame/undo {:mvn/version "0.3.3"}
         re-com/re-com {:mvn/version "2.13.2"}
         ;pink-gorilla
-        org.pinkgorilla/picasso {:mvn/version "3.1.40"} ; used by nrepl-middleware + goldly cljs kernel
-        org.pinkgorilla/gorilla-explore {:mvn/version "0.2.63"} ; brings notebook-encoding
+        org.pinkgorilla/picasso {:mvn/version "3.1.42"} ; used by nrepl-middleware + goldly cljs kernel
+        org.pinkgorilla/gorilla-explore {:mvn/version "0.2.64"} ; brings notebook-encoding
         org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.35"} ; brings picasso
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
         org.pinkgorilla/ui-markdown {:mvn/version "0.0.8"}
         org.pinkgorilla/ui-code {:mvn/version "0.0.12"}
         org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
+        org.pinkgorilla/ui-repl {:mvn/version "0.0.5"}
         org.pinkgorilla/goldly {:mvn/version "0.2.81"}
-        org.pinkgorilla/webly {:mvn/version "0.2.45"}}
+        org.pinkgorilla/webly {:mvn/version "0.2.46"}}
  :aliases
  {;; Developer tooling
 
@@ -65,13 +66,14 @@
 
   :graph-deps
   {:replace-paths []
-   :replace-deps  {org.clojure/tools.deps.graph {:mvn/version "1.0.56"}}
+   :replace-deps  {org.clojure/tools.deps.graph {:mvn/version "1.0.63"}}
    :main-opts     ["-m" "clojure.tools.deps.graph"] ;; deprecated
    :ns-default    clojure.tools.deps.graph
    :exec-fn       graph
    :exec-args     {:output "target/dependencies-graph.png"
                    :size   true}}
 
+  ; https://github.com/jgrodziski/metav#spit-or-render-current-version-in-a-file
   :spit {:extra-deps {metav/metav {:mvn/version "1.6.7"}}
          :main-opts ["-m" "metav.spit"
                      "--output-dir" "src"
@@ -99,8 +101,8 @@
   :notebook ; notebook with bundeled dependencies
   {:extra-paths ["target/webly"]
    :extra-deps {; extra-deps get added to bundel/deps.edn for artefact notebook-bundel
-                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.30"}
-                org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.11"}
+                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.31"}
+                org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.12"}
                 org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
    :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
    :exec-args {:profile "watch"
