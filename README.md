@@ -30,6 +30,10 @@ artefact, because the javascript frotend app has already been precompiled, which
 
 ### in your deps.edn project
 
+We recommend to use tools.deps over leiningen fortwo reasons:
+- no dependency coflicts with tools.deps (tools deps resolves to the highest dependency version, vs leiningen which depends on the position in the project.clj
+- use RELEASE so you always get the most recent notebook)
+
 One way to configure the notebook is to pass it a edn configuration file. An example is
 [notebook edn config](https://github.com/pink-gorilla/notebook/blob/master/resources/notebook-core.edn)
 
@@ -56,9 +60,14 @@ This requires some extra initial compilation time.
 
 ### in your deps.edn project
 
+[ui-binary-clock](https://github.com/pink-gorilla/ui-binary-clock) and
+[ui-quil](https://github.com/pink-gorilla/ui-quil)
+both use deps.edn to build a custom goldly bundel (that includes the library that gets built).
+
 ### in your leiningen project
 
-UI Extension [gorilla-plot](https://github.com/pink-gorilla/gorilla-plot) uses leiningen to run
+** this just got dumped, as ui-vega needs to build notebook bundel for testing ** 
+UI Extension [ui-vega](https://github.com/pink-gorilla/ui-vega) uses leiningen to run
 notebooks with a custom build bundel, and with custom notebook folder.
 
 

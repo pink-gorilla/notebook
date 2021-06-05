@@ -37,7 +37,7 @@
 
  :explorer {:client {:repositories [{:name "local"  :url "/api/explorer" :save true}
                                     #_{:name "public" :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}]}
-            :server {:resource-root-path "notebooks"
+            :server {:resource-root-path "notebooks-none" ; no notebooks in resources (this happens only in bundel)
                      :exclude #{".git" ".svn"}
                      :roots   {:project "./notebooks"
                                }}}

@@ -21,7 +21,7 @@
         org.pinkgorilla/ui-code {:mvn/version "0.0.12"}
         org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
         org.pinkgorilla/ui-repl {:mvn/version "0.0.5"}
-        org.pinkgorilla/goldly {:mvn/version "0.2.83"}
+        org.pinkgorilla/goldly {:mvn/version "0.2.84"}
         org.pinkgorilla/webly {:mvn/version "0.2.46"}}
  :aliases
  {;; Developer tooling
@@ -101,9 +101,9 @@
   :notebook ; notebook with bundeled dependencies
   {:extra-paths ["target/webly"]
    :extra-deps {; extra-deps get added to bundel/deps.edn for artefact notebook-bundel
-                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.31"}
-                org.pinkgorilla/gorilla-plot {:mvn/version  "1.2.12"}
-                org.pinkgorilla/ui-quil {:mvn/version "0.1.5"}}
+                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.32"}
+                org.pinkgorilla/ui-vega {:mvn/version  "0.0.2"}
+                org.pinkgorilla/ui-quil {:mvn/version "0.1.6"}}
    :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
    :exec-args {:profile "watch"
                ; we use edn config, because deps.edn alias settings cannot be saved as resource
