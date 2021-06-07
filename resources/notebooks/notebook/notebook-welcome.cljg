@@ -112,7 +112,7 @@
 ;; <=
 
 ;; @@ [clj]
-(require '[pinkgorilla.gorilla-plot.core :as plot])
+(require '[pinkgorilla.vega.plot.core :as plot])
 (plot/list-plot (concat (range 10) (reverse (range 10))))
 ;; @@
 ;; ->
@@ -133,7 +133,7 @@
 ;; <=
 
 ;; @@ [cljs]
-(meta (listplot (range 10)))
+(plot/list-plot (range 10))
 ;; @@
 ;; =>
 ;;; ["^ ","~:type","~:list-like","~:content",["^ ","~:class","clj-map","~:open","{","~:close","}","~:separator"," ","~:items",["~#list",[["^ ","^0","~:hiccup","^2",["~:span",["^ ","^3","clj-keyword"],":R"]],["^ ","^0","^9","^2",["^:",["^ ","^3","clj-boolean"],"true"]]]],"~:value","{:R true}"]]
@@ -188,7 +188,7 @@
 
 ;; @@ [cljs]
 ; clojurescript
-(listplot (range 10))
+(plot/list-plot (range 10))
 ;; @@
 ;; =>
 ;;; ["^ ","~:type","~:reagent","~:content",["^ ","~:hiccup",["~:p/vega",["^ ","~:$schema","https://vega.github.io/schema/vega/v5.json","~:width",400,"~:height",247.2187886279357,"~:padding",["^ ","~:top",10,"~:left",55,"~:bottom",40,"~:right",10],"~:data",[["^ ","~:name","044fa5d7-395a-4c37-a495-106d5ab876f2","~:values",[["^ ","~:x",0,"~:y",0],["^ ","~:x",1,"~:y",1],["^ ","~:x",2,"~:y",2],["^ ","~:x",3,"~:y",3],["^ ","~:x",4,"~:y",4],["^ ","~:x",5,"~:y",5],["^ ","~:x",6,"~:y",6],["^ ","~:x",7,"~:y",7],["^ ","~:x",8,"~:y",8],["^ ","~:x",9,"~:y",9]]]],"~:marks",[["^ ","^0","symbol","~:from",["^ ","^=","044fa5d7-395a-4c37-a495-106d5ab876f2"],"~:encode",["^ ","~:enter",["^ ","~:x",["^ ","~:scale","x","~:field","x"],"~:y",["^ ","^D","y","^E","y"],"~:fill",["^ ","~:value","steelblue"],"~:fillOpacity",["^ ","^G",1]],"~:update",["^ ","~:shape","circle","~:size",["^ ","^G",70],"~:stroke",["^ ","^G","transparent"]],"~:hover",["^ ","^K",["^ ","^G",210],"^L",["^ ","^G","white"]]]]],"~:scales",[["^ ","^>","x","^0","linear","~:range","width","~:zero",false,"~:domain",["^ ","^=","044fa5d7-395a-4c37-a495-106d5ab876f2","^E","x"]],["^ ","^>","y","^0","linear","^O","height","~:nice",true,"^P",false,"^Q",["^ ","^=","044fa5d7-395a-4c37-a495-106d5ab876f2","^E","y"]]],"~:axes",[["^ ","~:orient","bottom","^D","x"],["^ ","^T","left","^D","y"]]]],"~:map-keywords",true]]

@@ -1,11 +1,8 @@
 {:webly {:title "PinkGorilla Notebook"
          :icon "/r/webly/pink-gorilla-32.png"
-         :lein-cljs-profile ""
-         :ns-cljs-app [pinkgorilla.notebook-ui.app.app]
-         :bundle-entry  "pinkgorilla.notebook_ui.app.app.start ();"
+         :ns-cljs [pinkgorilla.notebook-ui.app.app]
          :start-user-app [:notebook/start]
-         :user-routes-app "pinkgorilla.notebook-ui.app.routes/routes-app"
-         :user-routes-api "pinkgorilla.notebook-ui.app.routes/routes-api"}
+         :routes pinkgorilla.notebook-ui.app.routes/routes}
 
  :google-analytics {:enabled true} ; set to false to disable google-analytics tracking.
 
