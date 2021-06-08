@@ -21,7 +21,8 @@
         org.pinkgorilla/ui-code {:mvn/version "0.0.12"}
         org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
         org.pinkgorilla/ui-repl {:mvn/version "0.0.5"}
-        org.pinkgorilla/goldly {:mvn/version "0.2.86"}
+        org.pinkgorilla/ui-input {:mvn/version "0.0.2"}
+        org.pinkgorilla/goldly {:mvn/version "0.2.88"}
         org.pinkgorilla/webly {:mvn/version "0.3.1"}}
  :aliases
  {;; Developer tooling
@@ -101,8 +102,8 @@
   :notebook ; notebook with bundeled dependencies
   {:extra-paths ["target/webly"]
    :extra-deps {; extra-deps get added to bundel/deps.edn for artefact notebook-bundel
-                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.32"}
-                org.pinkgorilla/ui-vega {:mvn/version  "0.0.2"}
+                org.pinkgorilla/gorilla-ui {:mvn/version "0.3.33"}
+                org.pinkgorilla/ui-vega {:mvn/version  "0.0.3"}
                 org.pinkgorilla/ui-quil {:mvn/version "0.1.6"}}
    :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!
    :exec-args {:profile "watch"
