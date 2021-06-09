@@ -43,15 +43,14 @@ In your deps.edn add this alias:
            :exec-fn pinkgorilla.notebook-bundel/run
            :exec-args {:config "notebook-config.edn"}}
 ```
-then run it with `clojure -M:notebook`.
+then run it with `clojure -X:notebook`.
 
-An example of in-project use of notebook with deps.edn is: [trateg](https://github.com/clojure-quant/trateg)
+[trateg](https://github.com/clojure-quant/trateg) uses notebook-bundel with deps.edn:
 Clone trateg and run `clojure -X:notebook`
 
 ### in your leiningen project
 
-An example of in-project use of notebook with leiningen is: [gorilla-ui](https://github.com/pink-gorilla/gorilla-ui)
-Clone gorilla-ui and run `lein notebook`
+** We don't recommend leiningen use with notebook, as leiningen does not use the highest version of  dependencies.  ** 
 
 ## Run Notebook with **custom bundel**
 
@@ -60,15 +59,14 @@ This requires some extra initial compilation time.
 
 ### in your deps.edn project
 
-[ui-binary-clock](https://github.com/pink-gorilla/ui-binary-clock) and
-[ui-quil](https://github.com/pink-gorilla/ui-quil)
-both use deps.edn to build a custom goldly bundel (that includes the library that gets built).
+[ui-quil](https://github.com/pink-gorilla/ui-quil) use deps.edn to build a custom notebook 
+bundel (that includes the library that gets built).
 
 ### in your leiningen project
 
-** this just got dumped, as ui-vega needs to build notebook bundel for testing ** 
-UI Extension [ui-vega](https://github.com/pink-gorilla/ui-vega) uses leiningen to run
-notebooks with a custom build bundel, and with custom notebook folder.
+[gorilla-ui](https://github.com/pink-gorilla/gorilla-ui) and
+[ui-vega](https://github.com/pink-gorilla/ui-vega) use leiningen to run notebooks with a 
+custom build bundel, and with custom notebook folder.
 
 
 ## Run Notebook in Docker Image
