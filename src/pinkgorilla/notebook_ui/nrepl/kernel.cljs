@@ -1,7 +1,7 @@
 (ns pinkgorilla.notebook-ui.nrepl.kernel
   (:require
    [clojure.core.async :refer [<! >! chan close! go]]
-   [taoensso.timbre :as timbre :refer [debugf info error]]
+   [taoensso.timbre :as timbre :refer [debug debugf info error]]
    [re-frame.core :as rf]
    [picasso.id :refer [guuid]]
    [picasso.kernel.protocol :refer [kernel-eval]]
@@ -24,8 +24,8 @@
 (defmethod kernel-eval :clj [{:keys [id code]
                               :or {id (guuid)}}]
   (let [c (chan)]
-    (info "clj-eval: " code)
-    (go (try (let [_ (info "nrepl: " @nrepl)
+    (debug "clj-eval: " code)
+    (go (try (let [;_ (info "nrepl: " @nrepl)
                    conn (:conn @nrepl)
                    eval-result (<! (send-request! conn (op-eval code)))
                    _ (info "nrepl eval result: " eval-result)
@@ -40,3 +40,9 @@
                       :error e})))
         (close! c))
     c))
+
+
+; todo: fragments
+; seg-id (keyword id)
+; segment (get-in notebook [:segments seg-id])
+; result-new (process-fragment segment msg)

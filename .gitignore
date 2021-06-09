@@ -16,3 +16,4 @@ pom.xml
 karma.conf.js
 bundel/deps.edn
 git.clj
+.sniffer.edn

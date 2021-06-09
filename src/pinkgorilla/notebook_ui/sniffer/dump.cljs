@@ -7,14 +7,13 @@
    ))
 
 (defn dump [msg]
-  (infof "sniffer/dump %s " msg)
+  (debugf "sniffer/dump %s " msg)
   (try
-    (send! [:goldly/dump msg]) ; 5000 (fn [data] ; [event-type data]]
+    (send! [:sniffer/dump msg]) ; 5000 (fn [data] ; [event-type data]]
                       ;           (info "send data:" data)
                       ;           (dispatch [:goldly/event goldly-tag data])))
     (catch :default e
-      (error "exception sending to clj: " e)))
-  (info "sniffer/dump done."))
+      (error "sniffer/dump exception: " e))))
 
 (rf/reg-event-fx
  :sniffer/dump ; send data to clj.

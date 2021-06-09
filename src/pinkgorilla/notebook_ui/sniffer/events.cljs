@@ -5,7 +5,8 @@
    [cljs.tools.reader]
    [re-frame.core :as rf]
    [pinkgorilla.notebook-ui.sniffer.dump :refer [dump]]
-   [pinkgorilla.nrepl.client.op.eval :refer [process-fragment initial-value]]))
+   [pinkgorilla.nrepl.client.op.eval :refer [process-fragment initial-value]]
+   [notebook.core :refer [code-segment]]))
 
 (rf/reg-event-fx
  :nrepl/register-sniffer-sink
@@ -17,13 +18,39 @@
      (rf/dispatch [:nrepl/op-dispatch-rolling {:op "sniffer-sink"} [:sniffer/rcvd]])
      nil)))
 
-#_(defn process [msg]
-    (let [[path notebook] (get-notebook db)]
-      (cond
-        (= "eval" (:op msg))
-        (assoc-in db path (add-code-segment notebook msg))
-        :else
-        (assoc-in db path (add-result notebook msg)))))
+(def evals (atom {}))
+
+(defn set-code  [{:keys [op id code ns picasso value out err] :as msg}]
+  (swap! evals assoc id {:code code :id id :er initial-value})
+  (rf/dispatch [:doc/exec [:add-segment
+                           (-> (code-segment :clj code)
+                               (assoc :id id))]])
+  (rf/dispatch [:doc/exec [:set-state-segment id initial-value]]))
+
+(defn set-result [{:keys [op id code ns picasso value out err] :as msg}]
+  (warn "(partial) result: " msg)
+  (let [er {:ns ns  ; this triggers picasso/value
+            :picasso picasso
+            :value value
+            :out out
+            :err err}
+        result (get-in @evals [id :er])
+        _ (warn "result :" result)
+        er (process-fragment result er)
+        _ (swap! evals assoc-in [id :er] er)]
+    (info "er id: " id " result: " er)
+    (rf/dispatch [:doc/exec [:set-state-segment id er]])))
+
+(defn process [{:keys [op id code ns picasso value out err] :as msg}]
+  (cond
+    (= "eval" op)
+    (set-code msg)
+
+    (or picasso value out err)
+    (set-result msg)
+
+    :else
+    (warn "sniffer unprocessed msg: " msg)))
 
 (rf/reg-event-db
  :sniffer/rcvd
@@ -34,8 +61,9 @@
        ; admin message
        db
        ; eval or eval result
-       (do ;(process msg)
+       (do ;
          (dump msg)
+         (process msg)
          db)))))
 
 
