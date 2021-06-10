@@ -1,5 +1,6 @@
 #!/bin/sh
 
+rm .cpcache -r
 rm node_modules -r
 rm target -r
 rm .webly -r

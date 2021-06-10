@@ -20,12 +20,20 @@
 
 (def evals (atom {}))
 
+(defn ns-only? [code]
+  (or (re-matches #"^\(ns .*\)$" code)
+      (re-matches #"^\(in-ns '.*\)$" code)
+      (re-matches #"^\*ns\*$" code)))
+
 (defn set-code  [{:keys [op id code ns picasso value out err] :as msg}]
-  (swap! evals assoc id {:code code :id id :er initial-value})
-  (rf/dispatch [:doc/exec [:add-segment
-                           (-> (code-segment :clj code)
-                               (assoc :id id))]])
-  (rf/dispatch [:doc/exec [:set-state-segment id initial-value]]))
+  (if (ns-only? code)
+    (warn "ns only: " code)
+    (do
+      (swap! evals assoc id {:code code :id id :er initial-value})
+      (rf/dispatch [:doc/exec [:add-segment
+                               (-> (code-segment :clj code)
+                                   (assoc :id id))]])
+      (rf/dispatch [:doc/exec [:set-state-segment id initial-value]]))))
 
 (defn set-result [{:keys [op id code ns picasso value out err] :as msg}]
   (warn "(partial) result: " msg)

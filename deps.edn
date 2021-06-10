@@ -15,7 +15,7 @@
         ;pink-gorilla
         org.pinkgorilla/picasso {:mvn/version "3.1.44"} ; used by nrepl-middleware + goldly cljs kernel
         org.pinkgorilla/gorilla-explore {:mvn/version "0.2.64"} ; brings notebook-encoding
-        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.38"} ; brings picasso
+        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.43"} ; brings picasso
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
         org.pinkgorilla/goldly {:mvn/version "0.2.89"}
         org.pinkgorilla/webly {:mvn/version "0.3.1"}
