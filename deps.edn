@@ -15,10 +15,10 @@
         ;pink-gorilla
         org.pinkgorilla/picasso {:mvn/version "3.1.44"} ; used by nrepl-middleware + goldly cljs kernel
         org.pinkgorilla/gorilla-explore {:mvn/version "0.2.64"} ; brings notebook-encoding
-        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.43"} ; brings picasso
+        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.44"} ; brings picasso
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
-        org.pinkgorilla/goldly {:mvn/version "0.2.90"}
-        org.pinkgorilla/webly {:mvn/version "0.3.2"}
+        org.pinkgorilla/goldly {:mvn/version "0.2.91"}
+        org.pinkgorilla/webly {:mvn/version "0.3.6"}
 
         ; core-bundel
         org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
