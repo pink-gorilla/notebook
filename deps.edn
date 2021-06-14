@@ -17,8 +17,8 @@
         org.pinkgorilla/gorilla-explore {:mvn/version "0.2.64"} ; brings notebook-encoding
         org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.44"} ; brings picasso
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
-        org.pinkgorilla/goldly {:mvn/version "0.2.91"}
-        org.pinkgorilla/webly {:mvn/version "0.3.6"}
+        org.pinkgorilla/goldly {:mvn/version "0.2.92"}
+        org.pinkgorilla/webly {:mvn/version "0.3.8"}
 
         ; core-bundel
         org.pinkgorilla/ui-site {:mvn/version "0.0.5"}
