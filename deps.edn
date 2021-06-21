@@ -14,7 +14,7 @@
         ;pink-gorilla
         org.pinkgorilla/picasso {:mvn/version "3.1.44"} ; used by nrepl-middleware + goldly cljs kernel
         org.pinkgorilla/gorilla-explore {:mvn/version "0.2.64"} ; brings notebook-encoding
-        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.44"} ; brings picasso
+        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.45"} ; brings picasso
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
         org.pinkgorilla/goldly {:mvn/version "0.2.97"}
         org.pinkgorilla/webly {:mvn/version "0.3.8"}
@@ -77,9 +77,9 @@
   ; https://github.com/jgrodziski/metav#spit-or-render-current-version-in-a-file
   :spit {:extra-deps {metav/metav {:mvn/version "1.6.7"}}
          :main-opts ["-m" "metav.spit"
-                     "--output-dir" "src"
-                     "--namespace" "pinkgorilla.git"
-                     "--formats" "clj"]}
+                     "--output-dir" "resources"
+                     "--namespace" "notebook-version"
+                     "--formats" "edn"]}
 
    ; notebook
 

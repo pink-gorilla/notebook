@@ -15,5 +15,5 @@ goldly_bindings_generated.cljs
 pom.xml
 karma.conf.js
 bundel/deps.edn
-git.clj
+notebook_version.edn
 .sniffer.edn

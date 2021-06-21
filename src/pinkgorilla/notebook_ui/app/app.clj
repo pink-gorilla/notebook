@@ -1,5 +1,7 @@
 (ns pinkgorilla.notebook-ui.app.app
   (:require
+   [clojure.edn :as edn]
+   [clojure.java.io :as io]
    [taoensso.timbre :refer [info warn]]
    ; webly
    [webly.config :refer [load-config! get-in-config add-config]]
@@ -19,10 +21,16 @@
       (goldly-run!)
       (warn "goldly is disabed!"))))
 
+(defn print-git-version []
+  (if-let [r (io/resource "notebook_version.edn")]
+    (let [data (-> (slurp r) (edn/read-string))]
+      (info "notebook " (:version data) "generated: " (:generated-at data)))
+    (warn "notebook version unknown!")))
 (defn notebook-run!
   [{:keys [config profile] ; a map so it can be consumed by tools deps -X
     :or {profile "jetty"
          config {}}}]
+  (print-git-version)
   (let [config (add-config "notebook-core.edn" config)]
     (load-config! config)
     (when (compile? profile)
