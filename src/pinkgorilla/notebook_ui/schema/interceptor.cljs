@@ -30,7 +30,6 @@
 ;; each event handler has finished, and it checks app-db against a spec.  This
 ;; helps us detect event handler bugs early.
 
-
 (def check-spec-interceptor
   (after
    check-for-empty

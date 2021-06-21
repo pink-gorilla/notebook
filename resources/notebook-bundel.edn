@@ -1,13 +1,5 @@
 {:goldly {:enabled true
-          :extensions [; taken from goldly-bundel and modified
-                       [pinkgorilla.repl.goldly.core]
-                       [pinkgorilla.repl.goldly.snippets]
-                       [pinkgorilla.input.goldly]
-                       [pinkgorilla.vega.goldly]
-                       [pinkgorilla.vega.snippets]
-                       [pinkgorilla.ui.goldly] ; gorilla-ui
-                       ;[ui.binaryclock.goldly]
-                       [ui.quil.goldly]]}
+          :extensions []}
  :explorer {:server {:resource-root-path "notebooks"}} ; notebook-bundel should add example notebooks from resources
  
  }

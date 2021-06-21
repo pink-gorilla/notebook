@@ -40,9 +40,7 @@
           "layout"]]
         (map (partial radio-layout settings) layouts)))
 
-
 ; Theme Codemirror
-
 
 #_(defn radio-theme-codemirror [settings theme-name]
     [radio-button
@@ -94,7 +92,6 @@
      [codemirror-theme settings]]]])
 
 ;; secret management
-
 
 (defn secret-table  [secrets]
   [:div

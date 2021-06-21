@@ -41,7 +41,6 @@
         (close! c))
     c))
 
-
 ; todo: fragments
 ; seg-id (keyword id)
 ; segment (get-in notebook [:segments seg-id])

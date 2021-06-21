@@ -7,9 +7,7 @@
    [re-frame.core :refer [reg-event-db reg-event-fx dispatch]]
    [pinkgorilla.notebook-ui.settings.component :refer [settings-dialog]]))
 
-
 ; dialog visibility
-
 
 (reg-event-db
  :settings/show

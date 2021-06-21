@@ -39,10 +39,7 @@
     :simple
     keyword?)))
 
-
-
 ;; explorer
-
 
 (s/def ::save boolean?)
 (s/def ::url string?)
@@ -141,10 +138,7 @@
                    ::documents
                    ::notebook])) ; comment
 
-
-
 ;{:document {:documents {:1 {:segments []}}}}
-
 
 (s/def ::config map?)
 

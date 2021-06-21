@@ -4,7 +4,6 @@
 
 ;#pinkgorilla.storage.file.StorageFile{:filename "./notebooksnotebooksdemo.cljg"}
 
-
 (def explorer
   {:config
    {:repositories [{:name "local", :url "/api/explorer", :save true} {:name "public", :url "https://raw.githubusercontent.com/pink-gorilla/gorilla-explore/master/resources/list.json"}]}
