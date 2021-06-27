@@ -12,9 +12,9 @@
         day8.re-frame/undo {:mvn/version "0.3.3"}
         re-com/re-com {:mvn/version "2.13.2"}
         ;pink-gorilla
-        org.pinkgorilla/picasso {:mvn/version "3.1.44"} ; used by nrepl-middleware + goldly cljs kernel
+        org.pinkgorilla/picasso {:mvn/version "3.1.45"} ; used by nrepl-middleware + goldly cljs kernel
         org.pinkgorilla/gorilla-explore {:mvn/version "0.2.64"} ; brings notebook-encoding
-        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.45"} ; brings picasso
+        org.pinkgorilla/nrepl-middleware {:mvn/version "0.3.48"} ; brings picasso
         org.pinkgorilla/pinkie {:mvn/version "0.3.3"}
         org.pinkgorilla/goldly {:mvn/version "0.2.97"}
         org.pinkgorilla/webly {:mvn/version "0.3.8"}
@@ -105,7 +105,7 @@
                 org.pinkgorilla/ui-input {:mvn/version "0.0.4"}
                 org.pinkgorilla/ui-vega  {:mvn/version "0.0.8"}
                 org.pinkgorilla/ui-highcharts {:mvn/version "0.0.3"}
-                org.pinkgorilla/gorilla-ui  {:mvn/version "0.3.38"}
+                org.pinkgorilla/gorilla-ui  {:mvn/version "0.3.39"}
                 ;org.pinkgorilla/ui-binaryclock  {:mvn/version "0.0.6"}
                 org.pinkgorilla/ui-quil  {:mvn/version "0.1.7"}}
    :exec-fn pinkgorilla.notebook-ui.app.app/notebook-run!

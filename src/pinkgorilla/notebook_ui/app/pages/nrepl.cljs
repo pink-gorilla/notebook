@@ -2,7 +2,7 @@
   (:require
    [re-frame.core :as rf]
    [webly.web.handler :refer [reagent-page]]
-   [pinkgorilla.notebook-ui.nrepl.views.info-page :refer [nrepl-info]]
+   [pinkgorilla.nrepl.view.info.page :refer [nrepl-info]]
    [pinkgorilla.notebook-ui.app.site :as site]))
 
 (defn nrepl-ip-port []
